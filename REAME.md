@@ -1,2 +1,2 @@
 #adaisawesome
-# We should write a shortdescription here !
+# We should write a short description here !
