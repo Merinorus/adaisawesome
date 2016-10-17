@@ -11762,6 +11762,8 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#use hypothetical data set generated in Question 2</span>
+<span class="c1"># we were not able to generate the DataSet and therefore were not able to test this code</span>
+<span class="c1">#this is our attemp at demonstrating the algorithim that we&#39;d use to compute stats for part 3</span>
 </pre></div>
 
 </div>
@@ -11795,7 +11797,7 @@ div#notebook {
 <span class="c1">#Add a column of time at EPFL </span>
 <span class="p">[</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataSet</span><span class="o">.</span><span class="n">shape</span><span class="p">;</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">m</span><span class="p">):</span>
-    <span class="n">DataSet</span><span class="o">.</span><span class="n">TimeSpent</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">DataSet</span><span class="o">.</span><span class="n">StartDate</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">DataSet</span><span class="o">.</span><span class="n">EndDate</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="n">DataSet</span><span class="o">.</span><span class="n">TimeSpent</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">DataSet</span><span class="o">.</span><span class="n">StartDate</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">DataSet</span><span class="o">.</span><span class="n">EndDate</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="c1">#assume we were able to create a column with the end date and start date of each student</span>
     
     
 </pre></div>

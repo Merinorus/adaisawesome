@@ -6,6 +6,8 @@
 # In[ ]:
 
 #use hypothetical data set generated in Question 2
+# we were not able to generate the DataSet and therefore were not able to test this code
+#this is our attemp at demonstrating the algorithim that we'd use to compute stats for part 3
 
 
 # In[ ]:
@@ -25,7 +27,7 @@
 #Add a column of time at EPFL 
 [m,n] = DataSet.shape;
 for i in (0,m):
-    DataSet.TimeSpent[i]=DataSet.StartDate[i]-DataSet.EndDate[i];
+    DataSet.TimeSpent[i]=DataSet.StartDate[i]-DataSet.EndDate[i]; #assume we were able to create a column with the end date and start date of each student
     
     
 
