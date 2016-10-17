@@ -3,84 +3,9 @@
 
 # BONUS: perform the gender-based study also on the Master students, as explained in 1. Use scatterplots to visually identify changes over time. Plot males and females with different colors -- can you spot different trends that match the results of your statistical tests?
 
-# In[1]:
-
-# Requests : make http requests to websites
-import requests
-# BeautifulSoup : parser to manipulate easily html content
-from bs4 import BeautifulSoup
-# Regular expressions
-import re
-
-
-# In[2]:
-
-# Ask for the first page on IS Academia. To see it, just type it on your browser address bar : http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.filter?ww_i_reportModel=133685247
-r = requests.get('http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.filter?ww_i_reportModel=133685247')
-htmlContent = BeautifulSoup(r.content, 'html.parser')
-
-
-# In[3]:
-
-print(htmlContent.prettify())
-
-
-# In[4]:
-
-# We first get the "Computer science" value
-computerScienceField = htmlContent.find('option', text='Informatique')
-computerScienceField
-
-
-# In[5]:
-
-computerScienceValue = computerScienceField.get('value')
-computerScienceValue
-
-
-# In[6]:
-
-# Then, we're going to need all the academic years values.
-academicYearsField = htmlContent.find('select', attrs={'name':'ww_x_PERIODE_ACAD'})
-#academicYearsField = academicYearsField.find('option', text='20')
-#academicYearsField = academicYearsField.select("select > option")
-academicYearsSet = academicYearsField.findAll('option')
-academicYearsSet
-#print(academicYearsField.prettify())
-
-
-# In[7]:
-
-for option in academicYearsSet:
-    print(option)
-
-
-# In[8]:
-
-academicYearsValues = academicYearsField.get('value')
-academicYearsValues
-
-
-# In[9]:
-
-academicYearsValues = academicYearsField.find('option')
-academicYearsValues
-
-
-# In[10]:
-
-print(htmlContent.prettify())
-
-
 # In[ ]:
 
-#for imported data, change name of status column to reflect dates
-
-
-# In[ ]:
-
-#concatenate DataFrames by SCIPER NUMBER
-DataSet = pd.merge(pd1,pd2,pd3,pd4,pd5,pd6,pd7..., how='inner', on=['No Sciper']);
+#use hypothetical data set generated in Question 2
 
 
 # In[ ]:
@@ -100,7 +25,7 @@ DataSet = pd.merge(pd1,pd2,pd3,pd4,pd5,pd6,pd7..., how='inner', on=['No Sciper']
 #Add a column of time at EPFL 
 [m,n] = DataSet.shape;
 for i in (0,m):
-    DataSet[i,ExtraColumn]=DataSet[i,M1]-DataSet[i,MP];
+    DataSet.TimeSpent[i]=DataSet.StartDate[i]-DataSet.EndDate[i];
     
     
 
@@ -115,10 +40,10 @@ TotMale = 0;
 for i in (0,m):
     if DataSet[i,1] == 'Madame':
         Fem = Fem + 1;
-        TotFem = TotFem + DataSet[i,ExtraColumn];
+        TotFem = TotFem + DataSet.TimeSpent[i];
         elif DataSet[i,1] == 'Monsieur'
         Male = Male + 1;
-        TotMale = TotMale + DataSet[i,ExtraColumn];
+        TotMale = TotMale + DataSet.TimeSpent[i];
     
 MaleAvg = TotMale/Male;
 FemAvg = TotFem/Fem;
@@ -134,7 +59,7 @@ from scipy.stats import ttest_ind
 Fem = DataSet[DataSet['Civilité']=='Madame']
 Male = DataSet[DataSet['Civilité']=='Monsieur']
 
-[p,e] = ttest_ind(Fem['TimeColumn'], Male['TimeColumn'])
+[p,e] = ttest_ind(Fem['TimeSpent'], Male['TimeSpent'])
 if p<=0.05:
     print "The difference in averages is statistically significance to a siginificance level of 95%"
     else
@@ -149,11 +74,11 @@ if p<=0.05:
 FemArray = []; #initialize arrays to store average by starting year
 MaleArray = [];
 for i in (2007,2014):
-    YearAvg = DataSet[DataSet['Semester1']==i];
+    YearAvg = DataSet[DataSet['StartDate']==i];
     Fem2 = YearAvg[YearAvg['Civilité']=='Madame'];
     Male2 = YearAvg[YearAvg['Civilité']=='Monsieur'];
-    MeanFem = mean(Fem2[:,TimeColumn]);
-    MeanMale = mean(Male2[:,TimeColumn]);
+    MeanFem = mean(Fem2.TimeSpent);
+    MeanMale = mean(Male2.TimeSpent);
     FemArray.extend(MeanFem);
     MaleArray.extend(MeanMale);
     
