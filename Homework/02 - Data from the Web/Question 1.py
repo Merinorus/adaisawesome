@@ -213,7 +213,7 @@ for academicYear_row in academicYear_df.itertuples(index=True, name='Academic_ye
 requestsToISAcademia
 
 
-# In[94]:
+# In[115]:
 
 # Create a new Dataframe into which to concatenate all of the students and Scipers
 data1 = requests.get(requestsToISAcademia[0])
@@ -221,12 +221,23 @@ htmlContentData1 = BeautifulSoup(data1.content, 'html.parser')
 print(htmlContentData1.prettify())
 
 
-# In[113]:
+# In[118]:
+
+table1 = htmlContentData1.find('table')
+
+
+# In[152]:
 
 # Create an empty dataframe with the relevant columns
 df1 = pd.DataFrame({'Year': [], 'Semester': [], 'Civilité': [], 'Nom Prénom':[], 'Status':[], 'No Sciper':[]})
-df1[;1] = htmlContentData1.find('select', attrs={'name':'Civilité'})
-df1.
+i = 0
+tr = table1.findNext('tr')
+td = table1.findNext('td')
+td.text
+#df1.loc[i,'Civilité'] = td.text
+td = table1.findNext('td' =! 0)
+#df1.loc[i,'Nom Prénom'] = td.text
+#i = i+1
 
 
 # In[ ]:

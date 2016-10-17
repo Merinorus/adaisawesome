@@ -12709,7 +12709,7 @@ So let's cook all the requests we're going to send !</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[94]:</div>
+<div class="prompt input_prompt">In&nbsp;[115]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create a new Dataframe into which to concatenate all of the students and Scipers</span>
@@ -15508,7 +15508,7 @@ So let's cook all the requests we're going to send !</p>
   &lt;/hr&gt;
  &lt;/body&gt;
 &lt;/html&gt;
-&lt;!-- OpenXml:0.01s  agent ctrl:0.00s  xml:0.30s  xsl extr&amp;stylesheet:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.00s  transform 2:0.04s  xsl process:0.00s  --&gt;
+&lt;!-- OpenXml:0.01s  agent ctrl:0.00s  xml:0.35s  xsl extr&amp;stylesheet:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.00s  transform 2:0.05s  xsl process:0.00s  --&gt;
 
 </pre>
 </div>
@@ -15520,13 +15520,32 @@ So let's cook all the requests we're going to send !</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[113]:</div>
+<div class="prompt input_prompt">In&nbsp;[118]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">table1</span> <span class="o">=</span> <span class="n">htmlContentData1</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[152]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create an empty dataframe with the relevant columns</span>
 <span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Year&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;Semester&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;Civilité&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;Nom Prénom&#39;</span><span class="p">:[],</span> <span class="s1">&#39;Status&#39;</span><span class="p">:[],</span> <span class="s1">&#39;No Sciper&#39;</span><span class="p">:[]})</span>
-<span class="n">df1</span><span class="p">[;</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">htmlContentData1</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;Civilité&#39;</span><span class="p">})</span>
-<span class="n">df1</span><span class="o">.</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">tr</span> <span class="o">=</span> <span class="n">table1</span><span class="o">.</span><span class="n">findNext</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">)</span>
+<span class="n">td</span> <span class="o">=</span> <span class="n">table1</span><span class="o">.</span><span class="n">findNext</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">)</span>
+<span class="n">td</span><span class="o">.</span><span class="n">text</span>
+<span class="c1">#df1.loc[i,&#39;Civilité&#39;] = td.text</span>
+<span class="n">td</span> <span class="o">=</span> <span class="n">table1</span><span class="o">.</span><span class="n">findNext</span><span class="p">(</span><span class="s1">&#39;td&#39;</span> <span class="o">=!</span> 0<span class="o">)</span>
+<span class="c1">#df1.loc[i,&#39;Nom Prénom&#39;] = td.text</span>
+<span class="c1">#i = i+1</span>
 </pre></div>
 
 </div>
@@ -15540,10 +15559,10 @@ So let's cook all the requests we're going to send !</p>
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_text output_error">
 <pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-113-b145fd1692c6&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">4</span>
-<span class="ansi-red-fg">    #df1[;1] = htmlContentData1.find(&#39;select&#39;, attrs={&#39;name&#39;:&#39;Civilité&#39;})</span>
-                                                                         ^
-<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> unexpected EOF while parsing
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-152-f2cbb76f4528&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">8</span>
+<span class="ansi-red-fg">    td = table1.findNext(&#39;td&#39; =! 0)</span>
+                               ^
+<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
 </pre>
 </div>
 </div>
