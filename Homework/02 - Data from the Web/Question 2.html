@@ -11751,7 +11751,8 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Perform a similar operation to what described above, this time for Master students. Notice that this data is more tricky, as there are many missing records in the IS-Academia database. Therefore, try to guess how much time a master student spent at EPFL by at least checking the distance in months between Master semestre 1 and Master semestre 2. If the Mineur field is not empty, the student should also appear registered in Master semestre 3. Last but not the least, don't forget to check if the student has an entry also in the Projet Master tables. Once you can handle well this data, compute the "average stay at EPFL" for master students. Now extract all the students with a Spécialisation and compute the "average stay" per each category of that attribute -- compared to the general average, can you find any specialization for which the difference in average is statistically significant?</p>
+<p>Obtain all the data for the Master students, starting from 2007. Compute how many months it took each master student to complete their master, for those that completed it. Partition the data between male and female students, and compute the average -- is the difference in average statistically significant?</p>
+<p>Notice that master students' data is more tricky than the bachelors' one, as there are many missing records in the IS-Academia database. Therefore, try to guess how much time a master student spent at EPFL by at least checking the distance in months between Master semestre 1 and Master semestre 2. If the Mineur field is not empty, the student should also appear registered in Master semestre 3. Last but not the least, don't forget to check if the student has an entry also in the Projet Master tables. Once you can handle well this data, compute the "average stay at EPFL" for master students. Now extract all the students with a Spécialisation and compute the "average stay" per each category of that attribute -- compared to the general average, can you find any specialization for which the difference in average is statistically significant?</p>
 
 </div>
 </div>
@@ -12200,7 +12201,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="prompt input_prompt">In&nbsp;[101]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Then, we&#39;re going to need all the academic years values.</span>
@@ -12209,11 +12210,15 @@ div#notebook {
 
 <span class="c1"># Since there are several years to remember, we&#39;re storing all of them in a table to use them later</span>
 <span class="n">academicYearValues</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># We&#39;ll put the textual content in a table aswell (&quot;Master semestre 1&quot;, &quot;Master semestre 2&quot;...)</span>
+<span class="n">academicYearContent</span> <span class="o">=</span> <span class="p">[]</span>
+
 <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">academicYearsSet</span><span class="p">:</span>
     <span class="n">value</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
     <span class="c1"># However, we don&#39;t want any &quot;null&quot; value</span>
     <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="s1">&#39;null&#39;</span><span class="p">:</span>
         <span class="n">academicYearValues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">academicYearContent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12223,11 +12228,12 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[71]:</div>
+<div class="prompt input_prompt">In&nbsp;[104]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Now, we have all the academic years that might interest us</span>
-<span class="n">academicYearValues</span>
+<span class="n">academicYear_Series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">academicYearContent</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">academicYearValues</span><span class="p">)</span>
+<span class="n">academicYear_Series</span>
 </pre></div>
 
 </div>
@@ -12238,20 +12244,21 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[71]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[104]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;355925344&#39;,
- &#39;213638028&#39;,
- &#39;213637922&#39;,
- &#39;213637754&#39;,
- &#39;123456101&#39;,
- &#39;123455150&#39;,
- &#39;39486325&#39;,
- &#39;978195&#39;,
- &#39;978187&#39;,
- &#39;978181&#39;]</pre>
+<pre>355925344    2016-2017
+213638028    2015-2016
+213637922    2014-2015
+213637754    2013-2014
+123456101    2012-2013
+123455150    2011-2012
+39486325     2010-2011
+978195       2009-2010
+978187       2008-2009
+978181       2007-2008
+dtype: object</pre>
 </div>
 
 </div>
@@ -12262,7 +12269,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[72]:</div>
+<div class="prompt input_prompt">In&nbsp;[90]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Then, let&#39;s get all the pedagogic periods we need. It&#39;s a little bit more complicated here because we need to link the pedagogic period with a season (eg : Bachelor 1 is autumn, Bachelor 2 is spring etc.)</span>
@@ -12272,10 +12279,14 @@ div#notebook {
 
 <span class="c1"># Same as above, we&#39;ll store the values in a table</span>
 <span class="n">pedagogicPeriodValues</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># We&#39;ll put the textual content in a table aswell (&quot;Master semestre 1&quot;, &quot;Master semestre 2&quot;...)</span>
+<span class="n">pedagogicPeriodContent</span> <span class="o">=</span> <span class="p">[]</span>
+
 <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">pedagogicPeriodsSet</span><span class="p">:</span>
     <span class="n">value</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="s1">&#39;null&#39;</span><span class="p">:</span>
         <span class="n">pedagogicPeriodValues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">pedagogicPeriodContent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12285,10 +12296,12 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[73]:</div>
+<div class="prompt input_prompt">In&nbsp;[91]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pedagogicPeriodValues</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Let&#39;s make the values and content meet each other</span>
+<span class="n">pedagogicPeriod_Series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pedagogicPeriodContent</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">pedagogicPeriodValues</span><span class="p">)</span>
+<span class="n">pedagogicPeriod_Series</span>
 </pre></div>
 
 </div>
@@ -12299,34 +12312,35 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[73]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[91]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;249108&#39;,
- &#39;249114&#39;,
- &#39;942155&#39;,
- &#39;942163&#39;,
- &#39;942120&#39;,
- &#39;2226768&#39;,
- &#39;942175&#39;,
- &#39;2226785&#39;,
- &#39;2230106&#39;,
- &#39;942192&#39;,
- &#39;2230128&#39;,
- &#39;2230140&#39;,
- &#39;2335667&#39;,
- &#39;2335676&#39;,
- &#39;2063602308&#39;,
- &#39;249127&#39;,
- &#39;3781783&#39;,
- &#39;953159&#39;,
- &#39;2754553&#39;,
- &#39;953137&#39;,
- &#39;2226616&#39;,
- &#39;983606&#39;,
- &#39;2226626&#39;,
- &#39;2227132&#39;]</pre>
+<pre>249108               Bachelor semestre 1
+249114               Bachelor semestre 2
+942155               Bachelor semestre 3
+942163               Bachelor semestre 4
+942120               Bachelor semestre 5
+2226768             Bachelor semestre 5b
+942175               Bachelor semestre 6
+2226785             Bachelor semestre 6b
+2230106                Master semestre 1
+942192                 Master semestre 2
+2230128                Master semestre 3
+2230140                Master semestre 4
+2335667                Mineur semestre 1
+2335676                Mineur semestre 2
+2063602308                 Mise à niveau
+249127             Projet Master automne
+3781783          Projet Master printemps
+953159                  Semestre automne
+2754553               Semestre printemps
+953137          Stage automne 3ème année
+2226616         Stage automne 4ème année
+983606        Stage printemps 3ème année
+2226626       Stage printemps 4ème année
+2227132           Stage printemps master
+dtype: object</pre>
 </div>
 
 </div>
@@ -12337,13 +12351,98 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[96]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We keep all semesters related to master students</span>
+<span class="n">masterPedagogicPeriod_Series</span> <span class="o">=</span> <span class="n">pedagogicPeriod_Series</span><span class="p">[[</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Master&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Projet Master&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Mineur&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">pedagogicPeriod_Series</span><span class="p">]]</span>
+<span class="n">masterPedagogicPeriod_Series</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[96]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>2230106          Master semestre 1
+942192           Master semestre 2
+2230128          Master semestre 3
+2230140          Master semestre 4
+2335667          Mineur semestre 1
+2335676          Mineur semestre 2
+249127       Projet Master automne
+3781783    Projet Master printemps
+dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[106]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Lastly, we need to extract the values associated with autumn and spring semesters.</span>
+<span class="n">semesterTypeField</span> <span class="o">=</span> <span class="n">htmlContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;ww_x_HIVERETE&#39;</span><span class="p">})</span>
+<span class="n">semesterTypeSet</span> <span class="o">=</span> <span class="n">semesterTypeField</span><span class="o">.</span><span class="n">findAll</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">)</span>
+
+<span class="c1"># Again, we need to store the values in a table</span>
+<span class="n">semesterTypeValues</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># We&#39;ll put the textual content in a table aswell</span>
+<span class="n">semesterTypeContent</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">semesterTypeSet</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="s1">&#39;null&#39;</span><span class="p">:</span>
+        <span class="n">semesterTypeValues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">semesterTypeContent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[108]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Here are the values for autumn and spring semester :</span>
+<span class="n">semesterType_Series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">semesterTypeContent</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">semesterTypeValues</span><span class="p">)</span>
+<span class="n">semesterType_Series</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[108]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>2936286       Semestre d&#39;automne
+2936295    Semestre de printemps
+dtype: object</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
