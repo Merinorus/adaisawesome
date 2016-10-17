@@ -12634,7 +12634,34 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Statistical Tests</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#for imported data, change name of status column to reflect dates</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#concatenate DataFrames by SCIPER NUMBER</span>
+<span class="n">DataSet</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">pd1</span><span class="p">,</span><span class="n">pd2</span><span class="p">,</span><span class="n">pd3</span><span class="p">,</span><span class="n">pd4</span><span class="p">,</span><span class="n">pd5</span><span class="p">,</span><span class="n">pd6</span><span class="p">,</span><span class="n">pd7</span><span class="o">...</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;No Sciper&#39;</span><span class="p">]);</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Statistical Tests for Question 3 (Bonus)</span>
 <span class="c1">#Find Students who completed masters</span>
 <span class="c1">#Assumption: to complete the masters, we consider students with an Entry on Semester 1 and on Masters Project</span>
 <span class="c1">#use if statement to find students who posses both</span>
@@ -12676,10 +12703,10 @@ div#notebook {
 <span class="n">TotFem</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">#initialize sum of total time spent at EPFL</span>
 <span class="n">TotMale</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">m</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">GenderColumn</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Female&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Madame&#39;</span><span class="p">:</span>
         <span class="n">Fem</span> <span class="o">=</span> <span class="n">Fem</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
         <span class="n">TotFem</span> <span class="o">=</span> <span class="n">TotFem</span> <span class="o">+</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">ExtraColumn</span><span class="p">];</span>
-        <span class="k">elif</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">GenderColumn</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Male&#39;</span>
+        <span class="k">elif</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Monsieur&#39;</span>
         <span class="n">Male</span> <span class="o">=</span> <span class="n">Male</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
         <span class="n">TotMale</span> <span class="o">=</span> <span class="n">TotMale</span> <span class="o">+</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">ExtraColumn</span><span class="p">];</span>
     
@@ -12702,8 +12729,8 @@ div#notebook {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># determine statistical significance using t-test </span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">ttest_ind</span>
 
-<span class="n">Fem</span> <span class="o">=</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">DataSet</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Female&#39;</span><span class="p">]</span>
-<span class="n">Male</span> <span class="o">=</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">DataSet</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Male&#39;</span><span class="p">]</span>
+<span class="n">Fem</span> <span class="o">=</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">DataSet</span><span class="p">[</span><span class="s1">&#39;Civilité&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Madame&#39;</span><span class="p">]</span>
+<span class="n">Male</span> <span class="o">=</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">DataSet</span><span class="p">[</span><span class="s1">&#39;Civilité&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Monsieur&#39;</span><span class="p">]</span>
 
 <span class="p">[</span><span class="n">p</span><span class="p">,</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="n">ttest_ind</span><span class="p">(</span><span class="n">Fem</span><span class="p">[</span><span class="s1">&#39;TimeColumn&#39;</span><span class="p">],</span> <span class="n">Male</span><span class="p">[</span><span class="s1">&#39;TimeColumn&#39;</span><span class="p">])</span>
 <span class="k">if</span> <span class="n">p</span><span class="o">&lt;=</span><span class="mf">0.05</span><span class="p">:</span>
@@ -12728,8 +12755,8 @@ div#notebook {
 <span class="n">MaleArray</span> <span class="o">=</span> <span class="p">[];</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2007</span><span class="p">,</span><span class="mi">2014</span><span class="p">):</span>
     <span class="n">YearAvg</span> <span class="o">=</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">DataSet</span><span class="p">[</span><span class="s1">&#39;Semester1&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">i</span><span class="p">];</span>
-    <span class="n">Fem2</span> <span class="o">=</span> <span class="n">YearAvg</span><span class="p">[</span><span class="n">YearAvg</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Female&#39;</span><span class="p">];</span>
-    <span class="n">Male2</span> <span class="o">=</span> <span class="n">YearAvg</span><span class="p">[</span><span class="n">YearAvg</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Male&#39;</span><span class="p">];</span>
+    <span class="n">Fem2</span> <span class="o">=</span> <span class="n">YearAvg</span><span class="p">[</span><span class="n">YearAvg</span><span class="p">[</span><span class="s1">&#39;Civilité&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Madame&#39;</span><span class="p">];</span>
+    <span class="n">Male2</span> <span class="o">=</span> <span class="n">YearAvg</span><span class="p">[</span><span class="n">YearAvg</span><span class="p">[</span><span class="s1">&#39;Civilité&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Monsieur&#39;</span><span class="p">];</span>
     <span class="n">MeanFem</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">Fem2</span><span class="p">[:,</span><span class="n">TimeColumn</span><span class="p">]);</span>
     <span class="n">MeanMale</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">Male2</span><span class="p">[:,</span><span class="n">TimeColumn</span><span class="p">]);</span>
     <span class="n">FemArray</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">MeanFem</span><span class="p">);</span>

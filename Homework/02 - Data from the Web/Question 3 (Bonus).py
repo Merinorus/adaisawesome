@@ -74,7 +74,18 @@ print(htmlContent.prettify())
 
 # In[ ]:
 
-#Statistical Tests
+#for imported data, change name of status column to reflect dates
+
+
+# In[ ]:
+
+#concatenate DataFrames by SCIPER NUMBER
+DataSet = pd.merge(pd1,pd2,pd3,pd4,pd5,pd6,pd7..., how='inner', on=['No Sciper']);
+
+
+# In[ ]:
+
+#Statistical Tests for Question 3 (Bonus)
 #Find Students who completed masters
 #Assumption: to complete the masters, we consider students with an Entry on Semester 1 and on Masters Project
 #use if statement to find students who posses both
@@ -102,10 +113,10 @@ Male = 0;
 TotFem = 0; #initialize sum of total time spent at EPFL
 TotMale = 0;
 for i in (0,m):
-    if DataSet[i,GenderColumn] == 'Female':
+    if DataSet[i,1] == 'Madame':
         Fem = Fem + 1;
         TotFem = TotFem + DataSet[i,ExtraColumn];
-        elif DataSet[i,GenderColumn] == 'Male'
+        elif DataSet[i,1] == 'Monsieur'
         Male = Male + 1;
         TotMale = TotMale + DataSet[i,ExtraColumn];
     
@@ -120,8 +131,8 @@ return Avgs
 # determine statistical significance using t-test 
 from scipy.stats import ttest_ind
 
-Fem = DataSet[DataSet['Gender']=='Female']
-Male = DataSet[DataSet['Gender']=='Male']
+Fem = DataSet[DataSet['Civilité']=='Madame']
+Male = DataSet[DataSet['Civilité']=='Monsieur']
 
 [p,e] = ttest_ind(Fem['TimeColumn'], Male['TimeColumn'])
 if p<=0.05:
@@ -139,8 +150,8 @@ FemArray = []; #initialize arrays to store average by starting year
 MaleArray = [];
 for i in (2007,2014):
     YearAvg = DataSet[DataSet['Semester1']==i];
-    Fem2 = YearAvg[YearAvg['Gender']=='Female'];
-    Male2 = YearAvg[YearAvg['Gender']=='Male'];
+    Fem2 = YearAvg[YearAvg['Civilité']=='Madame'];
+    Male2 = YearAvg[YearAvg['Civilité']=='Monsieur'];
     MeanFem = mean(Fem2[:,TimeColumn]);
     MeanMale = mean(Male2[:,TimeColumn]);
     FemArray.extend(MeanFem);
