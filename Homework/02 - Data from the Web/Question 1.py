@@ -148,10 +148,15 @@ spring_semester_value = semesterType_df.loc[semesterType_df['Semester_type'] == 
 spring_semester_value = spring_semester_value.iloc[0]
 
 
-# In[90]:
+# In[107]:
 
-# Here is the list of the GET requests we will send to IS Academia
+# Here is the list of the GET requests we will sent to IS Academia
 requestsToISAcademia = []
+
+# We'll need to associate all the information associated with the requests to help wrangling data later :
+academicYearRequests = []
+pedagogicPeriodRequests = []
+semesterTypeRequests = []
 
 # Go all over the years ('2007-2008', '2008-2009' and so on)
 for academicYear_row in academicYear_df.itertuples(index=True, name='Academic_year'):
@@ -165,17 +170,22 @@ for academicYear_row in academicYear_df.itertuples(index=True, name='Academic_ye
     # We get all the pedagogic periods associated with this academic year
     for pegagogicPeriod_row in pedagogicPeriod_df.itertuples(index=True, name='Pedagogic_period'):
         
-        # The period (eg: 'Bachelor semestre 1')
+        # The period (eg: 'Master semestre 1')
         pedagogicPeriod = pegagogicPeriod_row.Pedagogic_period
+        
         
         # The associated value (eg: '2230106')
         pegagogicPeriod_Value = pegagogicPeriod_row.Value
         
-        # We need to associate the corresponding semester type (eg: Bachelor semester 1 is autumn, but Bachelor semester 2 will be spring)
+        # We need to associate the corresponding semester type (eg: Master semester 1 is autumn, but Master semester 2 will be spring)
         if (pedagogicPeriod.endswith('1') or pedagogicPeriod.endswith('3') or pedagogicPeriod.endswith('automne')):
             semester_Value = autumn_semester_value
+            semester = 'Autumn'
         else:
             semester_Value = spring_semester_value
+            semester = 'Spring'
+        
+        
         
         # This print line is only for debugging if you want to check something
         # print("academic year = " + academicYear_value + ", pedagogic value = " + pegagogicPeriod_Value + ", pedagogic period is " + pedagogicPeriod + " (semester type value = " + semester_Value + ")")
@@ -188,9 +198,16 @@ for academicYear_row in academicYear_df.itertuples(index=True, name='Academic_ye
         
         # Add the newly created request to our wish list...
         requestsToISAcademia.append(request)
+        # And we save the corresponding information for each request
+        pedagogicPeriodRequests.append(pedagogicPeriod)
+        academicYearRequests.append(academicYear)
+        semesterTypeRequests.append(semester)
+        
+        
+        
 
 
-# In[91]:
+# In[108]:
 
 # Here is the list of all the requests we have to send !
 requestsToISAcademia
@@ -204,12 +221,12 @@ htmlContentData1 = BeautifulSoup(data1.content, 'html.parser')
 print(htmlContentData1.prettify())
 
 
-# In[104]:
+# In[113]:
 
 # Create an empty dataframe with the relevant columns
-df1 = pd.DataFrame({'Civilité': [], 'Nom Prénom':[], 'Status':[], 'No Sciper':[]})
-df1['Civilité';1] = htmlContentData1.find('select', attrs={'name':'Civilité'})
-df1
+df1 = pd.DataFrame({'Year': [], 'Semester': [], 'Civilité': [], 'Nom Prénom':[], 'Status':[], 'No Sciper':[]})
+df1[;1] = htmlContentData1.find('select', attrs={'name':'Civilité'})
+df1.
 
 
 # In[ ]:
