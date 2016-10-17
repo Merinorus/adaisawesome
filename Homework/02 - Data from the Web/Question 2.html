@@ -11759,7 +11759,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="prompt input_prompt">In&nbsp;[118]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Requests : make http requests to websites</span>
@@ -11789,7 +11789,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[119]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Ask for the first page on IS Academia. To see it, just type it on your browser address bar : http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.filter?ww_i_reportModel=133685247</span>
@@ -11804,7 +11804,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[120]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">htmlContent</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
@@ -12118,7 +12118,7 @@ div#notebook {
   &lt;/div&gt;
  &lt;/body&gt;
 &lt;/html&gt;
-&lt;!-- OpenXml:0.01s  agent ctrl:0.00s  xml:0.56s  xsl clob before parse:0.01s  xsl extr&amp;stylesheet:0.00s  xsl clob before parse:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.00s  transform 2:0.05s  xsl process:0.00s  --&gt;
+&lt;!-- OpenXml:0.01s  agent ctrl:0.00s  xml:0.49s  xsl clob before parse:0.00s  xsl extr&amp;stylesheet:0.00s  xsl clob before parse:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.00s  transform 2:0.04s  xsl process:0.01s  --&gt;
 
 </pre>
 </div>
@@ -12140,7 +12140,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[121]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We first get the &quot;Computer science&quot; value</span>
@@ -12156,7 +12156,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[121]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -12171,7 +12171,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[122]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">computerScienceValue</span> <span class="o">=</span> <span class="n">computerScienceField</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
@@ -12186,7 +12186,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[13]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[122]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -12201,7 +12201,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[101]:</div>
+<div class="prompt input_prompt">In&nbsp;[123]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Then, we&#39;re going to need all the academic years values.</span>
@@ -12228,12 +12228,16 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[104]:</div>
+<div class="prompt input_prompt">In&nbsp;[181]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Now, we have all the academic years that might interest us</span>
-<span class="n">academicYear_Series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">academicYearContent</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">academicYearValues</span><span class="p">)</span>
-<span class="n">academicYear_Series</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Now, we have all the academic years that might interest us. We wrangle them a little bit so be able to make request more easily later.</span>
+<span class="n">academicYearValues_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">academicYearValues</span><span class="p">)</span>
+<span class="n">academicYearContent_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">academicYearContent</span><span class="p">)</span>
+<span class="n">academicYear_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">academicYearContent_series</span><span class="p">,</span> <span class="n">academicYearValues_series</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">academicYear_df</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Academic_year&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span>
+<span class="n">academicYear_df</span> <span class="o">=</span> <span class="n">academicYear_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;Academic_year&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">academicYear_df</span>
 </pre></div>
 
 </div>
@@ -12244,21 +12248,72 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[104]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[181]:</div>
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre>355925344    2016-2017
-213638028    2015-2016
-213637922    2014-2015
-213637754    2013-2014
-123456101    2012-2013
-123455150    2011-2012
-39486325     2010-2011
-978195       2009-2010
-978187       2008-2009
-978181       2007-2008
-dtype: object</pre>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Academic_year</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>9</th>
+      <td>2007-2008</td>
+      <td>978181</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2008-2009</td>
+      <td>978187</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2009-2010</td>
+      <td>978195</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2010-2011</td>
+      <td>39486325</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2011-2012</td>
+      <td>123455150</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2012-2013</td>
+      <td>123456101</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2013-2014</td>
+      <td>213637754</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2014-2015</td>
+      <td>213637922</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2015-2016</td>
+      <td>213638028</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>2016-2017</td>
+      <td>355925344</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 </div>
 
 </div>
@@ -12269,7 +12324,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[90]:</div>
+<div class="prompt input_prompt">In&nbsp;[125]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Then, let&#39;s get all the pedagogic periods we need. It&#39;s a little bit more complicated here because we need to link the pedagogic period with a season (eg : Bachelor 1 is autumn, Bachelor 2 is spring etc.)</span>
@@ -12296,12 +12351,15 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[91]:</div>
+<div class="prompt input_prompt">In&nbsp;[179]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Let&#39;s make the values and content meet each other</span>
-<span class="n">pedagogicPeriod_Series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pedagogicPeriodContent</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">pedagogicPeriodValues</span><span class="p">)</span>
-<span class="n">pedagogicPeriod_Series</span>
+<span class="n">pedagogicPeriodContent_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pedagogicPeriodContent</span><span class="p">)</span>
+<span class="n">pedagogicPeriodValues_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pedagogicPeriodValues</span><span class="p">)</span>
+<span class="n">pedagogicPeriod_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pedagogicPeriodContent_series</span><span class="p">,</span> <span class="n">pedagogicPeriodValues_series</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">);</span>
+<span class="n">pedagogicPeriod_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Pedagogic_period&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span>
+<span class="n">pedagogicPeriod_df</span>
 </pre></div>
 
 </div>
@@ -12312,35 +12370,142 @@ dtype: object</pre>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[91]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[179]:</div>
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre>249108               Bachelor semestre 1
-249114               Bachelor semestre 2
-942155               Bachelor semestre 3
-942163               Bachelor semestre 4
-942120               Bachelor semestre 5
-2226768             Bachelor semestre 5b
-942175               Bachelor semestre 6
-2226785             Bachelor semestre 6b
-2230106                Master semestre 1
-942192                 Master semestre 2
-2230128                Master semestre 3
-2230140                Master semestre 4
-2335667                Mineur semestre 1
-2335676                Mineur semestre 2
-2063602308                 Mise à niveau
-249127             Projet Master automne
-3781783          Projet Master printemps
-953159                  Semestre automne
-2754553               Semestre printemps
-953137          Stage automne 3ème année
-2226616         Stage automne 4ème année
-983606        Stage printemps 3ème année
-2226626       Stage printemps 4ème année
-2227132           Stage printemps master
-dtype: object</pre>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Pedagogic_period</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Bachelor semestre 1</td>
+      <td>249108</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Bachelor semestre 2</td>
+      <td>249114</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Bachelor semestre 3</td>
+      <td>942155</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Bachelor semestre 4</td>
+      <td>942163</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Bachelor semestre 5</td>
+      <td>942120</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Bachelor semestre 5b</td>
+      <td>2226768</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Bachelor semestre 6</td>
+      <td>942175</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Bachelor semestre 6b</td>
+      <td>2226785</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Master semestre 1</td>
+      <td>2230106</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Master semestre 2</td>
+      <td>942192</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Master semestre 3</td>
+      <td>2230128</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Master semestre 4</td>
+      <td>2230140</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Mineur semestre 1</td>
+      <td>2335667</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Mineur semestre 2</td>
+      <td>2335676</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Mise à niveau</td>
+      <td>2063602308</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Projet Master automne</td>
+      <td>249127</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Projet Master printemps</td>
+      <td>3781783</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Semestre automne</td>
+      <td>953159</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Semestre printemps</td>
+      <td>2754553</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Stage automne 3ème année</td>
+      <td>953137</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Stage automne 4ème année</td>
+      <td>2226616</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Stage printemps 3ème année</td>
+      <td>983606</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Stage printemps 4ème année</td>
+      <td>2226626</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Stage printemps master</td>
+      <td>2227132</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 </div>
 
 </div>
@@ -12351,12 +12516,12 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[96]:</div>
+<div class="prompt input_prompt">In&nbsp;[189]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We keep all semesters related to master students</span>
-<span class="n">masterPedagogicPeriod_Series</span> <span class="o">=</span> <span class="n">pedagogicPeriod_Series</span><span class="p">[[</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Master&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Projet Master&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Mineur&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">pedagogicPeriod_Series</span><span class="p">]]</span>
-<span class="n">masterPedagogicPeriod_Series</span>
+<span class="n">pedagogicPeriod_df</span> <span class="o">=</span> <span class="n">pedagogicPeriod_df</span><span class="p">[[</span><span class="n">period</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Master&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">period</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Projet Master&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">period</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Mineur&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">pedagogicPeriod_df</span><span class="o">.</span><span class="n">Pedagogic_period</span><span class="p">]]</span>
+<span class="n">pedagogicPeriod_df</span>
 </pre></div>
 
 </div>
@@ -12367,19 +12532,42 @@ dtype: object</pre>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[96]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[189]:</div>
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre>2230106          Master semestre 1
-942192           Master semestre 2
-2230128          Master semestre 3
-2230140          Master semestre 4
-2335667          Mineur semestre 1
-2335676          Mineur semestre 2
-249127       Projet Master automne
-3781783    Projet Master printemps
-dtype: object</pre>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Pedagogic_period</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>8</th>
+      <td>Master semestre 1</td>
+      <td>2230106</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Master semestre 2</td>
+      <td>942192</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Master semestre 3</td>
+      <td>2230128</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Master semestre 4</td>
+      <td>2230140</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 </div>
 
 </div>
@@ -12390,7 +12578,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[106]:</div>
+<div class="prompt input_prompt">In&nbsp;[128]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Lastly, we need to extract the values associated with autumn and spring semesters.</span>
@@ -12416,12 +12604,16 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[108]:</div>
+<div class="prompt input_prompt">In&nbsp;[190]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Here are the values for autumn and spring semester :</span>
-<span class="n">semesterType_Series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">semesterTypeContent</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">semesterTypeValues</span><span class="p">)</span>
-<span class="n">semesterType_Series</span>
+
+<span class="n">semesterTypeValues_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">semesterTypeValues</span><span class="p">)</span>
+<span class="n">semesterTypeContent_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">semesterTypeContent</span><span class="p">)</span>
+<span class="n">semesterType_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">semesterTypeContent_series</span><span class="p">,</span> <span class="n">semesterTypeValues_series</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">semesterType_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Semester_type&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span>
+<span class="n">semesterType_df</span>
 </pre></div>
 
 </div>
@@ -12432,13 +12624,32 @@ dtype: object</pre>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[108]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[190]:</div>
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre>2936286       Semestre d&#39;automne
-2936295    Semestre de printemps
-dtype: object</pre>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Semester_type</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Semestre d'automne</td>
+      <td>2936286</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Semestre de printemps</td>
+      <td>2936295</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 </div>
 
 </div>
@@ -12498,38 +12709,13 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[109]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">academicYear_Series</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
-    <span class="c1"># TO BE CONTINUED</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>2016-2017
-2015-2016
-2014-2015
-2013-2014
-2012-2013
-2011-2012
-2010-2011
-2009-2010
-2008-2009
-2007-2008
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
