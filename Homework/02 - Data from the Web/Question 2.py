@@ -292,6 +292,8 @@ requests_df
 
 # The requests are now ready to be sent to IS Academia. Let's try it out !
 
+# TIME OUT : We stopped right here for our homework. What is below should look like the beginning of a loop that gets students lists from IS Academia. It's not finished at all :(
+
 # In[20]:
 
 # WARNING : NEXT LINE IS COMMENTED FOR DEBGUGGING THE FIRST REQUEST ONLY. UNCOMMENT IT AND INDENT THE CODE CORRECTLY TO MAKE ALL THE REQUESTS
@@ -323,10 +325,13 @@ while th.findNext('').name == 'th':
     th = th.findNext('')
     columns.append(th.text)
     
-columns
+# This array will contain all the students    
+studentsTable = []
 
 
-# In[29]:
+# DON'T RUN THE NEXT CELL OR IT WILL CRASH ! :x
+
+# In[22]:
 
 # Getting the information about the student we're "looping on"
 currentStudent = []
@@ -335,12 +340,26 @@ children = tr.children
 for child in children:
     currentStudent.append(child.text)
     
-currentStudent
+# Add the student to the array    
+studentsTable.append(currentStudent)
+
+
+# In[23]:
+
+a = tr.findNext('tr')
+a
 
 
 # In[ ]:
 
-
+while tr.findNext('tr') is not None:
+    tr = th.findNext('tr')
+    children = tr.children
+    for child in children:
+        currentStudent.append(child.text)
+    studentsTable.append(currentStudent)
+    
+studentsTable
 
 
 # In[ ]:

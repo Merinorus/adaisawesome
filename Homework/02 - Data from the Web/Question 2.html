@@ -12118,7 +12118,7 @@ div#notebook {
   &lt;/div&gt;
  &lt;/body&gt;
 &lt;/html&gt;
-&lt;!-- OpenXml:0.00s  agent ctrl:0.00s  xml:0.31s  xsl clob before parse:0.00s  xsl extr&amp;stylesheet:0.00s  xsl clob before parse:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.00s  transform 2:0.03s  xsl process:0.00s  --&gt;
+&lt;!-- OpenXml:0.00s  agent ctrl:0.00s  xml:0.52s  xsl clob before parse:0.00s  xsl extr&amp;stylesheet:0.00s  xsl clob before parse:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.00s  transform 2:0.05s  xsl process:0.00s  --&gt;
 
 </pre>
 </div>
@@ -13163,6 +13163,16 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>TIME OUT : We stopped right here for our homework. What is below should look like the beginning of a loop that gets students lists from IS Academia. It's not finished at all :(</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[20]:</div>
@@ -13219,43 +13229,28 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
     <span class="n">th</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">findNext</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
     
-<span class="n">columns</span>
+<span class="c1"># This array will contain all the students    </span>
+<span class="n">studentsTable</span> <span class="o">=</span> <span class="p">[]</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[21]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[&#39;Civilité&#39;,
- &#39;Nom Prénom&#39;,
- &#39;Orientation Bachelor&#39;,
- &#39;Orientation Master&#39;,
- &#39;Spécialisation&#39;,
- &#39;Filière opt.&#39;,
- &#39;Mineur&#39;,
- &#39;Statut&#39;,
- &#39;Type Echange&#39;,
- &#39;Ecole Echange&#39;,
- &#39;No Sciper&#39;]</pre>
 </div>
-
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>DON'T RUN THE NEXT CELL OR IT WILL CRASH ! :x</p>
 
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Getting the information about the student we&#39;re &quot;looping on&quot;</span>
@@ -13265,7 +13260,22 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
     <span class="n">currentStudent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
     
-<span class="n">currentStudent</span>
+<span class="c1"># Add the student to the array    </span>
+<span class="n">studentsTable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">currentStudent</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">findNext</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">)</span>
+<span class="n">a</span>
 </pre></div>
 
 </div>
@@ -13276,22 +13286,11 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[29]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[23]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;Monsieur&#39;,
- &#39;Aeberhard\xa0François-Xavier&#39;,
- &#39;&#39;,
- &#39;&#39;,
- &#39;&#39;,
- &#39;&#39;,
- &#39;&#39;,
- &#39;Présent&#39;,
- &#39;&#39;,
- &#39;&#39;,
- &#39;153066&#39;,
- &#39;&#39;]</pre>
+<pre>&lt;tr&gt;&lt;td style=&#34;white-space:nowrap&#34;&gt;Madame&lt;/td&gt;&lt;td style=&#34;white-space:nowrap&#34;&gt;Agarwal Megha&lt;/td&gt;&lt;td style=&#34;white-space:nowrap&#34;&gt;&lt;/td&gt;&lt;td style=&#34;white-space:nowrap&#34;&gt;&lt;/td&gt;&lt;td style=&#34;white-space:nowrap&#34;&gt;&lt;/td&gt;&lt;td style=&#34;white-space:nowrap&#34;&gt;&lt;/td&gt;&lt;td style=&#34;white-space:nowrap&#34;&gt;&lt;/td&gt;&lt;td style=&#34;white-space:nowrap&#34;&gt;Présent&lt;/td&gt;&lt;td style=&#34;white-space:nowrap&#34;&gt;&lt;/td&gt;&lt;td style=&#34;white-space:nowrap&#34;&gt;&lt;/td&gt;&lt;td&gt;180027&lt;/td&gt;&lt;td style=&#34;white-space:nowrap&#34;&gt;&lt;/td&gt;&lt;/tr&gt;</pre>
 </div>
 
 </div>
@@ -13305,7 +13304,14 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">while</span> <span class="n">tr</span><span class="o">.</span><span class="n">findNext</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">tr</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">findNext</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">)</span>
+    <span class="n">children</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">children</span>
+    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+        <span class="n">currentStudent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">studentsTable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">currentStudent</span><span class="p">)</span>
+    
+<span class="n">studentsTable</span>
 </pre></div>
 
 </div>
