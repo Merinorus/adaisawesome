@@ -3,35 +3,36 @@
 
 # Obtain all the data for the Bachelor students, starting from 2007. Keep only the students for which you have an entry for both Bachelor semestre 1 and Bachelor semestre 6. Compute how many months it took each student to go from the first to the sixth semester. Partition the data between male and female students, and compute the average -- is the difference in average statistically significant?
 
-# In[25]:
+# In[45]:
 
 import pandas as pd
 import requests
 import re
 from bs4 import BeautifulSoup
+import urllib
 
 
-# In[26]:
+# In[46]:
 
 r = requests.get('http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.filter?ww_i_reportModel=133685247')
 htmlContent = BeautifulSoup(r.content, 'html.parser')
 print(htmlContent.prettify())
 
 
-# In[30]:
+# In[47]:
 
 # We first get the "Computer science" value
 computerScienceField = htmlContent.find('option', text='Informatique')
 computerScienceField
 
 
-# In[31]:
+# In[48]:
 
 computerScienceValue = computerScienceField.get('value')
 computerScienceValue
 
 
-# In[32]:
+# In[49]:
 
 # Then, we're going to need all the academic years values.
 academicYearsField = htmlContent.find('select', attrs={'name':'ww_x_PERIODE_ACAD'})
@@ -57,7 +58,7 @@ academicYear_Series = pd.Series(academicYearContent, index=academicYearValues)
 academicYear_Series
 
 
-# In[35]:
+# In[50]:
 
 # Then, let's get all the pedagogic periods we need. It's a little bit more complicated here because we need to link the pedagogic period with a season (eg : Bachelor 1 is autumn, Bachelor 2 is spring etc.)
 # Thus, we need more than the pedagogic values. For doing some tests to associate them with the right season, we need the actual textual value ("Bachelor semestre 1", "Bachelor semestre 2" etc.)
@@ -76,21 +77,21 @@ for option in pedagogicPeriodsSet:
         pedagogicPeriodContent.append(option.text)
 
 
-# In[36]:
+# In[51]:
 
 # Let's make the values and content meet each other
 pedagogicPeriod_Series = pd.Series(pedagogicPeriodContent, index=pedagogicPeriodValues)
 pedagogicPeriod_Series
 
 
-# In[38]:
+# In[52]:
 
 # We keep all semesters related to Bachelor students
 bachelorPedagogicPeriod_Series = pedagogicPeriod_Series[[name.startswith('Bachelor') for name in pedagogicPeriod_Series]]
 bachelorPedagogicPeriod_Series
 
 
-# In[39]:
+# In[53]:
 
 # Lastly, we need to extract the values associated with autumn and spring semesters.
 semesterTypeField = htmlContent.find('select', attrs={'name':'ww_x_HIVERETE'})
@@ -108,17 +109,19 @@ for option in semesterTypeSet:
         semesterTypeContent.append(option.text)
 
 
-# In[40]:
+# In[54]:
 
 # Here are the values for autumn and spring semester :
 semesterType_Series = pd.Series(semesterTypeContent, index=semesterTypeValues)
 semesterType_Series
 
 
-# In[42]:
+# In[56]:
 
-# Choosing between html and xls
-formatField = htmlContent.find('select', attrs={'name':'ww_i_reportModelXsl'})
+cases = {}
+for element in semesterTypeValues:
+    cases[element.a.get_text()] = {}
+cases[0].a['href']
 
 
 # In[ ]:
