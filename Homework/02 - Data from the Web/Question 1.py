@@ -204,6 +204,14 @@ htmlContentData1 = BeautifulSoup(data1.content, 'html.parser')
 print(htmlContentData1.prettify())
 
 
+# In[104]:
+
+# Create an empty dataframe with the relevant columns
+df1 = pd.DataFrame({'Civilité': [], 'Nom Prénom':[], 'Status':[], 'No Sciper':[]})
+df1['Civilité';1] = htmlContentData1.find('select', attrs={'name':'Civilité'})
+df1
+
+
 # In[ ]:
 
 
