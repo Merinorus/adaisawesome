@@ -11758,10 +11758,1012 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Requests : make http requests to websites</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="c1"># BeautifulSoup : parser to manipulate easily html content</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
+<span class="c1"># Regular expressions</span>
+<span class="kn">import</span> <span class="nn">re</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Ask for the first page on IS Academia. To see it, just type it on your browser address bar : http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.filter?ww_i_reportModel=133685247</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.filter?ww_i_reportModel=133685247&#39;</span><span class="p">)</span>
+<span class="n">htmlContent</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">htmlContent</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;html&gt;
+ &lt;head&gt;
+  &lt;meta content=&#34;text/html; charset=utf-8&#34; http-equiv=&#34;Content-Type&#34;&gt;
+   &lt;div&gt;
+   &lt;/div&gt;
+   &lt;title&gt;
+   &lt;/title&gt;
+   &lt;script src=&#34;GEDPUBLICREPORTS.txt?ww_x_path=Gestac.Base.Palette_js&amp;amp;ww_c_langue=fr&#34; type=&#34;text/javascript&#34;&gt;
+   &lt;/script&gt;
+   &lt;link href=&#34;GEDPUBLICREPORTS.css?ww_x_path=Gestac.Moniteur.Style&#34; rel=&#34;stylesheet&#34; type=&#34;text/css&#34;&gt;
+    &lt;link href=&#34;GEDPUBLICREPORTS.css?ww_x_path=Gestac.Moniteur.StyleNavigator&#34; rel=&#34;stylesheet&#34; type=&#34;text/css&#34;/&gt;
+   &lt;/link&gt;
+  &lt;/meta&gt;
+ &lt;/head&gt;
+ &lt;body alink=&#34;#666666&#34; bgcolor=&#34;#ffffff&#34; link=&#34;#666666&#34; marginheight=&#34;0&#34; marginwidth=&#34;5&#34; vlink=&#34;#666666&#34;&gt;
+  &lt;div class=&#34;filtres&#34;&gt;
+   &lt;form action=&#34;!GEDPUBLICREPORTS.filter&#34; method=&#34;GET&#34; name=&#34;f&#34;&gt;
+    &lt;input name=&#34;ww_b_list&#34; type=&#34;hidden&#34; value=&#34;1&#34;&gt;
+     &lt;input name=&#34;ww_i_reportmodel&#34; type=&#34;hidden&#34; value=&#34;133685247&#34;&gt;
+      &lt;input name=&#34;ww_c_langue&#34; type=&#34;hidden&#34; value=&#34;&#34;&gt;
+       &lt;h1 id=&#34;titre&#34;&gt;
+        Liste des étudiants inscrits par semestre
+       &lt;/h1&gt;
+       &lt;table border=&#34;0&#34; id=&#34;format&#34;&gt;
+        &lt;tr&gt;
+         &lt;th&gt;
+          Format:
+         &lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+         &lt;td&gt;
+          &lt;input checked=&#34;&#34; name=&#34;ww_i_reportModelXsl&#34; type=&#34;radio&#34; value=&#34;133685270&#34;&gt;
+           html
+          &lt;/input&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+         &lt;td&gt;
+          &lt;input name=&#34;ww_i_reportModelXsl&#34; type=&#34;radio&#34; value=&#34;133685271&#34;&gt;
+           xls
+          &lt;/input&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+       &lt;/table&gt;
+       &lt;h1&gt;
+       &lt;/h1&gt;
+       &lt;table border=&#34;0&#34; id=&#34;filtre&#34;&gt;
+        &lt;tr&gt;
+         &lt;th&gt;
+          Unité académique
+         &lt;/th&gt;
+         &lt;td&gt;
+          &lt;input name=&#34;zz_x_UNITE_ACAD&#34; type=&#34;hidden&#34; value=&#34;&#34;&gt;
+           &lt;select name=&#34;ww_x_UNITE_ACAD&#34; onchange=&#34;document.f.zz_x_UNITE_ACAD.value=document.f.ww_x_UNITE_ACAD.options[document.f.ww_x_UNITE_ACAD.selectedIndex].text&#34;&gt;
+            &lt;option value=&#34;null&#34;&gt;
+            &lt;/option&gt;
+            &lt;option value=&#34;942293&#34;&gt;
+             Architecture
+            &lt;/option&gt;
+            &lt;option value=&#34;246696&#34;&gt;
+             Chimie et génie chimique
+            &lt;/option&gt;
+            &lt;option value=&#34;943282&#34;&gt;
+             Cours de mathématiques spéciales
+            &lt;/option&gt;
+            &lt;option value=&#34;637841336&#34;&gt;
+             EME (EPFL Middle East)
+            &lt;/option&gt;
+            &lt;option value=&#34;942623&#34;&gt;
+             Génie civil
+            &lt;/option&gt;
+            &lt;option value=&#34;944263&#34;&gt;
+             Génie mécanique
+            &lt;/option&gt;
+            &lt;option value=&#34;943936&#34;&gt;
+             Génie électrique et électronique
+            &lt;/option&gt;
+            &lt;option value=&#34;2054839157&#34;&gt;
+             Humanités digitales
+            &lt;/option&gt;
+            &lt;option value=&#34;249847&#34;&gt;
+             Informatique
+            &lt;/option&gt;
+            &lt;option value=&#34;120623110&#34;&gt;
+             Ingénierie financière
+            &lt;/option&gt;
+            &lt;option value=&#34;946882&#34;&gt;
+             Management de la technologie
+            &lt;/option&gt;
+            &lt;option value=&#34;944590&#34;&gt;
+             Mathématiques
+            &lt;/option&gt;
+            &lt;option value=&#34;945244&#34;&gt;
+             Microtechnique
+            &lt;/option&gt;
+            &lt;option value=&#34;945571&#34;&gt;
+             Physique
+            &lt;/option&gt;
+            &lt;option value=&#34;944917&#34;&gt;
+             Science et génie des matériaux
+            &lt;/option&gt;
+            &lt;option value=&#34;942953&#34;&gt;
+             Sciences et ingénierie de l&#39;environnement
+            &lt;/option&gt;
+            &lt;option value=&#34;945901&#34;&gt;
+             Sciences et technologies du vivant
+            &lt;/option&gt;
+            &lt;option value=&#34;1574548993&#34;&gt;
+             Section FCUE
+            &lt;/option&gt;
+            &lt;option value=&#34;946228&#34;&gt;
+             Systèmes de communication
+            &lt;/option&gt;
+           &lt;/select&gt;
+          &lt;/input&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+         &lt;th&gt;
+          Période académique
+         &lt;/th&gt;
+         &lt;td&gt;
+          &lt;input name=&#34;zz_x_PERIODE_ACAD&#34; type=&#34;hidden&#34; value=&#34;&#34;&gt;
+           &lt;select name=&#34;ww_x_PERIODE_ACAD&#34; onchange=&#34;document.f.zz_x_PERIODE_ACAD.value=document.f.ww_x_PERIODE_ACAD.options[document.f.ww_x_PERIODE_ACAD.selectedIndex].text&#34;&gt;
+            &lt;option value=&#34;null&#34;&gt;
+            &lt;/option&gt;
+            &lt;option value=&#34;355925344&#34;&gt;
+             2016-2017
+            &lt;/option&gt;
+            &lt;option value=&#34;213638028&#34;&gt;
+             2015-2016
+            &lt;/option&gt;
+            &lt;option value=&#34;213637922&#34;&gt;
+             2014-2015
+            &lt;/option&gt;
+            &lt;option value=&#34;213637754&#34;&gt;
+             2013-2014
+            &lt;/option&gt;
+            &lt;option value=&#34;123456101&#34;&gt;
+             2012-2013
+            &lt;/option&gt;
+            &lt;option value=&#34;123455150&#34;&gt;
+             2011-2012
+            &lt;/option&gt;
+            &lt;option value=&#34;39486325&#34;&gt;
+             2010-2011
+            &lt;/option&gt;
+            &lt;option value=&#34;978195&#34;&gt;
+             2009-2010
+            &lt;/option&gt;
+            &lt;option value=&#34;978187&#34;&gt;
+             2008-2009
+            &lt;/option&gt;
+            &lt;option value=&#34;978181&#34;&gt;
+             2007-2008
+            &lt;/option&gt;
+           &lt;/select&gt;
+          &lt;/input&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+         &lt;th&gt;
+          Période pédagogique
+         &lt;/th&gt;
+         &lt;td&gt;
+          &lt;input name=&#34;zz_x_PERIODE_PEDAGO&#34; type=&#34;hidden&#34; value=&#34;&#34;&gt;
+           &lt;select name=&#34;ww_x_PERIODE_PEDAGO&#34; onchange=&#34;document.f.zz_x_PERIODE_PEDAGO.value=document.f.ww_x_PERIODE_PEDAGO.options[document.f.ww_x_PERIODE_PEDAGO.selectedIndex].text&#34;&gt;
+            &lt;option value=&#34;null&#34;&gt;
+            &lt;/option&gt;
+            &lt;option value=&#34;249108&#34;&gt;
+             Bachelor semestre 1
+            &lt;/option&gt;
+            &lt;option value=&#34;249114&#34;&gt;
+             Bachelor semestre 2
+            &lt;/option&gt;
+            &lt;option value=&#34;942155&#34;&gt;
+             Bachelor semestre 3
+            &lt;/option&gt;
+            &lt;option value=&#34;942163&#34;&gt;
+             Bachelor semestre 4
+            &lt;/option&gt;
+            &lt;option value=&#34;942120&#34;&gt;
+             Bachelor semestre 5
+            &lt;/option&gt;
+            &lt;option value=&#34;2226768&#34;&gt;
+             Bachelor semestre 5b
+            &lt;/option&gt;
+            &lt;option value=&#34;942175&#34;&gt;
+             Bachelor semestre 6
+            &lt;/option&gt;
+            &lt;option value=&#34;2226785&#34;&gt;
+             Bachelor semestre 6b
+            &lt;/option&gt;
+            &lt;option value=&#34;2230106&#34;&gt;
+             Master semestre 1
+            &lt;/option&gt;
+            &lt;option value=&#34;942192&#34;&gt;
+             Master semestre 2
+            &lt;/option&gt;
+            &lt;option value=&#34;2230128&#34;&gt;
+             Master semestre 3
+            &lt;/option&gt;
+            &lt;option value=&#34;2230140&#34;&gt;
+             Master semestre 4
+            &lt;/option&gt;
+            &lt;option value=&#34;2335667&#34;&gt;
+             Mineur semestre 1
+            &lt;/option&gt;
+            &lt;option value=&#34;2335676&#34;&gt;
+             Mineur semestre 2
+            &lt;/option&gt;
+            &lt;option value=&#34;2063602308&#34;&gt;
+             Mise à niveau
+            &lt;/option&gt;
+            &lt;option value=&#34;249127&#34;&gt;
+             Projet Master automne
+            &lt;/option&gt;
+            &lt;option value=&#34;3781783&#34;&gt;
+             Projet Master printemps
+            &lt;/option&gt;
+            &lt;option value=&#34;953159&#34;&gt;
+             Semestre automne
+            &lt;/option&gt;
+            &lt;option value=&#34;2754553&#34;&gt;
+             Semestre printemps
+            &lt;/option&gt;
+            &lt;option value=&#34;953137&#34;&gt;
+             Stage automne 3ème année
+            &lt;/option&gt;
+            &lt;option value=&#34;2226616&#34;&gt;
+             Stage automne 4ème année
+            &lt;/option&gt;
+            &lt;option value=&#34;983606&#34;&gt;
+             Stage printemps 3ème année
+            &lt;/option&gt;
+            &lt;option value=&#34;2226626&#34;&gt;
+             Stage printemps 4ème année
+            &lt;/option&gt;
+            &lt;option value=&#34;2227132&#34;&gt;
+             Stage printemps master
+            &lt;/option&gt;
+           &lt;/select&gt;
+          &lt;/input&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+         &lt;th&gt;
+          Type de semestre
+         &lt;/th&gt;
+         &lt;td&gt;
+          &lt;input name=&#34;zz_x_HIVERETE&#34; type=&#34;hidden&#34; value=&#34;&#34;&gt;
+           &lt;select name=&#34;ww_x_HIVERETE&#34; onchange=&#34;document.f.zz_x_HIVERETE.value=document.f.ww_x_HIVERETE.options[document.f.ww_x_HIVERETE.selectedIndex].text&#34;&gt;
+            &lt;option value=&#34;null&#34;&gt;
+            &lt;/option&gt;
+            &lt;option value=&#34;2936286&#34;&gt;
+             Semestre d&#39;automne
+            &lt;/option&gt;
+            &lt;option value=&#34;2936295&#34;&gt;
+             Semestre de printemps
+            &lt;/option&gt;
+           &lt;/select&gt;
+          &lt;/input&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+       &lt;/table&gt;
+       &lt;input name=&#34;dummy&#34; type=&#34;submit&#34; value=&#34;ok&#34;/&gt;
+      &lt;/input&gt;
+     &lt;/input&gt;
+    &lt;/input&gt;
+   &lt;/form&gt;
+   &lt;script type=&#34;text/javascript&#34;&gt;
+    function loadReport(x) {
+    var querysup=&#39;&#39;;
+    writeRunning(top.principal);
+    for (i=0; document.f.elements.length &gt; i; i++){
+     if (document.f.elements[i].checked){
+      querysup=querysup+&#39;&amp;&#39;+document.f.elements[i].name+&#39;=&#39;+document.f.elements[i].value;
+     }
+     if (document.f.elements[i].type==&#39;select-one&#39;) {
+      querysup=querysup+&#39;&amp;&#39;+document.f.elements[i].name+&#39;=&#39;+document.f.elements[i].options[document.f.elements[i].selectedIndex].value;
+     }
+     if (document.f.elements[i].type==&#39;text&#39;){
+      querysup=querysup+&#39;&amp;&#39;+document.f.elements[i].name+&#39;=&#39;+document.f.elements[i].value;
+     }
+    }
+    parent.principal.location = &#34;!GEDPUBLICREPORTS.bhtml?&#34;+x+&#34;&amp;ww_i_reportModel=133685247&#34;+querysup;
+    if (navigator.userAgent.toUpperCase().indexOf(&#39;SAFARI&#39;) != -1) {
+     document.location.reload();
+    }
+   }
+   &lt;/script&gt;
+   &lt;h1&gt;
+   &lt;/h1&gt;
+   &lt;table border=&#34;0&#34;&gt;
+   &lt;/table&gt;
+  &lt;/div&gt;
+ &lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- OpenXml:0.00s  agent ctrl:0.01s  xml:0.49s  xsl clob before parse:0.01s  xsl extr&amp;stylesheet:0.00s  xsl clob before parse:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.00s  transform 2:0.06s  xsl process:0.00s  --&gt;
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We first get the &quot;Computer science&quot; value</span>
+<span class="n">computerScienceField</span> <span class="o">=</span> <span class="n">htmlContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Informatique&#39;</span><span class="p">)</span>
+<span class="n">computerScienceField</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;option value=&#34;249847&#34;&gt;Informatique&lt;/option&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">computerScienceValue</span> <span class="o">=</span> <span class="n">computerScienceField</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+<span class="n">computerScienceValue</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;249847&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Then, we&#39;re going to need all the academic years values.</span>
+<span class="n">academicYearsField</span> <span class="o">=</span> <span class="n">htmlContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;ww_x_PERIODE_ACAD&#39;</span><span class="p">})</span>
+<span class="c1">#academicYearsField = academicYearsField.find(&#39;option&#39;, text=&#39;20&#39;)</span>
+<span class="c1">#academicYearsField = academicYearsField.select(&quot;select &gt; option&quot;)</span>
+<span class="n">academicYearsSet</span> <span class="o">=</span> <span class="n">academicYearsField</span><span class="o">.</span><span class="n">findAll</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">)</span>
+<span class="n">academicYearsSet</span>
+<span class="c1">#print(academicYearsField.prettify())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&lt;option value=&#34;null&#34;&gt;&lt;/option&gt;,
+ &lt;option value=&#34;355925344&#34;&gt;2016-2017&lt;/option&gt;,
+ &lt;option value=&#34;213638028&#34;&gt;2015-2016&lt;/option&gt;,
+ &lt;option value=&#34;213637922&#34;&gt;2014-2015&lt;/option&gt;,
+ &lt;option value=&#34;213637754&#34;&gt;2013-2014&lt;/option&gt;,
+ &lt;option value=&#34;123456101&#34;&gt;2012-2013&lt;/option&gt;,
+ &lt;option value=&#34;123455150&#34;&gt;2011-2012&lt;/option&gt;,
+ &lt;option value=&#34;39486325&#34;&gt;2010-2011&lt;/option&gt;,
+ &lt;option value=&#34;978195&#34;&gt;2009-2010&lt;/option&gt;,
+ &lt;option value=&#34;978187&#34;&gt;2008-2009&lt;/option&gt;,
+ &lt;option value=&#34;978181&#34;&gt;2007-2008&lt;/option&gt;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">academicYearsSet</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">option</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;option value=&#34;null&#34;&gt;&lt;/option&gt;
+&lt;option value=&#34;355925344&#34;&gt;2016-2017&lt;/option&gt;
+&lt;option value=&#34;213638028&#34;&gt;2015-2016&lt;/option&gt;
+&lt;option value=&#34;213637922&#34;&gt;2014-2015&lt;/option&gt;
+&lt;option value=&#34;213637754&#34;&gt;2013-2014&lt;/option&gt;
+&lt;option value=&#34;123456101&#34;&gt;2012-2013&lt;/option&gt;
+&lt;option value=&#34;123455150&#34;&gt;2011-2012&lt;/option&gt;
+&lt;option value=&#34;39486325&#34;&gt;2010-2011&lt;/option&gt;
+&lt;option value=&#34;978195&#34;&gt;2009-2010&lt;/option&gt;
+&lt;option value=&#34;978187&#34;&gt;2008-2009&lt;/option&gt;
+&lt;option value=&#34;978181&#34;&gt;2007-2008&lt;/option&gt;
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">academicYearsValues</span> <span class="o">=</span> <span class="n">academicYearsField</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+<span class="n">academicYearsValues</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">academicYearsValues</span> <span class="o">=</span> <span class="n">academicYearsField</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">)</span>
+<span class="n">academicYearsValues</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[9]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;option value=&#34;null&#34;&gt;&lt;/option&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">htmlContent</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;html&gt;
+ &lt;head&gt;
+  &lt;meta content=&#34;text/html; charset=utf-8&#34; http-equiv=&#34;Content-Type&#34;&gt;
+   &lt;div&gt;
+   &lt;/div&gt;
+   &lt;title&gt;
+   &lt;/title&gt;
+   &lt;script src=&#34;GEDPUBLICREPORTS.txt?ww_x_path=Gestac.Base.Palette_js&amp;amp;ww_c_langue=fr&#34; type=&#34;text/javascript&#34;&gt;
+   &lt;/script&gt;
+   &lt;link href=&#34;GEDPUBLICREPORTS.css?ww_x_path=Gestac.Moniteur.Style&#34; rel=&#34;stylesheet&#34; type=&#34;text/css&#34;&gt;
+    &lt;link href=&#34;GEDPUBLICREPORTS.css?ww_x_path=Gestac.Moniteur.StyleNavigator&#34; rel=&#34;stylesheet&#34; type=&#34;text/css&#34;/&gt;
+   &lt;/link&gt;
+  &lt;/meta&gt;
+ &lt;/head&gt;
+ &lt;body alink=&#34;#666666&#34; bgcolor=&#34;#ffffff&#34; link=&#34;#666666&#34; marginheight=&#34;0&#34; marginwidth=&#34;5&#34; vlink=&#34;#666666&#34;&gt;
+  &lt;div class=&#34;filtres&#34;&gt;
+   &lt;form action=&#34;!GEDPUBLICREPORTS.filter&#34; method=&#34;GET&#34; name=&#34;f&#34;&gt;
+    &lt;input name=&#34;ww_b_list&#34; type=&#34;hidden&#34; value=&#34;1&#34;&gt;
+     &lt;input name=&#34;ww_i_reportmodel&#34; type=&#34;hidden&#34; value=&#34;133685247&#34;&gt;
+      &lt;input name=&#34;ww_c_langue&#34; type=&#34;hidden&#34; value=&#34;&#34;&gt;
+       &lt;h1 id=&#34;titre&#34;&gt;
+        Liste des étudiants inscrits par semestre
+       &lt;/h1&gt;
+       &lt;table border=&#34;0&#34; id=&#34;format&#34;&gt;
+        &lt;tr&gt;
+         &lt;th&gt;
+          Format:
+         &lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+         &lt;td&gt;
+          &lt;input checked=&#34;&#34; name=&#34;ww_i_reportModelXsl&#34; type=&#34;radio&#34; value=&#34;133685270&#34;&gt;
+           html
+          &lt;/input&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+         &lt;td&gt;
+          &lt;input name=&#34;ww_i_reportModelXsl&#34; type=&#34;radio&#34; value=&#34;133685271&#34;&gt;
+           xls
+          &lt;/input&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+       &lt;/table&gt;
+       &lt;h1&gt;
+       &lt;/h1&gt;
+       &lt;table border=&#34;0&#34; id=&#34;filtre&#34;&gt;
+        &lt;tr&gt;
+         &lt;th&gt;
+          Unité académique
+         &lt;/th&gt;
+         &lt;td&gt;
+          &lt;input name=&#34;zz_x_UNITE_ACAD&#34; type=&#34;hidden&#34; value=&#34;&#34;&gt;
+           &lt;select name=&#34;ww_x_UNITE_ACAD&#34; onchange=&#34;document.f.zz_x_UNITE_ACAD.value=document.f.ww_x_UNITE_ACAD.options[document.f.ww_x_UNITE_ACAD.selectedIndex].text&#34;&gt;
+            &lt;option value=&#34;null&#34;&gt;
+            &lt;/option&gt;
+            &lt;option value=&#34;942293&#34;&gt;
+             Architecture
+            &lt;/option&gt;
+            &lt;option value=&#34;246696&#34;&gt;
+             Chimie et génie chimique
+            &lt;/option&gt;
+            &lt;option value=&#34;943282&#34;&gt;
+             Cours de mathématiques spéciales
+            &lt;/option&gt;
+            &lt;option value=&#34;637841336&#34;&gt;
+             EME (EPFL Middle East)
+            &lt;/option&gt;
+            &lt;option value=&#34;942623&#34;&gt;
+             Génie civil
+            &lt;/option&gt;
+            &lt;option value=&#34;944263&#34;&gt;
+             Génie mécanique
+            &lt;/option&gt;
+            &lt;option value=&#34;943936&#34;&gt;
+             Génie électrique et électronique
+            &lt;/option&gt;
+            &lt;option value=&#34;2054839157&#34;&gt;
+             Humanités digitales
+            &lt;/option&gt;
+            &lt;option value=&#34;249847&#34;&gt;
+             Informatique
+            &lt;/option&gt;
+            &lt;option value=&#34;120623110&#34;&gt;
+             Ingénierie financière
+            &lt;/option&gt;
+            &lt;option value=&#34;946882&#34;&gt;
+             Management de la technologie
+            &lt;/option&gt;
+            &lt;option value=&#34;944590&#34;&gt;
+             Mathématiques
+            &lt;/option&gt;
+            &lt;option value=&#34;945244&#34;&gt;
+             Microtechnique
+            &lt;/option&gt;
+            &lt;option value=&#34;945571&#34;&gt;
+             Physique
+            &lt;/option&gt;
+            &lt;option value=&#34;944917&#34;&gt;
+             Science et génie des matériaux
+            &lt;/option&gt;
+            &lt;option value=&#34;942953&#34;&gt;
+             Sciences et ingénierie de l&#39;environnement
+            &lt;/option&gt;
+            &lt;option value=&#34;945901&#34;&gt;
+             Sciences et technologies du vivant
+            &lt;/option&gt;
+            &lt;option value=&#34;1574548993&#34;&gt;
+             Section FCUE
+            &lt;/option&gt;
+            &lt;option value=&#34;946228&#34;&gt;
+             Systèmes de communication
+            &lt;/option&gt;
+           &lt;/select&gt;
+          &lt;/input&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+         &lt;th&gt;
+          Période académique
+         &lt;/th&gt;
+         &lt;td&gt;
+          &lt;input name=&#34;zz_x_PERIODE_ACAD&#34; type=&#34;hidden&#34; value=&#34;&#34;&gt;
+           &lt;select name=&#34;ww_x_PERIODE_ACAD&#34; onchange=&#34;document.f.zz_x_PERIODE_ACAD.value=document.f.ww_x_PERIODE_ACAD.options[document.f.ww_x_PERIODE_ACAD.selectedIndex].text&#34;&gt;
+            &lt;option value=&#34;null&#34;&gt;
+            &lt;/option&gt;
+            &lt;option value=&#34;355925344&#34;&gt;
+             2016-2017
+            &lt;/option&gt;
+            &lt;option value=&#34;213638028&#34;&gt;
+             2015-2016
+            &lt;/option&gt;
+            &lt;option value=&#34;213637922&#34;&gt;
+             2014-2015
+            &lt;/option&gt;
+            &lt;option value=&#34;213637754&#34;&gt;
+             2013-2014
+            &lt;/option&gt;
+            &lt;option value=&#34;123456101&#34;&gt;
+             2012-2013
+            &lt;/option&gt;
+            &lt;option value=&#34;123455150&#34;&gt;
+             2011-2012
+            &lt;/option&gt;
+            &lt;option value=&#34;39486325&#34;&gt;
+             2010-2011
+            &lt;/option&gt;
+            &lt;option value=&#34;978195&#34;&gt;
+             2009-2010
+            &lt;/option&gt;
+            &lt;option value=&#34;978187&#34;&gt;
+             2008-2009
+            &lt;/option&gt;
+            &lt;option value=&#34;978181&#34;&gt;
+             2007-2008
+            &lt;/option&gt;
+           &lt;/select&gt;
+          &lt;/input&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+         &lt;th&gt;
+          Période pédagogique
+         &lt;/th&gt;
+         &lt;td&gt;
+          &lt;input name=&#34;zz_x_PERIODE_PEDAGO&#34; type=&#34;hidden&#34; value=&#34;&#34;&gt;
+           &lt;select name=&#34;ww_x_PERIODE_PEDAGO&#34; onchange=&#34;document.f.zz_x_PERIODE_PEDAGO.value=document.f.ww_x_PERIODE_PEDAGO.options[document.f.ww_x_PERIODE_PEDAGO.selectedIndex].text&#34;&gt;
+            &lt;option value=&#34;null&#34;&gt;
+            &lt;/option&gt;
+            &lt;option value=&#34;249108&#34;&gt;
+             Bachelor semestre 1
+            &lt;/option&gt;
+            &lt;option value=&#34;249114&#34;&gt;
+             Bachelor semestre 2
+            &lt;/option&gt;
+            &lt;option value=&#34;942155&#34;&gt;
+             Bachelor semestre 3
+            &lt;/option&gt;
+            &lt;option value=&#34;942163&#34;&gt;
+             Bachelor semestre 4
+            &lt;/option&gt;
+            &lt;option value=&#34;942120&#34;&gt;
+             Bachelor semestre 5
+            &lt;/option&gt;
+            &lt;option value=&#34;2226768&#34;&gt;
+             Bachelor semestre 5b
+            &lt;/option&gt;
+            &lt;option value=&#34;942175&#34;&gt;
+             Bachelor semestre 6
+            &lt;/option&gt;
+            &lt;option value=&#34;2226785&#34;&gt;
+             Bachelor semestre 6b
+            &lt;/option&gt;
+            &lt;option value=&#34;2230106&#34;&gt;
+             Master semestre 1
+            &lt;/option&gt;
+            &lt;option value=&#34;942192&#34;&gt;
+             Master semestre 2
+            &lt;/option&gt;
+            &lt;option value=&#34;2230128&#34;&gt;
+             Master semestre 3
+            &lt;/option&gt;
+            &lt;option value=&#34;2230140&#34;&gt;
+             Master semestre 4
+            &lt;/option&gt;
+            &lt;option value=&#34;2335667&#34;&gt;
+             Mineur semestre 1
+            &lt;/option&gt;
+            &lt;option value=&#34;2335676&#34;&gt;
+             Mineur semestre 2
+            &lt;/option&gt;
+            &lt;option value=&#34;2063602308&#34;&gt;
+             Mise à niveau
+            &lt;/option&gt;
+            &lt;option value=&#34;249127&#34;&gt;
+             Projet Master automne
+            &lt;/option&gt;
+            &lt;option value=&#34;3781783&#34;&gt;
+             Projet Master printemps
+            &lt;/option&gt;
+            &lt;option value=&#34;953159&#34;&gt;
+             Semestre automne
+            &lt;/option&gt;
+            &lt;option value=&#34;2754553&#34;&gt;
+             Semestre printemps
+            &lt;/option&gt;
+            &lt;option value=&#34;953137&#34;&gt;
+             Stage automne 3ème année
+            &lt;/option&gt;
+            &lt;option value=&#34;2226616&#34;&gt;
+             Stage automne 4ème année
+            &lt;/option&gt;
+            &lt;option value=&#34;983606&#34;&gt;
+             Stage printemps 3ème année
+            &lt;/option&gt;
+            &lt;option value=&#34;2226626&#34;&gt;
+             Stage printemps 4ème année
+            &lt;/option&gt;
+            &lt;option value=&#34;2227132&#34;&gt;
+             Stage printemps master
+            &lt;/option&gt;
+           &lt;/select&gt;
+          &lt;/input&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+         &lt;th&gt;
+          Type de semestre
+         &lt;/th&gt;
+         &lt;td&gt;
+          &lt;input name=&#34;zz_x_HIVERETE&#34; type=&#34;hidden&#34; value=&#34;&#34;&gt;
+           &lt;select name=&#34;ww_x_HIVERETE&#34; onchange=&#34;document.f.zz_x_HIVERETE.value=document.f.ww_x_HIVERETE.options[document.f.ww_x_HIVERETE.selectedIndex].text&#34;&gt;
+            &lt;option value=&#34;null&#34;&gt;
+            &lt;/option&gt;
+            &lt;option value=&#34;2936286&#34;&gt;
+             Semestre d&#39;automne
+            &lt;/option&gt;
+            &lt;option value=&#34;2936295&#34;&gt;
+             Semestre de printemps
+            &lt;/option&gt;
+           &lt;/select&gt;
+          &lt;/input&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+       &lt;/table&gt;
+       &lt;input name=&#34;dummy&#34; type=&#34;submit&#34; value=&#34;ok&#34;/&gt;
+      &lt;/input&gt;
+     &lt;/input&gt;
+    &lt;/input&gt;
+   &lt;/form&gt;
+   &lt;script type=&#34;text/javascript&#34;&gt;
+    function loadReport(x) {
+    var querysup=&#39;&#39;;
+    writeRunning(top.principal);
+    for (i=0; document.f.elements.length &gt; i; i++){
+     if (document.f.elements[i].checked){
+      querysup=querysup+&#39;&amp;&#39;+document.f.elements[i].name+&#39;=&#39;+document.f.elements[i].value;
+     }
+     if (document.f.elements[i].type==&#39;select-one&#39;) {
+      querysup=querysup+&#39;&amp;&#39;+document.f.elements[i].name+&#39;=&#39;+document.f.elements[i].options[document.f.elements[i].selectedIndex].value;
+     }
+     if (document.f.elements[i].type==&#39;text&#39;){
+      querysup=querysup+&#39;&amp;&#39;+document.f.elements[i].name+&#39;=&#39;+document.f.elements[i].value;
+     }
+    }
+    parent.principal.location = &#34;!GEDPUBLICREPORTS.bhtml?&#34;+x+&#34;&amp;ww_i_reportModel=133685247&#34;+querysup;
+    if (navigator.userAgent.toUpperCase().indexOf(&#39;SAFARI&#39;) != -1) {
+     document.location.reload();
+    }
+   }
+   &lt;/script&gt;
+   &lt;h1&gt;
+   &lt;/h1&gt;
+   &lt;table border=&#34;0&#34;&gt;
+   &lt;/table&gt;
+  &lt;/div&gt;
+ &lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- OpenXml:0.00s  agent ctrl:0.01s  xml:0.49s  xsl clob before parse:0.01s  xsl extr&amp;stylesheet:0.00s  xsl clob before parse:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.00s  transform 2:0.06s  xsl process:0.00s  --&gt;
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Statistical Tests</span>
+<span class="c1">#Find Students who completed masters</span>
+<span class="c1">#Assumption: to complete the masters, we consider students with an Entry on Semester 1 and on Masters Project</span>
+<span class="c1">#use if statement to find students who posses both</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Calculate time at EPFL </span>
+<span class="c1">#Formula: time at EPFL (time of Semester 1 - Time of Masters Project)</span>
+<span class="c1">#Add a column of time at EPFL </span>
+<span class="p">[</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataSet</span><span class="o">.</span><span class="n">shape</span><span class="p">;</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">m</span><span class="p">):</span>
+    <span class="n">DataSet</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">ExtraColumn</span><span class="p">]</span><span class="o">=</span><span class="n">DataSet</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">M1</span><span class="p">]</span><span class="o">-</span><span class="n">DataSet</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">MP</span><span class="p">];</span>
+    
+    
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Calculate Overall Average by Gender</span>
+<span class="n">Fem</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">#initialize count for female/male entries</span>
+<span class="n">Male</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">TotFem</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">#initialize sum of total time spent at EPFL</span>
+<span class="n">TotMale</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">m</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">GenderColumn</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Female&#39;</span><span class="p">:</span>
+        <span class="n">Fem</span> <span class="o">=</span> <span class="n">Fem</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">TotFem</span> <span class="o">=</span> <span class="n">TotFem</span> <span class="o">+</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">ExtraColumn</span><span class="p">];</span>
+        <span class="k">elif</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">GenderColumn</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Male&#39;</span>
+        <span class="n">Male</span> <span class="o">=</span> <span class="n">Male</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">TotMale</span> <span class="o">=</span> <span class="n">TotMale</span> <span class="o">+</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">ExtraColumn</span><span class="p">];</span>
+    
+<span class="n">MaleAvg</span> <span class="o">=</span> <span class="n">TotMale</span><span class="o">/</span><span class="n">Male</span><span class="p">;</span>
+<span class="n">FemAvg</span> <span class="o">=</span> <span class="n">TotFem</span><span class="o">/</span><span class="n">Fem</span><span class="p">;</span>
+<span class="n">Avgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">MaleAvg</span> <span class="n">FemAvg</span><span class="p">];</span>
+<span class="k">return</span> <span class="n">Avgs</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># determine statistical significance using t-test </span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">ttest_ind</span>
+
+<span class="n">Fem</span> <span class="o">=</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">DataSet</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Female&#39;</span><span class="p">]</span>
+<span class="n">Male</span> <span class="o">=</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">DataSet</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Male&#39;</span><span class="p">]</span>
+
+<span class="p">[</span><span class="n">p</span><span class="p">,</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="n">ttest_ind</span><span class="p">(</span><span class="n">Fem</span><span class="p">[</span><span class="s1">&#39;TimeColumn&#39;</span><span class="p">],</span> <span class="n">Male</span><span class="p">[</span><span class="s1">&#39;TimeColumn&#39;</span><span class="p">])</span>
+<span class="k">if</span> <span class="n">p</span><span class="o">&lt;=</span><span class="mf">0.05</span><span class="p">:</span>
+    <span class="nb">print</span> <span class="s2">&quot;The difference in averages is statistically significance to a siginificance level of 95%&quot;</span>
+    <span class="k">else</span>
+        <span class="nb">print</span> <span class="s2">&quot;The difference in averages is not statistically significance to a significance level of 95%&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Find the evolution of averages by gender</span>
+<span class="c1">#Calculate the average stay at EPFL for people arriving at different years</span>
+<span class="n">FemArray</span> <span class="o">=</span> <span class="p">[];</span> <span class="c1">#initialize arrays to store average by starting year</span>
+<span class="n">MaleArray</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2007</span><span class="p">,</span><span class="mi">2014</span><span class="p">):</span>
+    <span class="n">YearAvg</span> <span class="o">=</span> <span class="n">DataSet</span><span class="p">[</span><span class="n">DataSet</span><span class="p">[</span><span class="s1">&#39;Semester1&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">i</span><span class="p">];</span>
+    <span class="n">Fem2</span> <span class="o">=</span> <span class="n">YearAvg</span><span class="p">[</span><span class="n">YearAvg</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Female&#39;</span><span class="p">];</span>
+    <span class="n">Male2</span> <span class="o">=</span> <span class="n">YearAvg</span><span class="p">[</span><span class="n">YearAvg</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Male&#39;</span><span class="p">];</span>
+    <span class="n">MeanFem</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">Fem2</span><span class="p">[:,</span><span class="n">TimeColumn</span><span class="p">]);</span>
+    <span class="n">MeanMale</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">Male2</span><span class="p">[:,</span><span class="n">TimeColumn</span><span class="p">]);</span>
+    <span class="n">FemArray</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">MeanFem</span><span class="p">);</span>
+    <span class="n">MaleArray</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">MeanMale</span><span class="p">);</span>
+    
+
+
+
+        
+    
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#create scatter plot of evolution with different colors by gender</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2007</span><span class="p">:</span><span class="mi">2014</span><span class="p">];</span> <span class="c1"># set x axis array of starting dates</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">FemArray</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Female&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">MaleArray</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Male&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
 </div>
