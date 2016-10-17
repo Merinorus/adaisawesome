@@ -226,21 +226,14 @@ print(htmlContentData1.prettify())
 table1 = htmlContentData1.find('table')
 
 
-# In[152]:
+# In[173]:
 
 # Create an empty dataframe with the relevant columns
 df1 = pd.DataFrame({'Year': [], 'Semester': [], 'Civilité': [], 'Nom Prénom':[], 'Status':[], 'No Sciper':[]})
-i = 0
 tr = table1.findNext('tr')
 td = table1.findNext('td')
-td.text
-#df1.loc[i,'Civilité'] = td.text
-td = table1.findNext('td' =! 0)
-#df1.loc[i,'Nom Prénom'] = td.text
-#i = i+1
+df1.loc[i,'Civilité'] = td.text
+df1
 
-
-# In[ ]:
-
-
-
+...
+will need to be completed next time around
