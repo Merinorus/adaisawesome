@@ -41,7 +41,7 @@ academicYearsSet = academicYearsField.findAll('option')
 
 # Since there are several years to remember, we're storing all of them in a table to use them later
 academicYearValues = []
-# We'll put the textual content in a table aswell ("Master semestre 1", "Master semestre 2"...)
+# We'll put the textual content in a table aswell ("Bachelor semestre 1", "Bachelor semestre 2"...)
 academicYearContent = []
 
 for option in academicYearsSet:
@@ -72,7 +72,7 @@ pedagogicPeriodsSet = pedagogicPeriodsField.findAll('option')
 
 # Same as above, we'll store the values in a table
 pedagogicPeriodValues = []
-# We'll put the textual content in a table aswell ("Master semestre 1", "Master semestre 2"...)
+# We'll put the textual content in a table aswell ("Bachelor semestre 1", "Bachelor semestre 2"...)
 pedagogicPeriodContent = []
 
 for option in pedagogicPeriodsSet:
@@ -128,13 +128,13 @@ semesterType_df = pd.concat([semesterTypeContent_series, semesterTypeValues_seri
 semesterType_df.columns = ['Semester_type', 'Value']
 semesterType_df
 
-Now, we got all the information to get all the master students ! Let's make all the requests we need to build our data. We will try to do requests such as :
+Now, we got all the information to get all the bachelor students ! Let's make all the requests we need to build our data. We will try to do requests such as :
 Get students from bachelor semester 1 of 2007-2008
 ...
 Get students from bachelor semester 6b of 2007-2008
 ... and so on for each academic year until 2015-2016, the last complete year. We can even take the first semester of 2016-2017 into account, to check if some students we though they finished last year are actually still studying. 
-# We can ask for a list of student in two formats : HTML or CSV. We choosed to get them in a HTML format because this is the first time that we wrangle data in HTML format, and that may be really useful to learn in order to work with most of the websites in the future ! The request sent by the browser to IS Academia, to get a list of student in a HTML format, looks like this : http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?arg1=xxx&arg2=yyy With "xxx" the value associated with the argument named "arg1", "yyy" the value associated with the argument named "arg2" etc. It uses to have a lot more arguments. For instance, we tried to send a request as a "human" through our browser and intercepted it with Postman interceptor. We found that the folowing arguments have to be sent : ww_x_GPS = -1 ww_i_reportModel = 133685247 ww_i_reportModelXsl = 133685270 ww_x_UNITE_ACAD = 249847 (which is the value of computer science !) ww_x_PERIODE_ACAD = X (eg : the value corresponding to 2007-2008 would be 978181) ww_x_PERIODE_PEDAGO = Y (eg : 2230106 for Master semestre 1) ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)
-# The last three values X, Y and Z must be replaced with the ones we extracted previously. For instance, if we want to get students from Master, semester 1 (which is necessarily autumn semester) of 2007-2008, the "GET Request" would be the following :
+# We can ask for a list of student in two formats : HTML or CSV. We choosed to get them in a HTML format because this is the first time that we wrangle data in HTML format, and that may be really useful to learn in order to work with most of the websites in the future ! The request sent by the browser to IS Academia, to get a list of student in a HTML format, looks like this : http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?arg1=xxx&arg2=yyy With "xxx" the value associated with the argument named "arg1", "yyy" the value associated with the argument named "arg2" etc. It uses to have a lot more arguments. For instance, we tried to send a request as a "human" through our browser and intercepted it with Postman interceptor. We found that the folowing arguments have to be sent : ww_x_GPS = -1 ww_i_reportModel = 133685247 ww_i_reportModelXsl = 133685270 ww_x_UNITE_ACAD = 249847 (which is the value of computer science !) ww_x_PERIODE_ACAD = X (eg : the value corresponding to 2007-2008 would be 978181) ww_x_PERIODE_PEDAGO = Y (eg : 2230106 for Bachelor semestre 1) ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)
+# The last three values X, Y and Z must be replaced with the ones we extracted previously. For instance, if we want to get students from Bachelor, semester 1 (which is necessarily autumn semester) of 2007-2008, the "GET Request" would be the following :
 # http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&ww_i_reportModel=133685247&ww_i_reportModelXsl=133685270&ww_x_UNITE_ACAD=249847&ww_x_PERIODE_ACAD=978181&ww_x_PERIODE_PEDAGO=2230106&ww_x_HIVERETE=2936286
 # So let's cook all the requests we're going to send !
 
@@ -146,6 +146,62 @@ autumn_semester_value = autumn_semester_value.iloc[0]
 
 spring_semester_value = semesterType_df.loc[semesterType_df['Semester_type'] == 'Semestre de printemps', 'Value']
 spring_semester_value = spring_semester_value.iloc[0]
+
+
+# In[90]:
+
+# Here is the list of the GET requests we will send to IS Academia
+requestsToISAcademia = []
+
+# Go all over the years ('2007-2008', '2008-2009' and so on)
+for academicYear_row in academicYear_df.itertuples(index=True, name='Academic_year'):
+    
+    # The year (eg: '2007-2008')
+    academicYear = academicYear_row.Academic_year
+    
+    # The associated value (eg: '978181')
+    academicYear_value = academicYear_row.Value
+    
+    # We get all the pedagogic periods associated with this academic year
+    for pegagogicPeriod_row in pedagogicPeriod_df.itertuples(index=True, name='Pedagogic_period'):
+        
+        # The period (eg: 'Bachelor semestre 1')
+        pedagogicPeriod = pegagogicPeriod_row.Pedagogic_period
+        
+        # The associated value (eg: '2230106')
+        pegagogicPeriod_Value = pegagogicPeriod_row.Value
+        
+        # We need to associate the corresponding semester type (eg: Bachelor semester 1 is autumn, but Bachelor semester 2 will be spring)
+        if (pedagogicPeriod.endswith('1') or pedagogicPeriod.endswith('3') or pedagogicPeriod.endswith('automne')):
+            semester_Value = autumn_semester_value
+        else:
+            semester_Value = spring_semester_value
+        
+        # This print line is only for debugging if you want to check something
+        # print("academic year = " + academicYear_value + ", pedagogic value = " + pegagogicPeriod_Value + ", pedagogic period is " + pedagogicPeriod + " (semester type value = " + semester_Value + ")")
+        
+        # We're ready to cook the request !
+        request = 'http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&ww_i_reportModel=133685247&ww_i_reportModelXsl=133685270&ww_x_UNITE_ACAD=' + computerScienceValue
+        request = request + '&ww_x_PERIODE_ACAD=' + academicYear_value
+        request = request + '&ww_x_PERIODE_PEDAGO=' + pegagogicPeriod_Value
+        request = request + '&ww_x_HIVERETE=' + semester_Value
+        
+        # Add the newly created request to our wish list...
+        requestsToISAcademia.append(request)
+
+
+# In[91]:
+
+# Here is the list of all the requests we have to send !
+requestsToISAcademia
+
+
+# In[94]:
+
+# Create a new Dataframe into which to concatenate all of the students and Scipers
+data1 = requests.get(requestsToISAcademia[0])
+htmlContentData1 = BeautifulSoup(data1.content, 'html.parser')
+print(htmlContentData1.prettify())
 
 
 # In[ ]:
