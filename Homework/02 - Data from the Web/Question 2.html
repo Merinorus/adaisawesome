@@ -12603,11 +12603,16 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[270]:</div>
+<div class="prompt input_prompt">In&nbsp;[293]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Here is the list of the GET requests we will send to IS Academia</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Here is the list of the GET requests we will sent to IS Academia</span>
 <span class="n">requestsToISAcademia</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># We&#39;ll need to associate all the information associated with the requests to help wrangling data later :</span>
+<span class="n">academicYearRequests</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">pedagogicPeriodRequests</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">semesterTypeRequests</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="c1"># Go all over the years (&#39;2007-2008&#39;, &#39;2008-2009&#39; and so on)</span>
 <span class="k">for</span> <span class="n">academicYear_row</span> <span class="ow">in</span> <span class="n">academicYear_df</span><span class="o">.</span><span class="n">itertuples</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Academic_year&#39;</span><span class="p">):</span>
@@ -12624,14 +12629,19 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
         <span class="c1"># The period (eg: &#39;Master semestre 1&#39;)</span>
         <span class="n">pedagogicPeriod</span> <span class="o">=</span> <span class="n">pegagogicPeriod_row</span><span class="o">.</span><span class="n">Pedagogic_period</span>
         
+        
         <span class="c1"># The associated value (eg: &#39;2230106&#39;)</span>
         <span class="n">pegagogicPeriod_Value</span> <span class="o">=</span> <span class="n">pegagogicPeriod_row</span><span class="o">.</span><span class="n">Value</span>
         
         <span class="c1"># We need to associate the corresponding semester type (eg: Master semester 1 is autumn, but Master semester 2 will be spring)</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">pedagogicPeriod</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">pedagogicPeriod</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;3&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">pedagogicPeriod</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;automne&#39;</span><span class="p">)):</span>
             <span class="n">semester_Value</span> <span class="o">=</span> <span class="n">autumn_semester_value</span>
+            <span class="n">semester</span> <span class="o">=</span> <span class="s1">&#39;Autumn&#39;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">semester_Value</span> <span class="o">=</span> <span class="n">spring_semester_value</span>
+            <span class="n">semester</span> <span class="o">=</span> <span class="s1">&#39;Spring&#39;</span>
+        
+        
         
         <span class="c1"># This print line is only for debugging if you want to check something</span>
         <span class="c1"># print(&quot;academic year = &quot; + academicYear_value + &quot;, pedagogic value = &quot; + pegagogicPeriod_Value + &quot;, pedagogic period is &quot; + pedagogicPeriod + &quot; (semester type value = &quot; + semester_Value + &quot;)&quot;)</span>
@@ -12644,6 +12654,10 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
         
         <span class="c1"># Add the newly created request to our wish list...</span>
         <span class="n">requestsToISAcademia</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="c1"># And we save the corresponding information for each request</span>
+        <span class="n">pedagogicPeriodRequests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pedagogicPeriod</span><span class="p">)</span>
+        <span class="n">academicYearRequests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">academicYear</span><span class="p">)</span>
+        <span class="n">semesterTypeRequests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">semester</span><span class="p">)</span>
         
         
         
@@ -12656,11 +12670,74 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[267]:</div>
+<div class="prompt input_prompt">In&nbsp;[288]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Here is the list of all the requests we have to send !</span>
-<span class="n">requestsToISAcademia</span>
+<span class="c1"># requestsToISAcademia</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[289]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Here are the corresponding years for each request</span>
+<span class="c1"># academicYearRequests</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[290]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Same for associated pedagogic periods</span>
+<span class="c1"># pedagogicPeriodRequests</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[295]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Last but not the least, the semester types</span>
+<span class="c1"># semesterTypeRequests</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[299]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">academicYearRequests_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">academicYearRequests</span><span class="p">)</span>
+<span class="n">pedagogicPeriodRequests_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pedagogicPeriodRequests</span><span class="p">)</span>
+<span class="n">requestsToISAcademia_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">requestsToISAcademia</span><span class="p">)</span>
+
+<span class="c1"># Let&#39;s summarize everything in a dataframe...</span>
+<span class="n">requests_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">academicYearRequests_series</span><span class="p">,</span> <span class="n">pedagogicPeriodRequests_series</span><span class="p">,</span> <span class="n">requestsToISAcademia_series</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">requests_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Academic_year&#39;</span><span class="p">,</span> <span class="s1">&#39;Pedagogic_period&#39;</span><span class="p">,</span> <span class="s1">&#39;Request&#39;</span><span class="p">]</span>
+
+<span class="n">requests_df</span>
 </pre></div>
 
 </div>
@@ -12671,90 +12748,390 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[267]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[299]:</div>
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[&#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978181&amp;ww_x_PERIODE_PEDAGO=2230106&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978181&amp;ww_x_PERIODE_PEDAGO=942192&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978181&amp;ww_x_PERIODE_PEDAGO=2230128&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978181&amp;ww_x_PERIODE_PEDAGO=2230140&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978181&amp;ww_x_PERIODE_PEDAGO=2335667&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978181&amp;ww_x_PERIODE_PEDAGO=2335676&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978181&amp;ww_x_PERIODE_PEDAGO=249127&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978181&amp;ww_x_PERIODE_PEDAGO=3781783&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978187&amp;ww_x_PERIODE_PEDAGO=2230106&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978187&amp;ww_x_PERIODE_PEDAGO=942192&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978187&amp;ww_x_PERIODE_PEDAGO=2230128&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978187&amp;ww_x_PERIODE_PEDAGO=2230140&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978187&amp;ww_x_PERIODE_PEDAGO=2335667&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978187&amp;ww_x_PERIODE_PEDAGO=2335676&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978187&amp;ww_x_PERIODE_PEDAGO=249127&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978187&amp;ww_x_PERIODE_PEDAGO=3781783&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978195&amp;ww_x_PERIODE_PEDAGO=2230106&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978195&amp;ww_x_PERIODE_PEDAGO=942192&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978195&amp;ww_x_PERIODE_PEDAGO=2230128&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978195&amp;ww_x_PERIODE_PEDAGO=2230140&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978195&amp;ww_x_PERIODE_PEDAGO=2335667&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978195&amp;ww_x_PERIODE_PEDAGO=2335676&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978195&amp;ww_x_PERIODE_PEDAGO=249127&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978195&amp;ww_x_PERIODE_PEDAGO=3781783&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=39486325&amp;ww_x_PERIODE_PEDAGO=2230106&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=39486325&amp;ww_x_PERIODE_PEDAGO=942192&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=39486325&amp;ww_x_PERIODE_PEDAGO=2230128&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=39486325&amp;ww_x_PERIODE_PEDAGO=2230140&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=39486325&amp;ww_x_PERIODE_PEDAGO=2335667&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=39486325&amp;ww_x_PERIODE_PEDAGO=2335676&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=39486325&amp;ww_x_PERIODE_PEDAGO=249127&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=39486325&amp;ww_x_PERIODE_PEDAGO=3781783&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123455150&amp;ww_x_PERIODE_PEDAGO=2230106&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123455150&amp;ww_x_PERIODE_PEDAGO=942192&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123455150&amp;ww_x_PERIODE_PEDAGO=2230128&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123455150&amp;ww_x_PERIODE_PEDAGO=2230140&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123455150&amp;ww_x_PERIODE_PEDAGO=2335667&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123455150&amp;ww_x_PERIODE_PEDAGO=2335676&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123455150&amp;ww_x_PERIODE_PEDAGO=249127&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123455150&amp;ww_x_PERIODE_PEDAGO=3781783&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123456101&amp;ww_x_PERIODE_PEDAGO=2230106&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123456101&amp;ww_x_PERIODE_PEDAGO=942192&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123456101&amp;ww_x_PERIODE_PEDAGO=2230128&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123456101&amp;ww_x_PERIODE_PEDAGO=2230140&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123456101&amp;ww_x_PERIODE_PEDAGO=2335667&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123456101&amp;ww_x_PERIODE_PEDAGO=2335676&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123456101&amp;ww_x_PERIODE_PEDAGO=249127&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=123456101&amp;ww_x_PERIODE_PEDAGO=3781783&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637754&amp;ww_x_PERIODE_PEDAGO=2230106&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637754&amp;ww_x_PERIODE_PEDAGO=942192&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637754&amp;ww_x_PERIODE_PEDAGO=2230128&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637754&amp;ww_x_PERIODE_PEDAGO=2230140&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637754&amp;ww_x_PERIODE_PEDAGO=2335667&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637754&amp;ww_x_PERIODE_PEDAGO=2335676&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637754&amp;ww_x_PERIODE_PEDAGO=249127&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637754&amp;ww_x_PERIODE_PEDAGO=3781783&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637922&amp;ww_x_PERIODE_PEDAGO=2230106&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637922&amp;ww_x_PERIODE_PEDAGO=942192&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637922&amp;ww_x_PERIODE_PEDAGO=2230128&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637922&amp;ww_x_PERIODE_PEDAGO=2230140&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637922&amp;ww_x_PERIODE_PEDAGO=2335667&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637922&amp;ww_x_PERIODE_PEDAGO=2335676&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637922&amp;ww_x_PERIODE_PEDAGO=249127&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213637922&amp;ww_x_PERIODE_PEDAGO=3781783&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213638028&amp;ww_x_PERIODE_PEDAGO=2230106&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213638028&amp;ww_x_PERIODE_PEDAGO=942192&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213638028&amp;ww_x_PERIODE_PEDAGO=2230128&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213638028&amp;ww_x_PERIODE_PEDAGO=2230140&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213638028&amp;ww_x_PERIODE_PEDAGO=2335667&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213638028&amp;ww_x_PERIODE_PEDAGO=2335676&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213638028&amp;ww_x_PERIODE_PEDAGO=249127&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=213638028&amp;ww_x_PERIODE_PEDAGO=3781783&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=355925344&amp;ww_x_PERIODE_PEDAGO=2230106&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=355925344&amp;ww_x_PERIODE_PEDAGO=942192&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=355925344&amp;ww_x_PERIODE_PEDAGO=2230128&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=355925344&amp;ww_x_PERIODE_PEDAGO=2230140&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=355925344&amp;ww_x_PERIODE_PEDAGO=2335667&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=355925344&amp;ww_x_PERIODE_PEDAGO=2335676&amp;ww_x_HIVERETE=2936295&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=355925344&amp;ww_x_PERIODE_PEDAGO=249127&amp;ww_x_HIVERETE=2936286&#39;,
- &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=355925344&amp;ww_x_PERIODE_PEDAGO=3781783&amp;ww_x_HIVERETE=2936295&#39;]</pre>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Academic_year</th>
+      <th>Pedagogic_period</th>
+      <th>Request</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2007-2008</td>
+      <td>Master semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2007-2008</td>
+      <td>Master semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2007-2008</td>
+      <td>Master semestre 3</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2007-2008</td>
+      <td>Master semestre 4</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2007-2008</td>
+      <td>Mineur semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2007-2008</td>
+      <td>Mineur semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2007-2008</td>
+      <td>Projet Master automne</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2007-2008</td>
+      <td>Projet Master printemps</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2008-2009</td>
+      <td>Master semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2008-2009</td>
+      <td>Master semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>2008-2009</td>
+      <td>Master semestre 3</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>2008-2009</td>
+      <td>Master semestre 4</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>2008-2009</td>
+      <td>Mineur semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>2008-2009</td>
+      <td>Mineur semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>2008-2009</td>
+      <td>Projet Master automne</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>2008-2009</td>
+      <td>Projet Master printemps</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>2009-2010</td>
+      <td>Master semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>2009-2010</td>
+      <td>Master semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>2009-2010</td>
+      <td>Master semestre 3</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>2009-2010</td>
+      <td>Master semestre 4</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>2009-2010</td>
+      <td>Mineur semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>2009-2010</td>
+      <td>Mineur semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>2009-2010</td>
+      <td>Projet Master automne</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>2009-2010</td>
+      <td>Projet Master printemps</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>2010-2011</td>
+      <td>Master semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>2010-2011</td>
+      <td>Master semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>2010-2011</td>
+      <td>Master semestre 3</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>2010-2011</td>
+      <td>Master semestre 4</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>2010-2011</td>
+      <td>Mineur semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>2010-2011</td>
+      <td>Mineur semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>2013-2014</td>
+      <td>Master semestre 3</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>2013-2014</td>
+      <td>Master semestre 4</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>2013-2014</td>
+      <td>Mineur semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>2013-2014</td>
+      <td>Mineur semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>2013-2014</td>
+      <td>Projet Master automne</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>2013-2014</td>
+      <td>Projet Master printemps</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>2014-2015</td>
+      <td>Master semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>2014-2015</td>
+      <td>Master semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>2014-2015</td>
+      <td>Master semestre 3</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>2014-2015</td>
+      <td>Master semestre 4</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>2014-2015</td>
+      <td>Mineur semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>61</th>
+      <td>2014-2015</td>
+      <td>Mineur semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>62</th>
+      <td>2014-2015</td>
+      <td>Projet Master automne</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>2014-2015</td>
+      <td>Projet Master printemps</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>2015-2016</td>
+      <td>Master semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>65</th>
+      <td>2015-2016</td>
+      <td>Master semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>66</th>
+      <td>2015-2016</td>
+      <td>Master semestre 3</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>2015-2016</td>
+      <td>Master semestre 4</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>68</th>
+      <td>2015-2016</td>
+      <td>Mineur semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>69</th>
+      <td>2015-2016</td>
+      <td>Mineur semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>70</th>
+      <td>2015-2016</td>
+      <td>Projet Master automne</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>71</th>
+      <td>2015-2016</td>
+      <td>Projet Master printemps</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>72</th>
+      <td>2016-2017</td>
+      <td>Master semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>73</th>
+      <td>2016-2017</td>
+      <td>Master semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>74</th>
+      <td>2016-2017</td>
+      <td>Master semestre 3</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>75</th>
+      <td>2016-2017</td>
+      <td>Master semestre 4</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>76</th>
+      <td>2016-2017</td>
+      <td>Mineur semestre 1</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>77</th>
+      <td>2016-2017</td>
+      <td>Mineur semestre 2</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>2016-2017</td>
+      <td>Projet Master automne</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+    <tr>
+      <th>79</th>
+      <td>2016-2017</td>
+      <td>Projet Master printemps</td>
+      <td>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICRE...</td>
+    </tr>
+  </tbody>
+</table>
+<p>80 rows × 3 columns</p>
+</div>
 </div>
 
 </div>
@@ -12791,7 +13168,7 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 <span class="n">htmlContent</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
 
 <span class="c1"># Let&#39;s extract some data...</span>
-<span class="c1"># TODO</span>
+<span class="n">computerScienceField</span> <span class="o">=</span> <span class="n">htmlContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Informatique&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
