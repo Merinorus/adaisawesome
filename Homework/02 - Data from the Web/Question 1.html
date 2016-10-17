@@ -11758,16 +11758,28 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[96]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
-<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.filter?ww_i_reportModel=133685247&#39;</span><span class="p">)</span>
-<span class="n">htmlcontent</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">htmlcontent</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.filter?ww_i_reportModel=133685247&#39;</span><span class="p">)</span>
+<span class="n">htmlContent</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">htmlContent</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
 </pre></div>
 
 </div>
@@ -12078,7 +12090,7 @@ div#notebook {
   &lt;/div&gt;
  &lt;/body&gt;
 &lt;/html&gt;
-&lt;!-- OpenXml:0.00s  agent ctrl:0.00s  xml:0.22s  xsl clob before parse:0.00s  xsl extr&amp;stylesheet:0.00s  xsl clob before parse:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.01s  transform 2:0.02s  xsl process:0.00s  --&gt;
+&lt;!-- OpenXml:0.01s  agent ctrl:0.00s  xml:0.42s  xsl clob before parse:0.00s  xsl extr&amp;stylesheet:0.00s  xsl clob before parse:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.01s  transform 2:0.04s  xsl process:0.00s  --&gt;
 
 </pre>
 </div>
@@ -12090,11 +12102,12 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[98]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">computersciencefield</span> <span class="o">=</span> <span class="n">htmlcontent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Informatique&#39;</span><span class="p">)</span>
-<span class="n">computersciencefield</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We first get the &quot;Computer science&quot; value</span>
+<span class="n">computerScienceField</span> <span class="o">=</span> <span class="n">htmlContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Informatique&#39;</span><span class="p">)</span>
+<span class="n">computerScienceField</span>
 </pre></div>
 
 </div>
@@ -12105,7 +12118,37 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[98]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[30]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;option value=&#34;249847&#34;&gt;Informatique&lt;/option&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">computerScienceValue</span> <span class="o">=</span> <span class="n">computerScienceField</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+<span class="n">computerScienceValue</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[31]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -12120,11 +12163,39 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[99]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">year</span> <span class="o">=</span> <span class="n">htmlcontent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;2007-2008&#39;</span><span class="p">)</span>
-<span class="n">year</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Then, we&#39;re going to need all the academic years values.</span>
+<span class="n">academicYearsField</span> <span class="o">=</span> <span class="n">htmlContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;ww_x_PERIODE_ACAD&#39;</span><span class="p">})</span>
+<span class="n">academicYearsSet</span> <span class="o">=</span> <span class="n">academicYearsField</span><span class="o">.</span><span class="n">findAll</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">)</span>
+
+<span class="c1"># Since there are several years to remember, we&#39;re storing all of them in a table to use them later</span>
+<span class="n">academicYearValues</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># We&#39;ll put the textual content in a table aswell (&quot;Master semestre 1&quot;, &quot;Master semestre 2&quot;...)</span>
+<span class="n">academicYearContent</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">academicYearsSet</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+    <span class="c1"># However, we don&#39;t want any &quot;null&quot; value</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="s1">&#39;null&#39;</span><span class="p">:</span>
+        <span class="n">academicYearValues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">academicYearContent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Now, we have all the academic years that might interest us</span>
+<span class="n">academicYear_Series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">academicYearContent</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">academicYearValues</span><span class="p">)</span>
+<span class="n">academicYear_Series</span>
 </pre></div>
 
 </div>
@@ -12135,11 +12206,21 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[99]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[34]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;978181&#39;</pre>
+<pre>355925344    2016-2017
+213638028    2015-2016
+213637922    2014-2015
+213637754    2013-2014
+123456101    2012-2013
+123455150    2011-2012
+39486325     2010-2011
+978195       2009-2010
+978187       2008-2009
+978181       2007-2008
+dtype: object</pre>
 </div>
 
 </div>
@@ -12150,14 +12231,39 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[112]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">yearshtml</span> <span class="o">=</span> <span class="n">htmlcontent</span><span class="o">.</span><span class="n">findAll</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;name&#39;</span> <span class="p">:</span> <span class="s1">&#39;zz_x_PERIODE_ACAD&#39;</span><span class="p">})</span>
-<span class="c1">#if yearshtml:</span>
-<span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">yearshtml</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">findAll</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">):</span>
-    <span class="n">years</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;year&#39;</span><span class="p">:[</span><span class="n">option</span><span class="o">.</span><span class="n">text</span><span class="p">],</span><span class="s1">&#39;code&#39;</span><span class="p">:[</span><span class="n">option</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)]})</span>
-<span class="n">years</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Then, let&#39;s get all the pedagogic periods we need. It&#39;s a little bit more complicated here because we need to link the pedagogic period with a season (eg : Bachelor 1 is autumn, Bachelor 2 is spring etc.)</span>
+<span class="c1"># Thus, we need more than the pedagogic values. For doing some tests to associate them with the right season, we need the actual textual value (&quot;Bachelor semestre 1&quot;, &quot;Bachelor semestre 2&quot; etc.)</span>
+<span class="n">pedagogicPeriodsField</span> <span class="o">=</span> <span class="n">htmlContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;ww_x_PERIODE_PEDAGO&#39;</span><span class="p">})</span>
+<span class="n">pedagogicPeriodsSet</span> <span class="o">=</span> <span class="n">pedagogicPeriodsField</span><span class="o">.</span><span class="n">findAll</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">)</span>
+
+<span class="c1"># Same as above, we&#39;ll store the values in a table</span>
+<span class="n">pedagogicPeriodValues</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># We&#39;ll put the textual content in a table aswell (&quot;Master semestre 1&quot;, &quot;Master semestre 2&quot;...)</span>
+<span class="n">pedagogicPeriodContent</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">pedagogicPeriodsSet</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="s1">&#39;null&#39;</span><span class="p">:</span>
+        <span class="n">pedagogicPeriodValues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">pedagogicPeriodContent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Let&#39;s make the values and content meet each other</span>
+<span class="n">pedagogicPeriod_Series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pedagogicPeriodContent</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">pedagogicPeriodValues</span><span class="p">)</span>
+<span class="n">pedagogicPeriod_Series</span>
 </pre></div>
 
 </div>
@@ -12168,20 +12274,37 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-112-e6ecae4ab694&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> yearshtml <span class="ansi-blue-fg">=</span> htmlcontent<span class="ansi-blue-fg">.</span>findAll<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;input&#39;</span><span class="ansi-blue-fg">,</span> attrs<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">&#39;name&#39;</span> <span class="ansi-blue-fg">:</span> <span class="ansi-blue-fg">&#39;zz_x_PERIODE_ACAD&#39;</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-red-fg">#if yearshtml:</span>
-<span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">for</span> option <span class="ansi-green-fg">in</span> yearshtml<span class="ansi-blue-fg">.</span>findAll<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;option&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span>     years <span class="ansi-blue-fg">=</span> pd<span class="ansi-blue-fg">.</span>DataFrame<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">&#39;year&#39;</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">[</span>option<span class="ansi-blue-fg">.</span>text<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span><span class="ansi-blue-fg">&#39;code&#39;</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">[</span>option<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;value&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> years
+<div class="output_area"><div class="prompt output_prompt">Out[36]:</div>
 
-<span class="ansi-red-fg">AttributeError</span>: &#39;ResultSet&#39; object has no attribute &#39;findAll&#39;</pre>
+
+<div class="output_text output_subarea output_execute_result">
+<pre>249108               Bachelor semestre 1
+249114               Bachelor semestre 2
+942155               Bachelor semestre 3
+942163               Bachelor semestre 4
+942120               Bachelor semestre 5
+2226768             Bachelor semestre 5b
+942175               Bachelor semestre 6
+2226785             Bachelor semestre 6b
+2230106                Master semestre 1
+942192                 Master semestre 2
+2230128                Master semestre 3
+2230140                Master semestre 4
+2335667                Mineur semestre 1
+2335676                Mineur semestre 2
+2063602308                 Mise à niveau
+249127             Projet Master automne
+3781783          Projet Master printemps
+953159                  Semestre automne
+2754553               Semestre printemps
+953137          Stage automne 3ème année
+2226616         Stage automne 4ème année
+983606        Stage printemps 3ème année
+2226626       Stage printemps 4ème année
+2227132           Stage printemps master
+dtype: object</pre>
 </div>
+
 </div>
 
 </div>
@@ -12190,10 +12313,12 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[90]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">yearshtml</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We keep all semesters related to Bachelor students</span>
+<span class="n">bachelorPedagogicPeriod_Series</span> <span class="o">=</span> <span class="n">pedagogicPeriod_Series</span><span class="p">[[</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Bachelor&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">pedagogicPeriod_Series</span><span class="p">]]</span>
+<span class="n">bachelorPedagogicPeriod_Series</span>
 </pre></div>
 
 </div>
@@ -12204,15 +12329,96 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[90]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[38]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;input name=&#34;zz_x_PERIODE_ACAD&#34; type=&#34;hidden&#34; value=&#34;&#34;&gt;&lt;select name=&#34;ww_x_PERIODE_ACAD&#34; onchange=&#34;document.f.zz_x_PERIODE_ACAD.value=document.f.ww_x_PERIODE_ACAD.options[document.f.ww_x_PERIODE_ACAD.selectedIndex].text&#34;&gt;&lt;option value=&#34;null&#34;&gt;&lt;/option&gt;&lt;option value=&#34;355925344&#34;&gt;2016-2017&lt;/option&gt;&lt;option value=&#34;213638028&#34;&gt;2015-2016&lt;/option&gt;&lt;option value=&#34;213637922&#34;&gt;2014-2015&lt;/option&gt;&lt;option value=&#34;213637754&#34;&gt;2013-2014&lt;/option&gt;&lt;option value=&#34;123456101&#34;&gt;2012-2013&lt;/option&gt;&lt;option value=&#34;123455150&#34;&gt;2011-2012&lt;/option&gt;&lt;option value=&#34;39486325&#34;&gt;2010-2011&lt;/option&gt;&lt;option value=&#34;978195&#34;&gt;2009-2010&lt;/option&gt;&lt;option value=&#34;978187&#34;&gt;2008-2009&lt;/option&gt;&lt;option value=&#34;978181&#34;&gt;2007-2008&lt;/option&gt;&lt;/select&gt;&lt;/input&gt;]</pre>
+<pre>249108      Bachelor semestre 1
+249114      Bachelor semestre 2
+942155      Bachelor semestre 3
+942163      Bachelor semestre 4
+942120      Bachelor semestre 5
+2226768    Bachelor semestre 5b
+942175      Bachelor semestre 6
+2226785    Bachelor semestre 6b
+dtype: object</pre>
 </div>
 
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Lastly, we need to extract the values associated with autumn and spring semesters.</span>
+<span class="n">semesterTypeField</span> <span class="o">=</span> <span class="n">htmlContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;ww_x_HIVERETE&#39;</span><span class="p">})</span>
+<span class="n">semesterTypeSet</span> <span class="o">=</span> <span class="n">semesterTypeField</span><span class="o">.</span><span class="n">findAll</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">)</span>
+
+<span class="c1"># Again, we need to store the values in a table</span>
+<span class="n">semesterTypeValues</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># We&#39;ll put the textual content in a table aswell</span>
+<span class="n">semesterTypeContent</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">semesterTypeSet</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="s1">&#39;null&#39;</span><span class="p">:</span>
+        <span class="n">semesterTypeValues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">semesterTypeContent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Here are the values for autumn and spring semester :</span>
+<span class="n">semesterType_Series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">semesterTypeContent</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">semesterTypeValues</span><span class="p">)</span>
+<span class="n">semesterType_Series</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[40]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>2936286       Semestre d&#39;automne
+2936295    Semestre de printemps
+dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Choosing between html and xls</span>
+<span class="n">formatField</span> <span class="o">=</span> <span class="n">htmlContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;ww_i_reportModelXsl&#39;</span><span class="p">})</span>
+</pre></div>
+
+</div>
 </div>
 </div>
 
