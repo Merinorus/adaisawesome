@@ -129,3 +129,45 @@ for option in semesterTypeSet:
 semesterType_Series = pd.Series(semesterTypeContent, index=semesterTypeValues)
 semesterType_Series
 
+
+# Now, we got all the information to get all the master students !
+# Let's make all the requests we need to build our data.
+# We will try to do requests such as :
+# - Get students from master semester 1 of 2007-2008
+# - ...
+# - Get students from master semester 4 of 2007-2008
+# - Get students from mineur semester 1 of 2007-2008
+# - Get students from mineur semester 2 of 2007-2008
+# - Get students from master project semester 1 of 2007-2008
+# - Get students from master project semester 2 of 2007-2008
+# 
+# ... and so on for each academic year until 2015-2016, the last complete year.
+# We can even take the first semester of 2016-2017 into account, to check if some students we though they finished last year are actually still studying. This can be for different reasons : doing a mineur, a project, repeating a semester...
+
+# We can ask for a list of student in two formats : HTML or CSV.
+# We choosed to get them in a HTML format because this is the first time that we wrangle data in HTML format, and that may be really useful to learn in order to work with most of the websites in the future !
+# The request sent by the browser to IS Academia, to get a list of student in a HTML format, looks like this :
+# http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?arg1=xxx&arg2=yyy
+# With "xxx" the value associated with the argument named "arg1", "yyy" the value associated with the argument named "arg2" etc. It uses to have a lot more arguments.
+# For instance, we tried to send a request as a "human" through our browser and intercepted it with Postman interceptor.
+# We found that the folowing arguments have to be sent :
+# ww_x_GPS = -1
+# ww_i_reportModel = 133685247
+# ww_i_reportModelXsl = 133685270
+# ww_x_UNITE_ACAD = 249847 (which is the value of computer science !)
+# ww_x_PERIODE_ACAD = X (eg : the value corresponding to 2007-2008 would be 978181)
+# ww_x_PERIODE_PEDAGO = Y (eg : 2230106 for Master semestre 1)
+# ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)
+# 
+# The last three values X, Y and Z must be replaced with the ones we extracted previously. For instance, if we want to get students from Master, semester 1 (which is necessarily autumn semester) of 2007-2008, the "GET Request" would be the following :
+# 
+# http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&ww_i_reportModel=133685247&ww_i_reportModelXsl=133685270&ww_x_UNITE_ACAD=249847&ww_x_PERIODE_ACAD=978181&ww_x_PERIODE_PEDAGO=2230106&ww_x_HIVERETE=2936286
+# 
+# So let's cook all the requests we're going to send !
+
+# In[109]:
+
+for year in academicYear_Series:
+    print(year)
+    # TO BE CONTINUED
+

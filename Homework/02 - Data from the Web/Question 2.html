@@ -12447,6 +12447,93 @@ dtype: object</pre>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, we got all the information to get all the master students !
+Let's make all the requests we need to build our data.
+We will try to do requests such as :</p>
+<ul>
+<li>Get students from master semester 1 of 2007-2008</li>
+<li>...</li>
+<li>Get students from master semester 4 of 2007-2008</li>
+<li>Get students from mineur semester 1 of 2007-2008</li>
+<li>Get students from mineur semester 2 of 2007-2008</li>
+<li>Get students from master project semester 1 of 2007-2008</li>
+<li>Get students from master project semester 2 of 2007-2008</li>
+</ul>
+<p>... and so on for each academic year until 2015-2016, the last complete year.
+We can even take the first semester of 2016-2017 into account, to check if some students we though they finished last year are actually still studying. This can be for different reasons : doing a mineur, a project, repeating a semester...</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can ask for a list of student in two formats : HTML or CSV.
+We choosed to get them in a HTML format because this is the first time that we wrangle data in HTML format, and that may be really useful to learn in order to work with most of the websites in the future !
+The request sent by the browser to IS Academia, to get a list of student in a HTML format, looks like this :
+<a href="http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?arg1=xxx&amp;arg2=yyy">http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?arg1=xxx&amp;arg2=yyy</a>
+With "xxx" the value associated with the argument named "arg1", "yyy" the value associated with the argument named "arg2" etc. It uses to have a lot more arguments.
+For instance, we tried to send a request as a "human" through our browser and intercepted it with Postman interceptor.
+We found that the folowing arguments have to be sent :
+ww_x_GPS = -1
+ww_i_reportModel = 133685247
+ww_i_reportModelXsl = 133685270
+ww_x_UNITE_ACAD = 249847 (which is the value of computer science !)
+ww_x_PERIODE_ACAD = X (eg : the value corresponding to 2007-2008 would be 978181)
+ww_x_PERIODE_PEDAGO = Y (eg : 2230106 for Master semestre 1)
+ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
+<p>The last three values X, Y and Z must be replaced with the ones we extracted previously. For instance, if we want to get students from Master, semester 1 (which is necessarily autumn semester) of 2007-2008, the "GET Request" would be the following :</p>
+<p><a href="http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978181&amp;ww_x_PERIODE_PEDAGO=2230106&amp;ww_x_HIVERETE=2936286">http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978181&amp;ww_x_PERIODE_PEDAGO=2230106&amp;ww_x_HIVERETE=2936286</a></p>
+<p>So let's cook all the requests we're going to send !</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[109]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">academicYear_Series</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+    <span class="c1"># TO BE CONTINUED</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>2016-2017
+2015-2016
+2014-2015
+2013-2014
+2012-2013
+2011-2012
+2010-2011
+2009-2010
+2008-2009
+2007-2008
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
     </div>
   </div>
 </body>
