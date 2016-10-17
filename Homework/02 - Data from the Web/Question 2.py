@@ -5,7 +5,7 @@
 # 
 # Notice that master students' data is more tricky than the bachelors' one, as there are many missing records in the IS-Academia database. Therefore, try to guess how much time a master student spent at EPFL by at least checking the distance in months between Master semestre 1 and Master semestre 2. If the Mineur field is not empty, the student should also appear registered in Master semestre 3. Last but not the least, don't forget to check if the student has an entry also in the Projet Master tables. Once you can handle well this data, compute the "average stay at EPFL" for master students. Now extract all the students with a Spécialisation and compute the "average stay" per each category of that attribute -- compared to the general average, can you find any specialization for which the difference in average is statistically significant?
 
-# In[118]:
+# In[1]:
 
 # Requests : make http requests to websites
 import requests
@@ -19,34 +19,34 @@ import pandas as pd
 
 # Let's get the first page in which we will be able to extract some interesting content !
 
-# In[119]:
+# In[2]:
 
 # Ask for the first page on IS Academia. To see it, just type it on your browser address bar : http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.filter?ww_i_reportModel=133685247
 r = requests.get('http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.filter?ww_i_reportModel=133685247')
 htmlContent = BeautifulSoup(r.content, 'html.parser')
 
 
-# In[120]:
+# In[3]:
 
 print(htmlContent.prettify())
 
 
 # Now we need to make other requests to IS Academia, which specify every parameter : computer science students, all the years, and all bachelor semester (which are a couple of two values : pedagogic period and semester type). Thus, we're going to get all the parameters we need to make the next request :
 
-# In[121]:
+# In[4]:
 
 # We first get the "Computer science" value
 computerScienceField = htmlContent.find('option', text='Informatique')
 computerScienceField
 
 
-# In[122]:
+# In[5]:
 
 computerScienceValue = computerScienceField.get('value')
 computerScienceValue
 
 
-# In[123]:
+# In[6]:
 
 # Then, we're going to need all the academic years values.
 academicYearsField = htmlContent.find('select', attrs={'name':'ww_x_PERIODE_ACAD'})
@@ -65,7 +65,7 @@ for option in academicYearsSet:
         academicYearContent.append(option.text)
 
 
-# In[181]:
+# In[7]:
 
 # Now, we have all the academic years that might interest us. We wrangle them a little bit so be able to make request more easily later.
 academicYearValues_series = pd.Series(academicYearValues)
@@ -76,7 +76,7 @@ academicYear_df = academicYear_df.sort_values(['Academic_year', 'Value'], ascend
 academicYear_df
 
 
-# In[125]:
+# In[8]:
 
 # Then, let's get all the pedagogic periods we need. It's a little bit more complicated here because we need to link the pedagogic period with a season (eg : Bachelor 1 is autumn, Bachelor 2 is spring etc.)
 # Thus, we need more than the pedagogic values. For doing some tests to associate them with the right season, we need the actual textual value ("Bachelor semestre 1", "Bachelor semestre 2" etc.)
@@ -95,7 +95,7 @@ for option in pedagogicPeriodsSet:
         pedagogicPeriodContent.append(option.text)
 
 
-# In[213]:
+# In[9]:
 
 # Let's make the values and content meet each other
 pedagogicPeriodContent_series = pd.Series(pedagogicPeriodContent)
@@ -104,7 +104,7 @@ pedagogicPeriod_df = pd.concat([pedagogicPeriodContent_series, pedagogicPeriodVa
 pedagogicPeriod_df.columns = ['Pedagogic_period', 'Value']
 
 
-# In[238]:
+# In[10]:
 
 # We keep all semesters related to master students
 pedagogicPeriod_df_master = pedagogicPeriod_df[[period.startswith('Master') for period in pedagogicPeriod_df.Pedagogic_period]]
@@ -115,7 +115,7 @@ pedagogicPeriod_df = pd.concat([pedagogicPeriod_df_master, pedagogicPeriod_df_mi
 pedagogicPeriod_df
 
 
-# In[128]:
+# In[11]:
 
 # Lastly, we need to extract the values associated with autumn and spring semesters.
 semesterTypeField = htmlContent.find('select', attrs={'name':'ww_x_HIVERETE'})
@@ -133,7 +133,7 @@ for option in semesterTypeSet:
         semesterTypeContent.append(option.text)
 
 
-# In[190]:
+# In[12]:
 
 # Here are the values for autumn and spring semester :
 
@@ -179,7 +179,7 @@ semesterType_df
 # 
 # So let's cook all the requests we're going to send !
 
-# In[249]:
+# In[13]:
 
 # Let's put the semester types aside, because we're going to need them
 autumn_semester_value = semesterType_df.loc[semesterType_df['Semester_type'] == 'Semestre d\'automne', 'Value']
@@ -189,7 +189,7 @@ spring_semester_value = semesterType_df.loc[semesterType_df['Semester_type'] == 
 spring_semester_value = spring_semester_value.iloc[0]
 
 
-# In[293]:
+# In[14]:
 
 # Here is the list of the GET requests we will sent to IS Academia
 requestsToISAcademia = []
@@ -248,31 +248,31 @@ for academicYear_row in academicYear_df.itertuples(index=True, name='Academic_ye
         
 
 
-# In[288]:
+# In[15]:
 
 # Here is the list of all the requests we have to send !
 # requestsToISAcademia
 
 
-# In[289]:
+# In[16]:
 
 # Here are the corresponding years for each request
 # academicYearRequests
 
 
-# In[290]:
+# In[17]:
 
 # Same for associated pedagogic periods
 # pedagogicPeriodRequests
 
 
-# In[295]:
+# In[18]:
 
 # Last but not the least, the semester types
 # semesterTypeRequests
 
 
-# In[299]:
+# In[19]:
 
 academicYearRequests_series = pd.Series(academicYearRequests)
 pedagogicPeriodRequests_series = pd.Series(pedagogicPeriodRequests)
@@ -285,15 +285,14 @@ requests_df.columns = ['Academic_year', 'Pedagogic_period', 'Request']
 requests_df
 
 
-# In[303]:
+# In[ ]:
 
-requests_df['test'] = test
-requests_df
+
 
 
 # The requests are now ready to be sent to IS Academia. Let's try it out !
 
-# In[304]:
+# In[20]:
 
 # WARNING : NEXT LINE IS COMMENTED FOR DEBGUGGING THE FIRST REQUEST ONLY. UNCOMMENT IT AND INDENT THE CODE CORRECTLY TO MAKE ALL THE REQUESTS
 
@@ -311,16 +310,51 @@ htmlContent = BeautifulSoup(r.content, 'html.parser')
 computerScienceField = htmlContent.find('option', text='Informatique')
 
 
-# In[319]:
+# In[21]:
 
 # Getting the table of students
+# Let's make the columns
+columns = []
 table = htmlContent.find('table')
 th = table.find('th', text='Civilité')
-td = th.findNext('td')
-td.text
+columns.append(th.text)
+# Go through the table until the last column
+while th.findNext('').name == 'th':
+    th = th.findNext('')
+    columns.append(th.text)
+    
+columns
 
 
-# In[306]:
+# In[29]:
+
+# Getting the information about the student we're "looping on"
+currentStudent = []
+tr = th.findNext('tr')
+children = tr.children
+for child in children:
+    currentStudent.append(child.text)
+    
+currentStudent
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+#tr = th.parent
+#td = th.findNext('td')
+#td.text
+#th.findNext('th')
+#th.findNext('th')
+#tr = tr.findNext('tr')
+#tr
+
+
+# In[ ]:
 
 print(htmlContent.prettify())
 
