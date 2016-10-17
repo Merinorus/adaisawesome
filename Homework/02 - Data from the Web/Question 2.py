@@ -95,20 +95,23 @@ for option in pedagogicPeriodsSet:
         pedagogicPeriodContent.append(option.text)
 
 
-# In[179]:
+# In[213]:
 
 # Let's make the values and content meet each other
 pedagogicPeriodContent_series = pd.Series(pedagogicPeriodContent)
 pedagogicPeriodValues_series = pd.Series(pedagogicPeriodValues)
 pedagogicPeriod_df = pd.concat([pedagogicPeriodContent_series, pedagogicPeriodValues_series], axis = 1);
 pedagogicPeriod_df.columns = ['Pedagogic_period', 'Value']
-pedagogicPeriod_df
 
 
-# In[189]:
+# In[238]:
 
 # We keep all semesters related to master students
-pedagogicPeriod_df = pedagogicPeriod_df[[period.startswith('Master') or period.startswith('Projet Master') or period.startswith('Mineur') for period in pedagogicPeriod_df.Pedagogic_period]]
+pedagogicPeriod_df_master = pedagogicPeriod_df[[period.startswith('Master') for period in pedagogicPeriod_df.Pedagogic_period]]
+pedagogicPeriod_df_minor = pedagogicPeriod_df[[period.startswith('Mineur') for period in pedagogicPeriod_df.Pedagogic_period]]
+pedagogicPeriod_df_project = pedagogicPeriod_df[[period.startswith('Projet Master') for period in pedagogicPeriod_df.Pedagogic_period]]
+
+pedagogicPeriod_df = pd.concat([pedagogicPeriod_df_master, pedagogicPeriod_df_minor, pedagogicPeriod_df_project])
 pedagogicPeriod_df
 
 
@@ -176,7 +179,38 @@ semesterType_df
 # 
 # So let's cook all the requests we're going to send !
 
-# In[ ]:
+# In[249]:
+
+# Let's put the semester types aside, because we're going to need them
+autumn_semester_value = semesterType_df.loc[semesterType_df['Semester_type'] == 'Semestre d\'automne', 'Value']
+autumn_semester_value = autumn_semester_value.iloc[0]
+
+spring_semester_value = semesterType_df.loc[semesterType_df['Semester_type'] == 'Semestre de printemps', 'Value']
+spring_semester_value = spring_semester_value.iloc[0]
 
 
+# In[239]:
+
+# Go all over the years ('2007-2008', '2008-2009' and so on)
+for academicYear_row in academicYear_df.itertuples(index=True, name='Academic_year'):
+    
+    # The year (eg: '2007-2008')
+    academicYear = academicYear_row.Academic_year
+    
+    # The associated value (eg: '978181')
+    academicYear_value = academicYear_row.Value
+    
+    # We get all the pedagogic periods associated with this academic year
+    for pegagogicPeriod_row in pedagogicPeriod_df.itertuples(index=True, name='Pedagogic_period'):
+        
+        # The period (eg: 'Master semestre 1')
+        pedagogicPeriod = pegagogicPeriod_row.Pedagogic_period
+        
+        # The associated value (eg: '2230106')
+        pegagogicPeriod_Value = pegagogicPeriod_row.Value
+        
+        # We need to associate the corresponding semester type (eg: Master semester 1 is autumn, but Master semester 2 will be spring)
+        # only for debugging
+        print("academic year = " + academicYear_value + ", pedagogic value = " + pegagogicPeriod_Value + ", pedagogic period is " + pegagogicPeriod_row.Pedagogic_period)
+        
 

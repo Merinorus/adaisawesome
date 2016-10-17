@@ -12351,7 +12351,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[179]:</div>
+<div class="prompt input_prompt">In&nbsp;[213]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Let&#39;s make the values and content meet each other</span>
@@ -12359,6 +12359,24 @@ div#notebook {
 <span class="n">pedagogicPeriodValues_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pedagogicPeriodValues</span><span class="p">)</span>
 <span class="n">pedagogicPeriod_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pedagogicPeriodContent_series</span><span class="p">,</span> <span class="n">pedagogicPeriodValues_series</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">);</span>
 <span class="n">pedagogicPeriod_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Pedagogic_period&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[238]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We keep all semesters related to master students</span>
+<span class="n">pedagogicPeriod_df_master</span> <span class="o">=</span> <span class="n">pedagogicPeriod_df</span><span class="p">[[</span><span class="n">period</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Master&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">pedagogicPeriod_df</span><span class="o">.</span><span class="n">Pedagogic_period</span><span class="p">]]</span>
+<span class="n">pedagogicPeriod_df_minor</span> <span class="o">=</span> <span class="n">pedagogicPeriod_df</span><span class="p">[[</span><span class="n">period</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Mineur&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">pedagogicPeriod_df</span><span class="o">.</span><span class="n">Pedagogic_period</span><span class="p">]]</span>
+<span class="n">pedagogicPeriod_df_project</span> <span class="o">=</span> <span class="n">pedagogicPeriod_df</span><span class="p">[[</span><span class="n">period</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Projet Master&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">pedagogicPeriod_df</span><span class="o">.</span><span class="n">Pedagogic_period</span><span class="p">]]</span>
+
+<span class="n">pedagogicPeriod_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pedagogicPeriod_df_master</span><span class="p">,</span> <span class="n">pedagogicPeriod_df_minor</span><span class="p">,</span> <span class="n">pedagogicPeriod_df_project</span><span class="p">])</span>
 <span class="n">pedagogicPeriod_df</span>
 </pre></div>
 
@@ -12370,7 +12388,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[179]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[238]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12383,46 +12401,6 @@ div#notebook {
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th>0</th>
-      <td>Bachelor semestre 1</td>
-      <td>249108</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Bachelor semestre 2</td>
-      <td>249114</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Bachelor semestre 3</td>
-      <td>942155</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Bachelor semestre 4</td>
-      <td>942163</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Bachelor semestre 5</td>
-      <td>942120</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>Bachelor semestre 5b</td>
-      <td>2226768</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>Bachelor semestre 6</td>
-      <td>942175</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>Bachelor semestre 6b</td>
-      <td>2226785</td>
-    </tr>
     <tr>
       <th>8</th>
       <td>Master semestre 1</td>
@@ -12454,11 +12432,6 @@ div#notebook {
       <td>2335676</td>
     </tr>
     <tr>
-      <th>14</th>
-      <td>Mise à niveau</td>
-      <td>2063602308</td>
-    </tr>
-    <tr>
       <th>15</th>
       <td>Projet Master automne</td>
       <td>249127</td>
@@ -12467,103 +12440,6 @@ div#notebook {
       <th>16</th>
       <td>Projet Master printemps</td>
       <td>3781783</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>Semestre automne</td>
-      <td>953159</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>Semestre printemps</td>
-      <td>2754553</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>Stage automne 3ème année</td>
-      <td>953137</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>Stage automne 4ème année</td>
-      <td>2226616</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>Stage printemps 3ème année</td>
-      <td>983606</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>Stage printemps 4ème année</td>
-      <td>2226626</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>Stage printemps master</td>
-      <td>2227132</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[189]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We keep all semesters related to master students</span>
-<span class="n">pedagogicPeriod_df</span> <span class="o">=</span> <span class="n">pedagogicPeriod_df</span><span class="p">[[</span><span class="n">period</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Master&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">period</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Projet Master&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">period</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Mineur&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">pedagogicPeriod_df</span><span class="o">.</span><span class="n">Pedagogic_period</span><span class="p">]]</span>
-<span class="n">pedagogicPeriod_df</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[189]:</div>
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Pedagogic_period</th>
-      <th>Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>8</th>
-      <td>Master semestre 1</td>
-      <td>2230106</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>Master semestre 2</td>
-      <td>942192</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>Master semestre 3</td>
-      <td>2230128</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>Master semestre 4</td>
-      <td>2230140</td>
     </tr>
   </tbody>
 </table>
@@ -12709,13 +12585,145 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[249]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Let&#39;s put the semester types aside, because we&#39;re going to need them</span>
+<span class="n">autumn_semester_value</span> <span class="o">=</span> <span class="n">semesterType_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">semesterType_df</span><span class="p">[</span><span class="s1">&#39;Semester_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Semestre d</span><span class="se">\&#39;</span><span class="s1">automne&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span>
+<span class="n">autumn_semester_value</span> <span class="o">=</span> <span class="n">autumn_semester_value</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">spring_semester_value</span> <span class="o">=</span> <span class="n">semesterType_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">semesterType_df</span><span class="p">[</span><span class="s1">&#39;Semester_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Semestre de printemps&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span>
+<span class="n">spring_semester_value</span> <span class="o">=</span> <span class="n">spring_semester_value</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[239]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Go all over the years (&#39;2007-2008&#39;, &#39;2008-2009&#39; and so on)</span>
+<span class="k">for</span> <span class="n">academicYear_row</span> <span class="ow">in</span> <span class="n">academicYear_df</span><span class="o">.</span><span class="n">itertuples</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Academic_year&#39;</span><span class="p">):</span>
+    
+    <span class="c1"># The year (eg: &#39;2007-2008&#39;)</span>
+    <span class="n">academicYear</span> <span class="o">=</span> <span class="n">academicYear_row</span><span class="o">.</span><span class="n">Academic_year</span>
+    
+    <span class="c1"># The associated value (eg: &#39;978181&#39;)</span>
+    <span class="n">academicYear_value</span> <span class="o">=</span> <span class="n">academicYear_row</span><span class="o">.</span><span class="n">Value</span>
+    
+    <span class="c1"># We get all the pedagogic periods associated with this academic year</span>
+    <span class="k">for</span> <span class="n">pegagogicPeriod_row</span> <span class="ow">in</span> <span class="n">pedagogicPeriod_df</span><span class="o">.</span><span class="n">itertuples</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Pedagogic_period&#39;</span><span class="p">):</span>
+        
+        <span class="c1"># The period (eg: &#39;Master semestre 1&#39;)</span>
+        <span class="n">pedagogicPeriod</span> <span class="o">=</span> <span class="n">pegagogicPeriod_row</span><span class="o">.</span><span class="n">Pedagogic_period</span>
+        
+        <span class="c1"># The associated value (eg: &#39;2230106&#39;)</span>
+        <span class="n">pegagogicPeriod_Value</span> <span class="o">=</span> <span class="n">pegagogicPeriod_row</span><span class="o">.</span><span class="n">Value</span>
+        
+        <span class="c1"># We need to associate the corresponding semester type (eg: Master semester 1 is autumn, but Master semester 2 will be spring)</span>
+        <span class="c1"># only for debugging</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;academic year = &quot;</span> <span class="o">+</span> <span class="n">academicYear_value</span> <span class="o">+</span> <span class="s2">&quot;, pedagogic value = &quot;</span> <span class="o">+</span> <span class="n">pegagogicPeriod_Value</span> <span class="o">+</span> <span class="s2">&quot;, pedagogic period is &quot;</span> <span class="o">+</span> <span class="n">pegagogicPeriod_row</span><span class="o">.</span><span class="n">Pedagogic_period</span><span class="p">)</span>
+        
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>academic year = 978181, pedagogic value = 2230106, pedagogic period is Master semestre 1
+academic year = 978181, pedagogic value = 942192, pedagogic period is Master semestre 2
+academic year = 978181, pedagogic value = 2230128, pedagogic period is Master semestre 3
+academic year = 978181, pedagogic value = 2230140, pedagogic period is Master semestre 4
+academic year = 978181, pedagogic value = 2335667, pedagogic period is Mineur semestre 1
+academic year = 978181, pedagogic value = 2335676, pedagogic period is Mineur semestre 2
+academic year = 978181, pedagogic value = 249127, pedagogic period is Projet Master automne
+academic year = 978181, pedagogic value = 3781783, pedagogic period is Projet Master printemps
+academic year = 978187, pedagogic value = 2230106, pedagogic period is Master semestre 1
+academic year = 978187, pedagogic value = 942192, pedagogic period is Master semestre 2
+academic year = 978187, pedagogic value = 2230128, pedagogic period is Master semestre 3
+academic year = 978187, pedagogic value = 2230140, pedagogic period is Master semestre 4
+academic year = 978187, pedagogic value = 2335667, pedagogic period is Mineur semestre 1
+academic year = 978187, pedagogic value = 2335676, pedagogic period is Mineur semestre 2
+academic year = 978187, pedagogic value = 249127, pedagogic period is Projet Master automne
+academic year = 978187, pedagogic value = 3781783, pedagogic period is Projet Master printemps
+academic year = 978195, pedagogic value = 2230106, pedagogic period is Master semestre 1
+academic year = 978195, pedagogic value = 942192, pedagogic period is Master semestre 2
+academic year = 978195, pedagogic value = 2230128, pedagogic period is Master semestre 3
+academic year = 978195, pedagogic value = 2230140, pedagogic period is Master semestre 4
+academic year = 978195, pedagogic value = 2335667, pedagogic period is Mineur semestre 1
+academic year = 978195, pedagogic value = 2335676, pedagogic period is Mineur semestre 2
+academic year = 978195, pedagogic value = 249127, pedagogic period is Projet Master automne
+academic year = 978195, pedagogic value = 3781783, pedagogic period is Projet Master printemps
+academic year = 39486325, pedagogic value = 2230106, pedagogic period is Master semestre 1
+academic year = 39486325, pedagogic value = 942192, pedagogic period is Master semestre 2
+academic year = 39486325, pedagogic value = 2230128, pedagogic period is Master semestre 3
+academic year = 39486325, pedagogic value = 2230140, pedagogic period is Master semestre 4
+academic year = 39486325, pedagogic value = 2335667, pedagogic period is Mineur semestre 1
+academic year = 39486325, pedagogic value = 2335676, pedagogic period is Mineur semestre 2
+academic year = 39486325, pedagogic value = 249127, pedagogic period is Projet Master automne
+academic year = 39486325, pedagogic value = 3781783, pedagogic period is Projet Master printemps
+academic year = 123455150, pedagogic value = 2230106, pedagogic period is Master semestre 1
+academic year = 123455150, pedagogic value = 942192, pedagogic period is Master semestre 2
+academic year = 123455150, pedagogic value = 2230128, pedagogic period is Master semestre 3
+academic year = 123455150, pedagogic value = 2230140, pedagogic period is Master semestre 4
+academic year = 123455150, pedagogic value = 2335667, pedagogic period is Mineur semestre 1
+academic year = 123455150, pedagogic value = 2335676, pedagogic period is Mineur semestre 2
+academic year = 123455150, pedagogic value = 249127, pedagogic period is Projet Master automne
+academic year = 123455150, pedagogic value = 3781783, pedagogic period is Projet Master printemps
+academic year = 123456101, pedagogic value = 2230106, pedagogic period is Master semestre 1
+academic year = 123456101, pedagogic value = 942192, pedagogic period is Master semestre 2
+academic year = 123456101, pedagogic value = 2230128, pedagogic period is Master semestre 3
+academic year = 123456101, pedagogic value = 2230140, pedagogic period is Master semestre 4
+academic year = 123456101, pedagogic value = 2335667, pedagogic period is Mineur semestre 1
+academic year = 123456101, pedagogic value = 2335676, pedagogic period is Mineur semestre 2
+academic year = 123456101, pedagogic value = 249127, pedagogic period is Projet Master automne
+academic year = 123456101, pedagogic value = 3781783, pedagogic period is Projet Master printemps
+academic year = 213637754, pedagogic value = 2230106, pedagogic period is Master semestre 1
+academic year = 213637754, pedagogic value = 942192, pedagogic period is Master semestre 2
+academic year = 213637754, pedagogic value = 2230128, pedagogic period is Master semestre 3
+academic year = 213637754, pedagogic value = 2230140, pedagogic period is Master semestre 4
+academic year = 213637754, pedagogic value = 2335667, pedagogic period is Mineur semestre 1
+academic year = 213637754, pedagogic value = 2335676, pedagogic period is Mineur semestre 2
+academic year = 213637754, pedagogic value = 249127, pedagogic period is Projet Master automne
+academic year = 213637754, pedagogic value = 3781783, pedagogic period is Projet Master printemps
+academic year = 213637922, pedagogic value = 2230106, pedagogic period is Master semestre 1
+academic year = 213637922, pedagogic value = 942192, pedagogic period is Master semestre 2
+academic year = 213637922, pedagogic value = 2230128, pedagogic period is Master semestre 3
+academic year = 213637922, pedagogic value = 2230140, pedagogic period is Master semestre 4
+academic year = 213637922, pedagogic value = 2335667, pedagogic period is Mineur semestre 1
+academic year = 213637922, pedagogic value = 2335676, pedagogic period is Mineur semestre 2
+academic year = 213637922, pedagogic value = 249127, pedagogic period is Projet Master automne
+academic year = 213637922, pedagogic value = 3781783, pedagogic period is Projet Master printemps
+academic year = 213638028, pedagogic value = 2230106, pedagogic period is Master semestre 1
+academic year = 213638028, pedagogic value = 942192, pedagogic period is Master semestre 2
+academic year = 213638028, pedagogic value = 2230128, pedagogic period is Master semestre 3
+academic year = 213638028, pedagogic value = 2230140, pedagogic period is Master semestre 4
+academic year = 213638028, pedagogic value = 2335667, pedagogic period is Mineur semestre 1
+academic year = 213638028, pedagogic value = 2335676, pedagogic period is Mineur semestre 2
+academic year = 213638028, pedagogic value = 249127, pedagogic period is Projet Master automne
+academic year = 213638028, pedagogic value = 3781783, pedagogic period is Projet Master printemps
+academic year = 355925344, pedagogic value = 2230106, pedagogic period is Master semestre 1
+academic year = 355925344, pedagogic value = 942192, pedagogic period is Master semestre 2
+academic year = 355925344, pedagogic value = 2230128, pedagogic period is Master semestre 3
+academic year = 355925344, pedagogic value = 2230140, pedagogic period is Master semestre 4
+academic year = 355925344, pedagogic value = 2335667, pedagogic period is Mineur semestre 1
+academic year = 355925344, pedagogic value = 2335676, pedagogic period is Mineur semestre 2
+academic year = 355925344, pedagogic value = 249127, pedagogic period is Projet Master automne
+academic year = 355925344, pedagogic value = 3781783, pedagogic period is Projet Master printemps
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
