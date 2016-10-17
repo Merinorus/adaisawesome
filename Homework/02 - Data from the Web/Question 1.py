@@ -20,7 +20,7 @@ htmlContent = BeautifulSoup(r.content, 'html.parser')
 print(htmlContent.prettify())
 
 
-# In[59]:
+# In[80]:
 
 # We first get the "Computer science" value
 computerScienceField = htmlContent.find('option', text='Informatique')
@@ -52,14 +52,18 @@ for option in academicYearsSet:
         academicYearContent.append(option.text)
 
 
-# In[62]:
+# In[81]:
 
-# Now, we have all the academic years that might interest us
-academicYear_Series = pd.Series(academicYearContent, index=academicYearValues)
-academicYear_Series
+# Now, we have all the academic years that might interest us. We wrangle them a little bit so be able to make request more easily later.
+academicYearValues_series = pd.Series(academicYearValues)
+academicYearContent_series = pd.Series(academicYearContent)
+academicYear_df = pd.concat([academicYearContent_series, academicYearValues_series], axis = 1)
+academicYear_df.columns= ['Academic_year', 'Value']
+academicYear_df = academicYear_df.sort_values(['Academic_year', 'Value'], ascending=[1, 0])
+academicYear_df
 
 
-# In[63]:
+# In[82]:
 
 # Then, let's get all the pedagogic periods we need. It's a little bit more complicated here because we need to link the pedagogic period with a season (eg : Bachelor 1 is autumn, Bachelor 2 is spring etc.)
 # Thus, we need more than the pedagogic values. For doing some tests to associate them with the right season, we need the actual textual value ("Bachelor semestre 1", "Bachelor semestre 2" etc.)
@@ -78,21 +82,25 @@ for option in pedagogicPeriodsSet:
         pedagogicPeriodContent.append(option.text)
 
 
-# In[64]:
+# In[83]:
 
 # Let's make the values and content meet each other
-pedagogicPeriod_Series = pd.Series(pedagogicPeriodContent, index=pedagogicPeriodValues)
-pedagogicPeriod_Series
+pedagogicPeriodContent_series = pd.Series(pedagogicPeriodContent)
+pedagogicPeriodValues_series = pd.Series(pedagogicPeriodValues)
+pedagogicPeriod_df = pd.concat([pedagogicPeriodContent_series, pedagogicPeriodValues_series], axis = 1);
+pedagogicPeriod_df.columns = ['Pedagogic_period', 'Value']
 
 
-# In[65]:
+# In[84]:
 
 # We keep all semesters related to Bachelor students
-bachelorPedagogicPeriod_Series = pedagogicPeriod_Series[[name.startswith('Bachelor') for name in pedagogicPeriod_Series]]
-bachelorPedagogicPeriod_Series
+pedagogicPeriod_df_bachelor = pedagogicPeriod_df[[period.startswith('Bachelor') for period in pedagogicPeriod_df.Pedagogic_period]]
+
+pedagogicPeriod_df = pd.concat([pedagogicPeriod_df_bachelor])
+pedagogicPeriod_df
 
 
-# In[66]:
+# In[85]:
 
 # Lastly, we need to extract the values associated with autumn and spring semesters.
 semesterTypeField = htmlContent.find('select', attrs={'name':'ww_x_HIVERETE'})
@@ -110,35 +118,34 @@ for option in semesterTypeSet:
         semesterTypeContent.append(option.text)
 
 
-# In[67]:
+# In[86]:
 
 # Here are the values for autumn and spring semester :
-semesterType_Series = pd.Series(semesterTypeContent, index=semesterTypeValues)
-semesterType_Series
 
+semesterTypeValues_series = pd.Series(semesterTypeValues)
+semesterTypeContent_series = pd.Series(semesterTypeContent)
+semesterType_df = pd.concat([semesterTypeContent_series, semesterTypeValues_series], axis = 1)
+semesterType_df.columns = ['Semester_type', 'Value']
+semesterType_df
 
-# In[68]:
+Now, we got all the information to get all the master students ! Let's make all the requests we need to build our data. We will try to do requests such as :
+Get students from bachelor semester 1 of 2007-2008
+...
+Get students from bachelor semester 6b of 2007-2008
+... and so on for each academic year until 2015-2016, the last complete year. We can even take the first semester of 2016-2017 into account, to check if some students we though they finished last year are actually still studying. 
+# We can ask for a list of student in two formats : HTML or CSV. We choosed to get them in a HTML format because this is the first time that we wrangle data in HTML format, and that may be really useful to learn in order to work with most of the websites in the future ! The request sent by the browser to IS Academia, to get a list of student in a HTML format, looks like this : http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?arg1=xxx&arg2=yyy With "xxx" the value associated with the argument named "arg1", "yyy" the value associated with the argument named "arg2" etc. It uses to have a lot more arguments. For instance, we tried to send a request as a "human" through our browser and intercepted it with Postman interceptor. We found that the folowing arguments have to be sent : ww_x_GPS = -1 ww_i_reportModel = 133685247 ww_i_reportModelXsl = 133685270 ww_x_UNITE_ACAD = 249847 (which is the value of computer science !) ww_x_PERIODE_ACAD = X (eg : the value corresponding to 2007-2008 would be 978181) ww_x_PERIODE_PEDAGO = Y (eg : 2230106 for Master semestre 1) ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)
+# The last three values X, Y and Z must be replaced with the ones we extracted previously. For instance, if we want to get students from Master, semester 1 (which is necessarily autumn semester) of 2007-2008, the "GET Request" would be the following :
+# http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&ww_i_reportModel=133685247&ww_i_reportModelXsl=133685270&ww_x_UNITE_ACAD=249847&ww_x_PERIODE_ACAD=978181&ww_x_PERIODE_PEDAGO=2230106&ww_x_HIVERETE=2936286
+# So let's cook all the requests we're going to send !
 
-cases = {}
-for element in semesterTypeValues:
-    cases[element.a.get_text()] = {}
-cases[0].a['href']
+# In[87]:
 
+# Let's put the semester types aside, because we're going to need them
+autumn_semester_value = semesterType_df.loc[semesterType_df['Semester_type'] == 'Semestre d\'automne', 'Value']
+autumn_semester_value = autumn_semester_value.iloc[0]
 
-# In[69]:
-
-
-<a href="http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.filter?ww_i_reportModel=133685247" name='ww_x_PERIODE_ACAD' id=periodAcad</a>
-
-
-# In[78]:
-
-
-
-
-# In[ ]:
-
-
+spring_semester_value = semesterType_df.loc[semesterType_df['Semester_type'] == 'Semestre de printemps', 'Value']
+spring_semester_value = spring_semester_value.iloc[0]
 
 
 # In[ ]:
