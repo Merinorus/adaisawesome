@@ -189,7 +189,7 @@ spring_semester_value = semesterType_df.loc[semesterType_df['Semester_type'] == 
 spring_semester_value = spring_semester_value.iloc[0]
 
 
-# In[261]:
+# In[270]:
 
 # Here is the list of the GET requests we will send to IS Academia
 requestsToISAcademia = []
@@ -234,8 +234,28 @@ for academicYear_row in academicYear_df.itertuples(index=True, name='Academic_ye
         
 
 
-# In[263]:
+# In[267]:
 
 # Here is the list of all the requests we have to send !
 requestsToISAcademia
+
+
+# The requests are now ready to be sent to IS Academia. Let's try it out !
+
+# In[279]:
+
+# WARNING : NEXT LINE IS COMMENTED FOR DEBGUGGING THE FIRST REQUEST ONLY. UNCOMMENT IT AND INDENT THE CODE CORRECTLY TO MAKE ALL THE REQUESTS
+
+#for request in requestsToISAcademia: # LINE TO UNCOMMENT TO SEND ALL REQUESTS
+request = requestsToISAcademia[0] # LINE TO COMMENT TO SEND ALL REQUESTS
+print(request)
+
+# Send the request to IS Academia
+r = requests.get(request)
+
+# Here is the HTML content of IS Academia's response
+htmlContent = BeautifulSoup(r.content, 'html.parser')
+
+# Let's extract some data...
+# TODO
 

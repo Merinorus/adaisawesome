@@ -12603,7 +12603,7 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[261]:</div>
+<div class="prompt input_prompt">In&nbsp;[270]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Here is the list of the GET requests we will send to IS Academia</span>
@@ -12656,7 +12656,7 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[263]:</div>
+<div class="prompt input_prompt">In&nbsp;[267]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Here is the list of all the requests we have to send !</span>
@@ -12671,7 +12671,7 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[263]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[267]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -12757,6 +12757,2276 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
  &#39;http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=355925344&amp;ww_x_PERIODE_PEDAGO=3781783&amp;ww_x_HIVERETE=2936295&#39;]</pre>
 </div>
 
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The requests are now ready to be sent to IS Academia. Let's try it out !</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[279]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># WARNING : NEXT LINE IS COMMENTED FOR DEBGUGGING THE FIRST REQUEST ONLY. UNCOMMENT IT AND INDENT THE CODE CORRECTLY TO MAKE ALL THE REQUESTS</span>
+
+<span class="c1">#for request in requestsToISAcademia: # LINE TO UNCOMMENT TO SEND ALL REQUESTS</span>
+<span class="n">request</span> <span class="o">=</span> <span class="n">requestsToISAcademia</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># LINE TO COMMENT TO SEND ALL REQUESTS</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+<span class="c1"># Send the request to IS Academia</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+<span class="c1"># Here is the HTML content of IS Academia&#39;s response</span>
+<span class="n">htmlContent</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+
+<span class="c1"># Let&#39;s extract some data...</span>
+<span class="c1"># TODO</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978181&amp;ww_x_PERIODE_PEDAGO=2230106&amp;ww_x_HIVERETE=2936286
+&lt;html&gt;
+ &lt;head&gt;
+  &lt;meta content=&#34;text/html; charset=utf-8&#34; http-equiv=&#34;Content-Type&#34;&gt;
+   &lt;link href=&#34;gedpublicreports.css?ww_x_path=Gestac.Moniteur.Style&#34; rel=&#34;stylesheet&#34; type=&#34;text/css&#34;/&gt;
+  &lt;/meta&gt;
+ &lt;/head&gt;
+ &lt;body alink=&#34;#666666&#34; bgcolor=&#34;#ffffff&#34; link=&#34;#666666&#34; marginheight=&#34;0&#34; marginwidth=&#34;5&#34; vlink=&#34;#666666&#34;&gt;
+  &lt;fieldset style=&#34;text-align:right; width:40%; position:relative; margin-right: 10px;float:right; border: 0; padding: 0 0 8px 0;&#34;&gt;
+   &lt;a href=&#34;!GEDREPORTS.html?ww_x_GPS=-1&amp;amp;ww_i_reportModel=133685247&amp;amp;ww_i_reportModelXsl=133685270&amp;amp;ww_x_UNITE_ACAD=249847&amp;amp;ww_x_PERIODE_ACAD=978181&amp;amp;ww_x_PERIODE_PEDAGO=2230106&amp;amp;ww_x_HIVERETE=2936286&#34; style=&#34;color:#990033;&#34;&gt;
+    Identification pour accéder aux e-mails
+    &lt;br&gt;
+     Login to access email adresses
+    &lt;/br&gt;
+   &lt;/a&gt;
+  &lt;/fieldset&gt;
+  &lt;script&gt;
+   function mailList(x) {
+   var vtop = (screen.height-200)/2;
+   var vleft=(screen.width-600)/2;
+   var w=open(&#34;&#34;, &#34;emaillist&#34;, &#34;Scrollbars=1,resizable=1,width=600,height=200,top=&#34;+vtop+&#34;,left=&#34;+vleft);
+   w.document.write(x);
+   w.document.close();
+   w.focus();
+  }
+  &lt;/script&gt;
+  &lt;h1&gt;
+   Extraction : Liste des étudiants inscrits par semestre
+  &lt;/h1&gt;
+  &lt;h1&gt;
+   Ces listes d&#39;étudiants ne seront définitives qu&#39;à la mi-août une fois la commission d&#39;admission bachelor et la conférence d&#39;examen passées afin de s&#39;assurer que tous les étudiants nouvellement admis à l&#39;EPFL y figurent et que les étudiants en situation d&#39;échec définitif soient rayés de ces listes
+  &lt;/h1&gt;
+  &lt;hr style=&#34;height:0px;visibility: hidden;display:block;width:0px; float:none; clear:both; color: #ffffff;&#34;&gt;
+   &lt;table&gt;
+    &lt;tr&gt;
+     &lt;th colspan=&#34;12&#34;&gt;
+      &lt;font color=&#34;black&#34;&gt;
+       Informatique, 2007-2008, Master semestre 1
+      &lt;/font&gt;
+      (71 ét.)
+     &lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;th&gt;
+      Civilité
+     &lt;/th&gt;
+     &lt;th&gt;
+      Nom Prénom
+     &lt;/th&gt;
+     &lt;th&gt;
+      Orientation Bachelor
+     &lt;/th&gt;
+     &lt;th&gt;
+      Orientation Master
+     &lt;/th&gt;
+     &lt;th&gt;
+      Spécialisation
+     &lt;/th&gt;
+     &lt;th&gt;
+      Filière opt.
+     &lt;/th&gt;
+     &lt;th&gt;
+      Mineur
+     &lt;/th&gt;
+     &lt;th&gt;
+      Statut
+     &lt;/th&gt;
+     &lt;th&gt;
+      Type Echange
+     &lt;/th&gt;
+     &lt;th&gt;
+      Ecole Echange
+     &lt;/th&gt;
+     &lt;th&gt;
+      No Sciper
+     &lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Aeberhard François-Xavier
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      153066
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Madame
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Agarwal Megha
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      180027
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Anagnostaras David
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      152232
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Auroux Damien
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      177395
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Awalebo Joseph
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      161970
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Balet Ken
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      166258
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Barazzutti Raphaël Pierre
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      173600
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Bayramoglu Ersoy
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      178879
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Madame
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Benabdallah Zeineb
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      154573
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Bettex Marc
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      160492
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Billaud Joël
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      172687
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Brightwell Mark
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      179802
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Madame
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Bucher Cécile
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      162618
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Campora Simone
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Internet computing
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      180072
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Cardinaux Damien
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      146330
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Madame
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Casati Nathalie
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      160148
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Cassata Alexandre
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      160225
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Cassina Ilya
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      153746
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Copponnex Hadrien
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      160718
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Droz-dit-Busset Arnault
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      138088
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Dumont Loïc
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      154643
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Dupasquier Benoît
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      166772
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Fardel Ludovic
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      167168
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Fleury Marc-Olivier
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      166805
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Fomene Tierry Alain
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Congé
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Erasmus
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Linköping University
+     &lt;/td&gt;
+     &lt;td&gt;
+      154080
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Galdos Andoni
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      169702
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Garessus Samuel
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      180161
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Garg Nikhil
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      172264
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Gascon Grégory
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      160578
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Gfeller Sebastian
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      161357
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Heath Quentin
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      177399
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Heiniger Nicolas
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      166921
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Hofer Thomas
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Foundations of Software
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      165819
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Hottelier Thibaud
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      166229
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Ibarguren Ibai
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      173902
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Imperatori Alexandre
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      166491
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Joaquim David
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      166124
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Junod Antoine
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      146929
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Koganei Olivier
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      180313
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Kohler Johann
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      160254
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Koller Yannick
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      169734
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Madame
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Krishnan Sukanya
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      179800
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Kwanga Rodrigue
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Biocomputing
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      172611
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Lavanchy Cédric
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      166935
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Losa Giuliano
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      179339
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Madame
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Lotfi Jocelyne
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      166029
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Madame
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Marian Ludmila
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      179930
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Marmori Federico
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      161794
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Madame
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Meinen Jennifer
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      161024
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Moulin François
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      167133
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Muriel Hugo Marcelo
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Internet computing
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      179878
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Ngallemo Hever Patrick
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      160893
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Ninkovic Marko
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      180269
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Pakzad Pooya
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Internet computing
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      180160
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Pilchen Jerome
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      177636
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Plancherel Pascal
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      166262
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Pollet Christophe
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      179716
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Rabie Stéphane
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      177393
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Ragnerstam Erik
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      177476
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Madame
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Rochat Aurélia
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      166079
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Roux Alexandre
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Foundations of Software
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      166263
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Sauthier Ludovic
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      161138
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Schintgen Joël
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      160991
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Signori Jean
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      155018
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Spiess Christophe
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      167387
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Stachowiak Robert
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      174036
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Suter François
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      154706
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Madame
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Tomar Anmol
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      178057
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Wei Zhe
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      155097
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Zalakain Ilazki
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      169839
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Monsieur
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Zufferey Damien
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+      Présent
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+      166264
+     &lt;/td&gt;
+     &lt;td style=&#34;white-space:nowrap&#34;&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+   &lt;/table&gt;
+  &lt;/hr&gt;
+ &lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- OpenXml:0.00s  agent ctrl:0.00s  xml:0.30s  xsl extr&amp;stylesheet:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.00s  transform 2:0.04s  xsl process:0.00s  --&gt;
+
+</pre>
+</div>
 </div>
 
 </div>
