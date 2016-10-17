@@ -12709,13 +12709,153 @@ So let's cook all the requests we're going to send !</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[115]:</div>
+<div class="prompt input_prompt">In&nbsp;[174]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create a new Dataframe into which to concatenate all of the students and Scipers</span>
-<span class="n">data1</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">requestsToISAcademia</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">htmlContentData1</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">data1</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">htmlContentData1</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># WARNING : NEXT LINE IS COMMENTED FOR DEBGUGGING THE FIRST REQUEST ONLY. UNCOMMENT IT AND INDENT THE CODE CORRECTLY TO MAKE ALL THE REQUESTS</span>
+
+<span class="c1">#for request in requestsToISAcademia: # LINE TO UNCOMMENT TO SEND ALL REQUESTS</span>
+<span class="n">request</span> <span class="o">=</span> <span class="n">requestsToISAcademia</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># LINE TO COMMENT TO SEND ALL REQUESTS</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+<span class="c1"># Send the request to IS Academia</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+<span class="c1"># Here is the HTML content of IS Academia&#39;s response</span>
+<span class="n">htmlContent</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+
+<span class="c1"># Let&#39;s extract some data...</span>
+<span class="n">computerScienceField</span> <span class="o">=</span> <span class="n">htmlContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Informatique&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978181&amp;ww_x_PERIODE_PEDAGO=249108&amp;ww_x_HIVERETE=2936286
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[175]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Getting the table of students</span>
+<span class="c1"># Let&#39;s make the columns</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">htmlContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
+<span class="n">th</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;th&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Civilité&#39;</span><span class="p">)</span>
+<span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="c1"># Go through the table until the last column</span>
+<span class="k">while</span> <span class="n">th</span><span class="o">.</span><span class="n">findNext</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;th&#39;</span><span class="p">:</span>
+    <span class="n">th</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">findNext</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    
+<span class="n">columns</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[175]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;Civilité&#39;,
+ &#39;Nom Prénom&#39;,
+ &#39;Orientation Bachelor&#39;,
+ &#39;Orientation Master&#39;,
+ &#39;Spécialisation&#39;,
+ &#39;Filière opt.&#39;,
+ &#39;Mineur&#39;,
+ &#39;Statut&#39;,
+ &#39;Type Echange&#39;,
+ &#39;Ecole Echange&#39;,
+ &#39;No Sciper&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[176]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Getting the information about the student we&#39;re &quot;looping on&quot;</span>
+<span class="n">currentStudent</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">tr</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">findNext</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">)</span>
+<span class="n">children</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">children</span>
+<span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+    <span class="n">currentStudent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    
+<span class="n">currentStudent</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[176]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;Monsieur&#39;,
+ &#39;Arévalo\xa0Christian&#39;,
+ &#39;&#39;,
+ &#39;&#39;,
+ &#39;&#39;,
+ &#39;&#39;,
+ &#39;&#39;,
+ &#39;Présent&#39;,
+ &#39;&#39;,
+ &#39;&#39;,
+ &#39;169569&#39;,
+ &#39;&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>#tr = th.parent
+#td = th.findNext('td')
+#td.text
+#th.findNext('th')
+#th.findNext('th')
+#tr = tr.findNext('tr')
+#tr
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[177]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">htmlContent</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
 </pre></div>
 
 </div>
@@ -15508,7 +15648,7 @@ So let's cook all the requests we're going to send !</p>
   &lt;/hr&gt;
  &lt;/body&gt;
 &lt;/html&gt;
-&lt;!-- OpenXml:0.01s  agent ctrl:0.00s  xml:0.35s  xsl extr&amp;stylesheet:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.00s  transform 2:0.05s  xsl process:0.00s  --&gt;
+&lt;!-- OpenXml:0.01s  agent ctrl:0.00s  xml:0.62s  xsl extr&amp;stylesheet:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.01s  transform 2:0.08s  xsl process:0.00s  --&gt;
 
 </pre>
 </div>
@@ -15520,10 +15660,10 @@ So let's cook all the requests we're going to send !</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[118]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">table1</span> <span class="o">=</span> <span class="n">htmlContentData1</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
 </div>
@@ -15531,65 +15671,6 @@ So let's cook all the requests we're going to send !</p>
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[173]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create an empty dataframe with the relevant columns</span>
-<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Year&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;Semester&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;Civilité&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;Nom Prénom&#39;</span><span class="p">:[],</span> <span class="s1">&#39;Status&#39;</span><span class="p">:[],</span> <span class="s1">&#39;No Sciper&#39;</span><span class="p">:[]})</span>
-<span class="n">tr</span> <span class="o">=</span> <span class="n">table1</span><span class="o">.</span><span class="n">findNext</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">)</span>
-<span class="n">td</span> <span class="o">=</span> <span class="n">table1</span><span class="o">.</span><span class="n">findNext</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">)</span>
-<span class="n">df1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;Civilité&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">td</span><span class="o">.</span><span class="n">text</span>
-<span class="n">df1</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[173]:</div>
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Civilité</th>
-      <th>No Sciper</th>
-      <th>Nom Prénom</th>
-      <th>Semester</th>
-      <th>Status</th>
-      <th>Year</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1</th>
-      <td>Monsieur</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>...
-will need to be completed next time around
     </div>
   </div>
 </body>

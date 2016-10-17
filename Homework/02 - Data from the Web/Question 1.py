@@ -213,27 +213,64 @@ for academicYear_row in academicYear_df.itertuples(index=True, name='Academic_ye
 requestsToISAcademia
 
 
-# In[115]:
+# In[174]:
 
-# Create a new Dataframe into which to concatenate all of the students and Scipers
-data1 = requests.get(requestsToISAcademia[0])
-htmlContentData1 = BeautifulSoup(data1.content, 'html.parser')
-print(htmlContentData1.prettify())
+# WARNING : NEXT LINE IS COMMENTED FOR DEBGUGGING THE FIRST REQUEST ONLY. UNCOMMENT IT AND INDENT THE CODE CORRECTLY TO MAKE ALL THE REQUESTS
+
+#for request in requestsToISAcademia: # LINE TO UNCOMMENT TO SEND ALL REQUESTS
+request = requestsToISAcademia[0] # LINE TO COMMENT TO SEND ALL REQUESTS
+print(request)
+
+# Send the request to IS Academia
+r = requests.get(request)
+
+# Here is the HTML content of IS Academia's response
+htmlContent = BeautifulSoup(r.content, 'html.parser')
+
+# Let's extract some data...
+computerScienceField = htmlContent.find('option', text='Informatique')
 
 
-# In[118]:
+# In[175]:
 
-table1 = htmlContentData1.find('table')
+# Getting the table of students
+# Let's make the columns
+columns = []
+table = htmlContent.find('table')
+th = table.find('th', text='Civilité')
+columns.append(th.text)
+# Go through the table until the last column
+while th.findNext('').name == 'th':
+    th = th.findNext('')
+    columns.append(th.text)
+    
+columns
 
 
-# In[173]:
+# In[176]:
 
-# Create an empty dataframe with the relevant columns
-df1 = pd.DataFrame({'Year': [], 'Semester': [], 'Civilité': [], 'Nom Prénom':[], 'Status':[], 'No Sciper':[]})
-tr = table1.findNext('tr')
-td = table1.findNext('td')
-df1.loc[i,'Civilité'] = td.text
-df1
+# Getting the information about the student we're "looping on"
+currentStudent = []
+tr = th.findNext('tr')
+children = tr.children
+for child in children:
+    currentStudent.append(child.text)
+    
+currentStudent
 
-...
-will need to be completed next time around
+#tr = th.parent
+#td = th.findNext('td')
+#td.text
+#th.findNext('th')
+#th.findNext('th')
+#tr = tr.findNext('tr')
+#tr
+# In[177]:
+
+print(htmlContent.prettify())
+
+
+# In[ ]:
+
+
+
