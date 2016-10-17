@@ -189,7 +189,10 @@ spring_semester_value = semesterType_df.loc[semesterType_df['Semester_type'] == 
 spring_semester_value = spring_semester_value.iloc[0]
 
 
-# In[239]:
+# In[261]:
+
+# Here is the list of the GET requests we will send to IS Academia
+requestsToISAcademia = []
 
 # Go all over the years ('2007-2008', '2008-2009' and so on)
 for academicYear_row in academicYear_df.itertuples(index=True, name='Academic_year'):
@@ -210,7 +213,29 @@ for academicYear_row in academicYear_df.itertuples(index=True, name='Academic_ye
         pegagogicPeriod_Value = pegagogicPeriod_row.Value
         
         # We need to associate the corresponding semester type (eg: Master semester 1 is autumn, but Master semester 2 will be spring)
-        # only for debugging
-        print("academic year = " + academicYear_value + ", pedagogic value = " + pegagogicPeriod_Value + ", pedagogic period is " + pegagogicPeriod_row.Pedagogic_period)
+        if (pedagogicPeriod.endswith('1') or pedagogicPeriod.endswith('3') or pedagogicPeriod.endswith('automne')):
+            semester_Value = autumn_semester_value
+        else:
+            semester_Value = spring_semester_value
         
+        # This print line is only for debugging if you want to check something
+        # print("academic year = " + academicYear_value + ", pedagogic value = " + pegagogicPeriod_Value + ", pedagogic period is " + pedagogicPeriod + " (semester type value = " + semester_Value + ")")
+        
+        # We're ready to cook the request !
+        request = 'http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&ww_i_reportModel=133685247&ww_i_reportModelXsl=133685270&ww_x_UNITE_ACAD=' + computerScienceValue
+        request = request + '&ww_x_PERIODE_ACAD=' + academicYear_value
+        request = request + '&ww_x_PERIODE_PEDAGO=' + pegagogicPeriod_Value
+        request = request + '&ww_x_HIVERETE=' + semester_Value
+        
+        # Add the newly created request to our wish list...
+        requestsToISAcademia.append(request)
+        
+        
+        
+
+
+# In[263]:
+
+# Here is the list of all the requests we have to send !
+requestsToISAcademia
 
