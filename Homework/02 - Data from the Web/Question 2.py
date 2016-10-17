@@ -285,9 +285,15 @@ requests_df.columns = ['Academic_year', 'Pedagogic_period', 'Request']
 requests_df
 
 
+# In[303]:
+
+requests_df['test'] = test
+requests_df
+
+
 # The requests are now ready to be sent to IS Academia. Let's try it out !
 
-# In[279]:
+# In[304]:
 
 # WARNING : NEXT LINE IS COMMENTED FOR DEBGUGGING THE FIRST REQUEST ONLY. UNCOMMENT IT AND INDENT THE CODE CORRECTLY TO MAKE ALL THE REQUESTS
 
@@ -303,4 +309,18 @@ htmlContent = BeautifulSoup(r.content, 'html.parser')
 
 # Let's extract some data...
 computerScienceField = htmlContent.find('option', text='Informatique')
+
+
+# In[319]:
+
+# Getting the table of students
+table = htmlContent.find('table')
+th = table.find('th', text='Civilité')
+td = th.findNext('td')
+td.text
+
+
+# In[306]:
+
+print(htmlContent.prettify())
 

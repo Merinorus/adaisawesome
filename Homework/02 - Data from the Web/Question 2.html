@@ -13140,6 +13140,40 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[303]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">requests_df</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">test</span>
+<span class="n">requests_df</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-303-f330c0b704a1&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>requests_df<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#39;test&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-yellow-intense-fg ansi-bold">=</span> test
+<span class="ansi-green-fg">      2</span> requests_df
+
+<span class="ansi-red-intense-fg ansi-bold">NameError</span>: name &#39;test&#39; is not defined</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -13152,7 +13186,7 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[279]:</div>
+<div class="prompt input_prompt">In&nbsp;[304]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># WARNING : NEXT LINE IS COMMENTED FOR DEBGUGGING THE FIRST REQUEST ONLY. UNCOMMENT IT AND INDENT THE CODE CORRECTLY TO MAKE ALL THE REQUESTS</span>
@@ -13182,7 +13216,66 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>http://isa.epfl.ch/imoniteur_ISAP/!GEDPUBLICREPORTS.html?ww_x_GPS=-1&amp;ww_i_reportModel=133685247&amp;ww_i_reportModelXsl=133685270&amp;ww_x_UNITE_ACAD=249847&amp;ww_x_PERIODE_ACAD=978181&amp;ww_x_PERIODE_PEDAGO=2230106&amp;ww_x_HIVERETE=2936286
-&lt;html&gt;
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[319]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Getting the table of students</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">htmlContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
+<span class="n">th</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;th&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Civilité&#39;</span><span class="p">)</span>
+<span class="n">td</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">findNext</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">)</span>
+<span class="n">td</span><span class="o">.</span><span class="n">text</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[319]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;Monsieur&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[306]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">htmlContent</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;html&gt;
  &lt;head&gt;
   &lt;meta content=&#34;text/html; charset=utf-8&#34; http-equiv=&#34;Content-Type&#34;&gt;
    &lt;link href=&#34;gedpublicreports.css?ww_x_path=Gestac.Moniteur.Style&#34; rel=&#34;stylesheet&#34; type=&#34;text/css&#34;/&gt;
@@ -15400,7 +15493,7 @@ ww_x_HIVERETE = Z (eg : 2936286 for autumn semester)</p>
   &lt;/hr&gt;
  &lt;/body&gt;
 &lt;/html&gt;
-&lt;!-- OpenXml:0.00s  agent ctrl:0.00s  xml:0.30s  xsl extr&amp;stylesheet:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.00s  transform 2:0.04s  xsl process:0.00s  --&gt;
+&lt;!-- OpenXml:0.01s  agent ctrl:0.00s  xml:0.51s  xsl extr&amp;stylesheet:0.00s  xsl after parsing:0.00s  xsl ctrl data:0.01s  transform 2:0.04s  xsl process:0.00s  --&gt;
 
 </pre>
 </div>
