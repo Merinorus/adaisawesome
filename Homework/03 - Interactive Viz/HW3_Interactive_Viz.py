@@ -133,6 +133,12 @@ university_canton_df.head()
 
 # TODO  : we need to remove the acronym at the end of each row, maybe it might help getting more results with geocodes.
 
+# In[240]:
+
+university_canton_df['UniversityName'] = university_canton_df['UniversityName'].apply(lambda x: x.split(' -')[0])
+university_canton_df.head()
+
+
 # In[231]:
 
 cantons_table = []
