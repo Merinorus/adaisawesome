@@ -11759,7 +11759,7 @@ Good luck</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[61]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -11773,7 +11773,7 @@ Good luck</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[62]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_grant_export_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;P3_GrantExport.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
@@ -11788,7 +11788,7 @@ Good luck</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[22]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[62]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12926,23 +12926,10 @@ Good luck</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[63]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_grant_export_data</span> <span class="o">=</span> <span class="n">p3_grant_export_data</span><span class="p">[</span><span class="n">p3_grant_export_data</span><span class="p">[</span><span class="s1">&#39;Approved Amount&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">())]</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_grant_export_data</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">size</span>
 </pre></div>
 
 </div>
@@ -12953,35 +12940,11 @@ Good luck</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[24]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[63]:</div>
 
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>﻿"Project Number"</th>
-      <th>Project Title</th>
-      <th>Project Title English</th>
-      <th>Responsible Applicant</th>
-      <th>Funding Instrument</th>
-      <th>Funding Instrument Hierarchy</th>
-      <th>Institution</th>
-      <th>University</th>
-      <th>Discipline Number</th>
-      <th>Discipline Name</th>
-      <th>Discipline Name Hierarchy</th>
-      <th>Start Date</th>
-      <th>End Date</th>
-      <th>Approved Amount</th>
-      <th>Keywords</th>
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
-</div>
+
+<div class="output_text output_subarea output_execute_result">
+<pre>959535</pre>
 </div>
 
 </div>
@@ -12992,10 +12955,11 @@ Good luck</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[64]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">())]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We keep only the rows which mention how much money has been granted (the amount column starts by a number)</span>
+<span class="n">p3_grant_export_data</span> <span class="o">=</span> <span class="n">p3_grant_export_data</span><span class="p">[</span><span class="n">p3_grant_export_data</span><span class="p">[</span><span class="s1">&#39;Approved Amount&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">())]</span>
 </pre></div>
 
 </div>
@@ -13005,10 +12969,761 @@ Good luck</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
+<div class="prompt input_prompt">In&nbsp;[65]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Almost 200k rows have been removed</span>
+<span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">size</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[65]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>795885</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[67]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We don&#39;t need this data</span>
+<span class="n">p3_grant_export_data</span> <span class="o">=</span> <span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">columns</span><span class="p">[[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">p3_grant_export_data</span> <span class="o">=</span> <span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;Project Title&#39;</span><span class="p">,</span> <span class="s1">&#39;Project Title English&#39;</span><span class="p">,</span> <span class="s1">&#39;Responsible Applicant&#39;</span><span class="p">,</span> <span class="s1">&#39;Discipline Number&#39;</span><span class="p">,</span> <span class="s1">&#39;Discipline Name Hierarchy&#39;</span><span class="p">,</span> <span class="s1">&#39;Keywords&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">p3_grant_export_data</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[67]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Funding Instrument</th>
+      <th>Funding Instrument Hierarchy</th>
+      <th>Institution</th>
+      <th>University</th>
+      <th>Discipline Name</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Approved Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>NaN</td>
+      <td>Nicht zuteilbar - NA</td>
+      <td>Swiss history</td>
+      <td>01.10.1975</td>
+      <td>30.09.1976</td>
+      <td>11619.00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Faculté de Psychologie et des Sciences de l'Ed...</td>
+      <td>Université de Genève - GE</td>
+      <td>Educational science and Pedagogy</td>
+      <td>01.10.1975</td>
+      <td>30.09.1976</td>
+      <td>41022.00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Kommission für das Corpus philosophorum medii ...</td>
+      <td>NPO (Biblioth., Museen, Verwalt.) - NPO</td>
+      <td>Philosophy</td>
+      <td>01.03.1976</td>
+      <td>28.02.1985</td>
+      <td>79732.00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Abt. Handschriften und Alte Drucke Bibliothek ...</td>
+      <td>Universität Basel - BS</td>
+      <td>Swiss history</td>
+      <td>01.10.1975</td>
+      <td>30.09.1976</td>
+      <td>52627.00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Schweiz. Thesauruskommission</td>
+      <td>NPO (Biblioth., Museen, Verwalt.) - NPO</td>
+      <td>Ancient history and Classical studies</td>
+      <td>01.01.1976</td>
+      <td>30.04.1978</td>
+      <td>120042.00</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Séminaire de politique économique, d'économie ...</td>
+      <td>Université de Fribourg - FR</td>
+      <td>Economics</td>
+      <td>01.01.1976</td>
+      <td>31.12.1978</td>
+      <td>53009.00</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Institut für ökumenische Studien Université de...</td>
+      <td>Université de Fribourg - FR</td>
+      <td>Religious sciences, Theology</td>
+      <td>01.01.1976</td>
+      <td>31.12.1976</td>
+      <td>25403.00</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Ostasiatisches Seminar Universität Zürich</td>
+      <td>Universität Zürich - ZH</td>
+      <td>History in general</td>
+      <td>01.10.1975</td>
+      <td>31.03.1977</td>
+      <td>47100.00</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>NaN</td>
+      <td>Université de Lausanne - LA</td>
+      <td>Romance languages and literature</td>
+      <td>01.10.1975</td>
+      <td>31.03.1977</td>
+      <td>25814.00</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Laboratoire de Didactique et Epistémologie des...</td>
+      <td>Université de Genève - GE</td>
+      <td>Psychology</td>
+      <td>01.10.1975</td>
+      <td>30.09.1978</td>
+      <td>360000.00</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Klinische Psychologie und Psychotherapie Insti...</td>
+      <td>Université de Fribourg - FR</td>
+      <td>Psychology</td>
+      <td>01.10.1975</td>
+      <td>31.12.1978</td>
+      <td>153886.00</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Schweizerische Rechtsquellen c/o Universität Z...</td>
+      <td>NPO (Biblioth., Museen, Verwalt.) - NPO</td>
+      <td>Legal sciences</td>
+      <td>01.10.1975</td>
+      <td>30.09.1978</td>
+      <td>862200.00</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Département de Sociologie Faculté des Sciences...</td>
+      <td>Université de Genève - GE</td>
+      <td>Sociology</td>
+      <td>01.10.1975</td>
+      <td>30.09.1977</td>
+      <td>116991.00</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Institut für Volkswirtschaft WWZ / FGS Univers...</td>
+      <td>Universität Basel - BS</td>
+      <td>Economics</td>
+      <td>01.10.1975</td>
+      <td>31.12.1978</td>
+      <td>112664.00</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Soziologisches Institut Universität Zürich</td>
+      <td>Universität Zürich - ZH</td>
+      <td>Sociology</td>
+      <td>01.10.1975</td>
+      <td>31.12.1975</td>
+      <td>5000.00</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Forschungszentrum FAL</td>
+      <td>Université de Fribourg - FR</td>
+      <td>Educational science and Pedagogy</td>
+      <td>01.10.1975</td>
+      <td>30.09.1977</td>
+      <td>204018.00</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Faculté de Psychologie et des Sciences de l'Ed...</td>
+      <td>Université de Genève - GE</td>
+      <td>Psychology</td>
+      <td>01.10.1975</td>
+      <td>30.09.1977</td>
+      <td>149485.00</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Soziologisches Institut Universität Zürich</td>
+      <td>Universität Zürich - ZH</td>
+      <td>Sociology</td>
+      <td>01.01.1976</td>
+      <td>31.08.1977</td>
+      <td>83983.00</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>NaN</td>
+      <td>Nicht zuteilbar - NA</td>
+      <td>Sociology</td>
+      <td>01.01.1976</td>
+      <td>31.12.1976</td>
+      <td>38152.00</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>NaN</td>
+      <td>Université de Lausanne - LA</td>
+      <td>Sociology</td>
+      <td>01.12.1975</td>
+      <td>31.01.1977</td>
+      <td>14138.00</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Faculté de Psychologie et des Sciences de l'Ed...</td>
+      <td>Université de Genève - GE</td>
+      <td>Educational science and Pedagogy</td>
+      <td>01.10.1975</td>
+      <td>30.09.1978</td>
+      <td>164602.00</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>NaN</td>
+      <td>Universität Bern - BE</td>
+      <td>Sociology</td>
+      <td>01.10.1975</td>
+      <td>30.04.1978</td>
+      <td>147795.00</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Forschungsbereich Politisches Verhalten und Oe...</td>
+      <td>Universität Zürich - ZH</td>
+      <td>Political science</td>
+      <td>01.01.1976</td>
+      <td>30.06.1977</td>
+      <td>24552.00</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Département des langues et des littératures fr...</td>
+      <td>Université de Genève - GE</td>
+      <td>Romance languages and literature</td>
+      <td>01.10.1975</td>
+      <td>30.09.1978</td>
+      <td>44802.00</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>NaN</td>
+      <td>Nicht zuteilbar - NA</td>
+      <td>Swiss history</td>
+      <td>01.01.1976</td>
+      <td>31.12.1979</td>
+      <td>56000.00</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>NaN</td>
+      <td>Nicht zuteilbar - NA</td>
+      <td>Romance languages and literature</td>
+      <td>01.10.1975</td>
+      <td>30.09.1977</td>
+      <td>152535.00</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Schweizerische Gesellschaft für Volkskunde</td>
+      <td>NPO (Biblioth., Museen, Verwalt.) - NPO</td>
+      <td>Ethnology</td>
+      <td>01.10.1975</td>
+      <td>30.09.1976</td>
+      <td>225000.00</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Kuratorium Carl J. Burckhardt</td>
+      <td>NPO (Biblioth., Museen, Verwalt.) - NPO</td>
+      <td>Swiss history</td>
+      <td>01.10.1975</td>
+      <td>30.04.1978</td>
+      <td>179124.00</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>NaN</td>
+      <td>Universität Zürich - ZH</td>
+      <td>Ethnology</td>
+      <td>01.10.1975</td>
+      <td>31.03.1976</td>
+      <td>20000.00</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Eidg. Forschungsanstalt für Wald, Schnee und L...</td>
+      <td>Eidg. Forschungsanstalt für Wald,Schnee,Land -...</td>
+      <td>Archaeology</td>
+      <td>01.10.1975</td>
+      <td>30.09.1978</td>
+      <td>445198.00</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>63939</th>
+      <td>Publication grants</td>
+      <td>Science communication</td>
+      <td>Institut Sozialmanagement und Sozialpolitik Ho...</td>
+      <td>Hochschule Luzern - HSLU</td>
+      <td>Political science</td>
+      <td>01.08.2016</td>
+      <td>31.07.2017</td>
+      <td>1898.00</td>
+    </tr>
+    <tr>
+      <th>63940</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Stiftung Bibliothek Werner Oechslin</td>
+      <td>NaN</td>
+      <td>Architecture and Social urban science</td>
+      <td>01.07.2016</td>
+      <td>30.09.2016</td>
+      <td>9300.00</td>
+    </tr>
+    <tr>
+      <th>63941</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>School of Geographical Sciences University of ...</td>
+      <td>NaN</td>
+      <td>Hydrology, Limnology, Glaciology</td>
+      <td>01.08.2016</td>
+      <td>31.10.2016</td>
+      <td>9500.00</td>
+    </tr>
+    <tr>
+      <th>63942</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Psychology</td>
+      <td>01.07.2016</td>
+      <td>31.07.2016</td>
+      <td>4000.00</td>
+    </tr>
+    <tr>
+      <th>63943</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>CSIRO Marine and Atmospheric Research</td>
+      <td>NaN</td>
+      <td>Climatology. Atmospherical Chemistry, Aeronomoy</td>
+      <td>01.08.2016</td>
+      <td>31.10.2016</td>
+      <td>11000.00</td>
+    </tr>
+    <tr>
+      <th>63944</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Theater and Cinema</td>
+      <td>01.07.2016</td>
+      <td>31.08.2016</td>
+      <td>7500.00</td>
+    </tr>
+    <tr>
+      <th>63945</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Departement Geographie, SIE Universität Zürich</td>
+      <td>NaN</td>
+      <td>Geomorphology</td>
+      <td>01.08.2016</td>
+      <td>30.09.2016</td>
+      <td>8000.00</td>
+    </tr>
+    <tr>
+      <th>63946</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>CReAM Department of Economics University Colle...</td>
+      <td>NaN</td>
+      <td>Economics</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>9300.00</td>
+    </tr>
+    <tr>
+      <th>63947</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Cellular Biology, Cytology</td>
+      <td>01.08.2016</td>
+      <td>30.09.2016</td>
+      <td>7000.00</td>
+    </tr>
+    <tr>
+      <th>63948</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Eawag</td>
+      <td>NaN</td>
+      <td>Other disciplines of Engineering Sciences</td>
+      <td>01.09.2016</td>
+      <td>31.10.2016</td>
+      <td>6000.00</td>
+    </tr>
+    <tr>
+      <th>63949</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Catholic University of Bukavu</td>
+      <td>NaN</td>
+      <td>Pedology</td>
+      <td>01.09.2016</td>
+      <td>30.09.2016</td>
+      <td>4500.00</td>
+    </tr>
+    <tr>
+      <th>63950</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Fondation Jean Monnet pour l'Europe Centre de ...</td>
+      <td>NPO (Biblioth., Museen, Verwalt.) - NPO</td>
+      <td>Political science</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>2800.00</td>
+    </tr>
+    <tr>
+      <th>63951</th>
+      <td>NRP 68 Sustainable Use of Soil as a Resource</td>
+      <td>Programmes;National Research Programmes (NRPs)</td>
+      <td>Planning of Landscape and Urban Systems Instit...</td>
+      <td>ETH Zürich - ETHZ</td>
+      <td>Other disciplines of Engineering Sciences</td>
+      <td>01.10.2016</td>
+      <td>30.09.2017</td>
+      <td>99952.00</td>
+    </tr>
+    <tr>
+      <th>63952</th>
+      <td>NRP 68 Sustainable Use of Soil as a Resource</td>
+      <td>Programmes;National Research Programmes (NRPs)</td>
+      <td>Forschungsanstalt Agroscope Reckenholz-Tänikon...</td>
+      <td>Forschungsanstalten Agroscope - AGS</td>
+      <td>Pedology</td>
+      <td>01.10.2016</td>
+      <td>31.12.2017</td>
+      <td>98040.00</td>
+    </tr>
+    <tr>
+      <th>63953</th>
+      <td>NRP 68 Sustainable Use of Soil as a Resource</td>
+      <td>Programmes;National Research Programmes (NRPs)</td>
+      <td>Forschung und Beratung in Wirtschaft und Polit...</td>
+      <td>Firmen/Privatwirtschaft - FP</td>
+      <td>Political science</td>
+      <td>01.09.2016</td>
+      <td>28.02.2018</td>
+      <td>100000.00</td>
+    </tr>
+    <tr>
+      <th>63954</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Zoologisches Institut Universität Basel</td>
+      <td>NaN</td>
+      <td>Zoology</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>10500.00</td>
+    </tr>
+    <tr>
+      <th>63955</th>
+      <td>International Exploratory Workshops</td>
+      <td>Science communication</td>
+      <td>Zentrum für Religion, Wirtschaft und Politik T...</td>
+      <td>Universität Basel - BS</td>
+      <td>Religious sciences, Theology</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>10030.00</td>
+    </tr>
+    <tr>
+      <th>63956</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Abteilung für Neuropsychologie Zentrum für Kog...</td>
+      <td>NaN</td>
+      <td>Neurophysiology and Brain Research</td>
+      <td>01.08.2016</td>
+      <td>31.10.2016</td>
+      <td>7870.00</td>
+    </tr>
+    <tr>
+      <th>63957</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Electrical Engineering</td>
+      <td>01.08.2016</td>
+      <td>31.08.2016</td>
+      <td>3150.00</td>
+    </tr>
+    <tr>
+      <th>63958</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Abteilung für Indologie Universität Zürich</td>
+      <td>Universität Zürich - ZH</td>
+      <td>Other languages and literature</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>10600.00</td>
+    </tr>
+    <tr>
+      <th>63959</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Institut Religions, Cultures, Modernité FTSR U...</td>
+      <td>Université de Lausanne - LA</td>
+      <td>History in general</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>2515.00</td>
+    </tr>
+    <tr>
+      <th>63960</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Geology</td>
+      <td>01.10.2016</td>
+      <td>31.10.2016</td>
+      <td>3500.00</td>
+    </tr>
+    <tr>
+      <th>63961</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Department of Physics University of Massachusetts</td>
+      <td>NaN</td>
+      <td>Other disciplines of Physics</td>
+      <td>01.10.2016</td>
+      <td>31.10.2016</td>
+      <td>4000.00</td>
+    </tr>
+    <tr>
+      <th>63962</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Political science</td>
+      <td>01.09.2016</td>
+      <td>30.09.2016</td>
+      <td>3550.00</td>
+    </tr>
+    <tr>
+      <th>63963</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Haute École d'art et de design - Genève HES-SO</td>
+      <td>HES de Suisse occidentale - HES-SO</td>
+      <td>Arts</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>3000.00</td>
+    </tr>
+    <tr>
+      <th>63964</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Departement Design Zürcher Hochschule der Küns...</td>
+      <td>Zürcher Fachhochschule (ohne PH) - ZFH</td>
+      <td>Arts</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>1000.00</td>
+    </tr>
+    <tr>
+      <th>63965</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Institute Performing Arts and Film Zürcher Hoc...</td>
+      <td>Zürcher Fachhochschule (ohne PH) - ZFH</td>
+      <td>Music, Theatre</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>2000.00</td>
+    </tr>
+    <tr>
+      <th>63966</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Department of Electrical Engineering and Compu...</td>
+      <td>NaN</td>
+      <td>Other disciplines of Engineering Sciences</td>
+      <td>01.09.2016</td>
+      <td>31.12.2016</td>
+      <td>10500.00</td>
+    </tr>
+    <tr>
+      <th>63967</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Département de Biologie Faculté des Sciences U...</td>
+      <td>NaN</td>
+      <td>Molecular Biology</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>9500.00</td>
+    </tr>
+    <tr>
+      <th>63968</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>The Forsyth Institute Department of Microbiolo...</td>
+      <td>NaN</td>
+      <td>Medical Microbiology</td>
+      <td>01.10.2016</td>
+      <td>30.11.2016</td>
+      <td>7000.00</td>
+    </tr>
+  </tbody>
+</table>
+<p>53059 rows × 8 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">str</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">(</span><span class="s1">&#39;200.92&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
 </div>
@@ -13037,7 +13752,7 @@ Good luck</p>
 <div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">str</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">(</span><span class="s1">&#39;200&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
 </div>
