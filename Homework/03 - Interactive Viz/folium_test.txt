@@ -1,0 +1,3 @@
+
+import folium
+map_osm = folium.Map(location=[45.5236, 44])

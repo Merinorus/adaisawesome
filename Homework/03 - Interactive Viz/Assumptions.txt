@@ -1,0 +1,8 @@
+- If a projects last more than a year, the amount is considered approved the first year of the project.
+- First, we will work with durations of 5 years. Then, if we have time, we'll make an interactive tool that allows to choose the duration of the analysis (how many years)
+- We're getting rid of projects that mention "Data not included in P3" in the approved amount row, because it won't five us any information about financement
+- Locate all universities (University column) and map them to cantons. and forget all project which are located outside Switzerland
+- Get rid of most foreign countries by removing institution fields containing USA, GB...
+- For each project, localize the canton and add the approved amount to the concerned canton
+
+Needed in the final dataframe/csv file canton name, block of years (or year ?), amount
