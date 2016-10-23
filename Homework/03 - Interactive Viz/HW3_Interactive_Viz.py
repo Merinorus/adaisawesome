@@ -3,10 +3,13 @@
 
 # Build a Choropleth map which shows intuitively (i.e., use colors wisely) how much grant money goes to each Swiss canton.
 
-# In[105]:
+# In[147]:
 
 import pandas as pd
 import numpy as np
+import json
+import geopy
+from geopy.geocoders import geonames
 
 
 # In[106]:
@@ -82,8 +85,55 @@ type(p3_grant_export_data['Approved Amount'][0])
 
 
 # Now, time to locate universities...
+# For this, we are giong to use Geopy, which is a python client that works with most popular websites.
+
+# In[137]:
+
+json_login=open('geonames_login.json').read()
+login = json.loads(json_login)
+geonames_login = login['login']
+geonames_password = login['password']
+
+
+# We want to locate every university, then add the corresponding canton in a new column, on the dataframe we were dealing with before.
+
+# In[171]:
+
+geolocator = geopy.geocoders.GeoNames(None, geonames_login)
+test = geolocator.geocode("University of Geneva")
+test
+
+
+# We'll create a table containing all the cantons corresponding to the Universities, then we'll add this new table at the end of our dataframe. So each row will be linked to a canton.
+
+# In[182]:
+
+# Let's count the number of distinct universities we have
+p3_grant_export_data.groupby('University').Institution.nunique().size
+
 
 # In[ ]:
 
+# So we will have to make about 77 request to Geonames, which isn't that much !
+# We'll create a dataframe that will link each university to a canton.
 
+
+# In[206]:
+
+university_canton_df = p3_grant_export_data.groupby('University').Institution.nunique()
+university_canton_df
+#newdf= set(olddf.University)
+
+
+# In[177]:
+
+cantons_table = []
+for i in p3_grant_export_data['University']:
+    canton = geolocator.geocode(i)
+    cantons_table.append(canton)
+
+
+# In[ ]:
+
+cantons_table
 
