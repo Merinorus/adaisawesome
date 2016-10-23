@@ -14025,12 +14025,18 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[206]:</div>
+<div class="prompt input_prompt">In&nbsp;[236]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">university_canton_df</span> <span class="o">=</span> <span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;University&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">Institution</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
-<span class="n">university_canton_df</span>
-<span class="c1">#newdf= set(olddf.University)</span>
+<span class="n">university_canton_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">university_canton_df</span><span class="p">)</span>
+<span class="c1">#university_canton_df = university_canton_df.rename(columns = {&#39;Institution&#39;:&#39;Canton&#39;})</span>
+<span class="n">university_canton_df</span> <span class="o">=</span> <span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;University&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">Institution</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+<span class="n">university_canton_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">university_canton_df</span><span class="p">)</span>
+<span class="n">university_canton_df</span><span class="p">[</span><span class="s1">&#39;UniversityName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">university_canton_df</span><span class="o">.</span><span class="n">index</span>
+<span class="n">university_canton_df</span> <span class="o">=</span> <span class="n">university_canton_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Institution&#39;</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">university_canton_df</span> <span class="o">=</span> <span class="n">university_canton_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">university_canton_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -14041,73 +14047,41 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[206]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[236]:</div>
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre>University
-AO Research Institute - AORI                            2
-Allergie- und Asthmaforschung - SIAF                    2
-Berner Fachhochschule - BFH                            42
-Biotechnologie Institut Thurgau - BITG                  1
-Centre de rech. sur l&#39;environnement alpin - CREALP      1
-EPF Lausanne - EPFL                                   523
-ETH Zürich - ETHZ                                     552
-Eidg. Anstalt für Wasserversorgung - EAWAG             31
-Eidg. Forschungsanstalt für Wald,Schnee,Land - WSL     17
-Eidg. Hochschulinstitut für Berufsbildung - EHB         5
-Eidg. Material und Prüfungsanstalt - EMPA              29
-Ente Ospedaliero Cantonale - EOC                        9
-Fachhochschule Kalaidos - FHKD                          3
-Fachhochschule Nordwestschweiz (ohne PH) - FHNW        65
-Fachhochschule Ostschweiz - FHO                        12
-Facoltà di Teologia di Lugano - FTL                     2
-Fernfachhochschule Schweiz (Mitglied SUPSI) - FFHS      1
-Firmen/Privatwirtschaft - FP                          211
-Forschungsanstalten Agroscope - AGS                    21
-Forschungsinstitut für Opthalmologie - IRO              1
-Forschungsinstitut für biologischen Landbau - FIBL      1
-Forschungskommission SAGW                               1
-Franklin University Switzerland - FUS                   2
-Friedrich Miescher Institute - FMI                      5
-HES de Suisse occidentale - HES-SO                     71
-Haute école pédagogique BE, JU, NE - HEPBEJUNE          3
-Haute école pédagogique du canton de Vaud - HEPL        5
-Haute école pédagogique fribourgeoise - HEPFR           3
-Hochschule Luzern - HSLU                               22
-Idiap Research Institute - IDIAP                        4
-                                                     ... 
-Pädagogische Hochschule Nordwestschweiz - PHFHNW       10
-Pädagogische Hochschule Schaffhausen - PHSH             1
-Pädagogische Hochschule Schwyz - PHSZ                   1
-Pädagogische Hochschule St. Gallen - PHSG               5
-Pädagogische Hochschule Thurgau - PHTG                  3
-Pädagogische Hochschule Wallis - PHVS                   2
-Pädagogische Hochschule Zug - PHZG                      2
-Pädagogische Hochschule Zürich - PHZFH                  8
-Robert Walser-Stiftung Bern - RWS                       1
-SUP della Svizzera italiana - SUPSI                    23
-Schweiz. Hochschule für Logopädie Rorschach - SHLR      1
-Schweiz. Institut für Kunstwissenschaft - SIK-ISEA      2
-Schweizer Kompetenzzentrum Sozialwissensch. - FORS      3
-Schweizer Paraplegiker Forschung - SPF                  1
-Staatsunabh. Theologische Hochschule Basel - STHB       1
-Swiss Center for Electronics and Microtech. - CSEM      2
-Swiss Institute of Bioinformatics - SIB                 3
-Università della Svizzera italiana - USI               56
-Universität Basel - BS                                488
-Universität Bern - BE                                 499
-Universität Luzern - LU                                39
-Universität St. Gallen - SG                            91
-Universität Zürich - ZH                               650
-Université de Fribourg - FR                           271
-Université de Genève - GE                             658
-Université de Lausanne - LA                           468
-Université de Neuchâtel - NE                          158
-Weitere Institute - FINST                              18
-Weitere Spitäler - ASPIT                               46
-Zürcher Fachhochschule (ohne PH) - ZFH                 82
-Name: Institution, dtype: int64</pre>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UniversityName</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AO Research Institute - AORI</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Allergie- und Asthmaforschung - SIAF</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Berner Fachhochschule - BFH</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Biotechnologie Institut Thurgau - BITG</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Centre de rech. sur l'environnement alpin - CR...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 </div>
 
 </div>
@@ -14115,14 +14089,24 @@ Name: Institution, dtype: int64</pre>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>TODO  : we need to remove the acronym at the end of each row, maybe it might help getting more results with geocodes.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[177]:</div>
+<div class="prompt input_prompt">In&nbsp;[231]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cantons_table</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">p3_grant_export_data</span><span class="p">[</span><span class="s1">&#39;University&#39;</span><span class="p">]:</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">university_canton_df</span><span class="o">.</span><span class="n">UniversityName</span><span class="p">:</span>
     <span class="n">canton</span> <span class="o">=</span> <span class="n">geolocator</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
     <span class="n">cantons_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">canton</span><span class="p">)</span>
 </pre></div>
@@ -14131,112 +14115,108 @@ Name: Institution, dtype: int64</pre>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
-<span class="ansi-red-intense-fg ansi-bold">timeout</span>                                   Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\site-packages\geopy\geocoders\base.py</span> in <span class="ansi-cyan-fg">_call_geocoder</span><span class="ansi-blue-intense-fg ansi-bold">(self, url, timeout, raw, requester, deserializer, **kwargs)</span>
-<span class="ansi-green-fg">    142</span>         <span class="ansi-green-intense-fg ansi-bold">try</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 143</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>page <span class="ansi-yellow-intense-fg ansi-bold">=</span> requester<span class="ansi-yellow-intense-fg ansi-bold">(</span>req<span class="ansi-yellow-intense-fg ansi-bold">,</span> timeout<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-yellow-intense-fg ansi-bold">(</span>timeout <span class="ansi-green-intense-fg ansi-bold">or</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>timeout<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">**</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    144</span>         <span class="ansi-green-intense-fg ansi-bold">except</span> Exception <span class="ansi-green-intense-fg ansi-bold">as</span> error<span class="ansi-yellow-intense-fg ansi-bold">:</span> <span class="ansi-red-intense-fg ansi-bold"># pylint: disable=W0703</span>
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\urllib\request.py</span> in <span class="ansi-cyan-fg">urlopen</span><span class="ansi-blue-intense-fg ansi-bold">(url, data, timeout, cafile, capath, cadefault, context)</span>
-<span class="ansi-green-fg">    162</span>         opener <span class="ansi-yellow-intense-fg ansi-bold">=</span> _opener
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 163</span><span class="ansi-yellow-intense-fg ansi-bold">     </span><span class="ansi-green-intense-fg ansi-bold">return</span> opener<span class="ansi-yellow-intense-fg ansi-bold">.</span>open<span class="ansi-yellow-intense-fg ansi-bold">(</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> data<span class="ansi-yellow-intense-fg ansi-bold">,</span> timeout<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    164</span> 
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\urllib\request.py</span> in <span class="ansi-cyan-fg">open</span><span class="ansi-blue-intense-fg ansi-bold">(self, fullurl, data, timeout)</span>
-<span class="ansi-green-fg">    465</span> 
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 466</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>response <span class="ansi-yellow-intense-fg ansi-bold">=</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_open<span class="ansi-yellow-intense-fg ansi-bold">(</span>req<span class="ansi-yellow-intense-fg ansi-bold">,</span> data<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    467</span> 
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\urllib\request.py</span> in <span class="ansi-cyan-fg">_open</span><span class="ansi-blue-intense-fg ansi-bold">(self, req, data)</span>
-<span class="ansi-green-fg">    483</span>         result = self._call_chain(self.handle_open, protocol, protocol +
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 484</span><span class="ansi-yellow-intense-fg ansi-bold">                                   &#39;_open&#39;, req)
-</span><span class="ansi-green-fg">    485</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> result<span class="ansi-yellow-intense-fg ansi-bold">:</span>
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\urllib\request.py</span> in <span class="ansi-cyan-fg">_call_chain</span><span class="ansi-blue-intense-fg ansi-bold">(self, chain, kind, meth_name, *args)</span>
-<span class="ansi-green-fg">    443</span>             func <span class="ansi-yellow-intense-fg ansi-bold">=</span> getattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>handler<span class="ansi-yellow-intense-fg ansi-bold">,</span> meth_name<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 444</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>result <span class="ansi-yellow-intense-fg ansi-bold">=</span> func<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">*</span>args<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    445</span>             <span class="ansi-green-intense-fg ansi-bold">if</span> result <span class="ansi-green-intense-fg ansi-bold">is</span> <span class="ansi-green-intense-fg ansi-bold">not</span> <span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\urllib\request.py</span> in <span class="ansi-cyan-fg">http_open</span><span class="ansi-blue-intense-fg ansi-bold">(self, req)</span>
-<span class="ansi-green-fg">   1281</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> http_open<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> req<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 1282</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">return</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>do_open<span class="ansi-yellow-intense-fg ansi-bold">(</span>http<span class="ansi-yellow-intense-fg ansi-bold">.</span>client<span class="ansi-yellow-intense-fg ansi-bold">.</span>HTTPConnection<span class="ansi-yellow-intense-fg ansi-bold">,</span> req<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">   1283</span> 
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\urllib\request.py</span> in <span class="ansi-cyan-fg">do_open</span><span class="ansi-blue-intense-fg ansi-bold">(self, http_class, req, **http_conn_args)</span>
-<span class="ansi-green-fg">   1256</span>                 <span class="ansi-green-intense-fg ansi-bold">raise</span> URLError<span class="ansi-yellow-intense-fg ansi-bold">(</span>err<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 1257</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>r <span class="ansi-yellow-intense-fg ansi-bold">=</span> h<span class="ansi-yellow-intense-fg ansi-bold">.</span>getresponse<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">   1258</span>         <span class="ansi-green-intense-fg ansi-bold">except</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\http\client.py</span> in <span class="ansi-cyan-fg">getresponse</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
-<span class="ansi-green-fg">   1196</span>             <span class="ansi-green-intense-fg ansi-bold">try</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 1197</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>response<span class="ansi-yellow-intense-fg ansi-bold">.</span>begin<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">   1198</span>             <span class="ansi-green-intense-fg ansi-bold">except</span> ConnectionError<span class="ansi-yellow-intense-fg ansi-bold">:</span>
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\http\client.py</span> in <span class="ansi-cyan-fg">begin</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
-<span class="ansi-green-fg">    296</span>         <span class="ansi-green-intense-fg ansi-bold">while</span> <span class="ansi-green-intense-fg ansi-bold">True</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 297</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>version<span class="ansi-yellow-intense-fg ansi-bold">,</span> status<span class="ansi-yellow-intense-fg ansi-bold">,</span> reason <span class="ansi-yellow-intense-fg ansi-bold">=</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_read_status<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    298</span>             <span class="ansi-green-intense-fg ansi-bold">if</span> status <span class="ansi-yellow-intense-fg ansi-bold">!=</span> CONTINUE<span class="ansi-yellow-intense-fg ansi-bold">:</span>
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\http\client.py</span> in <span class="ansi-cyan-fg">_read_status</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
-<span class="ansi-green-fg">    257</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> _read_status<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 258</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>line <span class="ansi-yellow-intense-fg ansi-bold">=</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>fp<span class="ansi-yellow-intense-fg ansi-bold">.</span>readline<span class="ansi-yellow-intense-fg ansi-bold">(</span>_MAXLINE <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;iso-8859-1&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    259</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> len<span class="ansi-yellow-intense-fg ansi-bold">(</span>line<span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">&gt;</span> _MAXLINE<span class="ansi-yellow-intense-fg ansi-bold">:</span>
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\socket.py</span> in <span class="ansi-cyan-fg">readinto</span><span class="ansi-blue-intense-fg ansi-bold">(self, b)</span>
-<span class="ansi-green-fg">    574</span>             <span class="ansi-green-intense-fg ansi-bold">try</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 575</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span><span class="ansi-green-intense-fg ansi-bold">return</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_sock<span class="ansi-yellow-intense-fg ansi-bold">.</span>recv_into<span class="ansi-yellow-intense-fg ansi-bold">(</span>b<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    576</span>             <span class="ansi-green-intense-fg ansi-bold">except</span> timeout<span class="ansi-yellow-intense-fg ansi-bold">:</span>
-
-<span class="ansi-red-intense-fg ansi-bold">timeout</span>: timed out
-
-During handling of the above exception, another exception occurred:
-
-<span class="ansi-red-intense-fg ansi-bold">GeocoderTimedOut</span>                          Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-177-986e8a91695f&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
-<span class="ansi-green-fg">      1</span> cantons_table <span class="ansi-yellow-intense-fg ansi-bold">=</span> <span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-yellow-intense-fg ansi-bold">]</span>
-<span class="ansi-green-fg">      2</span> <span class="ansi-green-intense-fg ansi-bold">for</span> i <span class="ansi-green-intense-fg ansi-bold">in</span> p3_grant_export_data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#39;University&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 3</span><span class="ansi-yellow-intense-fg ansi-bold">     </span>canton <span class="ansi-yellow-intense-fg ansi-bold">=</span> geolocator<span class="ansi-yellow-intense-fg ansi-bold">.</span>geocode<span class="ansi-yellow-intense-fg ansi-bold">(</span>i<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">      4</span>     cantons_table<span class="ansi-yellow-intense-fg ansi-bold">.</span>append<span class="ansi-yellow-intense-fg ansi-bold">(</span>canton<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\site-packages\geopy\geocoders\geonames.py</span> in <span class="ansi-cyan-fg">geocode</span><span class="ansi-blue-intense-fg ansi-bold">(self, query, exactly_one, timeout)</span>
-<span class="ansi-green-fg">     96</span>         logger<span class="ansi-yellow-intense-fg ansi-bold">.</span>debug<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;%s.geocode: %s&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>__class__<span class="ansi-yellow-intense-fg ansi-bold">.</span>__name__<span class="ansi-yellow-intense-fg ansi-bold">,</span> url<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">     97</span>         return self._parse_json(
-<span class="ansi-green-intense-fg ansi-bold">---&gt; 98</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_call_geocoder<span class="ansi-yellow-intense-fg ansi-bold">(</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> timeout<span class="ansi-yellow-intense-fg ansi-bold">=</span>timeout<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
-<span class="ansi-green-fg">     99</span>             exactly_one<span class="ansi-yellow-intense-fg ansi-bold">,</span>
-<span class="ansi-green-fg">    100</span>         )
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\site-packages\geopy\geocoders\base.py</span> in <span class="ansi-cyan-fg">_call_geocoder</span><span class="ansi-blue-intense-fg ansi-bold">(self, url, timeout, raw, requester, deserializer, **kwargs)</span>
-<span class="ansi-green-fg">    165</span>                     <span class="ansi-green-intense-fg ansi-bold">raise</span> GeocoderUnavailable<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;Service not available&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    166</span>             <span class="ansi-green-intense-fg ansi-bold">elif</span> isinstance<span class="ansi-yellow-intense-fg ansi-bold">(</span>error<span class="ansi-yellow-intense-fg ansi-bold">,</span> SocketTimeout<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 167</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span><span class="ansi-green-intense-fg ansi-bold">raise</span> GeocoderTimedOut<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;Service timed out&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    168</span>             <span class="ansi-green-intense-fg ansi-bold">elif</span> isinstance<span class="ansi-yellow-intense-fg ansi-bold">(</span>error<span class="ansi-yellow-intense-fg ansi-bold">,</span> SSLError<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-fg">    169</span>                 <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;timed out&#34;</span> <span class="ansi-green-intense-fg ansi-bold">in</span> message<span class="ansi-yellow-intense-fg ansi-bold">:</span>
-
-<span class="ansi-red-intense-fg ansi-bold">GeocoderTimedOut</span>: Service timed out</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[238]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cantons_table</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[238]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ None,
+ Location(University of Basel, BS, CH, (47.55832, 7.58403, 0.0)),
+ Location(Bern, Universität, BE, CH, (46.95096, 7.43548, 0.0)),
+ None,
+ None,
+ Location(Völkerkundemuseum der Universität Zürich, ZH, CH, (47.37092, 8.53434, 0.0)),
+ Location(Fribourg, Université, FR, CH, (46.80683, 7.15317, 0.0)),
+ None,
+ None,
+ Location(Neuchâtel, Université, NE, CH, (46.99385, 6.93789, 0.0)),
+ None,
+ None,
+ None]</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 

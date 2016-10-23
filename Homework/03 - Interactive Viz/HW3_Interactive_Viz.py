@@ -118,22 +118,30 @@ p3_grant_export_data.groupby('University').Institution.nunique().size
 # We'll create a dataframe that will link each university to a canton.
 
 
-# In[206]:
+# In[236]:
 
 university_canton_df = p3_grant_export_data.groupby('University').Institution.nunique()
-university_canton_df
-#newdf= set(olddf.University)
+university_canton_df = pd.DataFrame(university_canton_df)
+#university_canton_df = university_canton_df.rename(columns = {'Institution':'Canton'})
+university_canton_df = p3_grant_export_data.groupby('University').Institution.nunique()
+university_canton_df = pd.DataFrame(university_canton_df)
+university_canton_df['UniversityName'] = university_canton_df.index
+university_canton_df = university_canton_df.drop('Institution', axis = 1)
+university_canton_df = university_canton_df.reset_index(drop=True)
+university_canton_df.head()
 
 
-# In[177]:
+# TODO  : we need to remove the acronym at the end of each row, maybe it might help getting more results with geocodes.
+
+# In[231]:
 
 cantons_table = []
-for i in p3_grant_export_data['University']:
+for i in university_canton_df.UniversityName:
     canton = geolocator.geocode(i)
     cantons_table.append(canton)
 
 
-# In[ ]:
+# In[238]:
 
 cantons_table
 
