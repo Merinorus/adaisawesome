@@ -11758,7 +11758,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[147]:</div>
+<div class="prompt input_prompt">In&nbsp;[50]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -11766,6 +11766,7 @@ div#notebook {
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">geopy</span>
 <span class="kn">from</span> <span class="nn">geopy.geocoders</span> <span class="k">import</span> <span class="n">geonames</span>
+<span class="kn">import</span> <span class="nn">time</span>
 </pre></div>
 
 </div>
@@ -11775,7 +11776,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[106]:</div>
+<div class="prompt input_prompt">In&nbsp;[51]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_grant_export_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;P3_GrantExport.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
@@ -11790,7 +11791,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[106]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[51]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12928,7 +12929,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[107]:</div>
+<div class="prompt input_prompt">In&nbsp;[52]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">size</span>
@@ -12942,7 +12943,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[107]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[52]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -12957,7 +12958,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[108]:</div>
+<div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We keep only the rows which mention how much money has been granted (the amount column starts by a number)</span>
@@ -12971,7 +12972,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[109]:</div>
+<div class="prompt input_prompt">In&nbsp;[54]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Almost 200k rows have been removed</span>
@@ -12986,7 +12987,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[109]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[54]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -13001,7 +13002,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[110]:</div>
+<div class="prompt input_prompt">In&nbsp;[55]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We don&#39;t need this data</span>
@@ -13018,7 +13019,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[110]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[55]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -13045,7 +13046,7 @@ If we have the time, a better solution would be taking the institution's locatio
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[111]:</div>
+<div class="prompt input_prompt">In&nbsp;[56]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Removing rows in which University is not mentioned</span>
@@ -13061,7 +13062,7 @@ If we have the time, a better solution would be taking the institution's locatio
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[111]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[56]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -13076,7 +13077,7 @@ If we have the time, a better solution would be taking the institution's locatio
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[112]:</div>
+<div class="prompt input_prompt">In&nbsp;[57]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_grant_export_data</span>
@@ -13090,7 +13091,7 @@ If we have the time, a better solution would be taking the institution's locatio
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[112]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[57]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -13732,7 +13733,7 @@ If we have the time, a better solution would be taking the institution's locatio
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[104]:</div>
+<div class="prompt input_prompt">In&nbsp;[58]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We also delete every row that contains &quot;Nicht zuteilbar - NA&quot;, which means that University is not mentioned.</span>
@@ -13748,7 +13749,7 @@ If we have the time, a better solution would be taking the institution's locatio
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[104]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[58]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -13829,11 +13830,11 @@ If we have the time, a better solution would be taking the institution's locatio
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[119]:</div>
+<div class="prompt input_prompt">In&nbsp;[59]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># The &#39;Approved Amount&#39; column contains string types instead of numbers</span>
-<span class="nb">type</span><span class="p">(</span><span class="n">p3_grant_export_data</span><span class="p">[</span><span class="s1">&#39;Approved Amount&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">p3_grant_export_data</span><span class="p">[</span><span class="s1">&#39;Approved Amount&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -13844,7 +13845,7 @@ If we have the time, a better solution would be taking the institution's locatio
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[119]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[59]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -13859,7 +13860,7 @@ If we have the time, a better solution would be taking the institution's locatio
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[127]:</div>
+<div class="prompt input_prompt">In&nbsp;[60]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Let&#39;s convert this column to float numbers, so we&#39;ll be able to do some maths</span>
@@ -13870,14 +13871,33 @@ If we have the time, a better solution would be taking the institution's locatio
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>C:\Users\merin\Anaconda3\lib\site-packages\ipykernel\__main__.py:2: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+  from ipykernel import kernelapp as app
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[128]:</div>
+<div class="prompt input_prompt">In&nbsp;[61]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Now we definitely have numbers in the &#39;Approved Amount&#39; column !</span>
-<span class="nb">type</span><span class="p">(</span><span class="n">p3_grant_export_data</span><span class="p">[</span><span class="s1">&#39;Approved Amount&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">p3_grant_export_data</span><span class="p">[</span><span class="s1">&#39;Approved Amount&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -13888,7 +13908,7 @@ If we have the time, a better solution would be taking the institution's locatio
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[128]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[61]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -13914,16 +13934,33 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[137]:</div>
+<div class="prompt input_prompt">In&nbsp;[71]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">json_login</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;geonames_login.json&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="n">login</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_login</span><span class="p">)</span>
 <span class="n">geonames_login</span> <span class="o">=</span> <span class="n">login</span><span class="p">[</span><span class="s1">&#39;login&#39;</span><span class="p">]</span>
 <span class="n">geonames_password</span> <span class="o">=</span> <span class="n">login</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span>
+<span class="n">geonames_login</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[71]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;adaisawesome&#39;</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -13940,7 +13977,7 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[171]:</div>
+<div class="prompt input_prompt">In&nbsp;[63]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">geolocator</span> <span class="o">=</span> <span class="n">geopy</span><span class="o">.</span><span class="n">geocoders</span><span class="o">.</span><span class="n">GeoNames</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">geonames_login</span><span class="p">)</span>
@@ -13956,7 +13993,7 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[171]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[63]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -13981,7 +14018,7 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[182]:</div>
+<div class="prompt input_prompt">In&nbsp;[64]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Let&#39;s count the number of distinct universities we have</span>
@@ -13996,11 +14033,11 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[182]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[64]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>77</pre>
+<pre>76</pre>
 </div>
 
 </div>
@@ -14011,7 +14048,7 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[65]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># So we will have to make about 77 request to Geonames, which isn&#39;t that much !</span>
@@ -14025,7 +14062,7 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[236]:</div>
+<div class="prompt input_prompt">In&nbsp;[66]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">university_canton_df</span> <span class="o">=</span> <span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;University&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">Institution</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
@@ -14047,7 +14084,7 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[236]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[66]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -14102,11 +14139,11 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[240]:</div>
+<div class="prompt input_prompt">In&nbsp;[70]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">university_canton_df</span><span class="p">[</span><span class="s1">&#39;UniversityName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">university_canton_df</span><span class="p">[</span><span class="s1">&#39;UniversityName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; -&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">university_canton_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">university_canton_df</span>
 </pre></div>
 
 </div>
@@ -14117,7 +14154,7 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[240]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[70]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -14149,8 +14186,233 @@ For this, we are giong to use Geopy, which is a python client that works with mo
       <th>4</th>
       <td>Centre de rech. sur l'environnement alpin</td>
     </tr>
+    <tr>
+      <th>5</th>
+      <td>EPF Lausanne</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>ETH Zürich</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Eidg. Anstalt für Wasserversorgung</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Eidg. Forschungsanstalt für Wald,Schnee,Land</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Eidg. Hochschulinstitut für Berufsbildung</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Eidg. Material und Prüfungsanstalt</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Ente Ospedaliero Cantonale</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Fachhochschule Kalaidos</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Fachhochschule Nordwestschweiz (ohne PH)</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Fachhochschule Ostschweiz</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Facoltà di Teologia di Lugano</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Fernfachhochschule Schweiz (Mitglied SUPSI)</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Firmen/Privatwirtschaft</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Forschungsanstalten Agroscope</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Forschungsinstitut für Opthalmologie</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Forschungsinstitut für biologischen Landbau</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Forschungskommission SAGW</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Franklin University Switzerland</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Friedrich Miescher Institute</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>HES de Suisse occidentale</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Haute école pédagogique BE, JU, NE</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Haute école pédagogique du canton de Vaud</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Haute école pédagogique fribourgeoise</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Hochschule Luzern</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Idiap Research Institute</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>Pädagogische Hochschule Nordwestschweiz</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>Pädagogische Hochschule Schaffhausen</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>Pädagogische Hochschule Schwyz</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>Pädagogische Hochschule St. Gallen</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>Pädagogische Hochschule Thurgau</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>Pädagogische Hochschule Wallis</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>Pädagogische Hochschule Zug</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>Pädagogische Hochschule Zürich</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>Robert Walser-Stiftung Bern</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>SUP della Svizzera italiana</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>Schweiz. Hochschule für Logopädie Rorschach</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>Schweiz. Institut für Kunstwissenschaft</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>Schweizer Kompetenzzentrum Sozialwissensch.</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>Schweizer Paraplegiker Forschung</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>Staatsunabh. Theologische Hochschule Basel</td>
+    </tr>
+    <tr>
+      <th>61</th>
+      <td>Swiss Center for Electronics and Microtech.</td>
+    </tr>
+    <tr>
+      <th>62</th>
+      <td>Swiss Institute of Bioinformatics</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>Università della Svizzera italiana</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>Universität Basel</td>
+    </tr>
+    <tr>
+      <th>65</th>
+      <td>Universität Bern</td>
+    </tr>
+    <tr>
+      <th>66</th>
+      <td>Universität Luzern</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>Universität St. Gallen</td>
+    </tr>
+    <tr>
+      <th>68</th>
+      <td>Universität Zürich</td>
+    </tr>
+    <tr>
+      <th>69</th>
+      <td>Université de Fribourg</td>
+    </tr>
+    <tr>
+      <th>70</th>
+      <td>Université de Genève</td>
+    </tr>
+    <tr>
+      <th>71</th>
+      <td>Université de Lausanne</td>
+    </tr>
+    <tr>
+      <th>72</th>
+      <td>Université de Neuchâtel</td>
+    </tr>
+    <tr>
+      <th>73</th>
+      <td>Weitere Institute</td>
+    </tr>
+    <tr>
+      <th>74</th>
+      <td>Weitere Spitäler</td>
+    </tr>
+    <tr>
+      <th>75</th>
+      <td>Zürcher Fachhochschule (ohne PH)</td>
+    </tr>
   </tbody>
 </table>
+<p>76 rows × 1 columns</p>
 </div>
 </div>
 
@@ -14162,12 +14424,13 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[231]:</div>
+<div class="prompt input_prompt">In&nbsp;[68]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cantons_table</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">university_canton_df</span><span class="o">.</span><span class="n">UniversityName</span><span class="p">:</span>
     <span class="n">canton</span> <span class="o">=</span> <span class="n">geolocator</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="c1"># wait a little bit to not overload the server</span>
     <span class="n">cantons_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">canton</span><span class="p">)</span>
 </pre></div>
 
@@ -14178,7 +14441,7 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[238]:</div>
+<div class="prompt input_prompt">In&nbsp;[69]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cantons_table</span>
@@ -14192,11 +14455,17 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[238]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[69]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[None,
+<pre>[Location(Max Planck Institute, 38, NA, (-19.2, 17.58333, 0.0)),
+ None,
+ None,
+ None,
+ None,
+ None,
+ Location(Eidgenössische Technische Hochschule Zürich, ZH, CH, (47.3763, 8.54805, 0.0)),
  None,
  None,
  None,
@@ -14228,14 +14497,7 @@ For this, we are giong to use Geopy, which is a python client that works with mo
  None,
  None,
  None,
- None,
- None,
- None,
- None,
- None,
- None,
- None,
- None,
+ Location(St. Gallen, Kantonsspital, SG, CH, (47.42925, 9.38826, 0.0)),
  None,
  None,
  None,
@@ -14268,7 +14530,7 @@ For this, we are giong to use Geopy, which is a python client that works with mo
  Location(Völkerkundemuseum der Universität Zürich, ZH, CH, (47.37092, 8.53434, 0.0)),
  Location(Fribourg, Université, FR, CH, (46.80683, 7.15317, 0.0)),
  None,
- None,
+ Location(University of Lausanne, VD, CH, (46.52376, 6.58409, 0.0)),
  Location(Neuchâtel, Université, NE, CH, (46.99385, 6.93789, 0.0)),
  None,
  None,
