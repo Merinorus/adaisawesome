@@ -13740,34 +13740,25 @@ If we have the time, a better solution would be taking the institution's locatio
 <p>Using only university names as a parametrer for geolocators isn't enough, because we get about half of the results.
 A better idea would be using university name, and if there is no result, using the institution name as a second chance.<br>
 We will then take both universities and institution names into account in order to do our research:
-1) Create a key-value (name-canton) dictionary for universities and institutions :
-    ['University', 'Canton'] and ['Institution', 'Canton']
-2) Go trough the dataframe:</p>
+1) Create initial data containers :</p>
+
+<pre><code>- a key-value (name-canton) dictionary for universities and institutions :
+    -['University', 'Canton'] and ['Institution', 'Canton']
+- a table that contains all cantons that have been found
+</code></pre>
+<p>2) Go trough the dataframe:</p>
 <ul>
 <li>Check if the university name exists in our index. If not, geolocate the address </li>
-<li>If several addresses are returned, check one that is in Switzerland (eg: University of Geneva uses to be found is US !)</li>
-<li>If the university address is not relevant, try to find it with institution name, the same way as above</li>
+<li>Check if the address is in Switzerland, otherwise canton will be considered as 'None'</li>
+<li>If the university address is not found, try to find it with institution name, the same way as above</li>
 <li>Extract the canton of the address (if it found an address and if it's in Switzerland). If no canton, let's say 'None' canton</li>
 <li>Add the canton name to a the dictionary (or add something like 'None' if no canton has been found), so next university or institution that has been already found won't have to be geolocated again</li>
-<li>Add the canton to a table
+<li>Add the canton to the canton table
 3) Add the canton table to the above dataframe in a way that they match with the universities or institutions</li>
 </ul>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -13789,8 +13780,8 @@ We will then take both universities and institution names into account in order 
 <div class="prompt input_prompt">In&nbsp;[68]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#geolocator = geopy.geocoders.GeoNames(None, geonames_login)</span>
-<span class="n">geolocator</span> <span class="o">=</span> <span class="n">geopy</span><span class="o">.</span><span class="n">geocoders</span><span class="o">.</span><span class="n">GoogleV3</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">googlemapsapikey</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">geolocator</span> <span class="o">=</span> <span class="n">geopy</span><span class="o">.</span><span class="n">geocoders</span><span class="o">.</span><span class="n">GoogleV3</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">googlemapsapikey</span><span class="p">)</span>
+<span class="c1"># Do a test with University of Geneva</span>
 <span class="n">test_university_geneva</span> <span class="o">=</span> <span class="n">geolocator</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="s2">&quot;University of Geneva&quot;</span><span class="p">)</span>
 <span class="n">test_university_geneva</span>
 </pre></div>
@@ -13821,11 +13812,187 @@ We will then take both universities and institution names into account in order 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>That's why we have to be careful and check if an address is relevant to Switzerland !
-So let's start by creating the indexes for</p>
+<p>University of Geneva appears to be in USA ! But the one of our Dataframe is without a doubt the Swiss one.</p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[92]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Specifying the region for the geolocator</span>
+<span class="n">test_university_geneva</span> <span class="o">=</span> <span class="n">geolocator</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="s2">&quot;University of Geneva&quot;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;ch&#39;</span><span class="p">)</span>
+<span class="n">test_university_geneva</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[92]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Location(International University in Geneva, 1215 Meyrin, Switzerland, (46.2243735, 6.1008613, 0.0))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Oh oh, that's much better !
+Now let's start by creating the indexes for universities and institutions :</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[83]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">university_canton_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">institution_canton_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c1"># We can already add the values in our dataframe that won&#39;t lead to an address</span>
+<span class="n">university_canton_dict</span><span class="p">[</span><span class="s1">&#39;Nicht zuteilbar - NA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># it means &quot;Not Available&quot; in German !</span>
+<span class="n">institution_canton_dict</span><span class="p">[</span><span class="s1">&#39;NaN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Then we create tables that will contains every canton we find, so we'll be able to match it with the dataframe at the end.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[90]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">canton_shortname_table</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># eg: VD</span>
+<span class="n">canton_longname_table</span> <span class="o">=</span> <span class="p">[]</span><span class="c1"># eg: Vaud</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[89]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">limit</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># Go through the dataframe</span>
+<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="c1"># Check if the university name exists in our index</span>
+    <span class="n">university_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;University&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">university_name</span> <span class="ow">in</span> <span class="n">university_canton_dict</span><span class="p">:</span>
+        <span class="c1"># The university has already been found. Let&#39;s add the canton to the canton table</span>
+        <span class="n">canton_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># The university has not been found, so we have to geolocate it</span>
+        <span class="n">adr</span> <span class="o">=</span> <span class="n">geolocator</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="n">university_name</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;ch&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">adr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># TODO No address has been found for this University. So we have to do the same with Institution</span>
+            <span class="n">institution_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Institution&#39;</span><span class="p">]</span>
+            <span class="n">adr</span> <span class="o">=</span> <span class="n">geolocator</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="n">institution_name</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;ch&#39;</span><span class="p">)</span>
+        <span class="c1"># Now, address should have been found, either by locating the university or the institution</span>
+        <span class="k">if</span> <span class="n">adr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># No address has been found for the institution either, so we give up with this row</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># TODO check if it&#39;s a Swiss address, if yes add the canton to the table</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">adr</span><span class="o">.</span><span class="n">raw</span><span class="p">[</span><span class="s1">&#39;address_components&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;types&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;administrative_area_level_1&quot;</span><span class="p">:</span>
+                        <span class="n">canton_longname</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;long_name&#39;</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No canton found&#39;</span><span class="p">)</span>
+            
+            
+
+    <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">counter</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Université de Genève - GE
+NPO (Biblioth., Museen, Verwalt.) - NPO
+Universität Basel - BS
+NPO (Biblioth., Museen, Verwalt.) - NPO
+Université de Fribourg - FR
+Université de Fribourg - FR
+Universität Zürich - ZH
+Université de Lausanne - LA
+Université de Genève - GE
+Université de Fribourg - FR
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[77]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[84]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">university_canton_dict</span><span class="p">[</span><span class="s1">&#39;Nicht zuteilbar - NA&#39;</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
