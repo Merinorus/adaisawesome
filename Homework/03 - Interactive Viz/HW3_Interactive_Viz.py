@@ -3,7 +3,7 @@
 
 # Build a Choropleth map which shows intuitively (i.e., use colors wisely) how much grant money goes to each Swiss canton.
 
-# In[54]:
+# In[157]:
 
 import pandas as pd
 import numpy as np
@@ -12,6 +12,7 @@ import geopy
 from geopy.geocoders import geonames
 import time
 import requests
+import math
 
 
 # In[55]:
@@ -104,7 +105,7 @@ test_university_geneva
 # Oh oh, that's much better !
 # Now let's start by creating the indexes for universities and institutions :
 
-# In[83]:
+# In[154]:
 
 university_canton_dict = {}
 institution_canton_dict = {}
@@ -113,59 +114,128 @@ university_canton_dict['Nicht zuteilbar - NA'] = None # it means "Not Available"
 institution_canton_dict['NaN'] = None
 
 
-# Then we create tables that will contains every canton we find, so we'll be able to match it with the dataframe at the end.
+# It's kinda dirty, but if the folliwing cell shows a timeout error (maybe we saturated the geolocation service), we can run it again. Indeed, the dictionaries will be partialy filled, and running the code again will continue from where it stopped previously.
+# Run the cell until it stops displaying "timeout error" :v
 
-# In[90]:
+# In[163]:
 
+# We create tables that will contains every canton we find, so we'll be able to match it with the dataframe at the end.
 canton_shortname_table = [] # eg: VD
 canton_longname_table = []# eg: Vaud
 
+# number of rows analysed. Can be limited for debuging (eg : 10) because the number of requests to Google Maps API is limited !
+MAX_ROWS = math.inf 
+row_counter = 0
 
-# In[89]:
+# maximum duration of a query to the geocoder, in seconds
+geocoder_timeout = 5
 
-limit = 1
-counter = 0
+# The following lines make the geolocator stubborn : if it gets a timeout error, it tries again... indefinitely !
+def stubborn_geocode(address, region, timeout_limit):
+    try:
+        return geopy.geocode(address, region, timeout_limit)
+    except geopy.exc.GeocoderTimedOut:
+        print("Error : the geocoder timed out. Let's try again...")
+        return stubborn_geocode(address, region, timeout_limit)
+
+    
 # Go through the dataframe
 for index, row in p3_grant_export_data.iterrows():
+    # initialize variables that will contain canton name for the current row
+    canton_longname = None
+    canton_shortname = None
     # Check if the university name exists in our index
     university_name = row['University']
+    institution_name = row['Institution']
     if university_name in university_canton_dict:
-        # The university has already been found. Let's add the canton to the canton table
-        canton_table.append(university_canton_dict[university_name])
+        # The university has already been located. Let's add the canton to the canton table
+        canton_shortname_table.append(university_canton_dict[university_name]['short_name'])
+        canton_longname_table.append(university_canton_dict[university_name]['long_name'])
+    
+    elif institution_name in institution_canton_dict:
+        # The institution has already ben located, so we add its canton to the canton table
+        canton_shortname_table.append(institution_canton_dict[institution_name]['short_name'])
+        canton_longname_table.append(institution_canton_dict[institution_name]['long_name'])
+    
     else:
-        # The university has not been found, so we have to geolocate it
-        adr = geolocator.geocode(university_name, region='ch')
+        # Nor the university neither the institution has been found yet, so we have to geolocate it
+        adr = stubborn_geocode(university_name, region='ch', timeout=geocoder_timeout)
         if adr is None:
-            # TODO No address has been found for this University. So we have to do the same with Institution
-            institution_name = row['Institution']
-            adr = geolocator.geocode(institution_name, region='ch')
-        # Now, address should have been found, either by locating the university or the institution
-        if adr is None:
-            # No address has been found for the institution either, so we give up with this row
-        else:
-            # TODO check if it's a Swiss address, if yes add the canton to the table
-            try:
-                for i in adr.raw['address_components']:
-                    if i["types"][0] == "administrative_area_level_1":
-                        canton_longname = (i['long_name'])
-            except KeyError:
-                print('No canton found')
+            # TODO No address has been found for this University. So we have to do the same with Institution           
+            adr = stubborn_geocode(institution_name, region='ch', timeout=geocoder_timeout)
             
+        # Now, the address should have been found, either by locating the university or the institution
+        if adr is not None:
+            # Check if it's a Swiss address, if yes add the canton to the table
+            try:
+                swiss_address = False
+                for i in adr.raw['address_components']:
+                    if i["types"][0] == "country" and i["long_name"] == "Switzerland":
+                        # The address is located in Switerland
+                        swiss_address = True
+                # So, we go on only if we found a Swiss address. Otherwise, there is no point to continue.
+                if swiss_address:
+                    for i in adr.raw['address_components']:
+                        if i["types"][0] == "administrative_area_level_1":
+                            # We found a canton !
+                            canton_longname = (i['long_name'])
+                            canton_shortname = (i['short_name'])
+                            # We also add it to the university/institution dictionary, in order to limit the number of requests
+                            university_canton_dict[university_name] = {}
+                            university_canton_dict[university_name]['short_name'] = canton_shortname
+                            university_canton_dict[university_name]['long_name'] = canton_longname
+                            institution_canton_dict[institution_name] = {}
+                            institution_canton_dict[institution_name]['short_name'] = canton_shortname
+                            institution_canton_dict[institution_name]['long_name'] = canton_longname
+                            break
+            except KeyError:
+                print('Error : no canton found')
+                # The address doesn't act as excpected. There are two possibilities :
+                # - The address doesn't contain the field related to the canton
+                # - The address doesn't contain the field related to the country
+                # So we don't consider this address as a Swiss one and we give up with this one.
+    
+    # Let's add what we found about the canton !
+    # If we didn't find any canton for the current university/institution, it will just append 'None' to the tables.
+    canton_shortname_table.append(canton_shortname)
+    canton_longname_table.append(canton_longname)
             
 
-    counter = counter + 1
-    if counter >= limit:
+    row_counter = row_counter + 1
+    if row_counter >= MAX_ROWS:
+        print("Maximum number of rows reached ! (" + str(MAX_ROWS) + ")")
+        print("Increase the MAX_ROWS variable to analyse more locations")
+        print("No limit : MAX_ROWS = maths.inf")
         break
 
 
-# In[77]:
+# In[159]:
+
+# We have the table containing all cantons !
+canton_shortname_table
 
 
+# In[ ]:
+
+# Same with the dictionary
+university_canton_dict
 
 
-# In[84]:
+# In[164]:
 
-university_canton_dict['Nicht zuteilbar - NA']
+# Let's add the cantons to our dataframe !
+canton_shortname_series = pd.Series(canton_shortname_table, name='Canton Shortname')
+canton_longname_series = pd.Series(canton_longname_table, name='Canton Longname')
+p3_grant_cantons = pd.concat([p3_grant_export_data, canton_longname_series, canton_shortname_series], axis=1)
+p3_grant_cantons.columns.get_value
+p3_grant_cantons
+
+
+# Now we have the cantons associated with the universities/institutions :)
+
+# In[165]:
+
+p3_grant_cantons.to_csv('P3_Cantons.csv')
 
 
 # In[ ]:
@@ -173,7 +243,12 @@ university_canton_dict['Nicht zuteilbar - NA']
 
 
 
-# THE FOLLOWING CODE HAS TO BE CHECKED
+# In[ ]:
+
+
+
+
+# THE FOLLOWING CODE HAS TO BE CHECKED, WE CAN DROP SOME OF IT (don't worry, it can be taken back from ancient commits on GitHub)
 
 # In[62]:
 

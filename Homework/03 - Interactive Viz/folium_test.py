@@ -58,13 +58,15 @@ print(json.dumps(adr.raw, indent = 4))
 adr.raw['address_components']
 
 
-# In[14]:
+# In[16]:
 
 canton_longname = None
 try:
     for i in adr.raw['address_components']:
-        if i["types"][0] == "administrative_area_level_1":
-            canton_longname = (i['long_name'])
+        if i["types"][0] == "country" and i["long_name"] == "Switzerland":
+            print("Switzerland !")
+            #if i["types"][0] == "administrative_area_level_1":
+                #canton_longname = (i['long_name'])
 except KeyError:
     print('No canton found')
 canton_longname
@@ -90,4 +92,29 @@ type(null_adr)
 
 if null_adr is None:
     print("Nonetype !")
+
+
+# In[17]:
+
+test_table = []
+test_table.append(None)
+test_table.append(1)
+test_table.append(None)
+test_table.append(None)
+test_table.append(2)
+test_table
+
+
+# In[28]:
+
+test_dic = {}
+test_dic['key1'] = {}
+test_dic['key1']['longname'] = ['It''s so funny']
+test_dic['key1']['shortname'] = ['lol']
+test_dic
+
+
+# In[29]:
+
+test_dic['key1']
 

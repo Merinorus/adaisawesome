@@ -11758,7 +11758,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="prompt input_prompt">In&nbsp;[157]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -11768,6 +11768,7 @@ div#notebook {
 <span class="kn">from</span> <span class="nn">geopy.geocoders</span> <span class="k">import</span> <span class="n">geonames</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">math</span>
 </pre></div>
 
 </div>
@@ -13861,7 +13862,7 @@ Now let's start by creating the indexes for universities and institutions :</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[83]:</div>
+<div class="prompt input_prompt">In&nbsp;[154]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">university_canton_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -13881,62 +13882,104 @@ Now let's start by creating the indexes for universities and institutions :</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Then we create tables that will contains every canton we find, so we'll be able to match it with the dataframe at the end.</p>
+<p>It's kinda dirty, but if the folliwing cell shows a timeout error (maybe we saturated the geolocation service), we can run it again. Indeed, the dictionaries will be partialy filled, and running the code again will continue from where it stopped previously.
+Run the cell until it stops displaying "timeout error" :v</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[90]:</div>
+<div class="prompt input_prompt">In&nbsp;[163]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">canton_shortname_table</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># eg: VD</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We create tables that will contains every canton we find, so we&#39;ll be able to match it with the dataframe at the end.</span>
+<span class="n">canton_shortname_table</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># eg: VD</span>
 <span class="n">canton_longname_table</span> <span class="o">=</span> <span class="p">[]</span><span class="c1"># eg: Vaud</span>
-</pre></div>
 
-</div>
-</div>
-</div>
+<span class="c1"># number of rows analysed. Can be limited for debuging (eg : 10) because the number of requests to Google Maps API is limited !</span>
+<span class="n">MAX_ROWS</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">inf</span> 
+<span class="n">row_counter</span> <span class="o">=</span> <span class="mi">0</span>
 
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[89]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">limit</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># maximum duration of a query to the geocoder, in seconds</span>
+<span class="n">geocoder_timeout</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># The following lines make the geolocator stubborn : if it gets a timeout error, it tries again... indefinitely !</span>
+<span class="k">def</span> <span class="nf">stubborn_geocode</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">timeout_limit</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">geopy</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">timeout_limit</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">geopy</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">GeocoderTimedOut</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error : the geocoder timed out. Let&#39;s try again...&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">stubborn_geocode</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">timeout_limit</span><span class="p">)</span>
+
+    
 <span class="c1"># Go through the dataframe</span>
 <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="c1"># initialize variables that will contain canton name for the current row</span>
+    <span class="n">canton_longname</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">canton_shortname</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1"># Check if the university name exists in our index</span>
     <span class="n">university_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;University&#39;</span><span class="p">]</span>
+    <span class="n">institution_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Institution&#39;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">university_name</span> <span class="ow">in</span> <span class="n">university_canton_dict</span><span class="p">:</span>
-        <span class="c1"># The university has already been found. Let&#39;s add the canton to the canton table</span>
-        <span class="n">canton_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">])</span>
+        <span class="c1"># The university has already been located. Let&#39;s add the canton to the canton table</span>
+        <span class="n">canton_shortname_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">][</span><span class="s1">&#39;short_name&#39;</span><span class="p">])</span>
+        <span class="n">canton_longname_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">])</span>
+    
+    <span class="k">elif</span> <span class="n">institution_name</span> <span class="ow">in</span> <span class="n">institution_canton_dict</span><span class="p">:</span>
+        <span class="c1"># The institution has already ben located, so we add its canton to the canton table</span>
+        <span class="n">canton_shortname_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;short_name&#39;</span><span class="p">])</span>
+        <span class="n">canton_longname_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">])</span>
+    
     <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># The university has not been found, so we have to geolocate it</span>
-        <span class="n">adr</span> <span class="o">=</span> <span class="n">geolocator</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="n">university_name</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;ch&#39;</span><span class="p">)</span>
+        <span class="c1"># Nor the university neither the institution has been found yet, so we have to geolocate it</span>
+        <span class="n">adr</span> <span class="o">=</span> <span class="n">stubborn_geocode</span><span class="p">(</span><span class="n">university_name</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;ch&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">geocoder_timeout</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">adr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># TODO No address has been found for this University. So we have to do the same with Institution</span>
-            <span class="n">institution_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Institution&#39;</span><span class="p">]</span>
-            <span class="n">adr</span> <span class="o">=</span> <span class="n">geolocator</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="n">institution_name</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;ch&#39;</span><span class="p">)</span>
-        <span class="c1"># Now, address should have been found, either by locating the university or the institution</span>
-        <span class="k">if</span> <span class="n">adr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># No address has been found for the institution either, so we give up with this row</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># TODO check if it&#39;s a Swiss address, if yes add the canton to the table</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">adr</span><span class="o">.</span><span class="n">raw</span><span class="p">[</span><span class="s1">&#39;address_components&#39;</span><span class="p">]:</span>
-                    <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;types&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;administrative_area_level_1&quot;</span><span class="p">:</span>
-                        <span class="n">canton_longname</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;long_name&#39;</span><span class="p">])</span>
-            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No canton found&#39;</span><span class="p">)</span>
+            <span class="c1"># TODO No address has been found for this University. So we have to do the same with Institution           </span>
+            <span class="n">adr</span> <span class="o">=</span> <span class="n">stubborn_geocode</span><span class="p">(</span><span class="n">institution_name</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;ch&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">geocoder_timeout</span><span class="p">)</span>
             
+        <span class="c1"># Now, the address should have been found, either by locating the university or the institution</span>
+        <span class="k">if</span> <span class="n">adr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Check if it&#39;s a Swiss address, if yes add the canton to the table</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">swiss_address</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">adr</span><span class="o">.</span><span class="n">raw</span><span class="p">[</span><span class="s1">&#39;address_components&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;types&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;country&quot;</span> <span class="ow">and</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Switzerland&quot;</span><span class="p">:</span>
+                        <span class="c1"># The address is located in Switerland</span>
+                        <span class="n">swiss_address</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="c1"># So, we go on only if we found a Swiss address. Otherwise, there is no point to continue.</span>
+                <span class="k">if</span> <span class="n">swiss_address</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">adr</span><span class="o">.</span><span class="n">raw</span><span class="p">[</span><span class="s1">&#39;address_components&#39;</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;types&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;administrative_area_level_1&quot;</span><span class="p">:</span>
+                            <span class="c1"># We found a canton !</span>
+                            <span class="n">canton_longname</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;long_name&#39;</span><span class="p">])</span>
+                            <span class="n">canton_shortname</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;short_name&#39;</span><span class="p">])</span>
+                            <span class="c1"># We also add it to the university/institution dictionary, in order to limit the number of requests</span>
+                            <span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                            <span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">][</span><span class="s1">&#39;short_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canton_shortname</span>
+                            <span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canton_longname</span>
+                            <span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                            <span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;short_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canton_shortname</span>
+                            <span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canton_longname</span>
+                            <span class="k">break</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error : no canton found&#39;</span><span class="p">)</span>
+                <span class="c1"># The address doesn&#39;t act as excpected. There are two possibilities :</span>
+                <span class="c1"># - The address doesn&#39;t contain the field related to the canton</span>
+                <span class="c1"># - The address doesn&#39;t contain the field related to the country</span>
+                <span class="c1"># So we don&#39;t consider this address as a Swiss one and we give up with this one.</span>
+    
+    <span class="c1"># Let&#39;s add what we found about the canton !</span>
+    <span class="c1"># If we didn&#39;t find any canton for the current university/institution, it will just append &#39;None&#39; to the tables.</span>
+    <span class="n">canton_shortname_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">canton_shortname</span><span class="p">)</span>
+    <span class="n">canton_longname_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">canton_longname</span><span class="p">)</span>
             
 
-    <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="n">counter</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">:</span>
+    <span class="n">row_counter</span> <span class="o">=</span> <span class="n">row_counter</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">row_counter</span> <span class="o">&gt;=</span> <span class="n">MAX_ROWS</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum number of rows reached ! (&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">MAX_ROWS</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Increase the MAX_ROWS variable to analyse more locations&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No limit : MAX_ROWS = maths.inf&quot;</span><span class="p">)</span>
         <span class="k">break</span>
 </pre></div>
 
@@ -13949,18 +13992,39 @@ Now let's start by creating the indexes for universities and institutions :</p>
 
 
 <div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Université de Genève - GE
-NPO (Biblioth., Museen, Verwalt.) - NPO
-Universität Basel - BS
-NPO (Biblioth., Museen, Verwalt.) - NPO
-Université de Fribourg - FR
-Université de Fribourg - FR
-Universität Zürich - ZH
-Université de Lausanne - LA
-Université de Genève - GE
-Université de Fribourg - FR
-</pre>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">GeocoderQuotaExceeded</span>                     Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-163-ebe7d7ab99dc&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+<span class="ansi-green-fg">     27</span>     <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">     28</span>         <span class="ansi-red-intense-fg ansi-bold"># Nor the university neither the institution has been found yet, so we have to geolocate it</span>
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 29</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>adr <span class="ansi-yellow-intense-fg ansi-bold">=</span> geolocator<span class="ansi-yellow-intense-fg ansi-bold">.</span>geocode<span class="ansi-yellow-intense-fg ansi-bold">(</span>university_name<span class="ansi-yellow-intense-fg ansi-bold">,</span> region<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-blue-intense-fg ansi-bold">&#39;ch&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     30</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> adr <span class="ansi-green-intense-fg ansi-bold">is</span> <span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">     31</span>             <span class="ansi-red-intense-fg ansi-bold"># TODO No address has been found for this University. So we have to do the same with Institution</span>
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\site-packages\geopy\geocoders\googlev3.py</span> in <span class="ansi-cyan-fg">geocode</span><span class="ansi-blue-intense-fg ansi-bold">(self, query, exactly_one, timeout, bounds, region, components, language, sensor)</span>
+<span class="ansi-green-fg">    215</span>         logger<span class="ansi-yellow-intense-fg ansi-bold">.</span>debug<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;%s.geocode: %s&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>__class__<span class="ansi-yellow-intense-fg ansi-bold">.</span>__name__<span class="ansi-yellow-intense-fg ansi-bold">,</span> url<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    216</span>         return self._parse_json(
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 217</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_call_geocoder<span class="ansi-yellow-intense-fg ansi-bold">(</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> timeout<span class="ansi-yellow-intense-fg ansi-bold">=</span>timeout<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> exactly_one
+<span class="ansi-green-fg">    218</span>         )
+<span class="ansi-green-fg">    219</span> 
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\site-packages\geopy\geocoders\googlev3.py</span> in <span class="ansi-cyan-fg">_parse_json</span><span class="ansi-blue-intense-fg ansi-bold">(self, page, exactly_one)</span>
+<span class="ansi-green-fg">    336</span>         places <span class="ansi-yellow-intense-fg ansi-bold">=</span> page<span class="ansi-yellow-intense-fg ansi-bold">.</span>get<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;results&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    337</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-green-intense-fg ansi-bold">not</span> len<span class="ansi-yellow-intense-fg ansi-bold">(</span>places<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 338</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_check_status<span class="ansi-yellow-intense-fg ansi-bold">(</span>page<span class="ansi-yellow-intense-fg ansi-bold">.</span>get<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;status&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    339</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> <span class="ansi-green-intense-fg ansi-bold">None</span>
+<span class="ansi-green-fg">    340</span> 
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\site-packages\geopy\geocoders\googlev3.py</span> in <span class="ansi-cyan-fg">_check_status</span><span class="ansi-blue-intense-fg ansi-bold">(status)</span>
+<span class="ansi-green-fg">    361</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> status <span class="ansi-yellow-intense-fg ansi-bold">==</span> <span class="ansi-blue-intense-fg ansi-bold">&#39;OVER_QUERY_LIMIT&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    362</span>             raise GeocoderQuotaExceeded(
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 363</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span><span class="ansi-blue-intense-fg ansi-bold">&#39;The given key has gone over the requests limit in the 24&#39;</span>
+<span class="ansi-green-fg">    364</span>                 <span class="ansi-blue-intense-fg ansi-bold">&#39; hour period or has submitted too many requests in too&#39;</span>
+<span class="ansi-green-fg">    365</span>                 <span class="ansi-blue-intense-fg ansi-bold">&#39; short a period of time.&#39;</span>
+
+<span class="ansi-red-intense-fg ansi-bold">GeocoderQuotaExceeded</span>: The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time.</pre>
 </div>
 </div>
 
@@ -13970,10 +14034,1041 @@ Université de Fribourg - FR
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[77]:</div>
+<div class="prompt input_prompt">In&nbsp;[159]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We have the table containing all cantons !</span>
+<span class="n">canton_shortname_table</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[159]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;GE&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;FR&#39;,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ &#39;VD&#39;,
+ &#39;GE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ None,
+ None,
+ &#39;ZH&#39;,
+ None,
+ None,
+ &#39;ZH&#39;,
+ &#39;ZH&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;BE&#39;,
+ &#39;ZH&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;NE&#39;,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ None,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ None,
+ &#39;GR&#39;,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;VD&#39;,
+ &#39;FR&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ &#39;SG&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;LU&#39;,
+ &#39;BE&#39;,
+ None,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;LU&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ None,
+ &#39;BS&#39;,
+ None,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;VD&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GE&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;GR&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;FR&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;SG&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;BE&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;ZH&#39;,
+ None,
+ &#39;NE&#39;,
+ None,
+ &#39;BS&#39;,
+ None,
+ ...]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Same with the dictionary</span>
+<span class="n">university_canton_dict</span>
 </pre></div>
 
 </div>
@@ -13983,10 +15078,818 @@ Université de Fribourg - FR
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[84]:</div>
+<div class="prompt input_prompt">In&nbsp;[164]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">university_canton_dict</span><span class="p">[</span><span class="s1">&#39;Nicht zuteilbar - NA&#39;</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Let&#39;s add the cantons to our dataframe !</span>
+<span class="n">canton_shortname_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">canton_shortname_table</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Canton Shortname&#39;</span><span class="p">)</span>
+<span class="n">canton_longname_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">canton_longname_table</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Canton Longname&#39;</span><span class="p">)</span>
+<span class="n">p3_grant_cantons</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">p3_grant_export_data</span><span class="p">,</span> <span class="n">canton_longname_series</span><span class="p">,</span> <span class="n">canton_shortname_series</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">p3_grant_cantons</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_value</span>
+<span class="n">p3_grant_cantons</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[164]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Funding Instrument</th>
+      <th>Funding Instrument Hierarchy</th>
+      <th>Institution</th>
+      <th>University</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Approved Amount</th>
+      <th>Canton Longname</th>
+      <th>Canton Shortname</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Genève</td>
+      <td>GE</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Faculté de Psychologie et des Sciences de l'Ed...</td>
+      <td>Université de Genève - GE</td>
+      <td>01.10.1975</td>
+      <td>30.09.1976</td>
+      <td>41022.0</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Kommission für das Corpus philosophorum medii ...</td>
+      <td>NPO (Biblioth., Museen, Verwalt.) - NPO</td>
+      <td>01.03.1976</td>
+      <td>28.02.1985</td>
+      <td>79732.0</td>
+      <td>Zurich</td>
+      <td>ZH</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Abt. Handschriften und Alte Drucke Bibliothek ...</td>
+      <td>Universität Basel - BS</td>
+      <td>01.10.1975</td>
+      <td>30.09.1976</td>
+      <td>52627.0</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Schweiz. Thesauruskommission</td>
+      <td>NPO (Biblioth., Museen, Verwalt.) - NPO</td>
+      <td>01.01.1976</td>
+      <td>30.04.1978</td>
+      <td>120042.0</td>
+      <td>Basel-Stadt</td>
+      <td>BS</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Séminaire de politique économique, d'économie ...</td>
+      <td>Université de Fribourg - FR</td>
+      <td>01.01.1976</td>
+      <td>31.12.1978</td>
+      <td>53009.0</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Institut für ökumenische Studien Université de...</td>
+      <td>Université de Fribourg - FR</td>
+      <td>01.01.1976</td>
+      <td>31.12.1976</td>
+      <td>25403.0</td>
+      <td>Zurich</td>
+      <td>ZH</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Ostasiatisches Seminar Universität Zürich</td>
+      <td>Universität Zürich - ZH</td>
+      <td>01.10.1975</td>
+      <td>31.03.1977</td>
+      <td>47100.0</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>NaN</td>
+      <td>Université de Lausanne - LA</td>
+      <td>01.10.1975</td>
+      <td>31.03.1977</td>
+      <td>25814.0</td>
+      <td>Fribourg</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Laboratoire de Didactique et Epistémologie des...</td>
+      <td>Université de Genève - GE</td>
+      <td>01.10.1975</td>
+      <td>30.09.1978</td>
+      <td>360000.0</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Klinische Psychologie und Psychotherapie Insti...</td>
+      <td>Université de Fribourg - FR</td>
+      <td>01.10.1975</td>
+      <td>31.12.1978</td>
+      <td>153886.0</td>
+      <td>Fribourg</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Schweizerische Rechtsquellen c/o Universität Z...</td>
+      <td>NPO (Biblioth., Museen, Verwalt.) - NPO</td>
+      <td>01.10.1975</td>
+      <td>30.09.1978</td>
+      <td>862200.0</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Département de Sociologie Faculté des Sciences...</td>
+      <td>Université de Genève - GE</td>
+      <td>01.10.1975</td>
+      <td>30.09.1977</td>
+      <td>116991.0</td>
+      <td>Zürich</td>
+      <td>ZH</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Institut für Volkswirtschaft WWZ / FGS Univers...</td>
+      <td>Universität Basel - BS</td>
+      <td>01.10.1975</td>
+      <td>31.12.1978</td>
+      <td>112664.0</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Soziologisches Institut Universität Zürich</td>
+      <td>Universität Zürich - ZH</td>
+      <td>01.10.1975</td>
+      <td>31.12.1975</td>
+      <td>5000.0</td>
+      <td>Vaud</td>
+      <td>VD</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Forschungszentrum FAL</td>
+      <td>Université de Fribourg - FR</td>
+      <td>01.10.1975</td>
+      <td>30.09.1977</td>
+      <td>204018.0</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Faculté de Psychologie et des Sciences de l'Ed...</td>
+      <td>Université de Genève - GE</td>
+      <td>01.10.1975</td>
+      <td>30.09.1977</td>
+      <td>149485.0</td>
+      <td>Genève</td>
+      <td>GE</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Soziologisches Institut Universität Zürich</td>
+      <td>Universität Zürich - ZH</td>
+      <td>01.01.1976</td>
+      <td>31.08.1977</td>
+      <td>83983.0</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Fribourg</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>NaN</td>
+      <td>Université de Lausanne - LA</td>
+      <td>01.12.1975</td>
+      <td>31.01.1977</td>
+      <td>14138.0</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Faculté de Psychologie et des Sciences de l'Ed...</td>
+      <td>Université de Genève - GE</td>
+      <td>01.10.1975</td>
+      <td>30.09.1978</td>
+      <td>164602.0</td>
+      <td>Zurich</td>
+      <td>ZH</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>NaN</td>
+      <td>Universität Bern - BE</td>
+      <td>01.10.1975</td>
+      <td>30.04.1978</td>
+      <td>147795.0</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Forschungsbereich Politisches Verhalten und Oe...</td>
+      <td>Universität Zürich - ZH</td>
+      <td>01.01.1976</td>
+      <td>30.06.1977</td>
+      <td>24552.0</td>
+      <td>Genève</td>
+      <td>GE</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Département des langues et des littératures fr...</td>
+      <td>Université de Genève - GE</td>
+      <td>01.10.1975</td>
+      <td>30.09.1978</td>
+      <td>44802.0</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Basel-Stadt</td>
+      <td>BS</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Schweizerische Gesellschaft für Volkskunde</td>
+      <td>NPO (Biblioth., Museen, Verwalt.) - NPO</td>
+      <td>01.10.1975</td>
+      <td>30.09.1976</td>
+      <td>225000.0</td>
+      <td>Zürich</td>
+      <td>ZH</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Kuratorium Carl J. Burckhardt</td>
+      <td>NPO (Biblioth., Museen, Verwalt.) - NPO</td>
+      <td>01.10.1975</td>
+      <td>30.04.1978</td>
+      <td>179124.0</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>NaN</td>
+      <td>Universität Zürich - ZH</td>
+      <td>01.10.1975</td>
+      <td>31.03.1976</td>
+      <td>20000.0</td>
+      <td>Fribourg</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Project funding (Div. I-III)</td>
+      <td>Project funding</td>
+      <td>Eidg. Forschungsanstalt für Wald, Schnee und L...</td>
+      <td>Eidg. Forschungsanstalt für Wald,Schnee,Land -...</td>
+      <td>01.10.1975</td>
+      <td>30.09.1978</td>
+      <td>445198.0</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>63900</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Global Studies Institute Université de Genève</td>
+      <td>Université de Genève - GE</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>4600.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63902</th>
+      <td>Doc.CH</td>
+      <td>Careers</td>
+      <td>Istituto di Studi Italiani Facoltà di Scienze ...</td>
+      <td>Università della Svizzera italiana - USI</td>
+      <td>01.09.2016</td>
+      <td>31.08.2020</td>
+      <td>251554.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63903</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Institut Ethique Histoire Humanités - iEH2 Fac...</td>
+      <td>Université de Genève - GE</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>5700.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63904</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Institut d'Archéologie et des Sciences de l'An...</td>
+      <td>Université de Lausanne - LA</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>10000.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63910</th>
+      <td>Publication grants</td>
+      <td>Science communication</td>
+      <td>Pädagogische Hochschule Fachhochschule Nordwes...</td>
+      <td>Pädagogische Hochschule Nordwestschweiz - PHFHNW</td>
+      <td>01.05.2016</td>
+      <td>31.05.2016</td>
+      <td>7990.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63913</th>
+      <td>Publication grants</td>
+      <td>Science communication</td>
+      <td>Seminar für Filmwissenschaft Universität Zürich</td>
+      <td>Universität Zürich - ZH</td>
+      <td>01.05.2016</td>
+      <td>31.05.2016</td>
+      <td>12416.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63915</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Deutsches Seminar Universität Basel</td>
+      <td>Universität Basel - BS</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>1600.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63916</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Englisches Seminar Universität Basel</td>
+      <td>Universität Basel - BS</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>3200.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63917</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Centro Stefano Franscini (CSF)</td>
+      <td>ETH Zürich - ETHZ</td>
+      <td>01.08.2016</td>
+      <td>31.07.2017</td>
+      <td>120000.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63918</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Romanisches Seminar Universität Zürich</td>
+      <td>Universität Zürich - ZH</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>6300.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63919</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Romanisches Seminar Universität Zürich</td>
+      <td>Universität Zürich - ZH</td>
+      <td>01.09.2016</td>
+      <td>30.09.2016</td>
+      <td>1500.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63920</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Institut d'études politiques, historiques et i...</td>
+      <td>Université de Lausanne - LA</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>11782.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63921</th>
+      <td>Publication grants</td>
+      <td>Science communication</td>
+      <td>Theologische Fakultät Universität Zürich</td>
+      <td>Universität Zürich - ZH</td>
+      <td>01.05.2016</td>
+      <td>31.05.2016</td>
+      <td>2600.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63922</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Institut des Sciences sociales du Politique IS...</td>
+      <td>Université de Fribourg - FR</td>
+      <td>01.09.2016</td>
+      <td>30.09.2016</td>
+      <td>7700.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63927</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Département d'Informatique Université de Fribourg</td>
+      <td>Université de Fribourg - FR</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>2500.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63928</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Institut für Tieranatomie Universität Bern</td>
+      <td>Universität Bern - BE</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>5900.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63932</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Institut für Germanistik Philosophisch-histori...</td>
+      <td>Universität Bern - BE</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>7500.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63934</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Centre interfacultaire en droits de l'enfant  ...</td>
+      <td>Université de Genève - GE</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>3000.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63935</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Haute Ecole Pédagogique VD</td>
+      <td>Haute école pédagogique du canton de Vaud - HEPL</td>
+      <td>01.10.2016</td>
+      <td>31.03.2017</td>
+      <td>3600.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63939</th>
+      <td>Publication grants</td>
+      <td>Science communication</td>
+      <td>Institut Sozialmanagement und Sozialpolitik Ho...</td>
+      <td>Hochschule Luzern - HSLU</td>
+      <td>01.08.2016</td>
+      <td>31.07.2017</td>
+      <td>1898.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63950</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Fondation Jean Monnet pour l'Europe Centre de ...</td>
+      <td>NPO (Biblioth., Museen, Verwalt.) - NPO</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>2800.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63951</th>
+      <td>NRP 68 Sustainable Use of Soil as a Resource</td>
+      <td>Programmes;National Research Programmes (NRPs)</td>
+      <td>Planning of Landscape and Urban Systems Instit...</td>
+      <td>ETH Zürich - ETHZ</td>
+      <td>01.10.2016</td>
+      <td>30.09.2017</td>
+      <td>99952.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63952</th>
+      <td>NRP 68 Sustainable Use of Soil as a Resource</td>
+      <td>Programmes;National Research Programmes (NRPs)</td>
+      <td>Forschungsanstalt Agroscope Reckenholz-Tänikon...</td>
+      <td>Forschungsanstalten Agroscope - AGS</td>
+      <td>01.10.2016</td>
+      <td>31.12.2017</td>
+      <td>98040.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63953</th>
+      <td>NRP 68 Sustainable Use of Soil as a Resource</td>
+      <td>Programmes;National Research Programmes (NRPs)</td>
+      <td>Forschung und Beratung in Wirtschaft und Polit...</td>
+      <td>Firmen/Privatwirtschaft - FP</td>
+      <td>01.09.2016</td>
+      <td>28.02.2018</td>
+      <td>100000.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63955</th>
+      <td>International Exploratory Workshops</td>
+      <td>Science communication</td>
+      <td>Zentrum für Religion, Wirtschaft und Politik T...</td>
+      <td>Universität Basel - BS</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>10030.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63958</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Abteilung für Indologie Universität Zürich</td>
+      <td>Universität Zürich - ZH</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>10600.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63959</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Institut Religions, Cultures, Modernité FTSR U...</td>
+      <td>Université de Lausanne - LA</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>2515.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63963</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Haute École d'art et de design - Genève HES-SO</td>
+      <td>HES de Suisse occidentale - HES-SO</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>3000.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63964</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Departement Design Zürcher Hochschule der Küns...</td>
+      <td>Zürcher Fachhochschule (ohne PH) - ZFH</td>
+      <td>01.10.2016</td>
+      <td>31.12.2016</td>
+      <td>1000.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63965</th>
+      <td>Scientific Conferences</td>
+      <td>Science communication</td>
+      <td>Institute Performing Arts and Film Zürcher Hoc...</td>
+      <td>Zürcher Fachhochschule (ohne PH) - ZFH</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>2000.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>61659 rows × 9 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we have the cantons associated with the universities/institutions :)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[165]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_grant_cantons</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;P3_Cantons.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
 </div>
@@ -14012,7 +15915,7 @@ Université de Fribourg - FR
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>THE FOLLOWING CODE HAS TO BE CHECKED</p>
+<p>THE FOLLOWING CODE HAS TO BE CHECKED, WE CAN DROP SOME OF IT (don't worry, it can be taken back from ancient commits on GitHub)</p>
 
 </div>
 </div>

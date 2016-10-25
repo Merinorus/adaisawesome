@@ -12091,14 +12091,16 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">canton_longname</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">adr</span><span class="o">.</span><span class="n">raw</span><span class="p">[</span><span class="s1">&#39;address_components&#39;</span><span class="p">]:</span>
-        <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;types&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;administrative_area_level_1&quot;</span><span class="p">:</span>
-            <span class="n">canton_longname</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;long_name&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;types&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;country&quot;</span> <span class="ow">and</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Switzerland&quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Switzerland !&quot;</span><span class="p">)</span>
+            <span class="c1">#if i[&quot;types&quot;][0] == &quot;administrative_area_level_1&quot;:</span>
+                <span class="c1">#canton_longname = (i[&#39;long_name&#39;])</span>
 <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No canton found&#39;</span><span class="p">)</span>
 <span class="n">canton_longname</span>
@@ -12114,7 +12116,7 @@ div#notebook {
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>No canton found
+<pre>Switzerland !
 </pre>
 </div>
 </div>
@@ -12210,6 +12212,103 @@ div#notebook {
 </pre></div>
 
 </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_table</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">test_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">test_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">test_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">test_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">test_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">test_table</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[17]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[None, 1, None, None, 2]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_dic</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">test_dic</span><span class="p">[</span><span class="s1">&#39;key1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">test_dic</span><span class="p">[</span><span class="s1">&#39;key1&#39;</span><span class="p">][</span><span class="s1">&#39;longname&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;It&#39;&#39;s so funny&#39;</span><span class="p">]</span>
+<span class="n">test_dic</span><span class="p">[</span><span class="s1">&#39;key1&#39;</span><span class="p">][</span><span class="s1">&#39;shortname&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;lol&#39;</span><span class="p">]</span>
+<span class="n">test_dic</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[28]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;key1&#39;: {&#39;longname&#39;: [&#39;Its so funny&#39;], &#39;shortname&#39;: [&#39;lol&#39;]}}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_dic</span><span class="p">[</span><span class="s1">&#39;key1&#39;</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[29]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;longname&#39;: [&#39;Its so funny&#39;], &#39;shortname&#39;: [&#39;lol&#39;]}</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
