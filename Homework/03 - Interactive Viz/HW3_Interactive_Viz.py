@@ -78,16 +78,16 @@ p3_grant_export_data
 #   - Add the canton to the canton table
 # 3) Add the canton table to the above dataframe in a way that they match with the universities or institutions
 
-# In[66]:
+# In[184]:
 
 # Let's start by creating our geolocator. We will use Google Maps API :
-googlemapsapikeyjson = json.loads(open('google_maps_api_key.json').read())
-googlemapsapikey = googlemapsapikeyjson['key']
+googlemapsapikeyjson = json.loads(open('google_maps_api_keys.json').read())
+googlemapsapikeys = googlemapsapikeyjson['keys']
 
 
 # In[68]:
 
-geolocator = geopy.geocoders.GoogleV3(api_key=googlemapsapikey)
+geolocator = geopy.geocoders.GoogleV3(api_key=googlemapsapikeys[0])
 # Do a test with University of Geneva
 test_university_geneva = geolocator.geocode("University of Geneva")
 test_university_geneva
@@ -112,12 +112,13 @@ institution_canton_dict = {}
 # We can already add the values in our dataframe that won't lead to an address
 university_canton_dict['Nicht zuteilbar - NA'] = None # it means "Not Available" in German !
 institution_canton_dict['NaN'] = None
+institution_canton_dict['nan'] = None
 
 
-# It's kinda dirty, but if the folliwing cell shows a timeout error (maybe we saturated the geolocation service), we can run it again. Indeed, the dictionaries will be partialy filled, and running the code again will continue from where it stopped previously.
-# Run the cell until it stops displaying "timeout error" :v
+# It's kinda dirty, but we will need more than one API key to make all the requests we need for our data.
+# So we created several Google API keys and switch the key each time the current one cannot be used anymore !
 
-# In[163]:
+# In[221]:
 
 # We create tables that will contains every canton we find, so we'll be able to match it with the dataframe at the end.
 canton_shortname_table = [] # eg: VD
@@ -130,13 +131,35 @@ row_counter = 0
 # maximum duration of a query to the geocoder, in seconds
 geocoder_timeout = 5
 
-# The following lines make the geolocator stubborn : if it gets a timeout error, it tries again... indefinitely !
-def stubborn_geocode(address, region, timeout_limit):
+# We're going to use more than one API key if we want to make all the requests !! :@
+APIkeynumber = 0
+
+# The following lines make the geolocator stubborn : it uses all the keys that are available and if it gets a timeout error, it tries again... indefinitely !
+        
+def stubborn_geocode(geolocator, address):
+    global APIkeynumber
     try:
-        return geopy.geocode(address, region, timeout_limit)
+        #print("Using API key n°" + str(APIkeynumber))
+        geolocator = geopy.geocoders.GoogleV3(api_key=googlemapsapikeys[APIkeynumber])
+        return geolocator.geocode(address, region='ch', timeout=geocoder_timeout)
     except geopy.exc.GeocoderTimedOut:
         print("Error : the geocoder timed out. Let's try again...")
-        return stubborn_geocode(address, region, timeout_limit)
+        return stubborn_geocode(geolocator, address)
+    
+    except geopy.exc.GeocoderQuotaExceeded:
+        print("Error : The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time. Let's try again with a different key...")
+        APIkeynumber = APIkeynumber + 1
+        try:
+            print("Trying API key n°" + str(APIkeynumber) + "...")           
+            return stubborn_geocode(geolocator, address)
+        except IndexError:
+            print("Error : Out of API keys ! We need to request another API key from Google :(")
+            print("When you get a new API key, add it to the json file containing the others keys.")
+            # We have to stop there...
+            raise
+    
+    
+        
 
     
 # Go through the dataframe
@@ -159,10 +182,10 @@ for index, row in p3_grant_export_data.iterrows():
     
     else:
         # Nor the university neither the institution has been found yet, so we have to geolocate it
-        adr = stubborn_geocode(university_name, region='ch', timeout=geocoder_timeout)
+        adr = stubborn_geocode(geolocator, university_name)
         if adr is None:
             # TODO No address has been found for this University. So we have to do the same with Institution           
-            adr = stubborn_geocode(institution_name, region='ch', timeout=geocoder_timeout)
+            adr = stubborn_geocode(geolocator, institution_name)
             
         # Now, the address should have been found, either by locating the university or the institution
         if adr is not None:
@@ -188,8 +211,17 @@ for index, row in p3_grant_export_data.iterrows():
                             institution_canton_dict[institution_name]['short_name'] = canton_shortname
                             institution_canton_dict[institution_name]['long_name'] = canton_longname
                             break
+            
+            except IndexError:
+                # I don't know where this error comes from exactly, just debugging... it just comes from this line :
+                # if i["types"][0] == "country" and i["long_name"] == "Switzerland":
+                # For the moment I assume that the the address doesn't match the requirements, so it should not be located in Switzerland
+                # Thus, we just forget it and look for the next address.
+                print("IndexError : no canton found for the current row")
+                
             except KeyError:
-                print('Error : no canton found')
+                print("KeyError : no canton found for the current row")
+                print("Current item: n°" + str(len(canton_shortname_table)))
                 # The address doesn't act as excpected. There are two possibilities :
                 # - The address doesn't contain the field related to the canton
                 # - The address doesn't contain the field related to the country
@@ -209,19 +241,45 @@ for index, row in p3_grant_export_data.iterrows():
         break
 
 
-# In[159]:
+# In[232]:
 
 # We have the table containing all cantons !
-canton_shortname_table
+len(canton_shortname_table)
 
 
-# In[ ]:
+# In[235]:
 
-# Same with the dictionary
+# Same with the dictionary (we save it)
+with open('university_canton_dict.json', 'w') as fp:
+    json.dump(university_canton_dict, fp, sort_keys=True, indent=4)
 university_canton_dict
 
 
-# In[164]:
+# In[237]:
+
+with open('institution_canton_dict.json', 'w') as fp:
+    json.dump(institution_canton_dict, fp, indent=4)
+institution_canton_dict
+
+
+# In[227]:
+
+canton_shortname_series = pd.Series(canton_shortname_table, name='Canton Shortname')
+canton_shortname_series.size
+
+
+# In[228]:
+
+canton_longname_series = pd.Series(canton_longname_table, name='Canton Longname')
+canton_longname_series.size
+
+
+# In[229]:
+
+p3_grant_cantons.size
+
+
+# In[222]:
 
 # Let's add the cantons to our dataframe !
 canton_shortname_series = pd.Series(canton_shortname_table, name='Canton Shortname')
@@ -233,7 +291,7 @@ p3_grant_cantons
 
 # Now we have the cantons associated with the universities/institutions :)
 
-# In[165]:
+# In[223]:
 
 p3_grant_cantons.to_csv('P3_Cantons.csv')
 
@@ -291,7 +349,7 @@ geonames_login
 
 # In[17]:
 
-googlemapsapikeyjson = json.loads(open('google_maps_api_key.json').read())
+googlemapsapikeyjson = json.loads(open('google_maps_api_keys.json').read())
 googlemapsapikey = googlemapsapikeyjson['key']
 
 

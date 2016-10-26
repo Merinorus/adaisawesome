@@ -13763,12 +13763,12 @@ We will then take both universities and institution names into account in order 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[66]:</div>
+<div class="prompt input_prompt">In&nbsp;[184]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Let&#39;s start by creating our geolocator. We will use Google Maps API :</span>
-<span class="n">googlemapsapikeyjson</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;google_maps_api_key.json&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-<span class="n">googlemapsapikey</span> <span class="o">=</span> <span class="n">googlemapsapikeyjson</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span>
+<span class="n">googlemapsapikeyjson</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;google_maps_api_keys.json&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="n">googlemapsapikeys</span> <span class="o">=</span> <span class="n">googlemapsapikeyjson</span><span class="p">[</span><span class="s1">&#39;keys&#39;</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -13781,7 +13781,7 @@ We will then take both universities and institution names into account in order 
 <div class="prompt input_prompt">In&nbsp;[68]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">geolocator</span> <span class="o">=</span> <span class="n">geopy</span><span class="o">.</span><span class="n">geocoders</span><span class="o">.</span><span class="n">GoogleV3</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">googlemapsapikey</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">geolocator</span> <span class="o">=</span> <span class="n">geopy</span><span class="o">.</span><span class="n">geocoders</span><span class="o">.</span><span class="n">GoogleV3</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">googlemapsapikeys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="c1"># Do a test with University of Geneva</span>
 <span class="n">test_university_geneva</span> <span class="o">=</span> <span class="n">geolocator</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="s2">&quot;University of Geneva&quot;</span><span class="p">)</span>
 <span class="n">test_university_geneva</span>
@@ -13870,6 +13870,7 @@ Now let's start by creating the indexes for universities and institutions :</p>
 <span class="c1"># We can already add the values in our dataframe that won&#39;t lead to an address</span>
 <span class="n">university_canton_dict</span><span class="p">[</span><span class="s1">&#39;Nicht zuteilbar - NA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># it means &quot;Not Available&quot; in German !</span>
 <span class="n">institution_canton_dict</span><span class="p">[</span><span class="s1">&#39;NaN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">institution_canton_dict</span><span class="p">[</span><span class="s1">&#39;nan&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </pre></div>
 
 </div>
@@ -13882,15 +13883,15 @@ Now let's start by creating the indexes for universities and institutions :</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>It's kinda dirty, but if the folliwing cell shows a timeout error (maybe we saturated the geolocation service), we can run it again. Indeed, the dictionaries will be partialy filled, and running the code again will continue from where it stopped previously.
-Run the cell until it stops displaying "timeout error" :v</p>
+<p>It's kinda dirty, but we will need more than one API key to make all the requests we need for our data.
+So we created several Google API keys and switch the key each time the current one cannot be used anymore !</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[163]:</div>
+<div class="prompt input_prompt">In&nbsp;[221]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We create tables that will contains every canton we find, so we&#39;ll be able to match it with the dataframe at the end.</span>
@@ -13904,13 +13905,35 @@ Run the cell until it stops displaying "timeout error" :v</p>
 <span class="c1"># maximum duration of a query to the geocoder, in seconds</span>
 <span class="n">geocoder_timeout</span> <span class="o">=</span> <span class="mi">5</span>
 
-<span class="c1"># The following lines make the geolocator stubborn : if it gets a timeout error, it tries again... indefinitely !</span>
-<span class="k">def</span> <span class="nf">stubborn_geocode</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">timeout_limit</span><span class="p">):</span>
+<span class="c1"># We&#39;re going to use more than one API key if we want to make all the requests !! :@</span>
+<span class="n">APIkeynumber</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># The following lines make the geolocator stubborn : it uses all the keys that are available and if it gets a timeout error, it tries again... indefinitely !</span>
+        
+<span class="k">def</span> <span class="nf">stubborn_geocode</span><span class="p">(</span><span class="n">geolocator</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">APIkeynumber</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">geopy</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">timeout_limit</span><span class="p">)</span>
+        <span class="c1">#print(&quot;Using API key n°&quot; + str(APIkeynumber))</span>
+        <span class="n">geolocator</span> <span class="o">=</span> <span class="n">geopy</span><span class="o">.</span><span class="n">geocoders</span><span class="o">.</span><span class="n">GoogleV3</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">googlemapsapikeys</span><span class="p">[</span><span class="n">APIkeynumber</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">geolocator</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;ch&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">geocoder_timeout</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">geopy</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">GeocoderTimedOut</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error : the geocoder timed out. Let&#39;s try again...&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">stubborn_geocode</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">timeout_limit</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">stubborn_geocode</span><span class="p">(</span><span class="n">geolocator</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+    
+    <span class="k">except</span> <span class="n">geopy</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">GeocoderQuotaExceeded</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error : The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time. Let&#39;s try again with a different key...&quot;</span><span class="p">)</span>
+        <span class="n">APIkeynumber</span> <span class="o">=</span> <span class="n">APIkeynumber</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Trying API key n°&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">APIkeynumber</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>           
+            <span class="k">return</span> <span class="n">stubborn_geocode</span><span class="p">(</span><span class="n">geolocator</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error : Out of API keys ! We need to request another API key from Google :(&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;When you get a new API key, add it to the json file containing the others keys.&quot;</span><span class="p">)</span>
+            <span class="c1"># We have to stop there...</span>
+            <span class="k">raise</span>
+    
+    
+        
 
     
 <span class="c1"># Go through the dataframe</span>
@@ -13933,10 +13956,10 @@ Run the cell until it stops displaying "timeout error" :v</p>
     
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Nor the university neither the institution has been found yet, so we have to geolocate it</span>
-        <span class="n">adr</span> <span class="o">=</span> <span class="n">stubborn_geocode</span><span class="p">(</span><span class="n">university_name</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;ch&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">geocoder_timeout</span><span class="p">)</span>
+        <span class="n">adr</span> <span class="o">=</span> <span class="n">stubborn_geocode</span><span class="p">(</span><span class="n">geolocator</span><span class="p">,</span> <span class="n">university_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">adr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># TODO No address has been found for this University. So we have to do the same with Institution           </span>
-            <span class="n">adr</span> <span class="o">=</span> <span class="n">stubborn_geocode</span><span class="p">(</span><span class="n">institution_name</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;ch&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">geocoder_timeout</span><span class="p">)</span>
+            <span class="n">adr</span> <span class="o">=</span> <span class="n">stubborn_geocode</span><span class="p">(</span><span class="n">geolocator</span><span class="p">,</span> <span class="n">institution_name</span><span class="p">)</span>
             
         <span class="c1"># Now, the address should have been found, either by locating the university or the institution</span>
         <span class="k">if</span> <span class="n">adr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -13962,8 +13985,17 @@ Run the cell until it stops displaying "timeout error" :v</p>
                             <span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;short_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canton_shortname</span>
                             <span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canton_longname</span>
                             <span class="k">break</span>
+            
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="c1"># I don&#39;t know where this error comes from exactly, just debugging... it just comes from this line :</span>
+                <span class="c1"># if i[&quot;types&quot;][0] == &quot;country&quot; and i[&quot;long_name&quot;] == &quot;Switzerland&quot;:</span>
+                <span class="c1"># For the moment I assume that the the address doesn&#39;t match the requirements, so it should not be located in Switzerland</span>
+                <span class="c1"># Thus, we just forget it and look for the next address.</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;IndexError : no canton found for the current row&quot;</span><span class="p">)</span>
+                
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error : no canton found&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;KeyError : no canton found for the current row&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Current item: n°&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">canton_shortname_table</span><span class="p">)))</span>
                 <span class="c1"># The address doesn&#39;t act as excpected. There are two possibilities :</span>
                 <span class="c1"># - The address doesn&#39;t contain the field related to the canton</span>
                 <span class="c1"># - The address doesn&#39;t contain the field related to the country</span>
@@ -13992,39 +14024,13 @@ Run the cell until it stops displaying "timeout error" :v</p>
 
 
 <div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
-<span class="ansi-red-intense-fg ansi-bold">GeocoderQuotaExceeded</span>                     Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-163-ebe7d7ab99dc&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
-<span class="ansi-green-fg">     27</span>     <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-fg">     28</span>         <span class="ansi-red-intense-fg ansi-bold"># Nor the university neither the institution has been found yet, so we have to geolocate it</span>
-<span class="ansi-green-intense-fg ansi-bold">---&gt; 29</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>adr <span class="ansi-yellow-intense-fg ansi-bold">=</span> geolocator<span class="ansi-yellow-intense-fg ansi-bold">.</span>geocode<span class="ansi-yellow-intense-fg ansi-bold">(</span>university_name<span class="ansi-yellow-intense-fg ansi-bold">,</span> region<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-blue-intense-fg ansi-bold">&#39;ch&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">     30</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> adr <span class="ansi-green-intense-fg ansi-bold">is</span> <span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-fg">     31</span>             <span class="ansi-red-intense-fg ansi-bold"># TODO No address has been found for this University. So we have to do the same with Institution</span>
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\site-packages\geopy\geocoders\googlev3.py</span> in <span class="ansi-cyan-fg">geocode</span><span class="ansi-blue-intense-fg ansi-bold">(self, query, exactly_one, timeout, bounds, region, components, language, sensor)</span>
-<span class="ansi-green-fg">    215</span>         logger<span class="ansi-yellow-intense-fg ansi-bold">.</span>debug<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;%s.geocode: %s&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>__class__<span class="ansi-yellow-intense-fg ansi-bold">.</span>__name__<span class="ansi-yellow-intense-fg ansi-bold">,</span> url<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    216</span>         return self._parse_json(
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 217</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_call_geocoder<span class="ansi-yellow-intense-fg ansi-bold">(</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> timeout<span class="ansi-yellow-intense-fg ansi-bold">=</span>timeout<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> exactly_one
-<span class="ansi-green-fg">    218</span>         )
-<span class="ansi-green-fg">    219</span> 
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\site-packages\geopy\geocoders\googlev3.py</span> in <span class="ansi-cyan-fg">_parse_json</span><span class="ansi-blue-intense-fg ansi-bold">(self, page, exactly_one)</span>
-<span class="ansi-green-fg">    336</span>         places <span class="ansi-yellow-intense-fg ansi-bold">=</span> page<span class="ansi-yellow-intense-fg ansi-bold">.</span>get<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;results&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    337</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-green-intense-fg ansi-bold">not</span> len<span class="ansi-yellow-intense-fg ansi-bold">(</span>places<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 338</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_check_status<span class="ansi-yellow-intense-fg ansi-bold">(</span>page<span class="ansi-yellow-intense-fg ansi-bold">.</span>get<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;status&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    339</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> <span class="ansi-green-intense-fg ansi-bold">None</span>
-<span class="ansi-green-fg">    340</span> 
-
-<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\site-packages\geopy\geocoders\googlev3.py</span> in <span class="ansi-cyan-fg">_check_status</span><span class="ansi-blue-intense-fg ansi-bold">(status)</span>
-<span class="ansi-green-fg">    361</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> status <span class="ansi-yellow-intense-fg ansi-bold">==</span> <span class="ansi-blue-intense-fg ansi-bold">&#39;OVER_QUERY_LIMIT&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-fg">    362</span>             raise GeocoderQuotaExceeded(
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 363</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span><span class="ansi-blue-intense-fg ansi-bold">&#39;The given key has gone over the requests limit in the 24&#39;</span>
-<span class="ansi-green-fg">    364</span>                 <span class="ansi-blue-intense-fg ansi-bold">&#39; hour period or has submitted too many requests in too&#39;</span>
-<span class="ansi-green-fg">    365</span>                 <span class="ansi-blue-intense-fg ansi-bold">&#39; short a period of time.&#39;</span>
-
-<span class="ansi-red-intense-fg ansi-bold">GeocoderQuotaExceeded</span>: The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time.</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Error : The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time. Let&#39;s try again with a different key...
+Trying API key n°1...
+Error : The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time. Let&#39;s try again with a different key...
+Trying API key n°2...
+IndexError : no canton found for the current row
+</pre>
 </div>
 </div>
 
@@ -14034,11 +14040,11 @@ Run the cell until it stops displaying "timeout error" :v</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[159]:</div>
+<div class="prompt input_prompt">In&nbsp;[232]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We have the table containing all cantons !</span>
-<span class="n">canton_shortname_table</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">canton_shortname_table</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -14049,1011 +14055,11 @@ Run the cell until it stops displaying "timeout error" :v</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[159]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[232]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;GE&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;FR&#39;,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- &#39;VD&#39;,
- &#39;GE&#39;,
- None,
- &#39;FR&#39;,
- None,
- None,
- &#39;GE&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- None,
- None,
- &#39;ZH&#39;,
- None,
- None,
- &#39;ZH&#39;,
- &#39;ZH&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;BE&#39;,
- &#39;ZH&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;BS&#39;,
- None,
- None,
- &#39;BS&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;NE&#39;,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- None,
- &#39;VD&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- None,
- None,
- &#39;BE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;SG&#39;,
- None,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- None,
- &#39;GR&#39;,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;SG&#39;,
- None,
- None,
- &#39;GE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;VD&#39;,
- &#39;FR&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- &#39;SG&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- None,
- &#39;GE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- None,
- &#39;GE&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;LU&#39;,
- &#39;BE&#39;,
- None,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;LU&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;BE&#39;,
- None,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- None,
- &#39;BS&#39;,
- None,
- None,
- &#39;NE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;ZH&#39;,
- None,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;VD&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- None,
- &#39;BE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;BS&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GE&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;GR&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;FR&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;SG&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;BE&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;ZH&#39;,
- None,
- &#39;NE&#39;,
- None,
- &#39;BS&#39;,
- None,
- ...]</pre>
+<pre>95882</pre>
 </div>
 
 </div>
@@ -15064,10 +14070,12 @@ Run the cell until it stops displaying "timeout error" :v</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[235]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Same with the dictionary</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Same with the dictionary (we save it)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;university_canton_dict.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">university_canton_dict</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">university_canton_dict</span>
 </pre></div>
 
@@ -15075,10 +14083,330 @@ Run the cell until it stops displaying "timeout error" :v</p>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[235]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;Berner Fachhochschule - BFH&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;EPF Lausanne - EPFL&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;, &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;ETH Zürich - ETHZ&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;, &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Eidg. Anstalt für Wasserversorgung - EAWAG&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Eidg. Forschungsanstalt für Wald,Schnee,Land - WSL&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;,
+  &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;Eidg. Material und Prüfungsanstalt - EMPA&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;Ente Ospedaliero Cantonale - EOC&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;,
+  &#39;short_name&#39;: &#39;TI&#39;},
+ &#39;Fachhochschule Nordwestschweiz (ohne PH) - FHNW&#39;: {&#39;long_name&#39;: &#39;Basel-Stadt&#39;,
+  &#39;short_name&#39;: &#39;BS&#39;},
+ &#39;Fachhochschule Ostschweiz - FHO&#39;: {&#39;long_name&#39;: &#39;St. Gallen&#39;,
+  &#39;short_name&#39;: &#39;SG&#39;},
+ &#39;Facoltà di Teologia di Lugano - FTL&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;,
+  &#39;short_name&#39;: &#39;TI&#39;},
+ &#39;Firmen/Privatwirtschaft - FP&#39;: {&#39;long_name&#39;: &#39;Aargau&#39;, &#39;short_name&#39;: &#39;AG&#39;},
+ &#39;Forschungsanstalten Agroscope - AGS&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;HES de Suisse occidentale - HES-SO&#39;: {&#39;long_name&#39;: &#39;Canton of Solothurn&#39;,
+  &#39;short_name&#39;: &#39;SO&#39;},
+ &#39;Haute école pédagogique du canton de Vaud - HEPL&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;,
+  &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;Haute école pédagogique fribourgeoise - HEPFR&#39;: {&#39;long_name&#39;: &#39;Canton of Fribourg&#39;,
+  &#39;short_name&#39;: &#39;FR&#39;},
+ &#39;Hochschule Luzern - HSLU&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;, &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Idiap Research Institute - IDIAP&#39;: {&#39;long_name&#39;: &#39;Valais&#39;,
+  &#39;short_name&#39;: &#39;VS&#39;},
+ &#39;Inst. de Hautes Etudes Internat. et du Dév - IHEID&#39;: {&#39;long_name&#39;: &#39;Geneva&#39;,
+  &#39;short_name&#39;: &#39;GE&#39;},
+ &#39;Institut für Kulturforschung Graubünden - IKG&#39;: {&#39;long_name&#39;: &#39;Grisons&#39;,
+  &#39;short_name&#39;: &#39;GR&#39;},
+ &#39;Kantonsspital St. Gallen - KSPSG&#39;: {&#39;long_name&#39;: &#39;St. Gallen&#39;,
+  &#39;short_name&#39;: &#39;SG&#39;},
+ &#39;NPO (Biblioth., Museen, Verwalt.) - NPO&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Nicht zuteilbar - NA&#39;: None,
+ &#39;Paul Scherrer Institut - PSI&#39;: {&#39;long_name&#39;: &#39;Aargau&#39;, &#39;short_name&#39;: &#39;AG&#39;},
+ &#39;Pädag. Hochschule Tessin (Teilschule SUPSI) - ASP&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;,
+  &#39;short_name&#39;: &#39;TI&#39;},
+ &#39;Pädagogische Hochschule Bern - PHBern&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;Pädagogische Hochschule Graubünden - PHGR&#39;: {&#39;long_name&#39;: &#39;Grisons&#39;,
+  &#39;short_name&#39;: &#39;GR&#39;},
+ &#39;Pädagogische Hochschule Luzern - PHLU&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;,
+  &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Pädagogische Hochschule Schaffhausen - PHSH&#39;: {&#39;long_name&#39;: &#39;Canton of Schaffhausen&#39;,
+  &#39;short_name&#39;: &#39;SH&#39;},
+ &#39;Pädagogische Hochschule Schwyz - PHSZ&#39;: {&#39;long_name&#39;: &#39;Canton of Schwyz&#39;,
+  &#39;short_name&#39;: &#39;SZ&#39;},
+ &#39;Pädagogische Hochschule St. Gallen - PHSG&#39;: {&#39;long_name&#39;: &#39;St. Gallen&#39;,
+  &#39;short_name&#39;: &#39;SG&#39;},
+ &#39;Pädagogische Hochschule Thurgau - PHTG&#39;: {&#39;long_name&#39;: &#39;Thurgau&#39;,
+  &#39;short_name&#39;: &#39;TG&#39;},
+ &#39;Pädagogische Hochschule Wallis - PHVS&#39;: {&#39;long_name&#39;: &#39;Valais&#39;,
+  &#39;short_name&#39;: &#39;VS&#39;},
+ &#39;Pädagogische Hochschule Zug - PHZG&#39;: {&#39;long_name&#39;: &#39;Canton of Zug&#39;,
+  &#39;short_name&#39;: &#39;ZG&#39;},
+ &#39;Pädagogische Hochschule Zürich - PHZFH&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Robert Walser-Stiftung Bern - RWS&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;SUP della Svizzera italiana - SUPSI&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;,
+  &#39;short_name&#39;: &#39;TI&#39;},
+ &#39;Schweiz. Institut für Kunstwissenschaft - SIK-ISEA&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;,
+  &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;Schweizer Kompetenzzentrum Sozialwissensch. - FORS&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;,
+  &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;Staatsunabh. Theologische Hochschule Basel - STHB&#39;: {&#39;long_name&#39;: &#39;Basel-Stadt&#39;,
+  &#39;short_name&#39;: &#39;BS&#39;},
+ &#39;Swiss Institute of Bioinformatics - SIB&#39;: {&#39;long_name&#39;: &#39;Geneva&#39;,
+  &#39;short_name&#39;: &#39;GE&#39;},
+ &#39;Università della Svizzera italiana - USI&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;,
+  &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Universität Basel - BS&#39;: {&#39;long_name&#39;: &#39;Basel-Stadt&#39;, &#39;short_name&#39;: &#39;BS&#39;},
+ &#39;Universität Bern - BE&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;, &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;Universität Luzern - LU&#39;: {&#39;long_name&#39;: &#39;Luzern&#39;, &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Universität St. Gallen - SG&#39;: {&#39;long_name&#39;: &#39;Sankt Gallen&#39;,
+  &#39;short_name&#39;: &#39;SG&#39;},
+ &#39;Universität Zürich - ZH&#39;: {&#39;long_name&#39;: &#39;Zürich&#39;, &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Université de Fribourg - FR&#39;: {&#39;long_name&#39;: &#39;Fribourg&#39;, &#39;short_name&#39;: &#39;FR&#39;},
+ &#39;Université de Genève - GE&#39;: {&#39;long_name&#39;: &#39;Genève&#39;, &#39;short_name&#39;: &#39;GE&#39;},
+ &#39;Université de Lausanne - LA&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;, &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;Université de Neuchâtel - NE&#39;: {&#39;long_name&#39;: &#39;Canton of Neuchâtel&#39;,
+  &#39;short_name&#39;: &#39;NE&#39;},
+ &#39;Weitere Institute - FINST&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;Weitere Spitäler - ASPIT&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;, &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Zürcher Fachhochschule (ohne PH) - ZFH&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;}}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[164]:</div>
+<div class="prompt input_prompt">In&nbsp;[237]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;institution_canton_dict.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">institution_canton_dict</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">institution_canton_dict</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[237]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{nan: {&#39;long_name&#39;: &#39;Vaud&#39;, &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;Kantonsspital Luzern Medizinische Klinik&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;,
+  &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Ostasiatisches Seminar Universität Zürich&#39;: {&#39;long_name&#39;: &#39;Zürich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Ospedale Regionale di Lugano&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;, &#39;short_name&#39;: &#39;TI&#39;},
+ &#39;Ostschweizer Kinderspital&#39;: {&#39;long_name&#39;: &#39;St. Gallen&#39;, &#39;short_name&#39;: &#39;SG&#39;},
+ &#39;Facoltà di Teologia di Lugano&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;, &#39;short_name&#39;: &#39;TI&#39;},
+ &#39;Institut für Medien und Schule PHZ Schwyz Pädagogische Hochschule Zentralschweiz&#39;: {&#39;long_name&#39;: &#39;Canton of Schwyz&#39;,
+  &#39;short_name&#39;: &#39;SZ&#39;},
+ &#39;Pädagogische Hochschule des Kantons St. Gallen&#39;: {&#39;long_name&#39;: &#39;St. Gallen&#39;,
+  &#39;short_name&#39;: &#39;SG&#39;},
+ &#34;Séminaire de politique économique, d&#39;économie internationale et d&#39;économie régionale&#34;: {&#39;long_name&#39;: &#39;Fribourg&#39;,
+  &#39;short_name&#39;: &#39;FR&#39;},
+ &#39;Institut für Bienengesundheit Vetsuisse Fakultät Universität Bern&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;Institut für Wirtschaftsforschung ETH-Zürich&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Hochschule Technik + Architektur Luzern Bibliothek&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;,
+  &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Idiap Research Institute Martigny&#39;: {&#39;long_name&#39;: &#39;Valais&#39;,
+  &#39;short_name&#39;: &#39;VS&#39;},
+ &#39;Historisches Seminar Universität Luzern&#39;: {&#39;long_name&#39;: &#39;Luzern&#39;,
+  &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Institut fédéral de recherches WSL Site de Lausanne&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;,
+  &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;EMPA Thun&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;, &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;Universität St. Gallen&#39;: {&#39;long_name&#39;: &#39;Sankt Gallen&#39;, &#39;short_name&#39;: &#39;SG&#39;},
+ &#39;Institut für Kulturforschung Graubünden&#39;: {&#39;long_name&#39;: &#39;Grisons&#39;,
+  &#39;short_name&#39;: &#39;GR&#39;},
+ &#39;Pädagogische Hochschule Graubünden Bibliothek&#39;: {&#39;long_name&#39;: &#39;Grisons&#39;,
+  &#39;short_name&#39;: &#39;GR&#39;},
+ &#39;SIK-ISEA Antenne romande Université de Lausanne&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;,
+  &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;Hochschule für Sozialarbeit HSA Institut für Sozialplanung und Sozialmanagement&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;,
+  &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Pädagogische Hochschule Wallis PHVS&#39;: {&#39;long_name&#39;: &#39;Valais&#39;,
+  &#39;short_name&#39;: &#39;VS&#39;},
+ &#39;Erziehungsdirektion des Kantons Bern Bildungsplanung und Evaluation&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;Stöckli A. &amp; J. AG&#39;: {&#39;long_name&#39;: &#39;Aargau&#39;, &#39;short_name&#39;: &#39;AG&#39;},
+ &#39;Musikhochschule der Musik-Akademie der Stadt Basel&#39;: {&#39;long_name&#39;: &#39;Basel-Stadt&#39;,
+  &#39;short_name&#39;: &#39;BS&#39;},
+ &#39;Abteilung Systemanalyse, Integrated Assessment und Modellierung EAWAG Dübendorf&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Paul Scherrer Institut&#39;: {&#39;long_name&#39;: &#39;Aargau&#39;, &#39;short_name&#39;: &#39;AG&#39;},
+ &#39;Institut Suisse de Bioinformatique Centre Médical Universitaire Université de Genève&#39;: {&#39;long_name&#39;: &#39;Geneva&#39;,
+  &#39;short_name&#39;: &#39;GE&#39;},
+ &#39;UER MS HEP - Vaud&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;, &#39;short_name&#39;: &#39;VD&#39;},
+ &#34;Faculté de Psychologie et des Sciences de l&#39;Education Université de Genève&#34;: {&#39;long_name&#39;: &#39;Genève&#39;,
+  &#39;short_name&#39;: &#39;GE&#39;},
+ &#39;Institut für Bildungsmanagement und Bildungsökonomie Pädagogische Hochschule Zentralschweiz&#39;: {&#39;long_name&#39;: &#39;Canton of Zug&#39;,
+  &#39;short_name&#39;: &#39;ZG&#39;},
+ &#39;Robert Walser-Stiftung Zürich&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;, &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Abt. Handschriften und Alte Drucke Bibliothek der Universität Basel&#39;: {&#39;long_name&#39;: &#39;Basel-Stadt&#39;,
+  &#39;short_name&#39;: &#39;BS&#39;},
+ &#39;NaN&#39;: None,
+ &#39;FORS c/o Université de Lausanne&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;, &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;FHS St. Gallen Hochschule für angewandte Wissenschaften&#39;: {&#39;long_name&#39;: &#39;St. Gallen&#39;,
+  &#39;short_name&#39;: &#39;SG&#39;},
+ &#39;Pädagogische Hochschule Freiburg&#39;: {&#39;long_name&#39;: &#39;Canton of Fribourg&#39;,
+  &#39;short_name&#39;: &#39;FR&#39;},
+ &#39;Ingenieurschule Burgdorf&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;},
+ &#34;Institut d&#39;études sociales Centre de recherches sociales CERES&#34;: {&#39;long_name&#39;: &#39;Canton of Solothurn&#39;,
+  &#39;short_name&#39;: &#39;SO&#39;},
+ &#39;nan&#39;: None,
+ &#34;Institut d&#39;architecture Université de Genève&#34;: {&#39;long_name&#39;: &#39;Geneva&#39;,
+  &#39;short_name&#39;: &#39;GE&#39;},
+ &#39;Alta Scuola Pedagogica&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;, &#39;short_name&#39;: &#39;TI&#39;},
+ &#39;Istituto Ricerche Solari Locarno&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;,
+  &#39;short_name&#39;: &#39;TI&#39;},
+ &#39;Forschung und Entwicklung Pädagogische Hochschule Schaffhausen&#39;: {&#39;long_name&#39;: &#39;Canton of Schaffhausen&#39;,
+  &#39;short_name&#39;: &#39;SH&#39;},
+ &#39;Abteilung Forschung Pädagogische Hochschule Thurgau&#39;: {&#39;long_name&#39;: &#39;Thurgau&#39;,
+  &#39;short_name&#39;: &#39;TG&#39;},
+ &#39;Institut de sociologie et de sciences politiques Université de Neuchâtel&#39;: {&#39;long_name&#39;: &#39;Canton of Neuchâtel&#39;,
+  &#39;short_name&#39;: &#39;NE&#39;},
+ &#34;Laboratoire d&#39;intermodalité des transports et de planification EPFL-ENAC-INTER-LITEP&#34;: {&#39;long_name&#39;: &#39;Vaud&#39;,
+  &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;Theologische Hochschule Basel&#39;: {&#39;long_name&#39;: &#39;Basel-Stadt&#39;,
+  &#39;short_name&#39;: &#39;BS&#39;},
+ &#39;Pädagogische Hochschule Zürich Bibliothek PH Zürich / ZS&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Schweizerisches Nationalmuseum Landesmuseum Zürich&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Soziologisches Seminar Universität Luzern&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;,
+  &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Institut für Virologie und Immunologie Depart. Infektionskrankheiten und Pathologie Universität Bern&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;Dept. Angewandte Linguistik Zürcher Hochschule Winterthur S101&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Klinische Psychologie und Psychotherapie Institut für Psychologie Universität Bern&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;}}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[227]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">canton_shortname_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">canton_shortname_table</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Canton Shortname&#39;</span><span class="p">)</span>
+<span class="n">canton_shortname_series</span><span class="o">.</span><span class="n">size</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[227]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>95882</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[228]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">canton_longname_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">canton_longname_table</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Canton Longname&#39;</span><span class="p">)</span>
+<span class="n">canton_longname_series</span><span class="o">.</span><span class="n">size</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[228]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>95882</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[229]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_grant_cantons</span><span class="o">.</span><span class="n">size</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[229]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>862938</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[222]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Let&#39;s add the cantons to our dataframe !</span>
@@ -15097,7 +14425,7 @@ Run the cell until it stops displaying "timeout error" :v</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[164]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[222]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -15490,368 +14818,368 @@ Run the cell until it stops displaying "timeout error" :v</p>
       <td>...</td>
     </tr>
     <tr>
-      <th>63900</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Global Studies Institute Université de Genève</td>
-      <td>Université de Genève - GE</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>4600.0</td>
+      <th>95852</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Canton of Bern</td>
+      <td>BE</td>
     </tr>
     <tr>
-      <th>63902</th>
-      <td>Doc.CH</td>
-      <td>Careers</td>
-      <td>Istituto di Studi Italiani Facoltà di Scienze ...</td>
-      <td>Università della Svizzera italiana - USI</td>
-      <td>01.09.2016</td>
-      <td>31.08.2020</td>
-      <td>251554.0</td>
+      <th>95853</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
     <tr>
-      <th>63903</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Institut Ethique Histoire Humanités - iEH2 Fac...</td>
-      <td>Université de Genève - GE</td>
-      <td>01.10.2016</td>
-      <td>31.12.2016</td>
-      <td>5700.0</td>
+      <th>95854</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Canton of Bern</td>
+      <td>BE</td>
     </tr>
     <tr>
-      <th>63904</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Institut d'Archéologie et des Sciences de l'An...</td>
-      <td>Université de Lausanne - LA</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>10000.0</td>
+      <th>95855</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
     <tr>
-      <th>63910</th>
-      <td>Publication grants</td>
-      <td>Science communication</td>
-      <td>Pädagogische Hochschule Fachhochschule Nordwes...</td>
-      <td>Pädagogische Hochschule Nordwestschweiz - PHFHNW</td>
-      <td>01.05.2016</td>
-      <td>31.05.2016</td>
-      <td>7990.0</td>
+      <th>95856</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Genève</td>
+      <td>GE</td>
     </tr>
     <tr>
-      <th>63913</th>
-      <td>Publication grants</td>
-      <td>Science communication</td>
-      <td>Seminar für Filmwissenschaft Universität Zürich</td>
-      <td>Universität Zürich - ZH</td>
-      <td>01.05.2016</td>
-      <td>31.05.2016</td>
-      <td>12416.0</td>
+      <th>95857</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
     <tr>
-      <th>63915</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Deutsches Seminar Universität Basel</td>
-      <td>Universität Basel - BS</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>1600.0</td>
+      <th>95858</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Vaud</td>
+      <td>VD</td>
     </tr>
     <tr>
-      <th>63916</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Englisches Seminar Universität Basel</td>
-      <td>Universität Basel - BS</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>3200.0</td>
+      <th>95859</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
     <tr>
-      <th>63917</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Centro Stefano Franscini (CSF)</td>
-      <td>ETH Zürich - ETHZ</td>
-      <td>01.08.2016</td>
-      <td>31.07.2017</td>
-      <td>120000.0</td>
+      <th>95860</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Lucerne</td>
+      <td>LU</td>
     </tr>
     <tr>
-      <th>63918</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Romanisches Seminar Universität Zürich</td>
-      <td>Universität Zürich - ZH</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>6300.0</td>
+      <th>95861</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
     <tr>
-      <th>63919</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Romanisches Seminar Universität Zürich</td>
-      <td>Universität Zürich - ZH</td>
-      <td>01.09.2016</td>
-      <td>30.09.2016</td>
-      <td>1500.0</td>
+      <th>95862</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Zurich</td>
+      <td>ZH</td>
     </tr>
     <tr>
-      <th>63920</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Institut d'études politiques, historiques et i...</td>
-      <td>Université de Lausanne - LA</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>11782.0</td>
+      <th>95863</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
     <tr>
-      <th>63921</th>
-      <td>Publication grants</td>
-      <td>Science communication</td>
-      <td>Theologische Fakultät Universität Zürich</td>
-      <td>Universität Zürich - ZH</td>
-      <td>01.05.2016</td>
-      <td>31.05.2016</td>
-      <td>2600.0</td>
+      <th>95864</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Zurich</td>
+      <td>ZH</td>
     </tr>
     <tr>
-      <th>63922</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Institut des Sciences sociales du Politique IS...</td>
-      <td>Université de Fribourg - FR</td>
-      <td>01.09.2016</td>
-      <td>30.09.2016</td>
-      <td>7700.0</td>
+      <th>95865</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
     <tr>
-      <th>63927</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Département d'Informatique Université de Fribourg</td>
-      <td>Université de Fribourg - FR</td>
-      <td>01.10.2016</td>
-      <td>31.12.2016</td>
-      <td>2500.0</td>
+      <th>95866</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Canton of Bern</td>
+      <td>BE</td>
     </tr>
     <tr>
-      <th>63928</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Institut für Tieranatomie Universität Bern</td>
-      <td>Universität Bern - BE</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>5900.0</td>
+      <th>95867</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
     <tr>
-      <th>63932</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Institut für Germanistik Philosophisch-histori...</td>
-      <td>Universität Bern - BE</td>
-      <td>01.10.2016</td>
-      <td>31.12.2016</td>
-      <td>7500.0</td>
+      <th>95868</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Aargau</td>
+      <td>AG</td>
     </tr>
     <tr>
-      <th>63934</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Centre interfacultaire en droits de l'enfant  ...</td>
-      <td>Université de Genève - GE</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>3000.0</td>
+      <th>95869</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
     <tr>
-      <th>63935</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Haute Ecole Pédagogique VD</td>
-      <td>Haute école pédagogique du canton de Vaud - HEPL</td>
-      <td>01.10.2016</td>
-      <td>31.03.2017</td>
-      <td>3600.0</td>
+      <th>95870</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Basel-Stadt</td>
+      <td>BS</td>
     </tr>
     <tr>
-      <th>63939</th>
-      <td>Publication grants</td>
-      <td>Science communication</td>
-      <td>Institut Sozialmanagement und Sozialpolitik Ho...</td>
-      <td>Hochschule Luzern - HSLU</td>
-      <td>01.08.2016</td>
-      <td>31.07.2017</td>
-      <td>1898.0</td>
+      <th>95871</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
     <tr>
-      <th>63950</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Fondation Jean Monnet pour l'Europe Centre de ...</td>
-      <td>NPO (Biblioth., Museen, Verwalt.) - NPO</td>
-      <td>01.10.2016</td>
-      <td>31.12.2016</td>
-      <td>2800.0</td>
+      <th>95872</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Zürich</td>
+      <td>ZH</td>
     </tr>
     <tr>
-      <th>63951</th>
-      <td>NRP 68 Sustainable Use of Soil as a Resource</td>
-      <td>Programmes;National Research Programmes (NRPs)</td>
-      <td>Planning of Landscape and Urban Systems Instit...</td>
-      <td>ETH Zürich - ETHZ</td>
-      <td>01.10.2016</td>
-      <td>30.09.2017</td>
-      <td>99952.0</td>
+      <th>95873</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
     <tr>
-      <th>63952</th>
-      <td>NRP 68 Sustainable Use of Soil as a Resource</td>
-      <td>Programmes;National Research Programmes (NRPs)</td>
-      <td>Forschungsanstalt Agroscope Reckenholz-Tänikon...</td>
-      <td>Forschungsanstalten Agroscope - AGS</td>
-      <td>01.10.2016</td>
-      <td>31.12.2017</td>
-      <td>98040.0</td>
+      <th>95874</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Vaud</td>
+      <td>VD</td>
     </tr>
     <tr>
-      <th>63953</th>
-      <td>NRP 68 Sustainable Use of Soil as a Resource</td>
-      <td>Programmes;National Research Programmes (NRPs)</td>
-      <td>Forschung und Beratung in Wirtschaft und Polit...</td>
-      <td>Firmen/Privatwirtschaft - FP</td>
-      <td>01.09.2016</td>
-      <td>28.02.2018</td>
-      <td>100000.0</td>
+      <th>95875</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
     <tr>
-      <th>63955</th>
-      <td>International Exploratory Workshops</td>
-      <td>Science communication</td>
-      <td>Zentrum für Religion, Wirtschaft und Politik T...</td>
-      <td>Universität Basel - BS</td>
-      <td>01.10.2016</td>
-      <td>31.12.2016</td>
-      <td>10030.0</td>
+      <th>95876</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Canton of Solothurn</td>
+      <td>SO</td>
     </tr>
     <tr>
-      <th>63958</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Abteilung für Indologie Universität Zürich</td>
-      <td>Universität Zürich - ZH</td>
-      <td>01.10.2016</td>
-      <td>31.12.2016</td>
-      <td>10600.0</td>
+      <th>95877</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
     <tr>
-      <th>63959</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Institut Religions, Cultures, Modernité FTSR U...</td>
-      <td>Université de Lausanne - LA</td>
-      <td>01.10.2016</td>
-      <td>31.12.2016</td>
-      <td>2515.0</td>
+      <th>95878</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Zurich</td>
+      <td>ZH</td>
     </tr>
     <tr>
-      <th>63963</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Haute École d'art et de design - Genève HES-SO</td>
-      <td>HES de Suisse occidentale - HES-SO</td>
-      <td>01.10.2016</td>
-      <td>31.12.2016</td>
-      <td>3000.0</td>
+      <th>95879</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
     <tr>
-      <th>63964</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Departement Design Zürcher Hochschule der Küns...</td>
-      <td>Zürcher Fachhochschule (ohne PH) - ZFH</td>
-      <td>01.10.2016</td>
-      <td>31.12.2016</td>
-      <td>1000.0</td>
+      <th>95880</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Zurich</td>
+      <td>ZH</td>
     </tr>
     <tr>
-      <th>63965</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Institute Performing Arts and Film Zürcher Hoc...</td>
-      <td>Zürcher Fachhochschule (ohne PH) - ZFH</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>2000.0</td>
+      <th>95881</th>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
   </tbody>
 </table>
-<p>61659 rows × 9 columns</p>
+<p>95882 rows × 9 columns</p>
 </div>
 </div>
 
@@ -15873,7 +15201,7 @@ Run the cell until it stops displaying "timeout error" :v</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[165]:</div>
+<div class="prompt input_prompt">In&nbsp;[223]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_grant_cantons</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;P3_Cantons.csv&#39;</span><span class="p">)</span>
@@ -16161,7 +15489,7 @@ For this, we are giong to use Geopy, which is a python client that works with mo
 <div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">googlemapsapikeyjson</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;google_maps_api_key.json&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">googlemapsapikeyjson</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;google_maps_api_keys.json&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 <span class="n">googlemapsapikey</span> <span class="o">=</span> <span class="n">googlemapsapikeyjson</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span>
 </pre></div>
 

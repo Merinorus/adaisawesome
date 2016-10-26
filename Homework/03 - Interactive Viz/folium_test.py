@@ -118,3 +118,9 @@ test_dic
 
 test_dic['key1']
 
+
+# In[30]:
+
+table = ['aze', 'ae']
+table[2]
+
