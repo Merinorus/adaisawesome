@@ -83,7 +83,10 @@
         "long_name": "Zurich",
         "short_name": "ZH"
     },
-    "Nicht zuteilbar - NA": null,
+    "Nicht zuteilbar - NA": {
+        "long_name": "None",
+        "short_name": "None"
+    },
     "Paul Scherrer Institut - PSI": {
         "long_name": "Aargau",
         "short_name": "AG"

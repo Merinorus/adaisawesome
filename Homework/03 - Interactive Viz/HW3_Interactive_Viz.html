@@ -11758,7 +11758,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[157]:</div>
+<div class="prompt input_prompt">In&nbsp;[239]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -11769,6 +11769,7 @@ div#notebook {
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 </pre></div>
 
 </div>
@@ -11778,7 +11779,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[55]:</div>
+<div class="prompt input_prompt">In&nbsp;[275]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_grant_export_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;P3_GrantExport.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
@@ -11793,7 +11794,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[55]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[275]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12931,7 +12932,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[56]:</div>
+<div class="prompt input_prompt">In&nbsp;[276]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">size</span>
@@ -12945,7 +12946,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[56]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[276]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -12960,7 +12961,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="prompt input_prompt">In&nbsp;[277]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We keep only the rows which mention how much money has been granted (the amount column starts by a number)</span>
@@ -12974,7 +12975,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="prompt input_prompt">In&nbsp;[278]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Almost 200k rows have been removed</span>
@@ -12989,7 +12990,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[58]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[278]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -13004,7 +13005,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[59]:</div>
+<div class="prompt input_prompt">In&nbsp;[279]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We don&#39;t need this data</span>
@@ -13021,7 +13022,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[59]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[279]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -13052,8 +13053,8 @@ If we have the time, a better solution would be taking the institution's locatio
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Removing rows in which University is not mentioned</span>
-<span class="n">p3_grant_export_data</span> <span class="o">=</span> <span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;University&#39;</span><span class="p">])</span>
-<span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">size</span>
+<span class="c1"># p3_grant_export_data = p3_grant_export_data.dropna(subset=[&#39;University&#39;])</span>
+<span class="c1"># p3_grant_export_data.size</span>
 </pre></div>
 
 </div>
@@ -13079,7 +13080,7 @@ If we have the time, a better solution would be taking the institution's locatio
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[61]:</div>
+<div class="prompt input_prompt">In&nbsp;[280]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_grant_export_data</span>
@@ -13093,7 +13094,7 @@ If we have the time, a better solution would be taking the institution's locatio
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[61]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[280]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -13422,196 +13423,6 @@ If we have the time, a better solution would be taking the institution's locatio
       <td>...</td>
     </tr>
     <tr>
-      <th>63902</th>
-      <td>Doc.CH</td>
-      <td>Careers</td>
-      <td>Istituto di Studi Italiani Facoltà di Scienze ...</td>
-      <td>Università della Svizzera italiana - USI</td>
-      <td>01.09.2016</td>
-      <td>31.08.2020</td>
-      <td>251554.00</td>
-    </tr>
-    <tr>
-      <th>63903</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Institut Ethique Histoire Humanités - iEH2 Fac...</td>
-      <td>Université de Genève - GE</td>
-      <td>01.10.2016</td>
-      <td>31.12.2016</td>
-      <td>5700.00</td>
-    </tr>
-    <tr>
-      <th>63904</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Institut d'Archéologie et des Sciences de l'An...</td>
-      <td>Université de Lausanne - LA</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>10000.00</td>
-    </tr>
-    <tr>
-      <th>63910</th>
-      <td>Publication grants</td>
-      <td>Science communication</td>
-      <td>Pädagogische Hochschule Fachhochschule Nordwes...</td>
-      <td>Pädagogische Hochschule Nordwestschweiz - PHFHNW</td>
-      <td>01.05.2016</td>
-      <td>31.05.2016</td>
-      <td>7990.00</td>
-    </tr>
-    <tr>
-      <th>63913</th>
-      <td>Publication grants</td>
-      <td>Science communication</td>
-      <td>Seminar für Filmwissenschaft Universität Zürich</td>
-      <td>Universität Zürich - ZH</td>
-      <td>01.05.2016</td>
-      <td>31.05.2016</td>
-      <td>12416.00</td>
-    </tr>
-    <tr>
-      <th>63914</th>
-      <td>Publication grants</td>
-      <td>Science communication</td>
-      <td>Theologische Hochschule Basel</td>
-      <td>Nicht zuteilbar - NA</td>
-      <td>01.05.2016</td>
-      <td>31.05.2016</td>
-      <td>10378.00</td>
-    </tr>
-    <tr>
-      <th>63915</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Deutsches Seminar Universität Basel</td>
-      <td>Universität Basel - BS</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>1600.00</td>
-    </tr>
-    <tr>
-      <th>63916</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Englisches Seminar Universität Basel</td>
-      <td>Universität Basel - BS</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>3200.00</td>
-    </tr>
-    <tr>
-      <th>63917</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Centro Stefano Franscini (CSF)</td>
-      <td>ETH Zürich - ETHZ</td>
-      <td>01.08.2016</td>
-      <td>31.07.2017</td>
-      <td>120000.00</td>
-    </tr>
-    <tr>
-      <th>63918</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Romanisches Seminar Universität Zürich</td>
-      <td>Universität Zürich - ZH</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>6300.00</td>
-    </tr>
-    <tr>
-      <th>63919</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Romanisches Seminar Universität Zürich</td>
-      <td>Universität Zürich - ZH</td>
-      <td>01.09.2016</td>
-      <td>30.09.2016</td>
-      <td>1500.00</td>
-    </tr>
-    <tr>
-      <th>63920</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Institut d'études politiques, historiques et i...</td>
-      <td>Université de Lausanne - LA</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>11782.00</td>
-    </tr>
-    <tr>
-      <th>63921</th>
-      <td>Publication grants</td>
-      <td>Science communication</td>
-      <td>Theologische Fakultät Universität Zürich</td>
-      <td>Universität Zürich - ZH</td>
-      <td>01.05.2016</td>
-      <td>31.05.2016</td>
-      <td>2600.00</td>
-    </tr>
-    <tr>
-      <th>63922</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Institut des Sciences sociales du Politique IS...</td>
-      <td>Université de Fribourg - FR</td>
-      <td>01.09.2016</td>
-      <td>30.09.2016</td>
-      <td>7700.00</td>
-    </tr>
-    <tr>
-      <th>63927</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Département d'Informatique Université de Fribourg</td>
-      <td>Université de Fribourg - FR</td>
-      <td>01.10.2016</td>
-      <td>31.12.2016</td>
-      <td>2500.00</td>
-    </tr>
-    <tr>
-      <th>63928</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Institut für Tieranatomie Universität Bern</td>
-      <td>Universität Bern - BE</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>5900.00</td>
-    </tr>
-    <tr>
-      <th>63932</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Institut für Germanistik Philosophisch-histori...</td>
-      <td>Universität Bern - BE</td>
-      <td>01.10.2016</td>
-      <td>31.12.2016</td>
-      <td>7500.00</td>
-    </tr>
-    <tr>
-      <th>63934</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Centre interfacultaire en droits de l'enfant  ...</td>
-      <td>Université de Genève - GE</td>
-      <td>01.09.2016</td>
-      <td>30.11.2016</td>
-      <td>3000.00</td>
-    </tr>
-    <tr>
-      <th>63935</th>
-      <td>Scientific Conferences</td>
-      <td>Science communication</td>
-      <td>Haute Ecole Pédagogique VD</td>
-      <td>Haute école pédagogique du canton de Vaud - HEPL</td>
-      <td>01.10.2016</td>
-      <td>31.03.2017</td>
-      <td>3600.00</td>
-    </tr>
-    <tr>
       <th>63939</th>
       <td>Publication grants</td>
       <td>Science communication</td>
@@ -13620,6 +13431,106 @@ If we have the time, a better solution would be taking the institution's locatio
       <td>01.08.2016</td>
       <td>31.07.2017</td>
       <td>1898.00</td>
+    </tr>
+    <tr>
+      <th>63940</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Stiftung Bibliothek Werner Oechslin</td>
+      <td>NaN</td>
+      <td>01.07.2016</td>
+      <td>30.09.2016</td>
+      <td>9300.00</td>
+    </tr>
+    <tr>
+      <th>63941</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>School of Geographical Sciences University of ...</td>
+      <td>NaN</td>
+      <td>01.08.2016</td>
+      <td>31.10.2016</td>
+      <td>9500.00</td>
+    </tr>
+    <tr>
+      <th>63942</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>01.07.2016</td>
+      <td>31.07.2016</td>
+      <td>4000.00</td>
+    </tr>
+    <tr>
+      <th>63943</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>CSIRO Marine and Atmospheric Research</td>
+      <td>NaN</td>
+      <td>01.08.2016</td>
+      <td>31.10.2016</td>
+      <td>11000.00</td>
+    </tr>
+    <tr>
+      <th>63944</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>01.07.2016</td>
+      <td>31.08.2016</td>
+      <td>7500.00</td>
+    </tr>
+    <tr>
+      <th>63945</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Departement Geographie, SIE Universität Zürich</td>
+      <td>NaN</td>
+      <td>01.08.2016</td>
+      <td>30.09.2016</td>
+      <td>8000.00</td>
+    </tr>
+    <tr>
+      <th>63946</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>CReAM Department of Economics University Colle...</td>
+      <td>NaN</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>9300.00</td>
+    </tr>
+    <tr>
+      <th>63947</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>01.08.2016</td>
+      <td>30.09.2016</td>
+      <td>7000.00</td>
+    </tr>
+    <tr>
+      <th>63948</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Eawag</td>
+      <td>NaN</td>
+      <td>01.09.2016</td>
+      <td>31.10.2016</td>
+      <td>6000.00</td>
+    </tr>
+    <tr>
+      <th>63949</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Catholic University of Bukavu</td>
+      <td>NaN</td>
+      <td>01.09.2016</td>
+      <td>30.09.2016</td>
+      <td>4500.00</td>
     </tr>
     <tr>
       <th>63950</th>
@@ -13662,6 +13573,16 @@ If we have the time, a better solution would be taking the institution's locatio
       <td>100000.00</td>
     </tr>
     <tr>
+      <th>63954</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Zoologisches Institut Universität Basel</td>
+      <td>NaN</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>10500.00</td>
+    </tr>
+    <tr>
       <th>63955</th>
       <td>International Exploratory Workshops</td>
       <td>Science communication</td>
@@ -13670,6 +13591,26 @@ If we have the time, a better solution would be taking the institution's locatio
       <td>01.10.2016</td>
       <td>31.12.2016</td>
       <td>10030.00</td>
+    </tr>
+    <tr>
+      <th>63956</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Abteilung für Neuropsychologie Zentrum für Kog...</td>
+      <td>NaN</td>
+      <td>01.08.2016</td>
+      <td>31.10.2016</td>
+      <td>7870.00</td>
+    </tr>
+    <tr>
+      <th>63957</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>01.08.2016</td>
+      <td>31.08.2016</td>
+      <td>3150.00</td>
     </tr>
     <tr>
       <th>63958</th>
@@ -13690,6 +13631,36 @@ If we have the time, a better solution would be taking the institution's locatio
       <td>01.10.2016</td>
       <td>31.12.2016</td>
       <td>2515.00</td>
+    </tr>
+    <tr>
+      <th>63960</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>01.10.2016</td>
+      <td>31.10.2016</td>
+      <td>3500.00</td>
+    </tr>
+    <tr>
+      <th>63961</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Department of Physics University of Massachusetts</td>
+      <td>NaN</td>
+      <td>01.10.2016</td>
+      <td>31.10.2016</td>
+      <td>4000.00</td>
+    </tr>
+    <tr>
+      <th>63962</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>01.09.2016</td>
+      <td>30.09.2016</td>
+      <td>3550.00</td>
     </tr>
     <tr>
       <th>63963</th>
@@ -13721,9 +13692,39 @@ If we have the time, a better solution would be taking the institution's locatio
       <td>30.11.2016</td>
       <td>2000.00</td>
     </tr>
+    <tr>
+      <th>63966</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Department of Electrical Engineering and Compu...</td>
+      <td>NaN</td>
+      <td>01.09.2016</td>
+      <td>31.12.2016</td>
+      <td>10500.00</td>
+    </tr>
+    <tr>
+      <th>63967</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>Département de Biologie Faculté des Sciences U...</td>
+      <td>NaN</td>
+      <td>01.09.2016</td>
+      <td>30.11.2016</td>
+      <td>9500.00</td>
+    </tr>
+    <tr>
+      <th>63968</th>
+      <td>International short research visits</td>
+      <td>Careers</td>
+      <td>The Forsyth Institute Department of Microbiolo...</td>
+      <td>NaN</td>
+      <td>01.10.2016</td>
+      <td>30.11.2016</td>
+      <td>7000.00</td>
+    </tr>
   </tbody>
 </table>
-<p>50878 rows × 7 columns</p>
+<p>53059 rows × 7 columns</p>
 </div>
 </div>
 
@@ -13763,7 +13764,7 @@ We will then take both universities and institution names into account in order 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[184]:</div>
+<div class="prompt input_prompt">In&nbsp;[281]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Let&#39;s start by creating our geolocator. We will use Google Maps API :</span>
@@ -13778,7 +13779,7 @@ We will then take both universities and institution names into account in order 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[68]:</div>
+<div class="prompt input_prompt">In&nbsp;[282]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">geolocator</span> <span class="o">=</span> <span class="n">geopy</span><span class="o">.</span><span class="n">geocoders</span><span class="o">.</span><span class="n">GoogleV3</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">googlemapsapikeys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -13795,11 +13796,11 @@ We will then take both universities and institution names into account in order 
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[68]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[282]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Location(Geneva Dr, Oskaloosa, IA 52577, USA, (41.2955341, -92.6294777, 0.0))</pre>
+<pre>Location(International University in Geneva, Route de Pré-Bois 20, 1215 Meyrin, Switzerland, (46.2243735, 6.1008613, 0.0))</pre>
 </div>
 
 </div>
@@ -13813,14 +13814,14 @@ We will then take both universities and institution names into account in order 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>University of Geneva appears to be in USA ! But the one of our Dataframe is without a doubt the Swiss one.</p>
+<p>University of Geneva may appear to be in USA ! But the one of our Dataframe is without a doubt the Swiss one.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[92]:</div>
+<div class="prompt input_prompt">In&nbsp;[283]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Specifying the region for the geolocator</span>
@@ -13836,11 +13837,11 @@ We will then take both universities and institution names into account in order 
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[92]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[283]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Location(International University in Geneva, 1215 Meyrin, Switzerland, (46.2243735, 6.1008613, 0.0))</pre>
+<pre>Location(International University in Geneva, Route de Pré-Bois 20, 1215 Meyrin, Switzerland, (46.2243735, 6.1008613, 0.0))</pre>
 </div>
 
 </div>
@@ -13854,7 +13855,7 @@ We will then take both universities and institution names into account in order 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Oh oh, that's much better !
+<p>That's much better !
 Now let's start by creating the indexes for universities and institutions :</p>
 
 </div>
@@ -13867,10 +13868,84 @@ Now let's start by creating the indexes for universities and institutions :</p>
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">university_canton_dict</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">institution_canton_dict</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="c1"># We can already add the values in our dataframe that won&#39;t lead to an address</span>
-<span class="n">university_canton_dict</span><span class="p">[</span><span class="s1">&#39;Nicht zuteilbar - NA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># it means &quot;Not Available&quot; in German !</span>
-<span class="n">institution_canton_dict</span><span class="p">[</span><span class="s1">&#39;NaN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">institution_canton_dict</span><span class="p">[</span><span class="s1">&#39;nan&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[299]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[302]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[304]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We can already add the values in our dataframe that won&#39;t lead to an address</span>
+<span class="n">university_canton_dict</span><span class="p">[</span><span class="s1">&#39;Nicht zuteilbar - NA&#39;</span><span class="p">]</span> <span class="c1"># it means &quot;Not Available&quot; in German !</span>
+<span class="n">institution_canton_dict</span><span class="p">[</span><span class="s1">&#39;NaN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;short_name&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+<span class="n">institution_canton_dict</span><span class="p">[</span><span class="s1">&#39;nan&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;short_name&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We will need to log the next steps in order de debug easily the part of code related to geolocation...</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[308]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># set root logger level</span>
+<span class="n">root_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+<span class="n">root_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+<span class="c1"># setup custom logger</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="s1">&#39;geolocation8.log&#39;</span><span class="p">)</span>
+
+<span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(name)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+
+<span class="c1"># log</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;This file is used to debug the next code part related to geolocation of universities/institutions&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -13891,15 +13966,16 @@ So we created several Google API keys and switch the key each time the current o
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[221]:</div>
+<div class="prompt input_prompt">In&nbsp;[309]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We create tables that will contains every canton we find, so we&#39;ll be able to match it with the dataframe at the end.</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Beginning of geolocation : creating canton tables&#39;</span><span class="p">)</span>
 <span class="n">canton_shortname_table</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># eg: VD</span>
 <span class="n">canton_longname_table</span> <span class="o">=</span> <span class="p">[]</span><span class="c1"># eg: Vaud</span>
 
 <span class="c1"># number of rows analysed. Can be limited for debuging (eg : 10) because the number of requests to Google Maps API is limited !</span>
-<span class="n">MAX_ROWS</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">inf</span> 
+<span class="n">MAX_ROWS</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># max : math.inf </span>
 <span class="n">row_counter</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="c1"># maximum duration of a query to the geocoder, in seconds</span>
@@ -13938,6 +14014,7 @@ So we created several Google API keys and switch the key each time the current o
     
 <span class="c1"># Go through the dataframe</span>
 <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Iterating over row n°&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">row_counter</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span><span class="p">)</span>
     <span class="c1"># initialize variables that will contain canton name for the current row</span>
     <span class="n">canton_longname</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">canton_shortname</span> <span class="o">=</span> <span class="kc">None</span>
@@ -13946,23 +14023,35 @@ So we created several Google API keys and switch the key each time the current o
     <span class="n">institution_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Institution&#39;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">university_name</span> <span class="ow">in</span> <span class="n">university_canton_dict</span><span class="p">:</span>
         <span class="c1"># The university has already been located. Let&#39;s add the canton to the canton table</span>
-        <span class="n">canton_shortname_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">][</span><span class="s1">&#39;short_name&#39;</span><span class="p">])</span>
-        <span class="n">canton_longname_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;University already exists in dictionary (&#39;</span> <span class="o">+</span> <span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;University already exists in dictionary, but no canton is associated to it (it might be outside Switzerland).&#39;</span><span class="p">)</span>
+        
+        <span class="c1">#canton_shortname_table.append(university_canton_dict[university_name][&#39;short_name&#39;])</span>
+        <span class="c1">#canton_longname_table.append(university_canton_dict[university_name][&#39;long_name&#39;])</span>
+        <span class="n">canton_longname</span> <span class="o">=</span> <span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span>
+        <span class="n">canton_shortname</span> <span class="o">=</span> <span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">][</span><span class="s1">&#39;short_name&#39;</span><span class="p">]</span>
     
     <span class="k">elif</span> <span class="n">institution_name</span> <span class="ow">in</span> <span class="n">institution_canton_dict</span><span class="p">:</span>
         <span class="c1"># The institution has already ben located, so we add its canton to the canton table</span>
-        <span class="n">canton_shortname_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;short_name&#39;</span><span class="p">])</span>
-        <span class="n">canton_longname_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">])</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;University wasn&#39;&#39;t found, but institution already exists in dictionary (&#39;</span> <span class="o">+</span> <span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">)</span>
+        
+        <span class="c1">#canton_shortname_table.append(institution_canton_dict[institution_name][&#39;short_name&#39;])</span>
+        <span class="c1">#canton_longname_table.append(institution_canton_dict[institution_name][&#39;long_name&#39;])</span>
+        <span class="n">canton_longname</span> <span class="o">=</span> <span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span>
+        <span class="n">canton_shortname</span> <span class="o">=</span> <span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;short_name&#39;</span><span class="p">]</span>
     
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Nor the university neither the institution has been found yet, so we have to geolocate it</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;No university/institution found in dictionaries, geolocating...&#39;</span><span class="p">)</span>
         <span class="n">adr</span> <span class="o">=</span> <span class="n">stubborn_geocode</span><span class="p">(</span><span class="n">geolocator</span><span class="p">,</span> <span class="n">university_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">adr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># TODO No address has been found for this University. So we have to do the same with Institution           </span>
             <span class="n">adr</span> <span class="o">=</span> <span class="n">stubborn_geocode</span><span class="p">(</span><span class="n">geolocator</span><span class="p">,</span> <span class="n">institution_name</span><span class="p">)</span>
             
         <span class="c1"># Now, the address should have been found, either by locating the university or the institution</span>
-        <span class="k">if</span> <span class="n">adr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">adr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>                 
             <span class="c1"># Check if it&#39;s a Swiss address, if yes add the canton to the table</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">swiss_address</span> <span class="o">=</span> <span class="kc">False</span>
@@ -14003,6 +14092,10 @@ So we created several Google API keys and switch the key each time the current o
     
     <span class="c1"># Let&#39;s add what we found about the canton !</span>
     <span class="c1"># If we didn&#39;t find any canton for the current university/institution, it will just append &#39;None&#39; to the tables.</span>
+    <span class="k">if</span> <span class="n">canton_longname</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Appending canton to the table: &quot;</span> <span class="o">+</span> <span class="n">canton_longname</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Appending canton to the table: None&quot;</span><span class="p">)</span>
     <span class="n">canton_shortname_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">canton_shortname</span><span class="p">)</span>
     <span class="n">canton_longname_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">canton_longname</span><span class="p">)</span>
             
@@ -14025,11 +14118,9 @@ So we created several Google API keys and switch the key each time the current o
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Error : The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time. Let&#39;s try again with a different key...
-Trying API key n°1...
-Error : The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time. Let&#39;s try again with a different key...
-Trying API key n°2...
-IndexError : no canton found for the current row
+<pre>Maximum number of rows reached ! (10)
+Increase the MAX_ROWS variable to analyse more locations
+No limit : MAX_ROWS = maths.inf
 </pre>
 </div>
 </div>
@@ -14040,7 +14131,7 @@ IndexError : no canton found for the current row
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[232]:</div>
+<div class="prompt input_prompt">In&nbsp;[292]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We have the table containing all cantons !</span>
@@ -14055,11 +14146,11 @@ IndexError : no canton found for the current row
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[232]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[292]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>95882</pre>
+<pre>0</pre>
 </div>
 
 </div>
@@ -14070,13 +14161,10 @@ IndexError : no canton found for the current row
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[235]:</div>
+<div class="prompt input_prompt">In&nbsp;[310]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Same with the dictionary (we save it)</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;university_canton_dict.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">university_canton_dict</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">university_canton_dict</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">canton_longname_table</span>
 </pre></div>
 
 </div>
@@ -14087,7 +14175,45 @@ IndexError : no canton found for the current row
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[235]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[310]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[None,
+ &#39;Genève&#39;,
+ &#39;Zurich&#39;,
+ &#39;Basel-Stadt&#39;,
+ &#39;Zurich&#39;,
+ &#39;Fribourg&#39;,
+ &#39;Fribourg&#39;,
+ &#39;Zürich&#39;,
+ &#39;Vaud&#39;,
+ &#39;Genève&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[311]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">university_canton_dict</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[311]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -14129,7 +14255,130 @@ IndexError : no canton found for the current row
   &#39;short_name&#39;: &#39;SG&#39;},
  &#39;NPO (Biblioth., Museen, Verwalt.) - NPO&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
   &#39;short_name&#39;: &#39;ZH&#39;},
- &#39;Nicht zuteilbar - NA&#39;: None,
+ &#39;Nicht zuteilbar - NA&#39;: {&#39;long_name&#39;: None, &#39;short_name&#39;: None},
+ &#39;Paul Scherrer Institut - PSI&#39;: {&#39;long_name&#39;: &#39;Aargau&#39;, &#39;short_name&#39;: &#39;AG&#39;},
+ &#39;Pädag. Hochschule Tessin (Teilschule SUPSI) - ASP&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;,
+  &#39;short_name&#39;: &#39;TI&#39;},
+ &#39;Pädagogische Hochschule Bern - PHBern&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;Pädagogische Hochschule Graubünden - PHGR&#39;: {&#39;long_name&#39;: &#39;Grisons&#39;,
+  &#39;short_name&#39;: &#39;GR&#39;},
+ &#39;Pädagogische Hochschule Luzern - PHLU&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;,
+  &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Pädagogische Hochschule Schaffhausen - PHSH&#39;: {&#39;long_name&#39;: &#39;Canton of Schaffhausen&#39;,
+  &#39;short_name&#39;: &#39;SH&#39;},
+ &#39;Pädagogische Hochschule Schwyz - PHSZ&#39;: {&#39;long_name&#39;: &#39;Canton of Schwyz&#39;,
+  &#39;short_name&#39;: &#39;SZ&#39;},
+ &#39;Pädagogische Hochschule St. Gallen - PHSG&#39;: {&#39;long_name&#39;: &#39;St. Gallen&#39;,
+  &#39;short_name&#39;: &#39;SG&#39;},
+ &#39;Pädagogische Hochschule Thurgau - PHTG&#39;: {&#39;long_name&#39;: &#39;Thurgau&#39;,
+  &#39;short_name&#39;: &#39;TG&#39;},
+ &#39;Pädagogische Hochschule Wallis - PHVS&#39;: {&#39;long_name&#39;: &#39;Valais&#39;,
+  &#39;short_name&#39;: &#39;VS&#39;},
+ &#39;Pädagogische Hochschule Zug - PHZG&#39;: {&#39;long_name&#39;: &#39;Canton of Zug&#39;,
+  &#39;short_name&#39;: &#39;ZG&#39;},
+ &#39;Pädagogische Hochschule Zürich - PHZFH&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Robert Walser-Stiftung Bern - RWS&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;SUP della Svizzera italiana - SUPSI&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;,
+  &#39;short_name&#39;: &#39;TI&#39;},
+ &#39;Schweiz. Institut für Kunstwissenschaft - SIK-ISEA&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;,
+  &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;Schweizer Kompetenzzentrum Sozialwissensch. - FORS&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;,
+  &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;Staatsunabh. Theologische Hochschule Basel - STHB&#39;: {&#39;long_name&#39;: &#39;Basel-Stadt&#39;,
+  &#39;short_name&#39;: &#39;BS&#39;},
+ &#39;Swiss Institute of Bioinformatics - SIB&#39;: {&#39;long_name&#39;: &#39;Geneva&#39;,
+  &#39;short_name&#39;: &#39;GE&#39;},
+ &#39;Università della Svizzera italiana - USI&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;,
+  &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Universität Basel - BS&#39;: {&#39;long_name&#39;: &#39;Basel-Stadt&#39;, &#39;short_name&#39;: &#39;BS&#39;},
+ &#39;Universität Bern - BE&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;, &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;Universität Luzern - LU&#39;: {&#39;long_name&#39;: &#39;Luzern&#39;, &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Universität St. Gallen - SG&#39;: {&#39;long_name&#39;: &#39;Sankt Gallen&#39;,
+  &#39;short_name&#39;: &#39;SG&#39;},
+ &#39;Universität Zürich - ZH&#39;: {&#39;long_name&#39;: &#39;Zürich&#39;, &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Université de Fribourg - FR&#39;: {&#39;long_name&#39;: &#39;Fribourg&#39;, &#39;short_name&#39;: &#39;FR&#39;},
+ &#39;Université de Genève - GE&#39;: {&#39;long_name&#39;: &#39;Genève&#39;, &#39;short_name&#39;: &#39;GE&#39;},
+ &#39;Université de Lausanne - LA&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;, &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;Université de Neuchâtel - NE&#39;: {&#39;long_name&#39;: &#39;Canton of Neuchâtel&#39;,
+  &#39;short_name&#39;: &#39;NE&#39;},
+ &#39;Weitere Institute - FINST&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;Weitere Spitäler - ASPIT&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;, &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Zürcher Fachhochschule (ohne PH) - ZFH&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;}}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[301]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Same with the dictionary (we save it)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;university_canton_dict.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">university_canton_dict</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">university_canton_dict</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[301]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;Berner Fachhochschule - BFH&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;EPF Lausanne - EPFL&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;, &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;ETH Zürich - ETHZ&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;, &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Eidg. Anstalt für Wasserversorgung - EAWAG&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Eidg. Forschungsanstalt für Wald,Schnee,Land - WSL&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;,
+  &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;Eidg. Material und Prüfungsanstalt - EMPA&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;Ente Ospedaliero Cantonale - EOC&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;,
+  &#39;short_name&#39;: &#39;TI&#39;},
+ &#39;Fachhochschule Nordwestschweiz (ohne PH) - FHNW&#39;: {&#39;long_name&#39;: &#39;Basel-Stadt&#39;,
+  &#39;short_name&#39;: &#39;BS&#39;},
+ &#39;Fachhochschule Ostschweiz - FHO&#39;: {&#39;long_name&#39;: &#39;St. Gallen&#39;,
+  &#39;short_name&#39;: &#39;SG&#39;},
+ &#39;Facoltà di Teologia di Lugano - FTL&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;,
+  &#39;short_name&#39;: &#39;TI&#39;},
+ &#39;Firmen/Privatwirtschaft - FP&#39;: {&#39;long_name&#39;: &#39;Aargau&#39;, &#39;short_name&#39;: &#39;AG&#39;},
+ &#39;Forschungsanstalten Agroscope - AGS&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
+  &#39;short_name&#39;: &#39;BE&#39;},
+ &#39;HES de Suisse occidentale - HES-SO&#39;: {&#39;long_name&#39;: &#39;Canton of Solothurn&#39;,
+  &#39;short_name&#39;: &#39;SO&#39;},
+ &#39;Haute école pédagogique du canton de Vaud - HEPL&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;,
+  &#39;short_name&#39;: &#39;VD&#39;},
+ &#39;Haute école pédagogique fribourgeoise - HEPFR&#39;: {&#39;long_name&#39;: &#39;Canton of Fribourg&#39;,
+  &#39;short_name&#39;: &#39;FR&#39;},
+ &#39;Hochschule Luzern - HSLU&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;, &#39;short_name&#39;: &#39;LU&#39;},
+ &#39;Idiap Research Institute - IDIAP&#39;: {&#39;long_name&#39;: &#39;Valais&#39;,
+  &#39;short_name&#39;: &#39;VS&#39;},
+ &#39;Inst. de Hautes Etudes Internat. et du Dév - IHEID&#39;: {&#39;long_name&#39;: &#39;Geneva&#39;,
+  &#39;short_name&#39;: &#39;GE&#39;},
+ &#39;Institut für Kulturforschung Graubünden - IKG&#39;: {&#39;long_name&#39;: &#39;Grisons&#39;,
+  &#39;short_name&#39;: &#39;GR&#39;},
+ &#39;Kantonsspital St. Gallen - KSPSG&#39;: {&#39;long_name&#39;: &#39;St. Gallen&#39;,
+  &#39;short_name&#39;: &#39;SG&#39;},
+ &#39;NPO (Biblioth., Museen, Verwalt.) - NPO&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
+  &#39;short_name&#39;: &#39;ZH&#39;},
+ &#39;Nicht zuteilbar - NA&#39;: {&#39;long_name&#39;: &#39;None&#39;, &#39;short_name&#39;: &#39;None&#39;},
  &#39;Paul Scherrer Institut - PSI&#39;: {&#39;long_name&#39;: &#39;Aargau&#39;, &#39;short_name&#39;: &#39;AG&#39;},
  &#39;Pädag. Hochschule Tessin (Teilschule SUPSI) - ASP&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;,
   &#39;short_name&#39;: &#39;TI&#39;},

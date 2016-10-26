@@ -3,7 +3,7 @@
 
 # Build a Choropleth map which shows intuitively (i.e., use colors wisely) how much grant money goes to each Swiss canton.
 
-# In[157]:
+# In[239]:
 
 import pandas as pd
 import numpy as np
@@ -13,32 +13,33 @@ from geopy.geocoders import geonames
 import time
 import requests
 import math
+import logging
 
 
-# In[55]:
+# In[275]:
 
 p3_grant_export_data = pd.read_csv("P3_GrantExport.csv", sep=";")
 p3_grant_export_data
 
 
-# In[56]:
+# In[276]:
 
 p3_grant_export_data.size
 
 
-# In[57]:
+# In[277]:
 
 # We keep only the rows which mention how much money has been granted (the amount column starts by a number)
 p3_grant_export_data = p3_grant_export_data[p3_grant_export_data['Approved Amount'].apply(lambda x : x[0].isdigit())]
 
 
-# In[58]:
+# In[278]:
 
 # Almost 200k rows have been removed
 p3_grant_export_data.size
 
 
-# In[59]:
+# In[279]:
 
 # We don't need this data
 p3_grant_export_data = p3_grant_export_data.drop(p3_grant_export_data.columns[[0]], axis = 1)
@@ -53,11 +54,11 @@ p3_grant_export_data.size
 # In[60]:
 
 # Removing rows in which University is not mentioned
-p3_grant_export_data = p3_grant_export_data.dropna(subset=['University'])
-p3_grant_export_data.size
+# p3_grant_export_data = p3_grant_export_data.dropna(subset=['University'])
+# p3_grant_export_data.size
 
 
-# In[61]:
+# In[280]:
 
 p3_grant_export_data
 
@@ -78,14 +79,14 @@ p3_grant_export_data
 #   - Add the canton to the canton table
 # 3) Add the canton table to the above dataframe in a way that they match with the universities or institutions
 
-# In[184]:
+# In[281]:
 
 # Let's start by creating our geolocator. We will use Google Maps API :
 googlemapsapikeyjson = json.loads(open('google_maps_api_keys.json').read())
 googlemapsapikeys = googlemapsapikeyjson['keys']
 
 
-# In[68]:
+# In[282]:
 
 geolocator = geopy.geocoders.GoogleV3(api_key=googlemapsapikeys[0])
 # Do a test with University of Geneva
@@ -93,39 +94,74 @@ test_university_geneva = geolocator.geocode("University of Geneva")
 test_university_geneva
 
 
-# University of Geneva appears to be in USA ! But the one of our Dataframe is without a doubt the Swiss one.
+# University of Geneva may appear to be in USA ! But the one of our Dataframe is without a doubt the Swiss one.
 
-# In[92]:
+# In[283]:
 
 # Specifying the region for the geolocator
 test_university_geneva = geolocator.geocode("University of Geneva", region='ch')
 test_university_geneva
 
 
-# Oh oh, that's much better !
+# That's much better !
 # Now let's start by creating the indexes for universities and institutions :
 
 # In[154]:
 
 university_canton_dict = {}
 institution_canton_dict = {}
+
+
+# In[299]:
+
+
+
+
+# In[302]:
+
+
+
+
+# In[304]:
+
 # We can already add the values in our dataframe that won't lead to an address
-university_canton_dict['Nicht zuteilbar - NA'] = None # it means "Not Available" in German !
-institution_canton_dict['NaN'] = None
-institution_canton_dict['nan'] = None
+university_canton_dict['Nicht zuteilbar - NA'] # it means "Not Available" in German !
+institution_canton_dict['NaN'] = {'long_name': None, 'short_name': None}
+institution_canton_dict['nan'] = {'long_name': None, 'short_name': None}
+
+
+# We will need to log the next steps in order de debug easily the part of code related to geolocation...
+
+# In[308]:
+
+# set root logger level
+root_logger = logging.getLogger()
+root_logger.setLevel(logging.DEBUG)
+
+# setup custom logger
+logger = logging.getLogger(__name__)
+handler = logging.FileHandler('geolocation8.log')
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+# log
+logger.info('This file is used to debug the next code part related to geolocation of universities/institutions')
 
 
 # It's kinda dirty, but we will need more than one API key to make all the requests we need for our data.
 # So we created several Google API keys and switch the key each time the current one cannot be used anymore !
 
-# In[221]:
+# In[309]:
 
 # We create tables that will contains every canton we find, so we'll be able to match it with the dataframe at the end.
+logger.debug('Beginning of geolocation : creating canton tables')
 canton_shortname_table = [] # eg: VD
 canton_longname_table = []# eg: Vaud
 
 # number of rows analysed. Can be limited for debuging (eg : 10) because the number of requests to Google Maps API is limited !
-MAX_ROWS = math.inf 
+MAX_ROWS = 10 # max : math.inf 
 row_counter = 0
 
 # maximum duration of a query to the geocoder, in seconds
@@ -164,6 +200,7 @@ def stubborn_geocode(geolocator, address):
     
 # Go through the dataframe
 for index, row in p3_grant_export_data.iterrows():
+    logger.debug("Iterating over row n°" + str(row_counter) + ":")
     # initialize variables that will contain canton name for the current row
     canton_longname = None
     canton_shortname = None
@@ -172,23 +209,35 @@ for index, row in p3_grant_export_data.iterrows():
     institution_name = row['Institution']
     if university_name in university_canton_dict:
         # The university has already been located. Let's add the canton to the canton table
-        canton_shortname_table.append(university_canton_dict[university_name]['short_name'])
-        canton_longname_table.append(university_canton_dict[university_name]['long_name'])
+        if university_canton_dict[university_name]['long_name'] is not None:
+            logger.debug('University already exists in dictionary (' + university_canton_dict[university_name]['long_name'] + ')')
+        else:
+            logger.debug('University already exists in dictionary, but no canton is associated to it (it might be outside Switzerland).')
+        
+        #canton_shortname_table.append(university_canton_dict[university_name]['short_name'])
+        #canton_longname_table.append(university_canton_dict[university_name]['long_name'])
+        canton_longname = university_canton_dict[university_name]['long_name']
+        canton_shortname = university_canton_dict[university_name]['short_name']
     
     elif institution_name in institution_canton_dict:
         # The institution has already ben located, so we add its canton to the canton table
-        canton_shortname_table.append(institution_canton_dict[institution_name]['short_name'])
-        canton_longname_table.append(institution_canton_dict[institution_name]['long_name'])
+        logger.debug('University wasn''t found, but institution already exists in dictionary (' + institution_canton_dict[institution_name]['long_name'] + ')')
+        
+        #canton_shortname_table.append(institution_canton_dict[institution_name]['short_name'])
+        #canton_longname_table.append(institution_canton_dict[institution_name]['long_name'])
+        canton_longname = institution_canton_dict[institution_name]['long_name']
+        canton_shortname = institution_canton_dict[institution_name]['short_name']
     
     else:
         # Nor the university neither the institution has been found yet, so we have to geolocate it
+        logger.debug('No university/institution found in dictionaries, geolocating...')
         adr = stubborn_geocode(geolocator, university_name)
         if adr is None:
             # TODO No address has been found for this University. So we have to do the same with Institution           
             adr = stubborn_geocode(geolocator, institution_name)
             
         # Now, the address should have been found, either by locating the university or the institution
-        if adr is not None:
+        if adr is not None:                 
             # Check if it's a Swiss address, if yes add the canton to the table
             try:
                 swiss_address = False
@@ -229,6 +278,10 @@ for index, row in p3_grant_export_data.iterrows():
     
     # Let's add what we found about the canton !
     # If we didn't find any canton for the current university/institution, it will just append 'None' to the tables.
+    if canton_longname is not None:
+        logger.debug("Appending canton to the table: " + canton_longname)
+    else:
+        logger.debug("Appending canton to the table: None")
     canton_shortname_table.append(canton_shortname)
     canton_longname_table.append(canton_longname)
             
@@ -241,13 +294,23 @@ for index, row in p3_grant_export_data.iterrows():
         break
 
 
-# In[232]:
+# In[292]:
 
 # We have the table containing all cantons !
 len(canton_shortname_table)
 
 
-# In[235]:
+# In[310]:
+
+canton_longname_table
+
+
+# In[311]:
+
+university_canton_dict
+
+
+# In[301]:
 
 # Same with the dictionary (we save it)
 with open('university_canton_dict.json', 'w') as fp:

@@ -124,3 +124,14 @@ test_dic['key1']
 table = ['aze', 'ae']
 table[2]
 
+
+# In[48]:
+
+from time import gmtime, strftime
+strftime("%Y-%m-%d %H:%M:%S", gmtime())
+
+
+# In[50]:
+
+str('coucou')
+
