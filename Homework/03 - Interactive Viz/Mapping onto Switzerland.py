@@ -9,7 +9,7 @@ import folium
 import pandas as pd
 
 
-# In[49]:
+# In[1]:
 
 # Test seeing Switzerland
 ch_map = folium.Map(location=[47.3769, 8.5417], tiles='Stamen Toner',
@@ -38,4 +38,24 @@ ch_map
 # In[ ]:
 
 # Need to use colors wisely - becaue this is continuous and not descrete, we will be using different shades of green
+
+
+# In[ ]:
+
+#Catarina's test
+import folium
+import pandas as pd
+
+topo_path = r'ch-cantons.topojson.json'
+
+grants_data = pd.read_csv(state_unemployment)
+
+#Let Folium determine the scale
+map = folium.Map(location=[47.3769, 8.5417], zoom_start=13)
+map.choropleth(geo_path=state_geo, data=grants_data,
+             columns=['Canton Shortname', 'Total Sum'],
+             key_on='feature.id',
+             fill_color='YlGn', fill_opacity=0.7, line_opacity=0.2,
+             legend_name='Total Grants Received (CHF)')
+map.save('swiss_grants.html')
 
