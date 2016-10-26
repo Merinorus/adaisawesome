@@ -359,14 +359,15 @@ p3_grant_cantons
 
 # Now we have the cantons associated with the universities/institutions :)
 
-# In[356]:
+# In[357]:
 
 p3_grant_cantons.to_csv('P3_Cantons.csv', encoding='utf-8')
 
 
-# In[ ]:
+# In[358]:
 
-
+with open('P3_cantons.json', 'w') as fp:
+    json.dump(p3_grant_cantons, fp, indent=4)
 
 
 # In[ ]:
