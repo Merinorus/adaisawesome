@@ -132,7 +132,7 @@ institution_canton_dict['nan'] = {'long_name': 'N/A', 'short_name': 'N/A'}
 
 # We will need to log the next steps in order de debug easily the part of code related to geolocation...
 
-# In[321]:
+# In[336]:
 
 # set root logger level
 root_logger = logging.getLogger()
@@ -140,7 +140,7 @@ root_logger.setLevel(logging.DEBUG)
 
 # setup custom logger
 logger = logging.getLogger(__name__)
-handler = logging.FileHandler('geolocation13.log')
+handler = logging.FileHandler('geolocation16.log')
 
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
@@ -153,7 +153,7 @@ logger.info('This file is used to debug the next code part related to geolocatio
 # It's kinda dirty, but we will need more than one API key to make all the requests we need for our data.
 # So we created several Google API keys and switch the key each time the current one cannot be used anymore !
 
-# In[324]:
+# In[337]:
 
 # We create tables that will contains every canton we find, so we'll be able to match it with the dataframe at the end.
 logger.debug('Beginning of geolocation : creating canton tables')
@@ -230,7 +230,7 @@ for index, row in p3_grant_export_data.iterrows():
     
     else:
         # Nor the university neither the institution has been found yet, so we have to geolocate it
-        logger.debug(university_name + ' / ' + institution_name + 'not found in dictionaries, geolocating...')
+        logger.debug(str(university_name) + ' / ' + str(institution_name) + ' not found in dictionaries, geolocating...')
         adr = stubborn_geocode(geolocator, university_name)
         if adr is None:
             # TODO No address has been found for this University. So we have to do the same with Institution           
@@ -254,13 +254,7 @@ for index, row in p3_grant_export_data.iterrows():
                             canton_shortname = (i['short_name'])                          
                             break
                 
-                # We also add it to the university/institution dictionary, in order to limit the number of requests
-                university_canton_dict[university_name] = {}
-                university_canton_dict[university_name]['short_name'] = canton_shortname
-                university_canton_dict[university_name]['long_name'] = canton_longname
-                institution_canton_dict[institution_name] = {}
-                institution_canton_dict[institution_name]['short_name'] = canton_shortname
-                institution_canton_dict[institution_name]['long_name'] = canton_longname
+                
             
             except IndexError:
                 # I don't know where this error comes from exactly, just debugging... it just comes from this line :
@@ -282,6 +276,14 @@ for index, row in p3_grant_export_data.iterrows():
     logger.debug("Appending canton to the table: " + canton_longname)
     canton_shortname_table.append(canton_shortname)
     canton_longname_table.append(canton_longname)
+    
+    # We also add it to the university/institution dictionary, in order to limit the number of requests
+    university_canton_dict[university_name] = {}
+    university_canton_dict[university_name]['short_name'] = canton_shortname
+    university_canton_dict[university_name]['long_name'] = canton_longname
+    institution_canton_dict[institution_name] = {}
+    institution_canton_dict[institution_name]['short_name'] = canton_shortname
+    institution_canton_dict[institution_name]['long_name'] = canton_longname
             
 
     row_counter = row_counter + 1
@@ -298,61 +300,66 @@ for index, row in p3_grant_export_data.iterrows():
 len(canton_shortname_table)
 
 
-# In[310]:
+# In[338]:
 
 canton_longname_table
 
 
-# In[331]:
+# In[339]:
 
 university_canton_dict['Physikal.-Meteorolog. Observatorium Davos - PMOD']['long_name']
 
 
-# In[301]:
+# In[343]:
 
 # Same with the dictionary (we save it)
 with open('university_canton_dict.json', 'w') as fp:
-    json.dump(university_canton_dict, fp, sort_keys=True, indent=4)
+    json.dump(university_canton_dict, fp, indent=4)
 university_canton_dict
 
 
-# In[237]:
+# In[344]:
 
 with open('institution_canton_dict.json', 'w') as fp:
     json.dump(institution_canton_dict, fp, indent=4)
 institution_canton_dict
 
 
-# In[227]:
+# In[345]:
 
 canton_shortname_series = pd.Series(canton_shortname_table, name='Canton Shortname')
 canton_shortname_series.size
 
 
-# In[228]:
+# In[346]:
 
 canton_longname_series = pd.Series(canton_longname_table, name='Canton Longname')
 canton_longname_series.size
 
 
-# In[229]:
+# In[350]:
 
-p3_grant_cantons.size
+len(p3_grant_export_data.index)
 
 
-# In[222]:
+# In[353]:
+
+# Reindex the dataframe to make the match with cantons
+p3_grant_export_data_reindex = p3_grant_export_data.reset_index(drop=True)
+p3_grant_export_data_reindex
+
+
+# In[354]:
 
 # Let's add the cantons to our dataframe !
-canton_shortname_series = pd.Series(canton_shortname_table, name='Canton Shortname')
-canton_longname_series = pd.Series(canton_longname_table, name='Canton Longname')
-p3_grant_cantons = pd.concat([p3_grant_export_data, canton_longname_series, canton_shortname_series], axis=1)
+p3_grant_cantons = pd.concat([p3_grant_export_data_reindex, canton_longname_series, canton_shortname_series], axis=1)
 p3_grant_cantons.columns.get_value
 p3_grant_cantons
 
 
 # Now we have the cantons associated with the universities/institutions :)
 
-# In[223]:
+# In[355]:
 
 p3_grant_cantons.to_csv('P3_Cantons.csv')
 
