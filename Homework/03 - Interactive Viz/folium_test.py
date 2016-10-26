@@ -135,3 +135,16 @@ strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
 str('coucou')
 
+
+# In[53]:
+
+test_dic = {}
+test_dic['key1'] = 'ok'
+test_dic['Physikal.-Meteorolog. Observatorium Davos - PMOD'] = 'ça marche ?'
+test_dic
+
+
+# In[ ]:
+
+
+

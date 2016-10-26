@@ -122,17 +122,17 @@ institution_canton_dict = {}
 
 
 
-# In[304]:
+# In[318]:
 
 # We can already add the values in our dataframe that won't lead to an address
-university_canton_dict['Nicht zuteilbar - NA'] # it means "Not Available" in German !
-institution_canton_dict['NaN'] = {'long_name': None, 'short_name': None}
-institution_canton_dict['nan'] = {'long_name': None, 'short_name': None}
+university_canton_dict['Nicht zuteilbar - NA'] = {'long_name': 'N/A', 'short_name': 'N/A'} # it means "Not Available" in German !
+institution_canton_dict['NaN'] = {'long_name': 'N/A', 'short_name': 'N/A'}
+institution_canton_dict['nan'] = {'long_name': 'N/A', 'short_name': 'N/A'}
 
 
 # We will need to log the next steps in order de debug easily the part of code related to geolocation...
 
-# In[308]:
+# In[321]:
 
 # set root logger level
 root_logger = logging.getLogger()
@@ -140,7 +140,7 @@ root_logger.setLevel(logging.DEBUG)
 
 # setup custom logger
 logger = logging.getLogger(__name__)
-handler = logging.FileHandler('geolocation8.log')
+handler = logging.FileHandler('geolocation13.log')
 
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
@@ -153,7 +153,7 @@ logger.info('This file is used to debug the next code part related to geolocatio
 # It's kinda dirty, but we will need more than one API key to make all the requests we need for our data.
 # So we created several Google API keys and switch the key each time the current one cannot be used anymore !
 
-# In[309]:
+# In[324]:
 
 # We create tables that will contains every canton we find, so we'll be able to match it with the dataframe at the end.
 logger.debug('Beginning of geolocation : creating canton tables')
@@ -161,7 +161,7 @@ canton_shortname_table = [] # eg: VD
 canton_longname_table = []# eg: Vaud
 
 # number of rows analysed. Can be limited for debuging (eg : 10) because the number of requests to Google Maps API is limited !
-MAX_ROWS = 10 # max : math.inf 
+MAX_ROWS = math.inf # max : math.inf 
 row_counter = 0
 
 # maximum duration of a query to the geocoder, in seconds
@@ -202,8 +202,8 @@ def stubborn_geocode(geolocator, address):
 for index, row in p3_grant_export_data.iterrows():
     logger.debug("Iterating over row n°" + str(row_counter) + ":")
     # initialize variables that will contain canton name for the current row
-    canton_longname = None
-    canton_shortname = None
+    canton_longname = 'N/A'
+    canton_shortname = 'N/A'
     # Check if the university name exists in our index
     university_name = row['University']
     institution_name = row['Institution']
@@ -230,7 +230,7 @@ for index, row in p3_grant_export_data.iterrows():
     
     else:
         # Nor the university neither the institution has been found yet, so we have to geolocate it
-        logger.debug('No university/institution found in dictionaries, geolocating...')
+        logger.debug(university_name + ' / ' + institution_name + 'not found in dictionaries, geolocating...')
         adr = stubborn_geocode(geolocator, university_name)
         if adr is None:
             # TODO No address has been found for this University. So we have to do the same with Institution           
@@ -251,15 +251,16 @@ for index, row in p3_grant_export_data.iterrows():
                         if i["types"][0] == "administrative_area_level_1":
                             # We found a canton !
                             canton_longname = (i['long_name'])
-                            canton_shortname = (i['short_name'])
-                            # We also add it to the university/institution dictionary, in order to limit the number of requests
-                            university_canton_dict[university_name] = {}
-                            university_canton_dict[university_name]['short_name'] = canton_shortname
-                            university_canton_dict[university_name]['long_name'] = canton_longname
-                            institution_canton_dict[institution_name] = {}
-                            institution_canton_dict[institution_name]['short_name'] = canton_shortname
-                            institution_canton_dict[institution_name]['long_name'] = canton_longname
+                            canton_shortname = (i['short_name'])                          
                             break
+                
+                # We also add it to the university/institution dictionary, in order to limit the number of requests
+                university_canton_dict[university_name] = {}
+                university_canton_dict[university_name]['short_name'] = canton_shortname
+                university_canton_dict[university_name]['long_name'] = canton_longname
+                institution_canton_dict[institution_name] = {}
+                institution_canton_dict[institution_name]['short_name'] = canton_shortname
+                institution_canton_dict[institution_name]['long_name'] = canton_longname
             
             except IndexError:
                 # I don't know where this error comes from exactly, just debugging... it just comes from this line :
@@ -277,11 +278,8 @@ for index, row in p3_grant_export_data.iterrows():
                 # So we don't consider this address as a Swiss one and we give up with this one.
     
     # Let's add what we found about the canton !
-    # If we didn't find any canton for the current university/institution, it will just append 'None' to the tables.
-    if canton_longname is not None:
-        logger.debug("Appending canton to the table: " + canton_longname)
-    else:
-        logger.debug("Appending canton to the table: None")
+    # If we didn't find any canton for the current university/institution, it will just append 'N/A' to the tables.
+    logger.debug("Appending canton to the table: " + canton_longname)
     canton_shortname_table.append(canton_shortname)
     canton_longname_table.append(canton_longname)
             
@@ -294,7 +292,7 @@ for index, row in p3_grant_export_data.iterrows():
         break
 
 
-# In[292]:
+# In[ ]:
 
 # We have the table containing all cantons !
 len(canton_shortname_table)
@@ -305,9 +303,9 @@ len(canton_shortname_table)
 canton_longname_table
 
 
-# In[311]:
+# In[331]:
 
-university_canton_dict
+university_canton_dict['Physikal.-Meteorolog. Observatorium Davos - PMOD']['long_name']
 
 
 # In[301]:

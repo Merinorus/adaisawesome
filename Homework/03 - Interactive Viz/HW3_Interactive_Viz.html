@@ -13903,13 +13903,13 @@ Now let's start by creating the indexes for universities and institutions :</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[304]:</div>
+<div class="prompt input_prompt">In&nbsp;[318]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We can already add the values in our dataframe that won&#39;t lead to an address</span>
-<span class="n">university_canton_dict</span><span class="p">[</span><span class="s1">&#39;Nicht zuteilbar - NA&#39;</span><span class="p">]</span> <span class="c1"># it means &quot;Not Available&quot; in German !</span>
-<span class="n">institution_canton_dict</span><span class="p">[</span><span class="s1">&#39;NaN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;short_name&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
-<span class="n">institution_canton_dict</span><span class="p">[</span><span class="s1">&#39;nan&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;short_name&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+<span class="n">university_canton_dict</span><span class="p">[</span><span class="s1">&#39;Nicht zuteilbar - NA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;N/A&#39;</span><span class="p">,</span> <span class="s1">&#39;short_name&#39;</span><span class="p">:</span> <span class="s1">&#39;N/A&#39;</span><span class="p">}</span> <span class="c1"># it means &quot;Not Available&quot; in German !</span>
+<span class="n">institution_canton_dict</span><span class="p">[</span><span class="s1">&#39;NaN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;N/A&#39;</span><span class="p">,</span> <span class="s1">&#39;short_name&#39;</span><span class="p">:</span> <span class="s1">&#39;N/A&#39;</span><span class="p">}</span>
+<span class="n">institution_canton_dict</span><span class="p">[</span><span class="s1">&#39;nan&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;N/A&#39;</span><span class="p">,</span> <span class="s1">&#39;short_name&#39;</span><span class="p">:</span> <span class="s1">&#39;N/A&#39;</span><span class="p">}</span>
 </pre></div>
 
 </div>
@@ -13929,7 +13929,7 @@ Now let's start by creating the indexes for universities and institutions :</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[308]:</div>
+<div class="prompt input_prompt">In&nbsp;[321]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># set root logger level</span>
@@ -13938,7 +13938,7 @@ Now let's start by creating the indexes for universities and institutions :</p>
 
 <span class="c1"># setup custom logger</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
-<span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="s1">&#39;geolocation8.log&#39;</span><span class="p">)</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="s1">&#39;geolocation13.log&#39;</span><span class="p">)</span>
 
 <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(name)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
@@ -13966,7 +13966,7 @@ So we created several Google API keys and switch the key each time the current o
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[309]:</div>
+<div class="prompt input_prompt">In&nbsp;[324]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We create tables that will contains every canton we find, so we&#39;ll be able to match it with the dataframe at the end.</span>
@@ -13975,7 +13975,7 @@ So we created several Google API keys and switch the key each time the current o
 <span class="n">canton_longname_table</span> <span class="o">=</span> <span class="p">[]</span><span class="c1"># eg: Vaud</span>
 
 <span class="c1"># number of rows analysed. Can be limited for debuging (eg : 10) because the number of requests to Google Maps API is limited !</span>
-<span class="n">MAX_ROWS</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># max : math.inf </span>
+<span class="n">MAX_ROWS</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">inf</span> <span class="c1"># max : math.inf </span>
 <span class="n">row_counter</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="c1"># maximum duration of a query to the geocoder, in seconds</span>
@@ -14016,8 +14016,8 @@ So we created several Google API keys and switch the key each time the current o
 <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">p3_grant_export_data</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Iterating over row n°&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">row_counter</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span><span class="p">)</span>
     <span class="c1"># initialize variables that will contain canton name for the current row</span>
-    <span class="n">canton_longname</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">canton_shortname</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">canton_longname</span> <span class="o">=</span> <span class="s1">&#39;N/A&#39;</span>
+    <span class="n">canton_shortname</span> <span class="o">=</span> <span class="s1">&#39;N/A&#39;</span>
     <span class="c1"># Check if the university name exists in our index</span>
     <span class="n">university_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;University&#39;</span><span class="p">]</span>
     <span class="n">institution_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Institution&#39;</span><span class="p">]</span>
@@ -14044,7 +14044,7 @@ So we created several Google API keys and switch the key each time the current o
     
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Nor the university neither the institution has been found yet, so we have to geolocate it</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;No university/institution found in dictionaries, geolocating...&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">university_name</span> <span class="o">+</span> <span class="s1">&#39; / &#39;</span> <span class="o">+</span> <span class="n">institution_name</span> <span class="o">+</span> <span class="s1">&#39;not found in dictionaries, geolocating...&#39;</span><span class="p">)</span>
         <span class="n">adr</span> <span class="o">=</span> <span class="n">stubborn_geocode</span><span class="p">(</span><span class="n">geolocator</span><span class="p">,</span> <span class="n">university_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">adr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># TODO No address has been found for this University. So we have to do the same with Institution           </span>
@@ -14065,15 +14065,16 @@ So we created several Google API keys and switch the key each time the current o
                         <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;types&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;administrative_area_level_1&quot;</span><span class="p">:</span>
                             <span class="c1"># We found a canton !</span>
                             <span class="n">canton_longname</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;long_name&#39;</span><span class="p">])</span>
-                            <span class="n">canton_shortname</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;short_name&#39;</span><span class="p">])</span>
-                            <span class="c1"># We also add it to the university/institution dictionary, in order to limit the number of requests</span>
-                            <span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-                            <span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">][</span><span class="s1">&#39;short_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canton_shortname</span>
-                            <span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canton_longname</span>
-                            <span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-                            <span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;short_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canton_shortname</span>
-                            <span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canton_longname</span>
+                            <span class="n">canton_shortname</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;short_name&#39;</span><span class="p">])</span>                          
                             <span class="k">break</span>
+                
+                <span class="c1"># We also add it to the university/institution dictionary, in order to limit the number of requests</span>
+                <span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">][</span><span class="s1">&#39;short_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canton_shortname</span>
+                <span class="n">university_canton_dict</span><span class="p">[</span><span class="n">university_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canton_longname</span>
+                <span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;short_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canton_shortname</span>
+                <span class="n">institution_canton_dict</span><span class="p">[</span><span class="n">institution_name</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canton_longname</span>
             
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
                 <span class="c1"># I don&#39;t know where this error comes from exactly, just debugging... it just comes from this line :</span>
@@ -14091,11 +14092,8 @@ So we created several Google API keys and switch the key each time the current o
                 <span class="c1"># So we don&#39;t consider this address as a Swiss one and we give up with this one.</span>
     
     <span class="c1"># Let&#39;s add what we found about the canton !</span>
-    <span class="c1"># If we didn&#39;t find any canton for the current university/institution, it will just append &#39;None&#39; to the tables.</span>
-    <span class="k">if</span> <span class="n">canton_longname</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Appending canton to the table: &quot;</span> <span class="o">+</span> <span class="n">canton_longname</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Appending canton to the table: None&quot;</span><span class="p">)</span>
+    <span class="c1"># If we didn&#39;t find any canton for the current university/institution, it will just append &#39;N/A&#39; to the tables.</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Appending canton to the table: &quot;</span> <span class="o">+</span> <span class="n">canton_longname</span><span class="p">)</span>
     <span class="n">canton_shortname_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">canton_shortname</span><span class="p">)</span>
     <span class="n">canton_longname_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">canton_longname</span><span class="p">)</span>
             
@@ -14117,11 +14115,137 @@ So we created several Google API keys and switch the key each time the current o
 
 
 <div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Maximum number of rows reached ! (10)
-Increase the MAX_ROWS variable to analyse more locations
-No limit : MAX_ROWS = maths.inf
-</pre>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">KeyboardInterrupt</span>                         Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-324-ed2c346d3327&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+<span class="ansi-green-fg">     78</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> adr <span class="ansi-green-intense-fg ansi-bold">is</span> <span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">     79</span>             <span class="ansi-red-intense-fg ansi-bold"># TODO No address has been found for this University. So we have to do the same with Institution</span>
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 80</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>adr <span class="ansi-yellow-intense-fg ansi-bold">=</span> stubborn_geocode<span class="ansi-yellow-intense-fg ansi-bold">(</span>geolocator<span class="ansi-yellow-intense-fg ansi-bold">,</span> institution_name<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     81</span> 
+<span class="ansi-green-fg">     82</span>         <span class="ansi-red-intense-fg ansi-bold"># Now, the address should have been found, either by locating the university or the institution</span>
+
+<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-324-ed2c346d3327&gt;</span> in <span class="ansi-cyan-fg">stubborn_geocode</span><span class="ansi-blue-intense-fg ansi-bold">(geolocator, address)</span>
+<span class="ansi-green-fg">     21</span>         <span class="ansi-red-intense-fg ansi-bold">#print(&#34;Using API key n°&#34; + str(APIkeynumber))</span>
+<span class="ansi-green-fg">     22</span>         geolocator <span class="ansi-yellow-intense-fg ansi-bold">=</span> geopy<span class="ansi-yellow-intense-fg ansi-bold">.</span>geocoders<span class="ansi-yellow-intense-fg ansi-bold">.</span>GoogleV3<span class="ansi-yellow-intense-fg ansi-bold">(</span>api_key<span class="ansi-yellow-intense-fg ansi-bold">=</span>googlemapsapikeys<span class="ansi-yellow-intense-fg ansi-bold">[</span>APIkeynumber<span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 23</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">return</span> geolocator<span class="ansi-yellow-intense-fg ansi-bold">.</span>geocode<span class="ansi-yellow-intense-fg ansi-bold">(</span>address<span class="ansi-yellow-intense-fg ansi-bold">,</span> region<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-blue-intense-fg ansi-bold">&#39;ch&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> timeout<span class="ansi-yellow-intense-fg ansi-bold">=</span>geocoder_timeout<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     24</span>     <span class="ansi-green-intense-fg ansi-bold">except</span> geopy<span class="ansi-yellow-intense-fg ansi-bold">.</span>exc<span class="ansi-yellow-intense-fg ansi-bold">.</span>GeocoderTimedOut<span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">     25</span>         print<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;Error : the geocoder timed out. Let&#39;s try again...&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\site-packages\geopy\geocoders\googlev3.py</span> in <span class="ansi-cyan-fg">geocode</span><span class="ansi-blue-intense-fg ansi-bold">(self, query, exactly_one, timeout, bounds, region, components, language, sensor)</span>
+<span class="ansi-green-fg">    215</span>         logger<span class="ansi-yellow-intense-fg ansi-bold">.</span>debug<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;%s.geocode: %s&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>__class__<span class="ansi-yellow-intense-fg ansi-bold">.</span>__name__<span class="ansi-yellow-intense-fg ansi-bold">,</span> url<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    216</span>         return self._parse_json(
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 217</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_call_geocoder<span class="ansi-yellow-intense-fg ansi-bold">(</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> timeout<span class="ansi-yellow-intense-fg ansi-bold">=</span>timeout<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> exactly_one
+<span class="ansi-green-fg">    218</span>         )
+<span class="ansi-green-fg">    219</span> 
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\site-packages\geopy\geocoders\base.py</span> in <span class="ansi-cyan-fg">_call_geocoder</span><span class="ansi-blue-intense-fg ansi-bold">(self, url, timeout, raw, requester, deserializer, **kwargs)</span>
+<span class="ansi-green-fg">    141</span> 
+<span class="ansi-green-fg">    142</span>         <span class="ansi-green-intense-fg ansi-bold">try</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 143</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>page <span class="ansi-yellow-intense-fg ansi-bold">=</span> requester<span class="ansi-yellow-intense-fg ansi-bold">(</span>req<span class="ansi-yellow-intense-fg ansi-bold">,</span> timeout<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-yellow-intense-fg ansi-bold">(</span>timeout <span class="ansi-green-intense-fg ansi-bold">or</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>timeout<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">**</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    144</span>         <span class="ansi-green-intense-fg ansi-bold">except</span> Exception <span class="ansi-green-intense-fg ansi-bold">as</span> error<span class="ansi-yellow-intense-fg ansi-bold">:</span> <span class="ansi-red-intense-fg ansi-bold"># pylint: disable=W0703</span>
+<span class="ansi-green-fg">    145</span>             message = (
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\urllib\request.py</span> in <span class="ansi-cyan-fg">urlopen</span><span class="ansi-blue-intense-fg ansi-bold">(url, data, timeout, cafile, capath, cadefault, context)</span>
+<span class="ansi-green-fg">    161</span>     <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    162</span>         opener <span class="ansi-yellow-intense-fg ansi-bold">=</span> _opener
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 163</span><span class="ansi-yellow-intense-fg ansi-bold">     </span><span class="ansi-green-intense-fg ansi-bold">return</span> opener<span class="ansi-yellow-intense-fg ansi-bold">.</span>open<span class="ansi-yellow-intense-fg ansi-bold">(</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> data<span class="ansi-yellow-intense-fg ansi-bold">,</span> timeout<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    164</span> 
+<span class="ansi-green-fg">    165</span> <span class="ansi-green-intense-fg ansi-bold">def</span> install_opener<span class="ansi-yellow-intense-fg ansi-bold">(</span>opener<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\urllib\request.py</span> in <span class="ansi-cyan-fg">open</span><span class="ansi-blue-intense-fg ansi-bold">(self, fullurl, data, timeout)</span>
+<span class="ansi-green-fg">    464</span>             req <span class="ansi-yellow-intense-fg ansi-bold">=</span> meth<span class="ansi-yellow-intense-fg ansi-bold">(</span>req<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    465</span> 
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 466</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>response <span class="ansi-yellow-intense-fg ansi-bold">=</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_open<span class="ansi-yellow-intense-fg ansi-bold">(</span>req<span class="ansi-yellow-intense-fg ansi-bold">,</span> data<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    467</span> 
+<span class="ansi-green-fg">    468</span>         <span class="ansi-red-intense-fg ansi-bold"># post-process response</span>
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\urllib\request.py</span> in <span class="ansi-cyan-fg">_open</span><span class="ansi-blue-intense-fg ansi-bold">(self, req, data)</span>
+<span class="ansi-green-fg">    482</span>         protocol <span class="ansi-yellow-intense-fg ansi-bold">=</span> req<span class="ansi-yellow-intense-fg ansi-bold">.</span>type
+<span class="ansi-green-fg">    483</span>         result = self._call_chain(self.handle_open, protocol, protocol +
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 484</span><span class="ansi-yellow-intense-fg ansi-bold">                                   &#39;_open&#39;, req)
+</span><span class="ansi-green-fg">    485</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> result<span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    486</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> result
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\urllib\request.py</span> in <span class="ansi-cyan-fg">_call_chain</span><span class="ansi-blue-intense-fg ansi-bold">(self, chain, kind, meth_name, *args)</span>
+<span class="ansi-green-fg">    442</span>         <span class="ansi-green-intense-fg ansi-bold">for</span> handler <span class="ansi-green-intense-fg ansi-bold">in</span> handlers<span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    443</span>             func <span class="ansi-yellow-intense-fg ansi-bold">=</span> getattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>handler<span class="ansi-yellow-intense-fg ansi-bold">,</span> meth_name<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 444</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>result <span class="ansi-yellow-intense-fg ansi-bold">=</span> func<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">*</span>args<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    445</span>             <span class="ansi-green-intense-fg ansi-bold">if</span> result <span class="ansi-green-intense-fg ansi-bold">is</span> <span class="ansi-green-intense-fg ansi-bold">not</span> <span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    446</span>                 <span class="ansi-green-intense-fg ansi-bold">return</span> result
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\urllib\request.py</span> in <span class="ansi-cyan-fg">https_open</span><span class="ansi-blue-intense-fg ansi-bold">(self, req)</span>
+<span class="ansi-green-fg">   1295</span>         <span class="ansi-green-intense-fg ansi-bold">def</span> https_open<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> req<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">   1296</span>             return self.do_open(http.client.HTTPSConnection, req,
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1297</span><span class="ansi-yellow-intense-fg ansi-bold">                 context=self._context, check_hostname=self._check_hostname)
+</span><span class="ansi-green-fg">   1298</span> 
+<span class="ansi-green-fg">   1299</span>         https_request <span class="ansi-yellow-intense-fg ansi-bold">=</span> AbstractHTTPHandler<span class="ansi-yellow-intense-fg ansi-bold">.</span>do_request_
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\urllib\request.py</span> in <span class="ansi-cyan-fg">do_open</span><span class="ansi-blue-intense-fg ansi-bold">(self, http_class, req, **http_conn_args)</span>
+<span class="ansi-green-fg">   1252</span>         <span class="ansi-green-intense-fg ansi-bold">try</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">   1253</span>             <span class="ansi-green-intense-fg ansi-bold">try</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1254</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>h<span class="ansi-yellow-intense-fg ansi-bold">.</span>request<span class="ansi-yellow-intense-fg ansi-bold">(</span>req<span class="ansi-yellow-intense-fg ansi-bold">.</span>get_method<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> req<span class="ansi-yellow-intense-fg ansi-bold">.</span>selector<span class="ansi-yellow-intense-fg ansi-bold">,</span> req<span class="ansi-yellow-intense-fg ansi-bold">.</span>data<span class="ansi-yellow-intense-fg ansi-bold">,</span> headers<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">   1255</span>             <span class="ansi-green-intense-fg ansi-bold">except</span> OSError <span class="ansi-green-intense-fg ansi-bold">as</span> err<span class="ansi-yellow-intense-fg ansi-bold">:</span> <span class="ansi-red-intense-fg ansi-bold"># timeout error</span>
+<span class="ansi-green-fg">   1256</span>                 <span class="ansi-green-intense-fg ansi-bold">raise</span> URLError<span class="ansi-yellow-intense-fg ansi-bold">(</span>err<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\http\client.py</span> in <span class="ansi-cyan-fg">request</span><span class="ansi-blue-intense-fg ansi-bold">(self, method, url, body, headers)</span>
+<span class="ansi-green-fg">   1104</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> request<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> method<span class="ansi-yellow-intense-fg ansi-bold">,</span> url<span class="ansi-yellow-intense-fg ansi-bold">,</span> body<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> headers<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-yellow-intense-fg ansi-bold">{</span><span class="ansi-yellow-intense-fg ansi-bold">}</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">   1105</span>         <span class="ansi-blue-intense-fg ansi-bold">&#34;&#34;&#34;Send a complete request to the server.&#34;&#34;&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1106</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_send_request<span class="ansi-yellow-intense-fg ansi-bold">(</span>method<span class="ansi-yellow-intense-fg ansi-bold">,</span> url<span class="ansi-yellow-intense-fg ansi-bold">,</span> body<span class="ansi-yellow-intense-fg ansi-bold">,</span> headers<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">   1107</span> 
+<span class="ansi-green-fg">   1108</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> _set_content_length<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> body<span class="ansi-yellow-intense-fg ansi-bold">,</span> method<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\http\client.py</span> in <span class="ansi-cyan-fg">_send_request</span><span class="ansi-blue-intense-fg ansi-bold">(self, method, url, body, headers)</span>
+<span class="ansi-green-fg">   1149</span>             <span class="ansi-red-intense-fg ansi-bold"># default charset of iso-8859-1.</span>
+<span class="ansi-green-fg">   1150</span>             body <span class="ansi-yellow-intense-fg ansi-bold">=</span> _encode<span class="ansi-yellow-intense-fg ansi-bold">(</span>body<span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-blue-intense-fg ansi-bold">&#39;body&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1151</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>endheaders<span class="ansi-yellow-intense-fg ansi-bold">(</span>body<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">   1152</span> 
+<span class="ansi-green-fg">   1153</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> getresponse<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\http\client.py</span> in <span class="ansi-cyan-fg">endheaders</span><span class="ansi-blue-intense-fg ansi-bold">(self, message_body)</span>
+<span class="ansi-green-fg">   1100</span>         <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">   1101</span>             <span class="ansi-green-intense-fg ansi-bold">raise</span> CannotSendHeader<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1102</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_send_output<span class="ansi-yellow-intense-fg ansi-bold">(</span>message_body<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">   1103</span> 
+<span class="ansi-green-fg">   1104</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> request<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> method<span class="ansi-yellow-intense-fg ansi-bold">,</span> url<span class="ansi-yellow-intense-fg ansi-bold">,</span> body<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> headers<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-yellow-intense-fg ansi-bold">{</span><span class="ansi-yellow-intense-fg ansi-bold">}</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\http\client.py</span> in <span class="ansi-cyan-fg">_send_output</span><span class="ansi-blue-intense-fg ansi-bold">(self, message_body)</span>
+<span class="ansi-green-fg">    932</span>         <span class="ansi-green-intense-fg ansi-bold">del</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_buffer<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-yellow-intense-fg ansi-bold">:</span><span class="ansi-yellow-intense-fg ansi-bold">]</span>
+<span class="ansi-green-fg">    933</span> 
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 934</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>send<span class="ansi-yellow-intense-fg ansi-bold">(</span>msg<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    935</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> message_body <span class="ansi-green-intense-fg ansi-bold">is</span> <span class="ansi-green-intense-fg ansi-bold">not</span> <span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    936</span>             self<span class="ansi-yellow-intense-fg ansi-bold">.</span>send<span class="ansi-yellow-intense-fg ansi-bold">(</span>message_body<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\http\client.py</span> in <span class="ansi-cyan-fg">send</span><span class="ansi-blue-intense-fg ansi-bold">(self, data)</span>
+<span class="ansi-green-fg">    875</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>sock <span class="ansi-green-intense-fg ansi-bold">is</span> <span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    876</span>             <span class="ansi-green-intense-fg ansi-bold">if</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>auto_open<span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 877</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>connect<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    878</span>             <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    879</span>                 <span class="ansi-green-intense-fg ansi-bold">raise</span> NotConnected<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\http\client.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">   1250</span>             <span class="ansi-blue-intense-fg ansi-bold">&#34;Connect to a host on a given (SSL) port.&#34;</span>
+<span class="ansi-green-fg">   1251</span> 
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1252</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>super<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>connect<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">   1253</span> 
+<span class="ansi-green-fg">   1254</span>             <span class="ansi-green-intense-fg ansi-bold">if</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_tunnel_host<span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\http\client.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">    847</span>         <span class="ansi-blue-intense-fg ansi-bold">&#34;&#34;&#34;Connect to the host and port specified in __init__.&#34;&#34;&#34;</span>
+<span class="ansi-green-fg">    848</span>         self.sock = self._create_connection(
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 849</span><span class="ansi-yellow-intense-fg ansi-bold">             (self.host,self.port), self.timeout, self.source_address)
+</span><span class="ansi-green-fg">    850</span>         self<span class="ansi-yellow-intense-fg ansi-bold">.</span>sock<span class="ansi-yellow-intense-fg ansi-bold">.</span>setsockopt<span class="ansi-yellow-intense-fg ansi-bold">(</span>socket<span class="ansi-yellow-intense-fg ansi-bold">.</span>IPPROTO_TCP<span class="ansi-yellow-intense-fg ansi-bold">,</span> socket<span class="ansi-yellow-intense-fg ansi-bold">.</span>TCP_NODELAY<span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    851</span> 
+
+<span class="ansi-green-intense-fg ansi-bold">C:\Users\merin\Anaconda3\lib\socket.py</span> in <span class="ansi-cyan-fg">create_connection</span><span class="ansi-blue-intense-fg ansi-bold">(address, timeout, source_address)</span>
+<span class="ansi-green-fg">    700</span>             <span class="ansi-green-intense-fg ansi-bold">if</span> source_address<span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    701</span>                 sock<span class="ansi-yellow-intense-fg ansi-bold">.</span>bind<span class="ansi-yellow-intense-fg ansi-bold">(</span>source_address<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 702</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>sock<span class="ansi-yellow-intense-fg ansi-bold">.</span>connect<span class="ansi-yellow-intense-fg ansi-bold">(</span>sa<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    703</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> sock
+<span class="ansi-green-fg">    704</span> 
+
+<span class="ansi-red-intense-fg ansi-bold">KeyboardInterrupt</span>: </pre>
 </div>
 </div>
 
@@ -14131,7 +14255,7 @@ No limit : MAX_ROWS = maths.inf
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[292]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We have the table containing all cantons !</span>
@@ -14139,22 +14263,6 @@ No limit : MAX_ROWS = maths.inf
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[292]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>0</pre>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -14199,10 +14307,10 @@ No limit : MAX_ROWS = maths.inf
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[311]:</div>
+<div class="prompt input_prompt">In&nbsp;[331]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">university_canton_dict</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">university_canton_dict</span><span class="p">[</span><span class="s1">&#39;Physikal.-Meteorolog. Observatorium Davos - PMOD&#39;</span><span class="p">][</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -14213,104 +14321,16 @@ No limit : MAX_ROWS = maths.inf
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[311]:</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-331-1a3e808d58a3&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>university_canton_dict<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#39;Physikal.-Meteorolog. Observatorium Davos - PMOD&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#39;long_name&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span>
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre>{&#39;Berner Fachhochschule - BFH&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
-  &#39;short_name&#39;: &#39;BE&#39;},
- &#39;EPF Lausanne - EPFL&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;, &#39;short_name&#39;: &#39;VD&#39;},
- &#39;ETH Zürich - ETHZ&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;, &#39;short_name&#39;: &#39;ZH&#39;},
- &#39;Eidg. Anstalt für Wasserversorgung - EAWAG&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
-  &#39;short_name&#39;: &#39;ZH&#39;},
- &#39;Eidg. Forschungsanstalt für Wald,Schnee,Land - WSL&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;,
-  &#39;short_name&#39;: &#39;VD&#39;},
- &#39;Eidg. Material und Prüfungsanstalt - EMPA&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
-  &#39;short_name&#39;: &#39;BE&#39;},
- &#39;Ente Ospedaliero Cantonale - EOC&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;,
-  &#39;short_name&#39;: &#39;TI&#39;},
- &#39;Fachhochschule Nordwestschweiz (ohne PH) - FHNW&#39;: {&#39;long_name&#39;: &#39;Basel-Stadt&#39;,
-  &#39;short_name&#39;: &#39;BS&#39;},
- &#39;Fachhochschule Ostschweiz - FHO&#39;: {&#39;long_name&#39;: &#39;St. Gallen&#39;,
-  &#39;short_name&#39;: &#39;SG&#39;},
- &#39;Facoltà di Teologia di Lugano - FTL&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;,
-  &#39;short_name&#39;: &#39;TI&#39;},
- &#39;Firmen/Privatwirtschaft - FP&#39;: {&#39;long_name&#39;: &#39;Aargau&#39;, &#39;short_name&#39;: &#39;AG&#39;},
- &#39;Forschungsanstalten Agroscope - AGS&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
-  &#39;short_name&#39;: &#39;BE&#39;},
- &#39;HES de Suisse occidentale - HES-SO&#39;: {&#39;long_name&#39;: &#39;Canton of Solothurn&#39;,
-  &#39;short_name&#39;: &#39;SO&#39;},
- &#39;Haute école pédagogique du canton de Vaud - HEPL&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;,
-  &#39;short_name&#39;: &#39;VD&#39;},
- &#39;Haute école pédagogique fribourgeoise - HEPFR&#39;: {&#39;long_name&#39;: &#39;Canton of Fribourg&#39;,
-  &#39;short_name&#39;: &#39;FR&#39;},
- &#39;Hochschule Luzern - HSLU&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;, &#39;short_name&#39;: &#39;LU&#39;},
- &#39;Idiap Research Institute - IDIAP&#39;: {&#39;long_name&#39;: &#39;Valais&#39;,
-  &#39;short_name&#39;: &#39;VS&#39;},
- &#39;Inst. de Hautes Etudes Internat. et du Dév - IHEID&#39;: {&#39;long_name&#39;: &#39;Geneva&#39;,
-  &#39;short_name&#39;: &#39;GE&#39;},
- &#39;Institut für Kulturforschung Graubünden - IKG&#39;: {&#39;long_name&#39;: &#39;Grisons&#39;,
-  &#39;short_name&#39;: &#39;GR&#39;},
- &#39;Kantonsspital St. Gallen - KSPSG&#39;: {&#39;long_name&#39;: &#39;St. Gallen&#39;,
-  &#39;short_name&#39;: &#39;SG&#39;},
- &#39;NPO (Biblioth., Museen, Verwalt.) - NPO&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
-  &#39;short_name&#39;: &#39;ZH&#39;},
- &#39;Nicht zuteilbar - NA&#39;: {&#39;long_name&#39;: None, &#39;short_name&#39;: None},
- &#39;Paul Scherrer Institut - PSI&#39;: {&#39;long_name&#39;: &#39;Aargau&#39;, &#39;short_name&#39;: &#39;AG&#39;},
- &#39;Pädag. Hochschule Tessin (Teilschule SUPSI) - ASP&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;,
-  &#39;short_name&#39;: &#39;TI&#39;},
- &#39;Pädagogische Hochschule Bern - PHBern&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
-  &#39;short_name&#39;: &#39;BE&#39;},
- &#39;Pädagogische Hochschule Graubünden - PHGR&#39;: {&#39;long_name&#39;: &#39;Grisons&#39;,
-  &#39;short_name&#39;: &#39;GR&#39;},
- &#39;Pädagogische Hochschule Luzern - PHLU&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;,
-  &#39;short_name&#39;: &#39;LU&#39;},
- &#39;Pädagogische Hochschule Schaffhausen - PHSH&#39;: {&#39;long_name&#39;: &#39;Canton of Schaffhausen&#39;,
-  &#39;short_name&#39;: &#39;SH&#39;},
- &#39;Pädagogische Hochschule Schwyz - PHSZ&#39;: {&#39;long_name&#39;: &#39;Canton of Schwyz&#39;,
-  &#39;short_name&#39;: &#39;SZ&#39;},
- &#39;Pädagogische Hochschule St. Gallen - PHSG&#39;: {&#39;long_name&#39;: &#39;St. Gallen&#39;,
-  &#39;short_name&#39;: &#39;SG&#39;},
- &#39;Pädagogische Hochschule Thurgau - PHTG&#39;: {&#39;long_name&#39;: &#39;Thurgau&#39;,
-  &#39;short_name&#39;: &#39;TG&#39;},
- &#39;Pädagogische Hochschule Wallis - PHVS&#39;: {&#39;long_name&#39;: &#39;Valais&#39;,
-  &#39;short_name&#39;: &#39;VS&#39;},
- &#39;Pädagogische Hochschule Zug - PHZG&#39;: {&#39;long_name&#39;: &#39;Canton of Zug&#39;,
-  &#39;short_name&#39;: &#39;ZG&#39;},
- &#39;Pädagogische Hochschule Zürich - PHZFH&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
-  &#39;short_name&#39;: &#39;ZH&#39;},
- &#39;Robert Walser-Stiftung Bern - RWS&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
-  &#39;short_name&#39;: &#39;ZH&#39;},
- &#39;SUP della Svizzera italiana - SUPSI&#39;: {&#39;long_name&#39;: &#39;Ticino&#39;,
-  &#39;short_name&#39;: &#39;TI&#39;},
- &#39;Schweiz. Institut für Kunstwissenschaft - SIK-ISEA&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;,
-  &#39;short_name&#39;: &#39;VD&#39;},
- &#39;Schweizer Kompetenzzentrum Sozialwissensch. - FORS&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;,
-  &#39;short_name&#39;: &#39;VD&#39;},
- &#39;Staatsunabh. Theologische Hochschule Basel - STHB&#39;: {&#39;long_name&#39;: &#39;Basel-Stadt&#39;,
-  &#39;short_name&#39;: &#39;BS&#39;},
- &#39;Swiss Institute of Bioinformatics - SIB&#39;: {&#39;long_name&#39;: &#39;Geneva&#39;,
-  &#39;short_name&#39;: &#39;GE&#39;},
- &#39;Università della Svizzera italiana - USI&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;,
-  &#39;short_name&#39;: &#39;LU&#39;},
- &#39;Universität Basel - BS&#39;: {&#39;long_name&#39;: &#39;Basel-Stadt&#39;, &#39;short_name&#39;: &#39;BS&#39;},
- &#39;Universität Bern - BE&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;, &#39;short_name&#39;: &#39;BE&#39;},
- &#39;Universität Luzern - LU&#39;: {&#39;long_name&#39;: &#39;Luzern&#39;, &#39;short_name&#39;: &#39;LU&#39;},
- &#39;Universität St. Gallen - SG&#39;: {&#39;long_name&#39;: &#39;Sankt Gallen&#39;,
-  &#39;short_name&#39;: &#39;SG&#39;},
- &#39;Universität Zürich - ZH&#39;: {&#39;long_name&#39;: &#39;Zürich&#39;, &#39;short_name&#39;: &#39;ZH&#39;},
- &#39;Université de Fribourg - FR&#39;: {&#39;long_name&#39;: &#39;Fribourg&#39;, &#39;short_name&#39;: &#39;FR&#39;},
- &#39;Université de Genève - GE&#39;: {&#39;long_name&#39;: &#39;Genève&#39;, &#39;short_name&#39;: &#39;GE&#39;},
- &#39;Université de Lausanne - LA&#39;: {&#39;long_name&#39;: &#39;Vaud&#39;, &#39;short_name&#39;: &#39;VD&#39;},
- &#39;Université de Neuchâtel - NE&#39;: {&#39;long_name&#39;: &#39;Canton of Neuchâtel&#39;,
-  &#39;short_name&#39;: &#39;NE&#39;},
- &#39;Weitere Institute - FINST&#39;: {&#39;long_name&#39;: &#39;Canton of Bern&#39;,
-  &#39;short_name&#39;: &#39;BE&#39;},
- &#39;Weitere Spitäler - ASPIT&#39;: {&#39;long_name&#39;: &#39;Lucerne&#39;, &#39;short_name&#39;: &#39;LU&#39;},
- &#39;Zürcher Fachhochschule (ohne PH) - ZFH&#39;: {&#39;long_name&#39;: &#39;Zurich&#39;,
-  &#39;short_name&#39;: &#39;ZH&#39;}}</pre>
+<span class="ansi-red-intense-fg ansi-bold">KeyError</span>: &#39;Physikal.-Meteorolog. Observatorium Davos - PMOD&#39;</pre>
 </div>
-
 </div>
 
 </div>
