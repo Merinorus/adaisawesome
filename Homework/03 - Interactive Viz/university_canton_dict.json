@@ -1,0 +1,211 @@
+{
+    "Berner Fachhochschule - BFH": {
+        "long_name": "Canton of Bern",
+        "short_name": "BE"
+    },
+    "EPF Lausanne - EPFL": {
+        "long_name": "Vaud",
+        "short_name": "VD"
+    },
+    "ETH Z\u00fcrich - ETHZ": {
+        "long_name": "Zurich",
+        "short_name": "ZH"
+    },
+    "Eidg. Anstalt f\u00fcr Wasserversorgung - EAWAG": {
+        "long_name": "Zurich",
+        "short_name": "ZH"
+    },
+    "Eidg. Forschungsanstalt f\u00fcr Wald,Schnee,Land - WSL": {
+        "long_name": "Vaud",
+        "short_name": "VD"
+    },
+    "Eidg. Material und Pr\u00fcfungsanstalt - EMPA": {
+        "long_name": "Canton of Bern",
+        "short_name": "BE"
+    },
+    "Ente Ospedaliero Cantonale - EOC": {
+        "long_name": "Ticino",
+        "short_name": "TI"
+    },
+    "Fachhochschule Nordwestschweiz (ohne PH) - FHNW": {
+        "long_name": "Basel-Stadt",
+        "short_name": "BS"
+    },
+    "Fachhochschule Ostschweiz - FHO": {
+        "long_name": "St. Gallen",
+        "short_name": "SG"
+    },
+    "Facolt\u00e0 di Teologia di Lugano - FTL": {
+        "long_name": "Ticino",
+        "short_name": "TI"
+    },
+    "Firmen/Privatwirtschaft - FP": {
+        "long_name": "Aargau",
+        "short_name": "AG"
+    },
+    "Forschungsanstalten Agroscope - AGS": {
+        "long_name": "Canton of Bern",
+        "short_name": "BE"
+    },
+    "HES de Suisse occidentale - HES-SO": {
+        "long_name": "Canton of Solothurn",
+        "short_name": "SO"
+    },
+    "Haute \u00e9cole p\u00e9dagogique du canton de Vaud - HEPL": {
+        "long_name": "Vaud",
+        "short_name": "VD"
+    },
+    "Haute \u00e9cole p\u00e9dagogique fribourgeoise - HEPFR": {
+        "long_name": "Canton of Fribourg",
+        "short_name": "FR"
+    },
+    "Hochschule Luzern - HSLU": {
+        "long_name": "Lucerne",
+        "short_name": "LU"
+    },
+    "Idiap Research Institute - IDIAP": {
+        "long_name": "Valais",
+        "short_name": "VS"
+    },
+    "Inst. de Hautes Etudes Internat. et du D\u00e9v - IHEID": {
+        "long_name": "Geneva",
+        "short_name": "GE"
+    },
+    "Institut f\u00fcr Kulturforschung Graub\u00fcnden - IKG": {
+        "long_name": "Grisons",
+        "short_name": "GR"
+    },
+    "Kantonsspital St. Gallen - KSPSG": {
+        "long_name": "St. Gallen",
+        "short_name": "SG"
+    },
+    "NPO (Biblioth., Museen, Verwalt.) - NPO": {
+        "long_name": "Zurich",
+        "short_name": "ZH"
+    },
+    "Nicht zuteilbar - NA": null,
+    "Paul Scherrer Institut - PSI": {
+        "long_name": "Aargau",
+        "short_name": "AG"
+    },
+    "P\u00e4dag. Hochschule Tessin (Teilschule SUPSI) - ASP": {
+        "long_name": "Ticino",
+        "short_name": "TI"
+    },
+    "P\u00e4dagogische Hochschule Bern - PHBern": {
+        "long_name": "Canton of Bern",
+        "short_name": "BE"
+    },
+    "P\u00e4dagogische Hochschule Graub\u00fcnden - PHGR": {
+        "long_name": "Grisons",
+        "short_name": "GR"
+    },
+    "P\u00e4dagogische Hochschule Luzern - PHLU": {
+        "long_name": "Lucerne",
+        "short_name": "LU"
+    },
+    "P\u00e4dagogische Hochschule Schaffhausen - PHSH": {
+        "long_name": "Canton of Schaffhausen",
+        "short_name": "SH"
+    },
+    "P\u00e4dagogische Hochschule Schwyz - PHSZ": {
+        "long_name": "Canton of Schwyz",
+        "short_name": "SZ"
+    },
+    "P\u00e4dagogische Hochschule St. Gallen - PHSG": {
+        "long_name": "St. Gallen",
+        "short_name": "SG"
+    },
+    "P\u00e4dagogische Hochschule Thurgau - PHTG": {
+        "long_name": "Thurgau",
+        "short_name": "TG"
+    },
+    "P\u00e4dagogische Hochschule Wallis - PHVS": {
+        "long_name": "Valais",
+        "short_name": "VS"
+    },
+    "P\u00e4dagogische Hochschule Zug - PHZG": {
+        "long_name": "Canton of Zug",
+        "short_name": "ZG"
+    },
+    "P\u00e4dagogische Hochschule Z\u00fcrich - PHZFH": {
+        "long_name": "Zurich",
+        "short_name": "ZH"
+    },
+    "Robert Walser-Stiftung Bern - RWS": {
+        "long_name": "Zurich",
+        "short_name": "ZH"
+    },
+    "SUP della Svizzera italiana - SUPSI": {
+        "long_name": "Ticino",
+        "short_name": "TI"
+    },
+    "Schweiz. Institut f\u00fcr Kunstwissenschaft - SIK-ISEA": {
+        "long_name": "Vaud",
+        "short_name": "VD"
+    },
+    "Schweizer Kompetenzzentrum Sozialwissensch. - FORS": {
+        "long_name": "Vaud",
+        "short_name": "VD"
+    },
+    "Staatsunabh. Theologische Hochschule Basel - STHB": {
+        "long_name": "Basel-Stadt",
+        "short_name": "BS"
+    },
+    "Swiss Institute of Bioinformatics - SIB": {
+        "long_name": "Geneva",
+        "short_name": "GE"
+    },
+    "Universit\u00e0 della Svizzera italiana - USI": {
+        "long_name": "Lucerne",
+        "short_name": "LU"
+    },
+    "Universit\u00e4t Basel - BS": {
+        "long_name": "Basel-Stadt",
+        "short_name": "BS"
+    },
+    "Universit\u00e4t Bern - BE": {
+        "long_name": "Canton of Bern",
+        "short_name": "BE"
+    },
+    "Universit\u00e4t Luzern - LU": {
+        "long_name": "Luzern",
+        "short_name": "LU"
+    },
+    "Universit\u00e4t St. Gallen - SG": {
+        "long_name": "Sankt Gallen",
+        "short_name": "SG"
+    },
+    "Universit\u00e4t Z\u00fcrich - ZH": {
+        "long_name": "Z\u00fcrich",
+        "short_name": "ZH"
+    },
+    "Universit\u00e9 de Fribourg - FR": {
+        "long_name": "Fribourg",
+        "short_name": "FR"
+    },
+    "Universit\u00e9 de Gen\u00e8ve - GE": {
+        "long_name": "Gen\u00e8ve",
+        "short_name": "GE"
+    },
+    "Universit\u00e9 de Lausanne - LA": {
+        "long_name": "Vaud",
+        "short_name": "VD"
+    },
+    "Universit\u00e9 de Neuch\u00e2tel - NE": {
+        "long_name": "Canton of Neuch\u00e2tel",
+        "short_name": "NE"
+    },
+    "Weitere Institute - FINST": {
+        "long_name": "Canton of Bern",
+        "short_name": "BE"
+    },
+    "Weitere Spit\u00e4ler - ASPIT": {
+        "long_name": "Lucerne",
+        "short_name": "LU"
+    },
+    "Z\u00fcrcher Fachhochschule (ohne PH) - ZFH": {
+        "long_name": "Zurich",
+        "short_name": "ZH"
+    }
+}

@@ -1,0 +1,212 @@
+{
+    "NaN": {
+        "short_name": "VD",
+        "long_name": "Vaud"
+    },
+    "Kantonsspital Luzern Medizinische Klinik": {
+        "short_name": "LU",
+        "long_name": "Lucerne"
+    },
+    "Ostasiatisches Seminar Universit\u00e4t Z\u00fcrich": {
+        "short_name": "ZH",
+        "long_name": "Z\u00fcrich"
+    },
+    "Ospedale Regionale di Lugano": {
+        "short_name": "TI",
+        "long_name": "Ticino"
+    },
+    "Ostschweizer Kinderspital": {
+        "short_name": "SG",
+        "long_name": "St. Gallen"
+    },
+    "Facolt\u00e0 di Teologia di Lugano": {
+        "short_name": "TI",
+        "long_name": "Ticino"
+    },
+    "Institut f\u00fcr Medien und Schule PHZ Schwyz P\u00e4dagogische Hochschule Zentralschweiz": {
+        "short_name": "SZ",
+        "long_name": "Canton of Schwyz"
+    },
+    "P\u00e4dagogische Hochschule des Kantons St. Gallen": {
+        "short_name": "SG",
+        "long_name": "St. Gallen"
+    },
+    "S\u00e9minaire de politique \u00e9conomique, d'\u00e9conomie internationale et d'\u00e9conomie r\u00e9gionale": {
+        "short_name": "FR",
+        "long_name": "Fribourg"
+    },
+    "Institut f\u00fcr Bienengesundheit Vetsuisse Fakult\u00e4t Universit\u00e4t Bern": {
+        "short_name": "BE",
+        "long_name": "Canton of Bern"
+    },
+    "Institut f\u00fcr Wirtschaftsforschung ETH-Z\u00fcrich": {
+        "short_name": "ZH",
+        "long_name": "Zurich"
+    },
+    "Hochschule Technik + Architektur Luzern Bibliothek": {
+        "short_name": "LU",
+        "long_name": "Lucerne"
+    },
+    "Idiap Research Institute Martigny": {
+        "short_name": "VS",
+        "long_name": "Valais"
+    },
+    "Historisches Seminar Universit\u00e4t Luzern": {
+        "short_name": "LU",
+        "long_name": "Luzern"
+    },
+    "Institut f\u00e9d\u00e9ral de recherches WSL Site de Lausanne": {
+        "short_name": "VD",
+        "long_name": "Vaud"
+    },
+    "EMPA Thun": {
+        "short_name": "BE",
+        "long_name": "Canton of Bern"
+    },
+    "Universit\u00e4t St. Gallen": {
+        "short_name": "SG",
+        "long_name": "Sankt Gallen"
+    },
+    "Institut f\u00fcr Kulturforschung Graub\u00fcnden": {
+        "short_name": "GR",
+        "long_name": "Grisons"
+    },
+    "P\u00e4dagogische Hochschule Graub\u00fcnden Bibliothek": {
+        "short_name": "GR",
+        "long_name": "Grisons"
+    },
+    "SIK-ISEA Antenne romande Universit\u00e9 de Lausanne": {
+        "short_name": "VD",
+        "long_name": "Vaud"
+    },
+    "Hochschule f\u00fcr Sozialarbeit HSA Institut f\u00fcr Sozialplanung und Sozialmanagement": {
+        "short_name": "LU",
+        "long_name": "Lucerne"
+    },
+    "P\u00e4dagogische Hochschule Wallis PHVS": {
+        "short_name": "VS",
+        "long_name": "Valais"
+    },
+    "Erziehungsdirektion des Kantons Bern Bildungsplanung und Evaluation": {
+        "short_name": "BE",
+        "long_name": "Canton of Bern"
+    },
+    "St\u00f6ckli A. & J. AG": {
+        "short_name": "AG",
+        "long_name": "Aargau"
+    },
+    "Musikhochschule der Musik-Akademie der Stadt Basel": {
+        "short_name": "BS",
+        "long_name": "Basel-Stadt"
+    },
+    "Abteilung Systemanalyse, Integrated Assessment und Modellierung EAWAG D\u00fcbendorf": {
+        "short_name": "ZH",
+        "long_name": "Zurich"
+    },
+    "Paul Scherrer Institut": {
+        "short_name": "AG",
+        "long_name": "Aargau"
+    },
+    "Institut Suisse de Bioinformatique Centre M\u00e9dical Universitaire Universit\u00e9 de Gen\u00e8ve": {
+        "short_name": "GE",
+        "long_name": "Geneva"
+    },
+    "UER MS HEP - Vaud": {
+        "short_name": "VD",
+        "long_name": "Vaud"
+    },
+    "Facult\u00e9 de Psychologie et des Sciences de l'Education Universit\u00e9 de Gen\u00e8ve": {
+        "short_name": "GE",
+        "long_name": "Gen\u00e8ve"
+    },
+    "Institut f\u00fcr Bildungsmanagement und Bildungs\u00f6konomie P\u00e4dagogische Hochschule Zentralschweiz": {
+        "short_name": "ZG",
+        "long_name": "Canton of Zug"
+    },
+    "Robert Walser-Stiftung Z\u00fcrich": {
+        "short_name": "ZH",
+        "long_name": "Zurich"
+    },
+    "Abt. Handschriften und Alte Drucke Bibliothek der Universit\u00e4t Basel": {
+        "short_name": "BS",
+        "long_name": "Basel-Stadt"
+    },
+    "NaN": null,
+    "FORS c/o Universit\u00e9 de Lausanne": {
+        "short_name": "VD",
+        "long_name": "Vaud"
+    },
+    "FHS St. Gallen Hochschule f\u00fcr angewandte Wissenschaften": {
+        "short_name": "SG",
+        "long_name": "St. Gallen"
+    },
+    "P\u00e4dagogische Hochschule Freiburg": {
+        "short_name": "FR",
+        "long_name": "Canton of Fribourg"
+    },
+    "Ingenieurschule Burgdorf": {
+        "short_name": "BE",
+        "long_name": "Canton of Bern"
+    },
+    "Institut d'\u00e9tudes sociales Centre de recherches sociales CERES": {
+        "short_name": "SO",
+        "long_name": "Canton of Solothurn"
+    },
+    "nan": null,
+    "Institut d'architecture Universit\u00e9 de Gen\u00e8ve": {
+        "short_name": "GE",
+        "long_name": "Geneva"
+    },
+    "Alta Scuola Pedagogica": {
+        "short_name": "TI",
+        "long_name": "Ticino"
+    },
+    "Istituto Ricerche Solari Locarno": {
+        "short_name": "TI",
+        "long_name": "Ticino"
+    },
+    "Forschung und Entwicklung P\u00e4dagogische Hochschule Schaffhausen": {
+        "short_name": "SH",
+        "long_name": "Canton of Schaffhausen"
+    },
+    "Abteilung Forschung P\u00e4dagogische Hochschule Thurgau": {
+        "short_name": "TG",
+        "long_name": "Thurgau"
+    },
+    "Institut de sociologie et de sciences politiques Universit\u00e9 de Neuch\u00e2tel": {
+        "short_name": "NE",
+        "long_name": "Canton of Neuch\u00e2tel"
+    },
+    "Laboratoire d'intermodalit\u00e9 des transports et de planification EPFL-ENAC-INTER-LITEP": {
+        "short_name": "VD",
+        "long_name": "Vaud"
+    },
+    "Theologische Hochschule Basel": {
+        "short_name": "BS",
+        "long_name": "Basel-Stadt"
+    },
+    "P\u00e4dagogische Hochschule Z\u00fcrich Bibliothek PH Z\u00fcrich / ZS": {
+        "short_name": "ZH",
+        "long_name": "Zurich"
+    },
+    "Schweizerisches Nationalmuseum Landesmuseum Z\u00fcrich": {
+        "short_name": "ZH",
+        "long_name": "Zurich"
+    },
+    "Soziologisches Seminar Universit\u00e4t Luzern": {
+        "short_name": "LU",
+        "long_name": "Lucerne"
+    },
+    "Institut f\u00fcr Virologie und Immunologie Depart. Infektionskrankheiten und Pathologie Universit\u00e4t Bern": {
+        "short_name": "BE",
+        "long_name": "Canton of Bern"
+    },
+    "Dept. Angewandte Linguistik Z\u00fcrcher Hochschule Winterthur S101": {
+        "short_name": "ZH",
+        "long_name": "Zurich"
+    },
+    "Klinische Psychologie und Psychotherapie Institut f\u00fcr Psychologie Universit\u00e4t Bern": {
+        "short_name": "BE",
+        "long_name": "Canton of Bern"
+    }
+}
