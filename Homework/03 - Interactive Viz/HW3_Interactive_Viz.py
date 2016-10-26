@@ -359,9 +359,9 @@ p3_grant_cantons
 
 # Now we have the cantons associated with the universities/institutions :)
 
-# In[355]:
+# In[356]:
 
-p3_grant_cantons.to_csv('P3_Cantons.csv')
+p3_grant_cantons.to_csv('P3_Cantons.csv', encoding='utf-8')
 
 
 # In[ ]:
