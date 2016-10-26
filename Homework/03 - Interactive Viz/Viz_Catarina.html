@@ -11748,7 +11748,7 @@ div#notebook {
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -11767,7 +11767,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[93]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_cantons_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s1">&#39;P3_Cantons.pickle&#39;</span><span class="p">)</span>
@@ -11782,7 +11782,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[93]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[22]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12548,7 +12548,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#find all possible short names</span>
@@ -12569,7 +12569,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[51]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[23]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12690,11 +12690,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[94]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#delete irrelevant columns in the dataset to clean data</span>
 <span class="n">p3_cantons_data</span> <span class="o">=</span> <span class="n">p3_cantons_data</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;Funding Instrument&#39;</span><span class="p">,</span> <span class="s1">&#39;Canton Longname&#39;</span><span class="p">,</span> <span class="s1">&#39;End Date&#39;</span><span class="p">,</span> <span class="s1">&#39;Start Date&#39;</span><span class="p">,</span> <span class="s1">&#39;Institution&#39;</span><span class="p">,</span> <span class="s1">&#39;University&#39;</span><span class="p">,</span> <span class="s1">&#39;Funding Instrument Hierarchy&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Drop all grants that are not associated with a canton</span>
+<span class="n">p3_cantons_data</span> <span class="o">=</span> <span class="n">p3_cantons_data</span><span class="p">[</span><span class="n">p3_cantons_data</span><span class="p">[</span><span class="s1">&#39;Canton Shortname&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;N/A&#39;</span><span class="p">]</span>
 <span class="n">p3_cantons_data</span>
 </pre></div>
 
@@ -12706,7 +12708,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[94]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[24]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12719,11 +12721,6 @@ div#notebook {
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th>0</th>
-      <td>11619.00</td>
-      <td>N/A</td>
-    </tr>
     <tr>
       <th>1</th>
       <td>41022.00</td>
@@ -12810,11 +12807,6 @@ div#notebook {
       <td>ZH</td>
     </tr>
     <tr>
-      <th>18</th>
-      <td>38152.00</td>
-      <td>N/A</td>
-    </tr>
-    <tr>
       <th>19</th>
       <td>14138.00</td>
       <td>VD</td>
@@ -12840,16 +12832,6 @@ div#notebook {
       <td>GE</td>
     </tr>
     <tr>
-      <th>24</th>
-      <td>56000.00</td>
-      <td>N/A</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>152535.00</td>
-      <td>N/A</td>
-    </tr>
-    <tr>
       <th>26</th>
       <td>225000.00</td>
       <td>ZH</td>
@@ -12870,64 +12852,129 @@ div#notebook {
       <td>VD</td>
     </tr>
     <tr>
+      <th>30</th>
+      <td>85938.00</td>
+      <td>ZH</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>8902.00</td>
+      <td>ZH</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>19134.00</td>
+      <td>BS</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>54509.00</td>
+      <td>ZH</td>
+    </tr>
+    <tr>
       <th>...</th>
       <td>...</td>
       <td>...</td>
     </tr>
     <tr>
-      <th>53029</th>
-      <td>1898.00</td>
+      <th>52995</th>
+      <td>16000.00</td>
+      <td>ZH</td>
+    </tr>
+    <tr>
+      <th>52996</th>
+      <td>4600.00</td>
+      <td>GE</td>
+    </tr>
+    <tr>
+      <th>52997</th>
+      <td>251554.00</td>
       <td>LU</td>
     </tr>
     <tr>
-      <th>53030</th>
-      <td>9300.00</td>
-      <td>N/A</td>
+      <th>52998</th>
+      <td>5700.00</td>
+      <td>GE</td>
     </tr>
     <tr>
-      <th>53031</th>
-      <td>9500.00</td>
-      <td>N/A</td>
+      <th>52999</th>
+      <td>10000.00</td>
+      <td>VD</td>
     </tr>
     <tr>
-      <th>53032</th>
-      <td>4000.00</td>
-      <td>N/A</td>
+      <th>53003</th>
+      <td>12416.00</td>
+      <td>ZH</td>
     </tr>
     <tr>
-      <th>53033</th>
-      <td>11000.00</td>
-      <td>N/A</td>
+      <th>53005</th>
+      <td>1600.00</td>
+      <td>BS</td>
     </tr>
     <tr>
-      <th>53034</th>
+      <th>53006</th>
+      <td>3200.00</td>
+      <td>BS</td>
+    </tr>
+    <tr>
+      <th>53007</th>
+      <td>120000.00</td>
+      <td>ZH</td>
+    </tr>
+    <tr>
+      <th>53008</th>
+      <td>6300.00</td>
+      <td>ZH</td>
+    </tr>
+    <tr>
+      <th>53009</th>
+      <td>1500.00</td>
+      <td>ZH</td>
+    </tr>
+    <tr>
+      <th>53010</th>
+      <td>11782.00</td>
+      <td>VD</td>
+    </tr>
+    <tr>
+      <th>53011</th>
+      <td>2600.00</td>
+      <td>ZH</td>
+    </tr>
+    <tr>
+      <th>53012</th>
+      <td>7700.00</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>53017</th>
+      <td>2500.00</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>53018</th>
+      <td>5900.00</td>
+      <td>BE</td>
+    </tr>
+    <tr>
+      <th>53022</th>
       <td>7500.00</td>
-      <td>N/A</td>
+      <td>BE</td>
     </tr>
     <tr>
-      <th>53035</th>
-      <td>8000.00</td>
-      <td>N/A</td>
+      <th>53024</th>
+      <td>3000.00</td>
+      <td>GE</td>
     </tr>
     <tr>
-      <th>53036</th>
-      <td>9300.00</td>
-      <td>N/A</td>
+      <th>53025</th>
+      <td>3600.00</td>
+      <td>VD</td>
     </tr>
     <tr>
-      <th>53037</th>
-      <td>7000.00</td>
-      <td>N/A</td>
-    </tr>
-    <tr>
-      <th>53038</th>
-      <td>6000.00</td>
-      <td>N/A</td>
-    </tr>
-    <tr>
-      <th>53039</th>
-      <td>4500.00</td>
-      <td>N/A</td>
+      <th>53029</th>
+      <td>1898.00</td>
+      <td>LU</td>
     </tr>
     <tr>
       <th>53040</th>
@@ -12950,24 +12997,9 @@ div#notebook {
       <td>AG</td>
     </tr>
     <tr>
-      <th>53044</th>
-      <td>10500.00</td>
-      <td>N/A</td>
-    </tr>
-    <tr>
       <th>53045</th>
       <td>10030.00</td>
       <td>BS</td>
-    </tr>
-    <tr>
-      <th>53046</th>
-      <td>7870.00</td>
-      <td>N/A</td>
-    </tr>
-    <tr>
-      <th>53047</th>
-      <td>3150.00</td>
-      <td>N/A</td>
     </tr>
     <tr>
       <th>53048</th>
@@ -12978,21 +13010,6 @@ div#notebook {
       <th>53049</th>
       <td>2515.00</td>
       <td>VD</td>
-    </tr>
-    <tr>
-      <th>53050</th>
-      <td>3500.00</td>
-      <td>N/A</td>
-    </tr>
-    <tr>
-      <th>53051</th>
-      <td>4000.00</td>
-      <td>N/A</td>
-    </tr>
-    <tr>
-      <th>53052</th>
-      <td>3550.00</td>
-      <td>N/A</td>
     </tr>
     <tr>
       <th>53053</th>
@@ -13009,24 +13026,9 @@ div#notebook {
       <td>2000.00</td>
       <td>ZH</td>
     </tr>
-    <tr>
-      <th>53056</th>
-      <td>10500.00</td>
-      <td>N/A</td>
-    </tr>
-    <tr>
-      <th>53057</th>
-      <td>9500.00</td>
-      <td>N/A</td>
-    </tr>
-    <tr>
-      <th>53058</th>
-      <td>7000.00</td>
-      <td>N/A</td>
-    </tr>
   </tbody>
 </table>
-<p>53059 rows × 2 columns</p>
+<p>47866 rows × 2 columns</p>
 </div>
 </div>
 
@@ -13038,14 +13040,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[122]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># convert approved amount to numeric value</span>
-<span class="c1">#for index, row in p3_cantons_data.iterrows():</span>
-  <span class="c1">#      float(row[&#39;Approved Amount&#39;])</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">p3_cantons_data</span><span class="p">[</span><span class="s1">&#39;Canton Shortname&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
-<span class="n">p3_cantons_data</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">p3_cantons_data</span><span class="p">[</span><span class="s1">&#39;Approved Amount&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -13056,11 +13054,11 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[122]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[25]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>dtype(&#39;O&#39;)</pre>
+<pre>str</pre>
 </div>
 
 </div>
@@ -13071,16 +13069,11 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[120]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#sum elements by group</span>
-<span class="n">p3_cantons_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Canton Shortname&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-
-
-
-    
-    
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_cantons_data</span><span class="p">[</span><span class="s1">&#39;Approved Amount&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">p3_cantons_data</span><span class="p">[</span><span class="s1">&#39;Approved Amount&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">p3_cantons_data</span><span class="p">[</span><span class="s1">&#39;Approved Amount&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -13091,101 +13084,11 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[120]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[26]:</div>
 
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Approved Amount</th>
-    </tr>
-    <tr>
-      <th>Canton Shortname</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>AG</th>
-      <td>27000.0096046.0094562.00115504.0040520.0064495...</td>
-    </tr>
-    <tr>
-      <th>BE</th>
-      <td>147795.00154420.0014242.0014235.00117101.00200...</td>
-    </tr>
-    <tr>
-      <th>BS</th>
-      <td>52627.00112664.0019134.0064279.0071884.0029382...</td>
-    </tr>
-    <tr>
-      <th>FR</th>
-      <td>53009.0025403.00153886.00204018.0063684.003725...</td>
-    </tr>
-    <tr>
-      <th>GE</th>
-      <td>41022.00360000.00116991.00149485.00164602.0044...</td>
-    </tr>
-    <tr>
-      <th>GR</th>
-      <td>125340.0018000.0064600.00155373.0068008.006033...</td>
-    </tr>
-    <tr>
-      <th>LU</th>
-      <td>18500.00127965.00122834.0011000.0095049.001116...</td>
-    </tr>
-    <tr>
-      <th>N/A</th>
-      <td>11619.0038152.0056000.00152535.0089770.0025099...</td>
-    </tr>
-    <tr>
-      <th>NE</th>
-      <td>51904.0030000.0013620.0032500.006000.00161538....</td>
-    </tr>
-    <tr>
-      <th>SG</th>
-      <td>20689.0034281.0022190.0040345.007000.00146794....</td>
-    </tr>
-    <tr>
-      <th>SH</th>
-      <td>176691.00</td>
-    </tr>
-    <tr>
-      <th>SO</th>
-      <td>117052.00286354.0094060.00306787.00243550.0052...</td>
-    </tr>
-    <tr>
-      <th>SZ</th>
-      <td>160824.00111349.00168218.00186193.00309967.00</td>
-    </tr>
-    <tr>
-      <th>TG</th>
-      <td>195702.00246685.00225289.00287225.00291870.002...</td>
-    </tr>
-    <tr>
-      <th>TI</th>
-      <td>60000.00133500.0044000.00203383.0096200.001451...</td>
-    </tr>
-    <tr>
-      <th>VD</th>
-      <td>25814.0014138.00445198.0074617.0015000.0017000...</td>
-    </tr>
-    <tr>
-      <th>VS</th>
-      <td>113482.00155673.00226679.0035000.00163513.0019...</td>
-    </tr>
-    <tr>
-      <th>ZG</th>
-      <td>206544.006000.0016000.00147126.0095955.0010790...</td>
-    </tr>
-    <tr>
-      <th>ZH</th>
-      <td>79732.00120042.0047100.00862200.005000.0083983...</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+
+<div class="output_text output_subarea output_execute_result">
+<pre>numpy.float64</pre>
 </div>
 
 </div>
@@ -13196,10 +13099,27 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p3_cantons_sum</span> <span class="o">=</span> <span class="n">p3_cantons_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Canton Shortname&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Save the sums in a csv file to use it later</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">p3_cantons_sum</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;P3_Cantons_Sum.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">PermissionError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t access to the file. Maybe close Excel and try again :)&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>

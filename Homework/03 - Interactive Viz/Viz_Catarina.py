@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[21]:
 
 import pandas as pd
 import numpy as np
@@ -12,13 +12,13 @@ import math
 import logging
 
 
-# In[93]:
+# In[22]:
 
 p3_cantons_data = pd.read_pickle('P3_Cantons.pickle')
 p3_cantons_data
 
 
-# In[51]:
+# In[23]:
 
 #find all possible short names
 cantons = p3_cantons_data['Canton Shortname'].unique()
@@ -30,34 +30,36 @@ final_df = final_df.reset_index(drop=True)
 final_df
 
 
-# In[94]:
+# In[24]:
 
 #delete irrelevant columns in the dataset to clean data
 p3_cantons_data = p3_cantons_data.drop(['Funding Instrument', 'Canton Longname', 'End Date', 'Start Date', 'Institution', 'University', 'Funding Instrument Hierarchy'], axis=1)
+# Drop all grants that are not associated with a canton
+p3_cantons_data = p3_cantons_data[p3_cantons_data['Canton Shortname'] != 'N/A']
 p3_cantons_data
 
 
-# In[122]:
+# In[25]:
 
-# convert approved amount to numeric value
-#for index, row in p3_cantons_data.iterrows():
-  #      float(row['Approved Amount'])
-pd.to_numeric(p3_cantons_data['Canton Shortname'], errors='coerce')
-p3_cantons_data
+type(p3_cantons_data['Approved Amount'][1])
 
 
-# In[120]:
+# In[26]:
 
-#sum elements by group
-p3_cantons_data.groupby(['Canton Shortname']).sum()
-
-
-
-    
-    
+p3_cantons_data['Approved Amount'] = (p3_cantons_data['Approved Amount']).astype(float)
+type(p3_cantons_data['Approved Amount'][1])
 
 
-# In[ ]:
+# In[27]:
+
+p3_cantons_sum = p3_cantons_data.groupby(['Canton Shortname']).sum()
 
 
+# In[29]:
+
+# Save the sums in a csv file to use it later
+try:
+    p3_cantons_sum.to_csv('P3_Cantons_Sum.csv', encoding='utf-8')
+except PermissionError:
+    print("Couldn't access to the file. Maybe close Excel and try again :)")
 
