@@ -3,7 +3,7 @@
 
 # Build a Choropleth map which shows intuitively (i.e., use colors wisely) how much grant money goes to each Swiss canton.
 
-# In[239]:
+# In[1]:
 
 import pandas as pd
 import numpy as np
@@ -16,32 +16,32 @@ import math
 import logging
 
 
-# In[275]:
+# In[2]:
 
 p3_grant_export_data = pd.read_csv("P3_GrantExport.csv", sep=";")
 p3_grant_export_data
 
 
-# In[363]:
+# In[3]:
 
 # Here is the total number of rows we will have to deal with
 len(p3_grant_export_data.index)
 
 
-# In[277]:
+# In[4]:
 
 # We keep only the rows which mention how much money has been granted (the amount column starts by a number)
 # ie : we keep rows where the 'Approved Amount' column starts with a number
 p3_grant_export_data = p3_grant_export_data[p3_grant_export_data['Approved Amount'].apply(lambda x : x[0].isdigit())]
 
 
-# In[278]:
+# In[5]:
 
 # Almost 200k rows have been removed
 p3_grant_export_data.size
 
 
-# In[279]:
+# In[6]:
 
 # We don't need this data
 p3_grant_export_data = p3_grant_export_data.drop(p3_grant_export_data.columns[[0]], axis = 1)
@@ -53,14 +53,14 @@ p3_grant_export_data.size
 # We will ignore all project in which the University is not mentioned : we assume that if it's not, the project is probably outside Switzerland.
 # If we have the time, a better solution would be taking the institution's location into account as well.
 
-# In[60]:
+# In[7]:
 
 # Removing rows in which University is not mentioned
 # p3_grant_export_data = p3_grant_export_data.dropna(subset=['University'])
 # p3_grant_export_data.size
 
 
-# In[280]:
+# In[8]:
 
 p3_grant_export_data
 
@@ -81,7 +81,7 @@ p3_grant_export_data
 #   - Add the canton to the canton table
 # 3) Add the canton table to the above dataframe in a way that they match with the universities or institutions
 
-# In[281]:
+# In[9]:
 
 # Let's start by creating our geolocator. We will use Google Maps API :
 googlemapsapikeyjson = json.loads(open('google_maps_api_keys.json').read())
@@ -89,16 +89,17 @@ googlemapsapikeyjson = json.loads(open('google_maps_api_keys.json').read())
 googlemapsapikeys = googlemapsapikeyjson['keys']
 
 
-# In[366]:
+# In[10]:
 
-# Specifying the region for the geolocator, because University of Geneva
-test_university_geneva = geolocator.geocode("University of Geneva", region='ch')
+# Specifying the region for the geolocator: for instance, University of Geneva might be localized in the US !
+test_geolocator =  geopy.geocoders.GoogleV3(api_key=googlemapsapikeys[0])
+test_university_geneva = test_geolocator.geocode("University of Geneva", region='ch')
 test_university_geneva
 
 
 # Now let's start by creating the indexes for universities and institutions :
 
-# In[154]:
+# In[11]:
 
 try:
     university_canton_dict = json.loads(open('university_canton_dict.json').read())
@@ -115,7 +116,7 @@ except FileNotFoundError:
 
 # We excpect some dirty values if the dataframe, so we are anticipate the problems:
 
-# In[318]:
+# In[12]:
 
 # We can already add the values in our dataframe that won't lead to an address
 university_canton_dict['Nicht zuteilbar - NA'] = {'long_name': 'N/A', 'short_name': 'N/A'} # it means "Not Available" in German !
@@ -126,7 +127,7 @@ institution_canton_dict['nan'] = {'long_name': 'N/A', 'short_name': 'N/A'}
 # We will need to log the next steps in order de debug easily the part of code related to geolocation...
 # It seems like it's hard to create a log file in iPython, so we adapted the following of code. Basically, it writes to a file named geolocation.log
 
-# In[336]:
+# In[13]:
 
 # set root logger level
 root_logger = logging.getLogger()
@@ -148,7 +149,7 @@ logger.info('This file is used to debug the next code part related to geolocatio
 # So we created several Google API keys and switch the key each time the current one cannot be used anymore !
 # Here is the main code to get all the cantons that we will associate with our dataframe:
 
-# In[337]:
+# In[14]:
 
 # We create tables that will contains every canton we find, so we'll be able to match it with the dataframe at the end.
 logger.debug('Beginning of geolocation : creating canton tables')
@@ -285,18 +286,18 @@ for index, row in p3_grant_export_data.iterrows():
         break
 
 
-# In[367]:
+# In[15]:
 
 # We have the table containing all cantons !
 len(canton_shortname_table)
 
 
-# In[338]:
+# In[16]:
 
 canton_longname_table
 
 
-# In[343]:
+# In[17]:
 
 # We save the dictionary of cantons associated with universities
 # Thus we won't need to make requests that have already been made to Google Maps next time we run this notebook !
@@ -305,7 +306,7 @@ with open('university_canton_dict.json', 'w') as fp:
 university_canton_dict
 
 
-# In[344]:
+# In[18]:
 
 # We save the dictionary of cantons/institutions as well
 with open('institution_canton_dict.json', 'w') as fp:
@@ -313,31 +314,31 @@ with open('institution_canton_dict.json', 'w') as fp:
 institution_canton_dict
 
 
-# In[345]:
+# In[19]:
 
 canton_shortname_series = pd.Series(canton_shortname_table, name='Canton Shortname')
 canton_shortname_series.size
 
 
-# In[346]:
+# In[20]:
 
 canton_longname_series = pd.Series(canton_longname_table, name='Canton Longname')
 canton_longname_series.size
 
 
-# In[350]:
+# In[21]:
 
 len(p3_grant_export_data.index)
 
 
-# In[353]:
+# In[22]:
 
 # Reindex the dataframe to make the match with cantons
 p3_grant_export_data_reindex = p3_grant_export_data.reset_index(drop=True)
 p3_grant_export_data_reindex
 
 
-# In[354]:
+# In[23]:
 
 # Let's add the cantons to our dataframe !
 p3_grant_cantons = pd.concat([p3_grant_export_data_reindex, canton_longname_series, canton_shortname_series], axis=1)
@@ -348,19 +349,22 @@ p3_grant_cantons
 # Now we have the cantons associated with the universities/institutions :)
 # We save the dataframe into several formats, just in case, in order to use them in another notebook.
 
-# In[357]:
+# In[26]:
 
-p3_grant_cantons.to_csv('P3_Cantons.csv', encoding='utf-8')
+try:
+    p3_grant_cantons.to_csv('P3_Cantons.csv', encoding='utf-8')
+except PermissionError:
+    print("Couldn't access to the file. Maybe close Excel and try again :)")
 
 
-# In[360]:
+# In[27]:
 
 p3_grant_cantons_json = p3_grant_cantons.to_json()
 with open('P3_cantons.json', 'w') as fp:
     json.dump(p3_grant_cantons_json, fp, indent=4)
 
 
-# In[361]:
+# In[28]:
 
 # The pickle format seems convenients to works with in Python, we're going to use it for transfering data to another notebook
 p3_grant_cantons.to_pickle('P3_Cantons.pickle')
