@@ -63,3 +63,13 @@ try:
 except PermissionError:
     print("Couldn't access to the file. Maybe close Excel and try again :)")
 
+
+# In[30]:
+
+# Maybe a pickle file is better !
+
+
+# In[31]:
+
+p3_cantons_sum.to_pickle('P3_Cantons_Sum.pickle')
+
