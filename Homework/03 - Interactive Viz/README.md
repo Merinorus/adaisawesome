@@ -1,6 +1,6 @@
 # 03 - Interactive Viz
 
-## Instructin for the review
+## Instruction for the review
 They are a lot of files there, but you might be interested only by the HW3_Interactive_Viz.ipynb file !
 
 ## Deadline
