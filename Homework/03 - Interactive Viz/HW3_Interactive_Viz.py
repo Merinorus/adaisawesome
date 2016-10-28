@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# Build a Choropleth map which shows intuitively (i.e., use colors wisely) how much grant money goes to each Swiss canton.
+# (1) Build a Choropleth map which shows intuitively (i.e., use colors wisely) how much grant money goes to each Swiss canton. First we will need to get the data ready, which means determining which canton wach university is at and summing up the grant amounts by canton.
 
 # In[1]:
 
@@ -19,7 +19,7 @@ import logging
 # In[2]:
 
 p3_grant_export_data = pd.read_csv("P3_GrantExport.csv", sep=";")
-p3_grant_export_data
+p3_grant_export_data.head()
 
 
 # In[3]:
@@ -349,7 +349,7 @@ p3_grant_cantons
 # Now we have the cantons associated with the universities/institutions :)
 # We save the dataframe into several formats, just in case, in order to use them in another notebook.
 
-# In[26]:
+# In[24]:
 
 try:
     p3_grant_cantons.to_csv('P3_Cantons.csv', encoding='utf-8')
@@ -357,17 +357,82 @@ except PermissionError:
     print("Couldn't access to the file. Maybe close Excel and try again :)")
 
 
-# In[27]:
+# In[25]:
 
 p3_grant_cantons_json = p3_grant_cantons.to_json()
 with open('P3_cantons.json', 'w') as fp:
     json.dump(p3_grant_cantons_json, fp, indent=4)
 
 
-# In[28]:
+# In[26]:
 
 # The pickle format seems convenients to works with in Python, we're going to use it for transfering data to another notebook
 p3_grant_cantons.to_pickle('P3_Cantons.pickle')
 
 
 # This is the end of the first part. Now that we have linked universities and institutions to cantons, we can start working with the map !
+
+# (2) In this part of the exercise, we now need to put the data which we have procured about the funding levels of the different universities that are located in different cantons onto a canton map. We will do so using Folio and take the example TopoJSON mapping which they use.
+
+# In[27]:
+
+import folium
+
+# Import the Switzerland map (from the folio pylib notebook)
+topo_geo = r'ch-cantons.topojson.json'
+
+# Import our csv file with all of the values for the amounts of the grants 
+grants_data = pd.read_csv('P3_Cantons_Sum.csv')
+#grants_data['Approved Amount'] = (grants_data['Approved Amount']).astype(int)
+
+missing_cantons = pd.Series(['UR','OW','NW','GL','BL','AR','AI','JU'], name='Canton Shortname')
+missing_cantons_zeros = pd.Series([0,0,0,0,0,0,0,0], name='Approved Amount')
+missing_cantons_df = pd.DataFrame([missing_cantons, missing_cantons_zeros]).T
+grants_data_all_cantons = grants_data.append(missing_cantons_df)
+grants_data_all_cantons = grants_data_all_cantons.reset_index(drop=True)
+
+grants_data_all_cantons['Approved Amount'] = grants_data_all_cantons['Approved Amount']/10000000
+
+grants_data_all_cantons
+
+
+# In[28]:
+
+# Need to be able to extract the id of the canton from the topo file
+from pprint import pprint
+
+with open(topo_geo) as data_file:    
+    data = json.load(data_file)
+#pprint(data)
+
+data['objects']['cantons']['geometries'][25]['id']
+
+#len(data['objects']['cantons']['geometries'])
+
+
+# In[29]:
+
+# Need to overlay the Swiss topo file on the generic Folio map
+ch_map = folium.Map(location=[46.9, 8.3], tiles='Mapbox Bright', zoom_start=7)
+#folium.TopoJson(open(topo_geo), 'objects.cantons', name = 'topojson').add_to(ch_map)
+#folium.LayerControl().add_to(ch_map)
+
+ch_map.geo_json(geo_path=topo_geo, 
+        data=grants_data_all_cantons,
+        columns=['Canton Shortname', 'Approved Amount'],
+        key_on='feature.id',
+        topojson='objects.cantons',
+        fill_color='YlGnBu',
+        fill_opacity=0.7,
+        line_opacity=0.5,
+        legend_name='Total Grant Amount by Canton (tens millions CHF) (1970+)',
+        threshold_scale=[0,0.01,10,150,300,400],
+        reset = True)
+ch_map.save('swiss.html')
+ch_map
+
+
+# In[ ]:
+
+
+

@@ -42,23 +42,23 @@ geolocator = geopy.geocoders.GoogleV3(api_key=googlemapsapikey)
 adr = geolocator.geocode("University of Geneva", region='ch')
 
 
-# In[6]:
+# In[ ]:
 
 adr.raw
 
 
-# In[7]:
+# In[ ]:
 
 # displays the dictionary in a visually better way
 print(json.dumps(adr.raw, indent = 4))
 
 
-# In[8]:
+# In[ ]:
 
 adr.raw['address_components']
 
 
-# In[16]:
+# In[ ]:
 
 canton_longname = None
 try:
@@ -72,12 +72,12 @@ except KeyError:
 canton_longname
 
 
-# In[12]:
+# In[ ]:
 
 adr.raw['address_componentds']
 
 
-# In[10]:
+# In[ ]:
 
 "administrative_area_level_1" in adr.raw['address_components'][*][0]
 
@@ -94,7 +94,7 @@ if null_adr is None:
     print("Nonetype !")
 
 
-# In[17]:
+# In[ ]:
 
 test_table = []
 test_table.append(None)
@@ -105,7 +105,7 @@ test_table.append(2)
 test_table
 
 
-# In[28]:
+# In[ ]:
 
 test_dic = {}
 test_dic['key1'] = {}
@@ -114,37 +114,66 @@ test_dic['key1']['shortname'] = ['lol']
 test_dic
 
 
-# In[29]:
+# In[ ]:
 
 test_dic['key1']
 
 
-# In[30]:
+# In[ ]:
 
 table = ['aze', 'ae']
 table[2]
 
 
-# In[48]:
+# In[ ]:
 
 from time import gmtime, strftime
 strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
 
-# In[50]:
+# In[ ]:
 
 str('coucou')
 
 
-# In[53]:
+# In[8]:
 
 test_dic = {}
 test_dic['key1'] = 'ok'
 test_dic['Physikal.-Meteorolog. Observatorium Davos - PMOD'] = 'ça marche ?'
-test_dic
 
 
-# In[ ]:
+# In[9]:
+
+# Import the Switzerland map (from the folio pylib notebook)
+topo_geo = r'ch-cantons.topojson.json'
+
+# Need to be able to extract the id of the canton from the topo file
+from pprint import pprint
+
+with open(topo_geo) as data_file:    
+    data = json.load(data_file)
+#pprint(data)
+
+#data['objects']['cantons']['geometries']
+data['objects']['cantons']['geometries'][0]['id']
 
 
+# In[10]:
+
+# Need to overlap the Swiss topo file on the generic Folio map
+ch_map = folium.Map(location=[46.9, 8.6], tiles='Mapbox Bright', zoom_start=7)
+folium.TopoJson(open(topo_geo), 'objects.cantons', name = 'topojson').add_to(ch_map)
+folium.LayerControl().add_to(ch_map)
+ch_map
+
+
+# In[14]:
+
+data['objects']['cantons']['geometries'][0]['id']
+
+
+# In[17]:
+
+data['objects']['cantons']['type']
 
