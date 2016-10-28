@@ -1,5 +1,8 @@
 # 03 - Interactive Viz
 
+## Instructin for the review
+They are a lot of files there, but you might be interested only by the HW3_Interactive_Viz.ipynb file !
+
 ## Deadline
 Friday October 28, 2016 at 11:59PM
 
