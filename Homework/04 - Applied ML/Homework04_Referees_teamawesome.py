@@ -1,61 +1,91 @@
 
 # coding: utf-8
 
+# # I. Setting up the Problem
+
 # In[1]:
 
 import pandas as pd
 import numpy as np
 
+# Import the random forest package
+from sklearn.ensemble import RandomForestClassifier 
 
-# In[3]:
+
+# In[15]:
 
 filename ="CrowdstormingDataJuly1st.csv"
 Data = pd.read_csv(filename)
 
 
-# In[5]:
+# ### 1) Peeking into the Data
+
+# In[16]:
 
 Data.ix[:10,:13]
 
 
-# In[7]:
+# In[49]:
 
-Data.ix[:10,13:28]
+#Data.ix[:10,13:28]
 
 
-# In[31]:
+# ### 2) Disaggregate the data so each row is 1 game
 
-test = Data[Data['yellowReds']>0]
-test = test.reset_index()
-test.ix[:10,13:28]
+# In[55]:
+
+for i in Data.iterrows():
+    if Data.at[i, 'games'] > 1:
+        df
+
+
+# # II. Preparing the training & test data
+
+# ### 1) Only use players that have a Rater Image
+
+# In[38]:
+
+# 1) Remove the players without rater 1 / 2 rating because we won't be 
+# able to train or test the values (this can be done as bonus later)
+
+Data_hasImage = Data[pd.notnull(Data['photoID'])]
+#Data_hasImage.ix[:10,13:28]
+
+
+# ### 2) Create the Training and Testing Datframes with only select data
+
+# In[47]:
+
+# Removing columns that we do not need
+Data_Simple1 = Data_hasImage[['playerShort', 'games', 'yellowCards', 'yellowReds', 'redCards',
+                              'refNum', 'refCountry', 'rater1', 'rater2']]
+
+# Take a random 80% sample of the Data for the Training Sample
+Data_Training = Data_Simple1.sample(frac=0.8)
+
+# Take a random 20% sample of the Data for the Testing Sample
+Data_Testing = Data_Simple1.loc[~Data_Simple1.index.isin(Data_Training.index)]
 
 
 # In[ ]:
 
-# TODO: disaggregate
+# TO DO Need to make arrays
+# http://www.analyticbridge.com/profiles/blogs/random-forest-in-python
 
 
-# In[36]:
+# # III. Random Forest
 
-from sklearn.ensemble import RandomForestClassifier
-from numpy import genfromtxt, savetxt
+# In[42]:
 
-def main():
-    #create the training & test sets, skipping the header row with [1:]
-    dataset = genfromtxt(open(Data,'r'), delimiter=',', dtype='f8')[1:]    
-    target = [x[0] for x in dataset]
-    train = [x[1:] for x in dataset]
-    test = genfromtxt(open(Data,'r'), delimiter=',', dtype='f8')[1:]
-    
-    #create and train the random forest
-    #multi-core CPUs can use: rf = RandomForestClassifier(n_estimators=100, n_jobs=2)
-    rf = RandomForestClassifier(n_estimators=100)
-    rf.fit(train, target)
+# Create the random forest object which will include all the parameters
+# for the fit
+forest = RandomForestClassifier(n_estimators = 100)
 
-    savetxt('Data/submission2.csv', rf.predict(test), delimiter=',', fmt='%f')
+# Fit the training data and create the decision trees
+forest = forest.fit(Data_Simple2[0::,1::],Data_Simple2[0::,0])
 
-if __name__=="__main__":
-    main()
+# Take the same decision trees and run it on the test data
+output = forest.predict(Data_Simple2)
 
 
 # In[ ]:
