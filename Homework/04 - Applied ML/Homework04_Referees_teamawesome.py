@@ -66,9 +66,49 @@ Data_hasImage['mean_rater']=(Data_hasImage['rater1']+Data_hasImage['rater2'])/2
 
 # Let's now disaggregate the games:
 
+# In[35]:
+
+game_counter = 0
+game_total_number = sum(Data_hasImage['games'])
+# Raw table that we'll have to convert to a dataframe later
+output = [0 for i in range(game_total_number)]
+
+# We now iterate each row of our dataframe, which may contains more that one game
+for i, row in Data_hasImage.iterrows():
+    # Number of games in the current row
+    row_game_number = row['games']
+    # We want to seperate each of these games    
+    for j in range (row_game_number):
+        a = 1
+            
+
+
+# In[36]:
+
+#out = [0 for _ in range(sum(Data_hasImage['games']))]
+#out
+
+
 # In[ ]:
 
+j = 0
+out = [0 for _ in range(sum(df['games']))]
 
+for _, row in df.iterrows():
+        n = row['games']
+        c = row['allreds']
+        d = row['allredsStrict']
+        
+        #row['games'] = 1        
+        
+        for _ in range(n):
+                row['allreds'] = 1 if (c-_) > 0 else 0
+                row['allredsStrict'] = 1 if (d-_) > 0 else 0
+                rowlist=list(row)  #convert from pandas Series to prevent overwriting previous values of out[j]
+                out[j] = rowlist
+                j += 1
+                if j%10==0:    
+                    print "Number "+ str(j) + " of " + str(df.shape[0])
 
 
 # ### 3) Create the Training and Testing Datframes with only select data
