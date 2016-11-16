@@ -25,18 +25,9 @@ Data = pd.read_csv(filename)
 Data.ix[:10,:13]
 
 
-# In[49]:
+# In[58]:
 
-#Data.ix[:10,13:28]
-
-
-# ### 2) Disaggregate the data so each row is 1 game
-
-# In[55]:
-
-for i in Data.iterrows():
-    if Data.at[i, 'games'] > 1:
-        df
+Data.ix[:10,13:28]
 
 
 # # II. Preparing the training & test data
@@ -52,40 +43,86 @@ Data_hasImage = Data[pd.notnull(Data['photoID'])]
 #Data_hasImage.ix[:10,13:28]
 
 
-# ### 2) Create the Training and Testing Datframes with only select data
+# ### 2) Disaggregate the data so each row is 1 game
 
-# In[47]:
+# In[57]:
+
+#for i in Data.iterrows():
+#    if Data.at[i, 'games'] > 1:
+#        df = Data[i]
+
+
+# In[65]:
+
+# Testing - divide # cards (all types) by # games column
+Data_hasImage['fractionYellow'] = Data_hasImage['yellowCards']/Data_hasImage['games']
+Data_hasImage['fractionYellowRed'] = Data_hasImage['yellowReds']/Data_hasImage['games']
+Data_hasImage['fractionRed'] = Data_hasImage['redCards']/Data_hasImage['games']
+
+# Get the average of the raters
+Data_hasImage['raterAvg'] = (Data_hasImage['rater1']+Data_hasImage['rater2'])/2
+
+#Data_hasImage.head()
+
+
+# ### 3) Create the Training and Testing Datframes with only select data
+
+# In[96]:
 
 # Removing columns that we do not need
-Data_Simple1 = Data_hasImage[['playerShort', 'games', 'yellowCards', 'yellowReds', 'redCards',
-                              'refNum', 'refCountry', 'rater1', 'rater2']]
+Data_Simple1 = Data_hasImage[['games', 'fractionYellow', 'fractionYellowRed', 'fractionRed',
+                              'refNum', 'refCountry', 'raterAvg']]
+
+#cols = ['playerShort', 'games', 'fractionYellow', 'fractionYellowRed', 'fractionRed',
+cols = ['games', 'fractionYellow', 'fractionYellowRed', 'fractionRed', 'refNum', 'refCountry']
+colsRes = ['raterAvg']
 
 # Take a random 80% sample of the Data for the Training Sample
 Data_Training = Data_Simple1.sample(frac=0.8)
 
+# Need to split this into the data and the results columns
+# http://stackoverflow.com/questions/34246336/python-randomforest-unknown-label-error
+Input_Data_Training = Data_Training.drop(colsRes, axis=1)
+#Results_Data_Training = list(Data_Training.raterAvg.values)
+Results_Data_Training = Data_Training[colsRes]
+
+
+# In[90]:
+
 # Take a random 20% sample of the Data for the Testing Sample
-Data_Testing = Data_Simple1.loc[~Data_Simple1.index.isin(Data_Training.index)]
+#Data_Testing = Data_Simple1.loc[~Data_Simple1.index.isin(Data_Training.index)]
+
+# Need to split this into the data and the results columns
+# http://stackoverflow.com/questions/34246336/python-randomforest-unknown-label-error
+#Input_Data_Testing = Data_Testing.drop(colsRes, axis=1)
+#Results_Data_Testing = list(Data_Testing.raterAvg.values)
 
 
-# In[ ]:
+# In[97]:
 
-# TO DO Need to make arrays
+# Need to make arrays
 # http://www.analyticbridge.com/profiles/blogs/random-forest-in-python
+
+trainArr = Input_Data_Training.as_matrix(cols) #training array
+trainRes = Results_Data_Training.as_matrix(colsRes) #training results
 
 
 # # III. Random Forest
 
-# In[42]:
+# In[99]:
 
-# Create the random forest object which will include all the parameters
-# for the fit
+#Initialize
 forest = RandomForestClassifier(n_estimators = 100)
 
 # Fit the training data and create the decision trees
-forest = forest.fit(Data_Simple2[0::,1::],Data_Simple2[0::,0])
+forest.fit(trainArr,trainRes)
 
 # Take the same decision trees and run it on the test data
-output = forest.predict(Data_Simple2)
+#testArr = test.as_matrix(cols)
+#results = rf.predict(testArr)
+
+#test['predictions'] = results
+#test.head()
 
 
 # In[ ]:
