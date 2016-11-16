@@ -67,7 +67,7 @@ Data_hasImage['raterAvg'] = (Data_hasImage['rater1']+Data_hasImage['rater2'])/2
 
 # ### 3) Create the Training and Testing Datframes with only select data
 
-# In[96]:
+# In[104]:
 
 # Removing columns that we do not need
 Data_Simple1 = Data_hasImage[['games', 'fractionYellow', 'fractionYellowRed', 'fractionRed',
@@ -98,18 +98,21 @@ Results_Data_Training = Data_Training[colsRes]
 #Results_Data_Testing = list(Data_Testing.raterAvg.values)
 
 
-# In[97]:
+# In[112]:
 
 # Need to make arrays
 # http://www.analyticbridge.com/profiles/blogs/random-forest-in-python
 
 trainArr = Input_Data_Training.as_matrix(cols) #training array
 trainRes = Results_Data_Training.as_matrix(colsRes) #training results
+#trainRes = np.asarray(Data_Training['raterAvg'], dtype="|S6")
+
+trainRes
 
 
 # # III. Random Forest
 
-# In[99]:
+# In[110]:
 
 #Initialize
 forest = RandomForestClassifier(n_estimators = 100)
