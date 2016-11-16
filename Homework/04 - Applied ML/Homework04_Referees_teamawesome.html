@@ -11757,7 +11757,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -11774,7 +11774,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">filename</span> <span class="o">=</span><span class="s2">&quot;CrowdstormingDataJuly1st.csv&quot;</span>
@@ -11797,7 +11797,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">ix</span><span class="p">[:</span><span class="mi">10</span><span class="p">,:</span><span class="mi">13</span><span class="p">]</span>
@@ -11811,7 +11811,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[16]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12024,10 +12024,90 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">ix</span><span class="p">[:</span><span class="mi">10</span><span class="p">,</span><span class="mi">13</span><span class="p">:</span><span class="mi">28</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Data.ix[:10,13:28]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="II.-Preparing-the-training-&amp;-test-data-:-Unique-Game-Row-version">II. Preparing the training &amp; test data : Unique Game Row version<a class="anchor-link" href="#II.-Preparing-the-training-&amp;-test-data-:-Unique-Game-Row-version">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="1)-Keep-only-players-that-have-a-Rater-Image">1) Keep only players that have a Rater Image<a class="anchor-link" href="#1)-Keep-only-players-that-have-a-Rater-Image">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 1) Remove the players without rater 1 / 2 rating because we won&#39;t be </span>
+<span class="c1"># able to train or test the values (this can be done as bonus later)</span>
+
+<span class="n">Data_hasImage</span> <span class="o">=</span> <span class="n">Data</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">notnull</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;photoID&#39;</span><span class="p">])]</span>
+<span class="c1">#Data_hasImage.ix[:10,13:28]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="2)-Disaggregate-the-data-so-each-row-is-1-game">2) Disaggregate the data so each row is 1 game<a class="anchor-link" href="#2)-Disaggregate-the-data-so-each-row-is-1-game">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Got a lot of help from this script ! <a href="https://osf.io/w7tds/">https://osf.io/w7tds/</a>
+It will be much simpler for us to train our random forest if each row corresponds to one game. This way, we won't have to give a different "weight" to each row according to the number of played games.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>But let's start by doing the mean value of rater1 and rater 2, because if we keep them separated we might get some strange results.
+Indeed, what if for a player, rater1 = 0.0 and rater2 = 0.75 ?
+It would not make a lot of sense, or at least we would know our model is not viable !</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;mean_rater&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;rater1&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;rater2&#39;</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
 </pre></div>
 
 </div>
@@ -12038,7 +12118,19 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[58]:</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>C:\Users\merin\Anaconda3\lib\site-packages\ipykernel\__main__.py:1: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+  if __name__ == &#39;__main__&#39;:
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[16]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12046,12 +12138,17 @@ div#notebook {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>yellowCards</th>
-      <th>yellowReds</th>
-      <th>redCards</th>
-      <th>photoID</th>
-      <th>rater1</th>
-      <th>rater2</th>
+      <th>playerShort</th>
+      <th>player</th>
+      <th>club</th>
+      <th>leagueCountry</th>
+      <th>birthday</th>
+      <th>height</th>
+      <th>weight</th>
+      <th>position</th>
+      <th>games</th>
+      <th>victories</th>
+      <th>...</th>
       <th>refNum</th>
       <th>refCountry</th>
       <th>Alpha_3</th>
@@ -12061,17 +12158,23 @@ div#notebook {
       <th>meanExp</th>
       <th>nExp</th>
       <th>seExp</th>
+      <th>mean_rater</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
+      <td>lucas-wilchez</td>
+      <td>Lucas Wilchez</td>
+      <td>Real Zaragoza</td>
+      <td>Spain</td>
+      <td>31.08.1983</td>
+      <td>177.0</td>
+      <td>72.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>95212.jpg</td>
-      <td>0.25</td>
-      <td>0.50</td>
+      <td>...</td>
       <td>1</td>
       <td>1</td>
       <td>GRC</td>
@@ -12081,15 +12184,21 @@ div#notebook {
       <td>0.396000</td>
       <td>750.0</td>
       <td>0.002696</td>
+      <td>0.375</td>
     </tr>
     <tr>
       <th>1</th>
+      <td>john-utaka</td>
+      <td>John Utaka</td>
+      <td>Montpellier HSC</td>
+      <td>France</td>
+      <td>08.01.1982</td>
+      <td>179.0</td>
+      <td>82.0</td>
+      <td>Right Winger</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
-      <td>1663.jpg</td>
-      <td>0.75</td>
-      <td>0.75</td>
+      <td>...</td>
       <td>2</td>
       <td>2</td>
       <td>ZMB</td>
@@ -12099,69 +12208,21 @@ div#notebook {
       <td>-0.204082</td>
       <td>49.0</td>
       <td>0.061504</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3</td>
-      <td>3</td>
-      <td>ESP</td>
-      <td>0.369894</td>
-      <td>1785.0</td>
-      <td>0.000229</td>
-      <td>0.588297</td>
-      <td>1897.0</td>
-      <td>0.001002</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3</td>
-      <td>3</td>
-      <td>ESP</td>
-      <td>0.369894</td>
-      <td>1785.0</td>
-      <td>0.000229</td>
-      <td>0.588297</td>
-      <td>1897.0</td>
-      <td>0.001002</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3</td>
-      <td>3</td>
-      <td>ESP</td>
-      <td>0.369894</td>
-      <td>1785.0</td>
-      <td>0.000229</td>
-      <td>0.588297</td>
-      <td>1897.0</td>
-      <td>0.001002</td>
+      <td>0.750</td>
     </tr>
     <tr>
       <th>5</th>
+      <td>aaron-hughes</td>
+      <td>Aaron Hughes</td>
+      <td>Fulham FC</td>
+      <td>England</td>
+      <td>08.11.1979</td>
+      <td>182.0</td>
+      <td>71.0</td>
+      <td>Center Back</td>
+      <td>1</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>3868.jpg</td>
-      <td>0.25</td>
-      <td>0.00</td>
+      <td>...</td>
       <td>4</td>
       <td>4</td>
       <td>LUX</td>
@@ -12171,15 +12232,21 @@ div#notebook {
       <td>0.538462</td>
       <td>130.0</td>
       <td>0.013752</td>
+      <td>0.125</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>47704.jpg</td>
-      <td>0.00</td>
-      <td>0.25</td>
+      <td>aleksandar-kolarov</td>
+      <td>Aleksandar Kolarov</td>
+      <td>Manchester City</td>
+      <td>England</td>
+      <td>10.11.1985</td>
+      <td>187.0</td>
+      <td>80.0</td>
+      <td>Left Fullback</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
       <td>4</td>
       <td>4</td>
       <td>LUX</td>
@@ -12189,15 +12256,21 @@ div#notebook {
       <td>0.538462</td>
       <td>130.0</td>
       <td>0.013752</td>
+      <td>0.125</td>
     </tr>
     <tr>
       <th>7</th>
+      <td>alexander-tettey</td>
+      <td>Alexander Tettey</td>
+      <td>Norwich City</td>
+      <td>England</td>
+      <td>04.04.1986</td>
+      <td>180.0</td>
+      <td>68.0</td>
+      <td>Defensive Midfielder</td>
+      <td>1</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>22356.jpg</td>
-      <td>1.00</td>
-      <td>1.00</td>
+      <td>...</td>
       <td>4</td>
       <td>4</td>
       <td>LUX</td>
@@ -12207,15 +12280,21 @@ div#notebook {
       <td>0.538462</td>
       <td>130.0</td>
       <td>0.013752</td>
+      <td>1.000</td>
     </tr>
     <tr>
       <th>8</th>
+      <td>anders-lindegaard</td>
+      <td>Anders Lindegaard</td>
+      <td>Manchester United</td>
+      <td>England</td>
+      <td>13.04.1984</td>
+      <td>193.0</td>
+      <td>80.0</td>
+      <td>Goalkeeper</td>
+      <td>1</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>16528.jpg</td>
-      <td>0.25</td>
-      <td>0.25</td>
+      <td>...</td>
       <td>4</td>
       <td>4</td>
       <td>LUX</td>
@@ -12225,15 +12304,21 @@ div#notebook {
       <td>0.538462</td>
       <td>130.0</td>
       <td>0.013752</td>
+      <td>0.250</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>36499.jpg</td>
-      <td>0.00</td>
-      <td>0.00</td>
+      <td>andreas-beck</td>
+      <td>Andreas Beck</td>
+      <td>1899 Hoffenheim</td>
+      <td>Germany</td>
+      <td>13.03.1987</td>
+      <td>180.0</td>
+      <td>70.0</td>
+      <td>Right Fullback</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
       <td>4</td>
       <td>4</td>
       <td>LUX</td>
@@ -12243,15 +12328,21 @@ div#notebook {
       <td>0.538462</td>
       <td>130.0</td>
       <td>0.013752</td>
+      <td>0.000</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>59786.jpg</td>
-      <td>0.00</td>
-      <td>0.00</td>
+      <td>antonio-rukavina</td>
+      <td>Antonio Rukavina</td>
+      <td>Real Valladolid</td>
+      <td>Spain</td>
+      <td>26.01.1984</td>
+      <td>177.0</td>
+      <td>74.0</td>
+      <td>Right Fullback</td>
+      <td>2</td>
+      <td>2</td>
+      <td>...</td>
       <td>4</td>
       <td>4</td>
       <td>LUX</td>
@@ -12261,9 +12352,1283 @@ div#notebook {
       <td>0.538462</td>
       <td>130.0</td>
       <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>ashkan-dejagah</td>
+      <td>Ashkan Dejagah</td>
+      <td>Fulham FC</td>
+      <td>England</td>
+      <td>05.07.1986</td>
+      <td>181.0</td>
+      <td>74.0</td>
+      <td>Left Winger</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>benedikt-hoewedes</td>
+      <td>Benedikt Höwedes</td>
+      <td>FC Schalke 04</td>
+      <td>Germany</td>
+      <td>29.02.1988</td>
+      <td>187.0</td>
+      <td>80.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>chris-baird</td>
+      <td>Chris Baird</td>
+      <td>Fulham FC</td>
+      <td>England</td>
+      <td>25.02.1982</td>
+      <td>186.0</td>
+      <td>77.0</td>
+      <td>Defensive Midfielder</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>chris-brunt</td>
+      <td>Chris Brunt</td>
+      <td>West Bromwich Albion</td>
+      <td>England</td>
+      <td>14.12.1984</td>
+      <td>185.0</td>
+      <td>74.0</td>
+      <td>NaN</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>daniel-schwaab</td>
+      <td>Daniel Schwaab</td>
+      <td>Bayer Leverkusen</td>
+      <td>Germany</td>
+      <td>23.08.1988</td>
+      <td>186.0</td>
+      <td>76.0</td>
+      <td>Right Fullback</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>dennis-aogo</td>
+      <td>Dennis Aogo</td>
+      <td>Hamburger SV</td>
+      <td>Germany</td>
+      <td>14.01.1987</td>
+      <td>184.0</td>
+      <td>85.0</td>
+      <td>Left Fullback</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>george-mccartney</td>
+      <td>George McCartney</td>
+      <td>West Ham United</td>
+      <td>England</td>
+      <td>29.04.1981</td>
+      <td>180.0</td>
+      <td>74.0</td>
+      <td>Left Fullback</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>gylfi-sigurdsson</td>
+      <td>Gylfi Sigurðsson</td>
+      <td>Tottenham Hotspur</td>
+      <td>England</td>
+      <td>08.09.1989</td>
+      <td>186.0</td>
+      <td>77.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>ivan-obradovic</td>
+      <td>Ivan Obradović</td>
+      <td>Real Zaragoza</td>
+      <td>Spain</td>
+      <td>25.07.1988</td>
+      <td>181.0</td>
+      <td>74.0</td>
+      <td>Left Fullback</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>jan-moravek</td>
+      <td>Jan Morávek</td>
+      <td>FC Augsburg</td>
+      <td>Germany</td>
+      <td>01.11.1989</td>
+      <td>180.0</td>
+      <td>75.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>jan-rosenthal</td>
+      <td>Jan Rosenthal</td>
+      <td>SC Freiburg</td>
+      <td>Germany</td>
+      <td>07.04.1986</td>
+      <td>186.0</td>
+      <td>76.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>jonny-evans</td>
+      <td>Jonny Evans</td>
+      <td>Manchester United</td>
+      <td>England</td>
+      <td>02.01.1988</td>
+      <td>188.0</td>
+      <td>77.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>kyriakos-papadopoulos</td>
+      <td>Kyriakos Papadopoulos</td>
+      <td>FC Schalke 04</td>
+      <td>Germany</td>
+      <td>23.02.1992</td>
+      <td>183.0</td>
+      <td>85.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>marko-marin</td>
+      <td>Marko Marin</td>
+      <td>Chelsea FC</td>
+      <td>England</td>
+      <td>13.03.1989</td>
+      <td>170.0</td>
+      <td>63.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>mats-hummels</td>
+      <td>Mats Hummels</td>
+      <td>Borussia Dortmund</td>
+      <td>Germany</td>
+      <td>16.12.1988</td>
+      <td>192.0</td>
+      <td>90.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>mesut-oezil</td>
+      <td>Mesut Özil</td>
+      <td>Real Madrid</td>
+      <td>Spain</td>
+      <td>15.10.1988</td>
+      <td>183.0</td>
+      <td>76.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>milorad-pekovic</td>
+      <td>Milorad Peković</td>
+      <td>SpVgg Greuther Fürth</td>
+      <td>Germany</td>
+      <td>05.08.1977</td>
+      <td>189.0</td>
+      <td>88.0</td>
+      <td>Defensive Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>nemanja-vidic</td>
+      <td>Nemanja Vidić</td>
+      <td>Manchester United</td>
+      <td>England</td>
+      <td>21.10.1981</td>
+      <td>188.0</td>
+      <td>82.0</td>
+      <td>Center Back</td>
+      <td>2</td>
+      <td>2</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>neven-subotic</td>
+      <td>Neven Subotić</td>
+      <td>Borussia Dortmund</td>
+      <td>Germany</td>
+      <td>10.12.1988</td>
+      <td>193.0</td>
+      <td>88.0</td>
+      <td>Center Back</td>
+      <td>2</td>
+      <td>2</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>patrick-ebert</td>
+      <td>Patrick Ebert</td>
+      <td>Real Valladolid</td>
+      <td>Spain</td>
+      <td>17.03.1987</td>
+      <td>172.0</td>
+      <td>68.0</td>
+      <td>Left Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>peter-gulacsi</td>
+      <td>Péter Gulácsi</td>
+      <td>Liverpool FC (R)</td>
+      <td>England</td>
+      <td>06.05.1990</td>
+      <td>190.0</td>
+      <td>75.0</td>
+      <td>Goalkeeper</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>steven-davis_2</td>
+      <td>Steven Davis</td>
+      <td>Southampton FC</td>
+      <td>England</td>
+      <td>01.01.1985</td>
+      <td>170.0</td>
+      <td>60.0</td>
+      <td>Defensive Midfielder</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>145998</th>
+      <td>mohamed-sissoko</td>
+      <td>Mohamed Sissoko</td>
+      <td>Paris Saint-Germain</td>
+      <td>France</td>
+      <td>22.01.1985</td>
+      <td>191.0</td>
+      <td>81.0</td>
+      <td>Defensive Midfielder</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>145999</th>
+      <td>nani</td>
+      <td>Nani</td>
+      <td>Manchester United</td>
+      <td>England</td>
+      <td>17.11.1986</td>
+      <td>175.0</td>
+      <td>66.0</td>
+      <td>Right Winger</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>146000</th>
+      <td>nedum-onuoha</td>
+      <td>Nedum Onuoha</td>
+      <td>Queens Park Rangers</td>
+      <td>England</td>
+      <td>12.11.1986</td>
+      <td>183.0</td>
+      <td>78.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.875</td>
+    </tr>
+    <tr>
+      <th>146001</th>
+      <td>nelson-valdez</td>
+      <td>Nelson Valdez</td>
+      <td>Valencia CF</td>
+      <td>Spain</td>
+      <td>28.11.1983</td>
+      <td>178.0</td>
+      <td>73.0</td>
+      <td>Center Forward</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>146002</th>
+      <td>nemanja-pejcinovic</td>
+      <td>Nemanja Pejčinović</td>
+      <td>OGC Nice</td>
+      <td>France</td>
+      <td>04.11.1987</td>
+      <td>185.0</td>
+      <td>84.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>146003</th>
+      <td>nikos-karabelas</td>
+      <td>Nikos Karabelas</td>
+      <td>Levante UD</td>
+      <td>Spain</td>
+      <td>20.12.1984</td>
+      <td>180.0</td>
+      <td>72.0</td>
+      <td>Left Fullback</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>146004</th>
+      <td>obafemi-martins</td>
+      <td>Obafemi Martins</td>
+      <td>Levante UD</td>
+      <td>Spain</td>
+      <td>28.10.1984</td>
+      <td>176.0</td>
+      <td>67.0</td>
+      <td>Center Forward</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>146005</th>
+      <td>petr-cech</td>
+      <td>Petr Čech</td>
+      <td>Chelsea FC</td>
+      <td>England</td>
+      <td>20.05.1982</td>
+      <td>197.0</td>
+      <td>87.0</td>
+      <td>Goalkeeper</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>146006</th>
+      <td>radoslav-zabavnik</td>
+      <td>Radoslav Zabavník</td>
+      <td>1. FSV Mainz 05</td>
+      <td>Germany</td>
+      <td>16.09.1980</td>
+      <td>180.0</td>
+      <td>78.0</td>
+      <td>Left Fullback</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>146007</th>
+      <td>rafael-van-der-vaart</td>
+      <td>Rafael van der Vaart</td>
+      <td>Hamburger SV</td>
+      <td>Germany</td>
+      <td>11.02.1983</td>
+      <td>176.0</td>
+      <td>74.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>146008</th>
+      <td>ricardo-vaz-te</td>
+      <td>Ricardo Vaz Tê</td>
+      <td>West Ham United</td>
+      <td>England</td>
+      <td>01.10.1986</td>
+      <td>188.0</td>
+      <td>79.0</td>
+      <td>Left Winger</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.625</td>
+    </tr>
+    <tr>
+      <th>146009</th>
+      <td>richard-dunne</td>
+      <td>Richard Dunne</td>
+      <td>Aston Villa</td>
+      <td>England</td>
+      <td>21.09.1979</td>
+      <td>188.0</td>
+      <td>95.0</td>
+      <td>Center Back</td>
+      <td>3</td>
+      <td>3</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>146010</th>
+      <td>robin-van-persie</td>
+      <td>Robin van Persie</td>
+      <td>Manchester United</td>
+      <td>England</td>
+      <td>06.08.1983</td>
+      <td>183.0</td>
+      <td>71.0</td>
+      <td>Right Winger</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>146011</th>
+      <td>romelu-lukaku</td>
+      <td>Romelu Lukaku</td>
+      <td>West Bromwich Albion</td>
+      <td>England</td>
+      <td>13.05.1993</td>
+      <td>193.0</td>
+      <td>95.0</td>
+      <td>Center Forward</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.750</td>
+    </tr>
+    <tr>
+      <th>146012</th>
+      <td>sebastian-larsson</td>
+      <td>Sebastian Larsson</td>
+      <td>Sunderland AFC</td>
+      <td>England</td>
+      <td>06.06.1985</td>
+      <td>178.0</td>
+      <td>70.0</td>
+      <td>Right Midfielder</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>146013</th>
+      <td>sebastian-proedl</td>
+      <td>Sebastian Prödl</td>
+      <td>Werder Bremen</td>
+      <td>Germany</td>
+      <td>21.06.1987</td>
+      <td>194.0</td>
+      <td>85.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>146014</th>
+      <td>shaun-maloney</td>
+      <td>Shaun Maloney</td>
+      <td>Wigan Athletic</td>
+      <td>England</td>
+      <td>24.01.1983</td>
+      <td>173.0</td>
+      <td>69.0</td>
+      <td>Left Midfielder</td>
+      <td>2</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>146015</th>
+      <td>shaun-wright-phillips</td>
+      <td>Shaun Wright-Phillips</td>
+      <td>Queens Park Rangers</td>
+      <td>England</td>
+      <td>25.10.1981</td>
+      <td>168.0</td>
+      <td>64.0</td>
+      <td>Right Winger</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>146016</th>
+      <td>shay-given</td>
+      <td>Shay Given</td>
+      <td>Aston Villa</td>
+      <td>England</td>
+      <td>20.04.1976</td>
+      <td>188.0</td>
+      <td>84.0</td>
+      <td>Goalkeeper</td>
+      <td>3</td>
+      <td>3</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>146017</th>
+      <td>shola-ameobi</td>
+      <td>Shola Ameobi</td>
+      <td>Newcastle United</td>
+      <td>England</td>
+      <td>12.10.1981</td>
+      <td>191.0</td>
+      <td>84.0</td>
+      <td>NaN</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>146018</th>
+      <td>slobodan-rajkovic</td>
+      <td>Slobodan Rajković</td>
+      <td>Hamburger SV</td>
+      <td>Germany</td>
+      <td>03.02.1989</td>
+      <td>191.0</td>
+      <td>88.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>146019</th>
+      <td>steven-taylor</td>
+      <td>Steven Taylor</td>
+      <td>Newcastle United</td>
+      <td>England</td>
+      <td>23.01.1986</td>
+      <td>188.0</td>
+      <td>81.0</td>
+      <td>NaN</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>146020</th>
+      <td>timmy-simons</td>
+      <td>Timmy Simons</td>
+      <td>1. FC Nürnberg</td>
+      <td>Germany</td>
+      <td>11.12.1976</td>
+      <td>186.0</td>
+      <td>79.0</td>
+      <td>Defensive Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>146021</th>
+      <td>titus-bramble</td>
+      <td>Titus Bramble</td>
+      <td>Sunderland AFC</td>
+      <td>England</td>
+      <td>21.07.1981</td>
+      <td>187.0</td>
+      <td>87.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.875</td>
+    </tr>
+    <tr>
+      <th>146022</th>
+      <td>tom-huddlestone</td>
+      <td>Tom Huddlestone</td>
+      <td>Tottenham Hotspur</td>
+      <td>England</td>
+      <td>28.12.1986</td>
+      <td>188.0</td>
+      <td>80.0</td>
+      <td>Defensive Midfielder</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>146023</th>
+      <td>tomas-rosicky</td>
+      <td>Tomáš Rosický</td>
+      <td>Arsenal FC</td>
+      <td>England</td>
+      <td>04.10.1980</td>
+      <td>178.0</td>
+      <td>67.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>146024</th>
+      <td>winston-reid</td>
+      <td>Winston Reid</td>
+      <td>West Ham United</td>
+      <td>England</td>
+      <td>03.07.1988</td>
+      <td>190.0</td>
+      <td>87.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.375</td>
+    </tr>
+    <tr>
+      <th>146025</th>
+      <td>xherdan-shaqiri</td>
+      <td>Xherdan Shaqiri</td>
+      <td>Bayern München</td>
+      <td>Germany</td>
+      <td>10.10.1991</td>
+      <td>169.0</td>
+      <td>72.0</td>
+      <td>Left Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>146026</th>
+      <td>yassine-el-ghanassi</td>
+      <td>Yassine El Ghanassi</td>
+      <td>West Bromwich Albion</td>
+      <td>England</td>
+      <td>12.07.1990</td>
+      <td>173.0</td>
+      <td>NaN</td>
+      <td>Left Winger</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>146027</th>
+      <td>zdenk-pospch</td>
+      <td>Zdeněk Pospěch</td>
+      <td>1. FSV Mainz 05</td>
+      <td>Germany</td>
+      <td>14.12.1978</td>
+      <td>174.0</td>
+      <td>72.0</td>
+      <td>Right Fullback</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.125</td>
     </tr>
   </tbody>
 </table>
+<p>124621 rows × 29 columns</p>
 </div>
 </div>
 
@@ -12278,16 +13643,2270 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="II.-Preparing-the-training-&amp;-test-data">II. Preparing the training &amp; test data<a class="anchor-link" href="#II.-Preparing-the-training-&amp;-test-data">&#182;</a></h1>
+<p>Let's now disaggregate the games:</p>
+
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">game_counter</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">game_total_number</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;games&#39;</span><span class="p">])</span>
+<span class="c1"># Raw table that we&#39;ll have to convert to a dataframe later</span>
+<span class="n">output</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">game_total_number</span><span class="p">)]</span>
+
+<span class="c1"># We now iterate each row of our dataframe, which may contains more that one game</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">Data_hasImage</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="c1"># Number of games in the current row</span>
+    <span class="n">row_game_number</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;games&#39;</span><span class="p">]</span>
+    <span class="c1"># Number of cumulated cards for the games in the current row</span>
+    <span class="n">yellowCards</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;yellowCards&#39;</span><span class="p">]</span>
+    <span class="n">yellowReds</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;yellowReds&#39;</span><span class="p">]</span>
+    <span class="n">redCards</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;redCards&#39;</span><span class="p">]</span>
+    <span class="c1"># We want to seperate each of these games    </span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">row_game_number</span><span class="p">):</span>
+        <span class="n">game</span> <span class="o">=</span> <span class="n">row</span>
+        <span class="n">game</span><span class="p">[</span><span class="s1">&#39;yellowCards&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">game</span><span class="p">[</span><span class="s1">&#39;yellowReds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">game</span><span class="p">[</span><span class="s1">&#39;redCards&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Basically, we distribute the cards we have on separate games.</span>
+        <span class="c1"># ie: if we have 2 yellowCard and 1 redCard for a total of 4 games,</span>
+        <span class="c1"># the first two games will be assigned a yellowCard,</span>
+        <span class="c1"># the third game will be assigned a redCard,</span>
+        <span class="c1"># and the last game won&#39;t have any card assigned, because there is no card left.        </span>
+        <span class="k">if</span> <span class="n">yellowCards</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">game</span><span class="p">[</span><span class="s1">&#39;yellowCards&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">yellowCards</span> <span class="o">=</span> <span class="n">yellowCards</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">yellowReds</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">game</span><span class="p">[</span><span class="s1">&#39;yellowReds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">yellowReds</span> <span class="o">=</span> <span class="n">yellowReds</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">redCards</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">game</span><span class="p">[</span><span class="s1">&#39;redCards&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">redCards</span> <span class="o">=</span> <span class="n">redCards</span> <span class="o">-</span> <span class="mi">1</span>
+            
+        <span class="c1"># Convert from pandas Series to prevent overwriting previous values of the output</span>
+        <span class="n">gamelist</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+        <span class="c1"># Add the new game to the output</span>
+        <span class="n">output</span><span class="p">[</span><span class="n">game_counter</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamelist</span>
+        <span class="n">game_counter</span> <span class="o">=</span> <span class="n">game_counter</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="c1"># Here is the output dataframe</span>
+
+<span class="n">Data_OneGamePerRow</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">Data_hasImage</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+<span class="n">Data_OneGamePerRow</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[37]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>playerShort</th>
+      <th>player</th>
+      <th>club</th>
+      <th>leagueCountry</th>
+      <th>birthday</th>
+      <th>height</th>
+      <th>weight</th>
+      <th>position</th>
+      <th>games</th>
+      <th>victories</th>
+      <th>...</th>
+      <th>refNum</th>
+      <th>refCountry</th>
+      <th>Alpha_3</th>
+      <th>meanIAT</th>
+      <th>nIAT</th>
+      <th>seIAT</th>
+      <th>meanExp</th>
+      <th>nExp</th>
+      <th>seExp</th>
+      <th>mean_rater</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>lucas-wilchez</td>
+      <td>Lucas Wilchez</td>
+      <td>Real Zaragoza</td>
+      <td>Spain</td>
+      <td>31.08.1983</td>
+      <td>177.0</td>
+      <td>72.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>1</td>
+      <td>1</td>
+      <td>GRC</td>
+      <td>0.326391</td>
+      <td>712.0</td>
+      <td>0.000564</td>
+      <td>0.396000</td>
+      <td>750.0</td>
+      <td>0.002696</td>
+      <td>0.375</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>john-utaka</td>
+      <td>John Utaka</td>
+      <td>Montpellier HSC</td>
+      <td>France</td>
+      <td>08.01.1982</td>
+      <td>179.0</td>
+      <td>82.0</td>
+      <td>Right Winger</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>2</td>
+      <td>2</td>
+      <td>ZMB</td>
+      <td>0.203375</td>
+      <td>40.0</td>
+      <td>0.010875</td>
+      <td>-0.204082</td>
+      <td>49.0</td>
+      <td>0.061504</td>
+      <td>0.750</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>aaron-hughes</td>
+      <td>Aaron Hughes</td>
+      <td>Fulham FC</td>
+      <td>England</td>
+      <td>08.11.1979</td>
+      <td>182.0</td>
+      <td>71.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>aleksandar-kolarov</td>
+      <td>Aleksandar Kolarov</td>
+      <td>Manchester City</td>
+      <td>England</td>
+      <td>10.11.1985</td>
+      <td>187.0</td>
+      <td>80.0</td>
+      <td>Left Fullback</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>alexander-tettey</td>
+      <td>Alexander Tettey</td>
+      <td>Norwich City</td>
+      <td>England</td>
+      <td>04.04.1986</td>
+      <td>180.0</td>
+      <td>68.0</td>
+      <td>Defensive Midfielder</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>anders-lindegaard</td>
+      <td>Anders Lindegaard</td>
+      <td>Manchester United</td>
+      <td>England</td>
+      <td>13.04.1984</td>
+      <td>193.0</td>
+      <td>80.0</td>
+      <td>Goalkeeper</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>andreas-beck</td>
+      <td>Andreas Beck</td>
+      <td>1899 Hoffenheim</td>
+      <td>Germany</td>
+      <td>13.03.1987</td>
+      <td>180.0</td>
+      <td>70.0</td>
+      <td>Right Fullback</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>antonio-rukavina</td>
+      <td>Antonio Rukavina</td>
+      <td>Real Valladolid</td>
+      <td>Spain</td>
+      <td>26.01.1984</td>
+      <td>177.0</td>
+      <td>74.0</td>
+      <td>Right Fullback</td>
+      <td>2</td>
+      <td>2</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>antonio-rukavina</td>
+      <td>Antonio Rukavina</td>
+      <td>Real Valladolid</td>
+      <td>Spain</td>
+      <td>26.01.1984</td>
+      <td>177.0</td>
+      <td>74.0</td>
+      <td>Right Fullback</td>
+      <td>2</td>
+      <td>2</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>ashkan-dejagah</td>
+      <td>Ashkan Dejagah</td>
+      <td>Fulham FC</td>
+      <td>England</td>
+      <td>05.07.1986</td>
+      <td>181.0</td>
+      <td>74.0</td>
+      <td>Left Winger</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>benedikt-hoewedes</td>
+      <td>Benedikt Höwedes</td>
+      <td>FC Schalke 04</td>
+      <td>Germany</td>
+      <td>29.02.1988</td>
+      <td>187.0</td>
+      <td>80.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>chris-baird</td>
+      <td>Chris Baird</td>
+      <td>Fulham FC</td>
+      <td>England</td>
+      <td>25.02.1982</td>
+      <td>186.0</td>
+      <td>77.0</td>
+      <td>Defensive Midfielder</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>chris-brunt</td>
+      <td>Chris Brunt</td>
+      <td>West Bromwich Albion</td>
+      <td>England</td>
+      <td>14.12.1984</td>
+      <td>185.0</td>
+      <td>74.0</td>
+      <td>NaN</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>daniel-schwaab</td>
+      <td>Daniel Schwaab</td>
+      <td>Bayer Leverkusen</td>
+      <td>Germany</td>
+      <td>23.08.1988</td>
+      <td>186.0</td>
+      <td>76.0</td>
+      <td>Right Fullback</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>dennis-aogo</td>
+      <td>Dennis Aogo</td>
+      <td>Hamburger SV</td>
+      <td>Germany</td>
+      <td>14.01.1987</td>
+      <td>184.0</td>
+      <td>85.0</td>
+      <td>Left Fullback</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>george-mccartney</td>
+      <td>George McCartney</td>
+      <td>West Ham United</td>
+      <td>England</td>
+      <td>29.04.1981</td>
+      <td>180.0</td>
+      <td>74.0</td>
+      <td>Left Fullback</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>gylfi-sigurdsson</td>
+      <td>Gylfi Sigurðsson</td>
+      <td>Tottenham Hotspur</td>
+      <td>England</td>
+      <td>08.09.1989</td>
+      <td>186.0</td>
+      <td>77.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>ivan-obradovic</td>
+      <td>Ivan Obradović</td>
+      <td>Real Zaragoza</td>
+      <td>Spain</td>
+      <td>25.07.1988</td>
+      <td>181.0</td>
+      <td>74.0</td>
+      <td>Left Fullback</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>jan-moravek</td>
+      <td>Jan Morávek</td>
+      <td>FC Augsburg</td>
+      <td>Germany</td>
+      <td>01.11.1989</td>
+      <td>180.0</td>
+      <td>75.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>jan-rosenthal</td>
+      <td>Jan Rosenthal</td>
+      <td>SC Freiburg</td>
+      <td>Germany</td>
+      <td>07.04.1986</td>
+      <td>186.0</td>
+      <td>76.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>jonny-evans</td>
+      <td>Jonny Evans</td>
+      <td>Manchester United</td>
+      <td>England</td>
+      <td>02.01.1988</td>
+      <td>188.0</td>
+      <td>77.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>kyriakos-papadopoulos</td>
+      <td>Kyriakos Papadopoulos</td>
+      <td>FC Schalke 04</td>
+      <td>Germany</td>
+      <td>23.02.1992</td>
+      <td>183.0</td>
+      <td>85.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>marko-marin</td>
+      <td>Marko Marin</td>
+      <td>Chelsea FC</td>
+      <td>England</td>
+      <td>13.03.1989</td>
+      <td>170.0</td>
+      <td>63.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>mats-hummels</td>
+      <td>Mats Hummels</td>
+      <td>Borussia Dortmund</td>
+      <td>Germany</td>
+      <td>16.12.1988</td>
+      <td>192.0</td>
+      <td>90.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>mesut-oezil</td>
+      <td>Mesut Özil</td>
+      <td>Real Madrid</td>
+      <td>Spain</td>
+      <td>15.10.1988</td>
+      <td>183.0</td>
+      <td>76.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>milorad-pekovic</td>
+      <td>Milorad Peković</td>
+      <td>SpVgg Greuther Fürth</td>
+      <td>Germany</td>
+      <td>05.08.1977</td>
+      <td>189.0</td>
+      <td>88.0</td>
+      <td>Defensive Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>nemanja-vidic</td>
+      <td>Nemanja Vidić</td>
+      <td>Manchester United</td>
+      <td>England</td>
+      <td>21.10.1981</td>
+      <td>188.0</td>
+      <td>82.0</td>
+      <td>Center Back</td>
+      <td>2</td>
+      <td>2</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>nemanja-vidic</td>
+      <td>Nemanja Vidić</td>
+      <td>Manchester United</td>
+      <td>England</td>
+      <td>21.10.1981</td>
+      <td>188.0</td>
+      <td>82.0</td>
+      <td>Center Back</td>
+      <td>2</td>
+      <td>2</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>neven-subotic</td>
+      <td>Neven Subotić</td>
+      <td>Borussia Dortmund</td>
+      <td>Germany</td>
+      <td>10.12.1988</td>
+      <td>193.0</td>
+      <td>88.0</td>
+      <td>Center Back</td>
+      <td>2</td>
+      <td>2</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>neven-subotic</td>
+      <td>Neven Subotić</td>
+      <td>Borussia Dortmund</td>
+      <td>Germany</td>
+      <td>10.12.1988</td>
+      <td>193.0</td>
+      <td>88.0</td>
+      <td>Center Back</td>
+      <td>2</td>
+      <td>2</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>LUX</td>
+      <td>0.325185</td>
+      <td>127.0</td>
+      <td>0.003297</td>
+      <td>0.538462</td>
+      <td>130.0</td>
+      <td>0.013752</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>373037</th>
+      <td>nikos-karabelas</td>
+      <td>Nikos Karabelas</td>
+      <td>Levante UD</td>
+      <td>Spain</td>
+      <td>20.12.1984</td>
+      <td>180.0</td>
+      <td>72.0</td>
+      <td>Left Fullback</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373038</th>
+      <td>obafemi-martins</td>
+      <td>Obafemi Martins</td>
+      <td>Levante UD</td>
+      <td>Spain</td>
+      <td>28.10.1984</td>
+      <td>176.0</td>
+      <td>67.0</td>
+      <td>Center Forward</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>373039</th>
+      <td>petr-cech</td>
+      <td>Petr Čech</td>
+      <td>Chelsea FC</td>
+      <td>England</td>
+      <td>20.05.1982</td>
+      <td>197.0</td>
+      <td>87.0</td>
+      <td>Goalkeeper</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>373040</th>
+      <td>radoslav-zabavnik</td>
+      <td>Radoslav Zabavník</td>
+      <td>1. FSV Mainz 05</td>
+      <td>Germany</td>
+      <td>16.09.1980</td>
+      <td>180.0</td>
+      <td>78.0</td>
+      <td>Left Fullback</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>373041</th>
+      <td>rafael-van-der-vaart</td>
+      <td>Rafael van der Vaart</td>
+      <td>Hamburger SV</td>
+      <td>Germany</td>
+      <td>11.02.1983</td>
+      <td>176.0</td>
+      <td>74.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>373042</th>
+      <td>ricardo-vaz-te</td>
+      <td>Ricardo Vaz Tê</td>
+      <td>West Ham United</td>
+      <td>England</td>
+      <td>01.10.1986</td>
+      <td>188.0</td>
+      <td>79.0</td>
+      <td>Left Winger</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.625</td>
+    </tr>
+    <tr>
+      <th>373043</th>
+      <td>richard-dunne</td>
+      <td>Richard Dunne</td>
+      <td>Aston Villa</td>
+      <td>England</td>
+      <td>21.09.1979</td>
+      <td>188.0</td>
+      <td>95.0</td>
+      <td>Center Back</td>
+      <td>3</td>
+      <td>3</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373044</th>
+      <td>richard-dunne</td>
+      <td>Richard Dunne</td>
+      <td>Aston Villa</td>
+      <td>England</td>
+      <td>21.09.1979</td>
+      <td>188.0</td>
+      <td>95.0</td>
+      <td>Center Back</td>
+      <td>3</td>
+      <td>3</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373045</th>
+      <td>richard-dunne</td>
+      <td>Richard Dunne</td>
+      <td>Aston Villa</td>
+      <td>England</td>
+      <td>21.09.1979</td>
+      <td>188.0</td>
+      <td>95.0</td>
+      <td>Center Back</td>
+      <td>3</td>
+      <td>3</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373046</th>
+      <td>robin-van-persie</td>
+      <td>Robin van Persie</td>
+      <td>Manchester United</td>
+      <td>England</td>
+      <td>06.08.1983</td>
+      <td>183.0</td>
+      <td>71.0</td>
+      <td>Right Winger</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>373047</th>
+      <td>romelu-lukaku</td>
+      <td>Romelu Lukaku</td>
+      <td>West Bromwich Albion</td>
+      <td>England</td>
+      <td>13.05.1993</td>
+      <td>193.0</td>
+      <td>95.0</td>
+      <td>Center Forward</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.750</td>
+    </tr>
+    <tr>
+      <th>373048</th>
+      <td>sebastian-larsson</td>
+      <td>Sebastian Larsson</td>
+      <td>Sunderland AFC</td>
+      <td>England</td>
+      <td>06.06.1985</td>
+      <td>178.0</td>
+      <td>70.0</td>
+      <td>Right Midfielder</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373049</th>
+      <td>sebastian-proedl</td>
+      <td>Sebastian Prödl</td>
+      <td>Werder Bremen</td>
+      <td>Germany</td>
+      <td>21.06.1987</td>
+      <td>194.0</td>
+      <td>85.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>373050</th>
+      <td>shaun-maloney</td>
+      <td>Shaun Maloney</td>
+      <td>Wigan Athletic</td>
+      <td>England</td>
+      <td>24.01.1983</td>
+      <td>173.0</td>
+      <td>69.0</td>
+      <td>Left Midfielder</td>
+      <td>2</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>373051</th>
+      <td>shaun-maloney</td>
+      <td>Shaun Maloney</td>
+      <td>Wigan Athletic</td>
+      <td>England</td>
+      <td>24.01.1983</td>
+      <td>173.0</td>
+      <td>69.0</td>
+      <td>Left Midfielder</td>
+      <td>2</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>373052</th>
+      <td>shaun-wright-phillips</td>
+      <td>Shaun Wright-Phillips</td>
+      <td>Queens Park Rangers</td>
+      <td>England</td>
+      <td>25.10.1981</td>
+      <td>168.0</td>
+      <td>64.0</td>
+      <td>Right Winger</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>373053</th>
+      <td>shay-given</td>
+      <td>Shay Given</td>
+      <td>Aston Villa</td>
+      <td>England</td>
+      <td>20.04.1976</td>
+      <td>188.0</td>
+      <td>84.0</td>
+      <td>Goalkeeper</td>
+      <td>3</td>
+      <td>3</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373054</th>
+      <td>shay-given</td>
+      <td>Shay Given</td>
+      <td>Aston Villa</td>
+      <td>England</td>
+      <td>20.04.1976</td>
+      <td>188.0</td>
+      <td>84.0</td>
+      <td>Goalkeeper</td>
+      <td>3</td>
+      <td>3</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373055</th>
+      <td>shay-given</td>
+      <td>Shay Given</td>
+      <td>Aston Villa</td>
+      <td>England</td>
+      <td>20.04.1976</td>
+      <td>188.0</td>
+      <td>84.0</td>
+      <td>Goalkeeper</td>
+      <td>3</td>
+      <td>3</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373056</th>
+      <td>shola-ameobi</td>
+      <td>Shola Ameobi</td>
+      <td>Newcastle United</td>
+      <td>England</td>
+      <td>12.10.1981</td>
+      <td>191.0</td>
+      <td>84.0</td>
+      <td>NaN</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>373057</th>
+      <td>slobodan-rajkovic</td>
+      <td>Slobodan Rajković</td>
+      <td>Hamburger SV</td>
+      <td>Germany</td>
+      <td>03.02.1989</td>
+      <td>191.0</td>
+      <td>88.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373058</th>
+      <td>steven-taylor</td>
+      <td>Steven Taylor</td>
+      <td>Newcastle United</td>
+      <td>England</td>
+      <td>23.01.1986</td>
+      <td>188.0</td>
+      <td>81.0</td>
+      <td>NaN</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>373059</th>
+      <td>timmy-simons</td>
+      <td>Timmy Simons</td>
+      <td>1. FC Nürnberg</td>
+      <td>Germany</td>
+      <td>11.12.1976</td>
+      <td>186.0</td>
+      <td>79.0</td>
+      <td>Defensive Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373060</th>
+      <td>titus-bramble</td>
+      <td>Titus Bramble</td>
+      <td>Sunderland AFC</td>
+      <td>England</td>
+      <td>21.07.1981</td>
+      <td>187.0</td>
+      <td>87.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.875</td>
+    </tr>
+    <tr>
+      <th>373061</th>
+      <td>tom-huddlestone</td>
+      <td>Tom Huddlestone</td>
+      <td>Tottenham Hotspur</td>
+      <td>England</td>
+      <td>28.12.1986</td>
+      <td>188.0</td>
+      <td>80.0</td>
+      <td>Defensive Midfielder</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>373062</th>
+      <td>tomas-rosicky</td>
+      <td>Tomáš Rosický</td>
+      <td>Arsenal FC</td>
+      <td>England</td>
+      <td>04.10.1980</td>
+      <td>178.0</td>
+      <td>67.0</td>
+      <td>Attacking Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373063</th>
+      <td>winston-reid</td>
+      <td>Winston Reid</td>
+      <td>West Ham United</td>
+      <td>England</td>
+      <td>03.07.1988</td>
+      <td>190.0</td>
+      <td>87.0</td>
+      <td>Center Back</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.375</td>
+    </tr>
+    <tr>
+      <th>373064</th>
+      <td>xherdan-shaqiri</td>
+      <td>Xherdan Shaqiri</td>
+      <td>Bayern München</td>
+      <td>Germany</td>
+      <td>10.10.1991</td>
+      <td>169.0</td>
+      <td>72.0</td>
+      <td>Left Midfielder</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>373065</th>
+      <td>yassine-el-ghanassi</td>
+      <td>Yassine El Ghanassi</td>
+      <td>West Bromwich Albion</td>
+      <td>England</td>
+      <td>12.07.1990</td>
+      <td>173.0</td>
+      <td>NaN</td>
+      <td>Left Winger</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>373066</th>
+      <td>zdenk-pospch</td>
+      <td>Zdeněk Pospěch</td>
+      <td>1. FSV Mainz 05</td>
+      <td>Germany</td>
+      <td>14.12.1978</td>
+      <td>174.0</td>
+      <td>72.0</td>
+      <td>Right Fullback</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>HUN</td>
+      <td>0.376127</td>
+      <td>574.0</td>
+      <td>0.000714</td>
+      <td>0.498350</td>
+      <td>606.0</td>
+      <td>0.002968</td>
+      <td>0.125</td>
+    </tr>
+  </tbody>
+</table>
+<p>373067 rows × 29 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="1)-Only-use-players-that-have-a-Rater-Image">1) Only use players that have a Rater Image<a class="anchor-link" href="#1)-Only-use-players-that-have-a-Rater-Image">&#182;</a></h3>
+<h3 id="3)-Create-the-Training-and-Testing-Datframes-with-only-select-data">3) Create the Training and Testing Datframes with only select data<a class="anchor-link" href="#3)-Create-the-Training-and-Testing-Datframes-with-only-select-data">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Removing columns that we do not need</span>
+<span class="n">Data_Simple1</span> <span class="o">=</span> <span class="n">Data_OneGamePerRow</span><span class="p">[[</span><span class="s1">&#39;playerShort&#39;</span><span class="p">,</span> <span class="s1">&#39;yellowCards&#39;</span><span class="p">,</span> <span class="s1">&#39;yellowReds&#39;</span><span class="p">,</span> <span class="s1">&#39;redCards&#39;</span><span class="p">,</span>
+                              <span class="s1">&#39;refNum&#39;</span><span class="p">,</span> <span class="s1">&#39;refCountry&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_rater&#39;</span><span class="p">]]</span>
+
+<span class="c1"># Take a random 80% sample of the Data for the Training Sample</span>
+<span class="n">Data_Training</span> <span class="o">=</span> <span class="n">Data_Simple1</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+<span class="c1"># Take a random 20% sample of the Data for the Testing Sample</span>
+<span class="n">Data_Testing</span> <span class="o">=</span> <span class="n">Data_Simple1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">Data_Simple1</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">Data_Training</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data_Simple1</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[45]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>playerShort</th>
+      <th>yellowCards</th>
+      <th>yellowReds</th>
+      <th>redCards</th>
+      <th>refNum</th>
+      <th>refCountry</th>
+      <th>mean_rater</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>lucas-wilchez</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0.375</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>john-utaka</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0.750</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>aaron-hughes</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>aleksandar-kolarov</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>alexander-tettey</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>anders-lindegaard</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>andreas-beck</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>antonio-rukavina</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>antonio-rukavina</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>ashkan-dejagah</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>benedikt-hoewedes</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>chris-baird</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>chris-brunt</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>daniel-schwaab</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>dennis-aogo</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>george-mccartney</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>gylfi-sigurdsson</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>ivan-obradovic</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>jan-moravek</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>jan-rosenthal</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>jonny-evans</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>kyriakos-papadopoulos</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>marko-marin</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>mats-hummels</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>mesut-oezil</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>milorad-pekovic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>nemanja-vidic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>nemanja-vidic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>neven-subotic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>neven-subotic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>373037</th>
+      <td>nikos-karabelas</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373038</th>
+      <td>obafemi-martins</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>373039</th>
+      <td>petr-cech</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>373040</th>
+      <td>radoslav-zabavnik</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>373041</th>
+      <td>rafael-van-der-vaart</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>373042</th>
+      <td>ricardo-vaz-te</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.625</td>
+    </tr>
+    <tr>
+      <th>373043</th>
+      <td>richard-dunne</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373044</th>
+      <td>richard-dunne</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373045</th>
+      <td>richard-dunne</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373046</th>
+      <td>robin-van-persie</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>373047</th>
+      <td>romelu-lukaku</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.750</td>
+    </tr>
+    <tr>
+      <th>373048</th>
+      <td>sebastian-larsson</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373049</th>
+      <td>sebastian-proedl</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>373050</th>
+      <td>shaun-maloney</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>373051</th>
+      <td>shaun-maloney</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>373052</th>
+      <td>shaun-wright-phillips</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>373053</th>
+      <td>shay-given</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373054</th>
+      <td>shay-given</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373055</th>
+      <td>shay-given</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373056</th>
+      <td>shola-ameobi</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>373057</th>
+      <td>slobodan-rajkovic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373058</th>
+      <td>steven-taylor</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>373059</th>
+      <td>timmy-simons</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373060</th>
+      <td>titus-bramble</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.875</td>
+    </tr>
+    <tr>
+      <th>373061</th>
+      <td>tom-huddlestone</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>373062</th>
+      <td>tomas-rosicky</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>373063</th>
+      <td>winston-reid</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.375</td>
+    </tr>
+    <tr>
+      <th>373064</th>
+      <td>xherdan-shaqiri</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>373065</th>
+      <td>yassine-el-ghanassi</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>373066</th>
+      <td>zdenk-pospch</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+    </tr>
+  </tbody>
+</table>
+<p>373067 rows × 7 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="II.-Preparing-the-training-&amp;-test-data-:-Fraction-version">II. Preparing the training &amp; test data : Fraction version<a class="anchor-link" href="#II.-Preparing-the-training-&amp;-test-data-:-Fraction-version">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -12536,19 +16155,6 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
 </div>
 </div>
 
