@@ -66,7 +66,7 @@ Data_hasImage['mean_rater']=(Data_hasImage['rater1']+Data_hasImage['rater2'])/2
 
 # Let's now disaggregate the games:
 
-# In[35]:
+# In[37]:
 
 game_counter = 0
 game_total_number = sum(Data_hasImage['games'])
@@ -77,53 +77,61 @@ output = [0 for i in range(game_total_number)]
 for i, row in Data_hasImage.iterrows():
     # Number of games in the current row
     row_game_number = row['games']
+    # Number of cumulated cards for the games in the current row
+    yellowCards = row['yellowCards']
+    yellowReds = row['yellowReds']
+    redCards = row['redCards']
     # We want to seperate each of these games    
     for j in range (row_game_number):
-        a = 1
+        game = row
+        game['yellowCards'] = 0
+        game['yellowReds'] = 0
+        game['redCards'] = 0
+        # Basically, we distribute the cards we have on separate games.
+        # ie: if we have 2 yellowCard and 1 redCard for a total of 4 games,
+        # the first two games will be assigned a yellowCard,
+        # the third game will be assigned a redCard,
+        # and the last game won't have any card assigned, because there is no card left.        
+        if yellowCards > 0:
+            game['yellowCards'] = 1
+            yellowCards = yellowCards - 1
+        elif yellowReds > 0:
+            game['yellowReds'] = 1
+            yellowReds = yellowReds - 1
+        elif redCards > 0:
+            game['redCards'] = 1
+            redCards = redCards - 1
             
+        # Convert from pandas Series to prevent overwriting previous values of the output
+        gamelist=list(game)
+        # Add the new game to the output
+        output[game_counter] = gamelist
+        game_counter = game_counter + 1
 
+# Here is the output dataframe
 
-# In[36]:
-
-#out = [0 for _ in range(sum(Data_hasImage['games']))]
-#out
-
-
-# In[ ]:
-
-j = 0
-out = [0 for _ in range(sum(df['games']))]
-
-for _, row in df.iterrows():
-        n = row['games']
-        c = row['allreds']
-        d = row['allredsStrict']
-        
-        #row['games'] = 1        
-        
-        for _ in range(n):
-                row['allreds'] = 1 if (c-_) > 0 else 0
-                row['allredsStrict'] = 1 if (d-_) > 0 else 0
-                rowlist=list(row)  #convert from pandas Series to prevent overwriting previous values of out[j]
-                out[j] = rowlist
-                j += 1
-                if j%10==0:    
-                    print "Number "+ str(j) + " of " + str(df.shape[0])
+Data_OneGamePerRow = pd.DataFrame(output, columns=list(Data_hasImage.columns))
+Data_OneGamePerRow
 
 
 # ### 3) Create the Training and Testing Datframes with only select data
 
-# In[47]:
+# In[44]:
 
 # Removing columns that we do not need
-Data_Simple1 = Data_hasImage[['playerShort', 'games', 'yellowCards', 'yellowReds', 'redCards',
-                              'refNum', 'refCountry', 'rater1', 'rater2']]
+Data_Simple1 = Data_OneGamePerRow[['playerShort', 'yellowCards', 'yellowReds', 'redCards',
+                              'refNum', 'refCountry', 'mean_rater']]
 
 # Take a random 80% sample of the Data for the Training Sample
 Data_Training = Data_Simple1.sample(frac=0.8)
 
 # Take a random 20% sample of the Data for the Testing Sample
 Data_Testing = Data_Simple1.loc[~Data_Simple1.index.isin(Data_Training.index)]
+
+
+# In[45]:
+
+Data_Simple1
 
 
 # In[ ]:
