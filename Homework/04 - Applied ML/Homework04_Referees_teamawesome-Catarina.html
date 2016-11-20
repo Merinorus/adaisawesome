@@ -12055,7 +12055,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 1) Remove the players without rater 1 / 2 rating because we won&#39;t be </span>
@@ -12104,7 +12104,7 @@ It would not make a lot of sense, or at least we would know our model is not via
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;mean_rater&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;rater1&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;rater2&#39;</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
@@ -12146,7 +12146,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">game_counter</span> <span class="o">=</span> <span class="mi">0</span>
@@ -12203,7 +12203,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -13722,18 +13722,18 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[70]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Removing columns that we do not need</span>
 <span class="n">Data_Simple1</span> <span class="o">=</span> <span class="n">Data_OneGamePerRow</span><span class="p">[[</span><span class="s1">&#39;playerShort&#39;</span><span class="p">,</span> <span class="s1">&#39;yellowCards&#39;</span><span class="p">,</span> <span class="s1">&#39;yellowReds&#39;</span><span class="p">,</span> <span class="s1">&#39;redCards&#39;</span><span class="p">,</span>
-                              <span class="s1">&#39;refNum&#39;</span><span class="p">,</span> <span class="s1">&#39;refCountry&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_rater&#39;</span><span class="p">]]</span>
+                              <span class="s1">&#39;refNum&#39;</span><span class="p">,</span> <span class="s1">&#39;refCountry&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_rater&#39;</span><span class="p">,</span> <span class="s1">&#39;games&#39;</span><span class="p">]]</span>
 
 <span class="c1"># Take a random 80% sample of the Data for the Training Sample</span>
-<span class="n">Data_Training</span> <span class="o">=</span> <span class="n">Data_Simple1</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="c1">#Data_Training = Data_Simple1.sample(frac=0.8)</span>
 
 <span class="c1"># Take a random 20% sample of the Data for the Testing Sample</span>
-<span class="n">Data_Testing</span> <span class="o">=</span> <span class="n">Data_Simple1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">Data_Simple1</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">Data_Training</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span>
+<span class="c1">#Data_Testing = Data_Simple1.loc[~Data_Simple1.index.isin(Data_Training.index)]</span>
 </pre></div>
 
 </div>
@@ -13743,7 +13743,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[71]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data_Simple1</span>
@@ -13757,7 +13757,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[9]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[71]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -13772,6 +13772,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <th>refNum</th>
       <th>refCountry</th>
       <th>mean_rater</th>
+      <th>games</th>
     </tr>
   </thead>
   <tbody>
@@ -13784,6 +13785,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>1</td>
       <td>1</td>
       <td>0.375</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>1</th>
@@ -13794,6 +13796,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>2</td>
       <td>2</td>
       <td>0.750</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>2</th>
@@ -13804,6 +13807,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.125</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>3</th>
@@ -13814,6 +13818,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.125</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>4</th>
@@ -13824,6 +13829,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>1.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>5</th>
@@ -13834,6 +13840,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.250</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>6</th>
@@ -13844,6 +13851,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>7</th>
@@ -13854,6 +13862,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.000</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>8</th>
@@ -13864,6 +13873,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.000</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>9</th>
@@ -13874,6 +13884,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.500</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>10</th>
@@ -13884,6 +13895,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>11</th>
@@ -13894,6 +13906,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>12</th>
@@ -13904,6 +13917,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.125</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>13</th>
@@ -13914,6 +13928,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>14</th>
@@ -13924,6 +13939,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.500</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>15</th>
@@ -13934,6 +13950,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>16</th>
@@ -13944,6 +13961,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>17</th>
@@ -13954,6 +13972,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.125</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>18</th>
@@ -13964,6 +13983,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.125</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>19</th>
@@ -13974,6 +13994,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>20</th>
@@ -13984,6 +14005,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>21</th>
@@ -13994,6 +14016,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>22</th>
@@ -14004,6 +14027,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.125</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>23</th>
@@ -14014,6 +14038,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.250</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>24</th>
@@ -14024,6 +14049,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.125</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>25</th>
@@ -14034,6 +14060,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.125</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>26</th>
@@ -14044,6 +14071,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.000</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>27</th>
@@ -14054,6 +14082,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.000</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>28</th>
@@ -14064,6 +14093,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.125</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>29</th>
@@ -14074,9 +14104,11 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>4</td>
       <td>4</td>
       <td>0.125</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>...</th>
+      <td>...</td>
       <td>...</td>
       <td>...</td>
       <td>...</td>
@@ -14094,6 +14126,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373038</th>
@@ -14104,6 +14137,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>1.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373039</th>
@@ -14114,6 +14148,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.250</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373040</th>
@@ -14124,6 +14159,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.125</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373041</th>
@@ -14134,6 +14170,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.125</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373042</th>
@@ -14144,6 +14181,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.625</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373043</th>
@@ -14154,6 +14192,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.000</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>373044</th>
@@ -14164,6 +14203,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.000</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>373045</th>
@@ -14174,6 +14214,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.000</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>373046</th>
@@ -14184,6 +14225,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.250</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373047</th>
@@ -14194,6 +14236,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.750</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373048</th>
@@ -14204,6 +14247,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373049</th>
@@ -14214,6 +14258,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.125</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373050</th>
@@ -14224,6 +14269,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.125</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>373051</th>
@@ -14234,6 +14280,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.125</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>373052</th>
@@ -14244,6 +14291,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>1.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373053</th>
@@ -14254,6 +14302,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.000</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>373054</th>
@@ -14264,6 +14313,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.000</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>373055</th>
@@ -14274,6 +14324,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.000</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>373056</th>
@@ -14284,6 +14335,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>1.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373057</th>
@@ -14294,6 +14346,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373058</th>
@@ -14304,6 +14357,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.125</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373059</th>
@@ -14314,6 +14368,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373060</th>
@@ -14324,6 +14379,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.875</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373061</th>
@@ -14334,6 +14390,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.500</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373062</th>
@@ -14344,6 +14401,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.000</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373063</th>
@@ -14354,6 +14412,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.375</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373064</th>
@@ -14364,6 +14423,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.250</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373065</th>
@@ -14374,6 +14434,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.500</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>373066</th>
@@ -14384,83 +14445,30 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>3147</td>
       <td>21</td>
       <td>0.125</td>
+      <td>1</td>
     </tr>
   </tbody>
 </table>
-<p>373067 rows × 7 columns</p>
+<p>373067 rows × 8 columns</p>
 </div>
 </div>
 
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="II.-Preparing-the-training-&amp;-test-data-:-Fraction-version">II. Preparing the training &amp; test data : Fraction version<a class="anchor-link" href="#II.-Preparing-the-training-&amp;-test-data-:-Fraction-version">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 1) Remove the players without rater 1 / 2 rating because we won&#39;t be </span>
-<span class="c1"># able to train or test the values (this can be done as bonus later)</span>
-
-<span class="n">Data_hasImage</span> <span class="o">=</span> <span class="n">Data</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">notnull</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;photoID&#39;</span><span class="p">])]</span>
-<span class="c1">#Data_hasImage.ix[:10,13:28]</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="2)-Disaggregate-the-data-so-each-row-is-1-game">2) Disaggregate the data so each row is 1 game<a class="anchor-link" href="#2)-Disaggregate-the-data-so-each-row-is-1-game">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#for i in Data.iterrows():</span>
-<span class="c1">#    if Data.at[i, &#39;games&#39;] &gt; 1:</span>
-<span class="c1">#        df = Data[i]</span>
-</pre></div>
-
-</div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Testing - divide # cards (all types) by # games column</span>
-<span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;fractionYellow&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;yellowCards&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;games&#39;</span><span class="p">]</span>
-<span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;fractionYellowRed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;yellowReds&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;games&#39;</span><span class="p">]</span>
-<span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;fractionRed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;redCards&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;games&#39;</span><span class="p">]</span>
-
-<span class="c1"># Get the average of the raters</span>
-<span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;raterAvg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;rater1&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;rater2&#39;</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
-
-<span class="c1">#Data_hasImage.head()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#find proportion of yellow &amp; red cards to games</span>
+<span class="n">Data_Simple1</span><span class="p">[</span><span class="s1">&#39;fractionYellow&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Data_Simple1</span><span class="p">[</span><span class="s1">&#39;yellowCards&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Simple1</span><span class="p">[</span><span class="s1">&#39;games&#39;</span><span class="p">]</span>
+<span class="n">Data_Simple1</span><span class="p">[</span><span class="s1">&#39;fractionYellowRed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Data_Simple1</span><span class="p">[</span><span class="s1">&#39;yellowReds&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Simple1</span><span class="p">[</span><span class="s1">&#39;games&#39;</span><span class="p">]</span>
+<span class="n">Data_Simple1</span><span class="p">[</span><span class="s1">&#39;fractionRed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Data_Simple1</span><span class="p">[</span><span class="s1">&#39;redCards&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Simple1</span><span class="p">[</span><span class="s1">&#39;games&#39;</span><span class="p">]</span>
+<span class="n">Data_Simple1</span>
 </pre></div>
 
 </div>
@@ -14490,13 +14498,2084 @@ A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-/Users/catarinaneves/anaconda/lib/python3.5/site-packages/ipykernel/__main__.py:7: SettingWithCopyWarning: 
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[73]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>playerShort</th>
+      <th>yellowCards</th>
+      <th>yellowReds</th>
+      <th>redCards</th>
+      <th>refNum</th>
+      <th>refCountry</th>
+      <th>mean_rater</th>
+      <th>games</th>
+      <th>fractionYellow</th>
+      <th>fractionYellowRed</th>
+      <th>fractionRed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>lucas-wilchez</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0.375</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>john-utaka</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0.750</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>aaron-hughes</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>aleksandar-kolarov</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>alexander-tettey</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>1.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>anders-lindegaard</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.250</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>andreas-beck</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>antonio-rukavina</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>2</td>
+      <td>0.5</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>antonio-rukavina</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>ashkan-dejagah</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.500</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>benedikt-hoewedes</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>chris-baird</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>chris-brunt</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>daniel-schwaab</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>dennis-aogo</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.500</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>george-mccartney</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>gylfi-sigurdsson</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>ivan-obradovic</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>jan-moravek</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>jan-rosenthal</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>jonny-evans</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>kyriakos-papadopoulos</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>marko-marin</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>mats-hummels</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.250</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>mesut-oezil</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>milorad-pekovic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>nemanja-vidic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>nemanja-vidic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>neven-subotic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>neven-subotic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>373037</th>
+      <td>nikos-karabelas</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373038</th>
+      <td>obafemi-martins</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>1.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373039</th>
+      <td>petr-cech</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.250</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373040</th>
+      <td>radoslav-zabavnik</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373041</th>
+      <td>rafael-van-der-vaart</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373042</th>
+      <td>ricardo-vaz-te</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.625</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373043</th>
+      <td>richard-dunne</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373044</th>
+      <td>richard-dunne</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373045</th>
+      <td>richard-dunne</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373046</th>
+      <td>robin-van-persie</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.250</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373047</th>
+      <td>romelu-lukaku</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.750</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373048</th>
+      <td>sebastian-larsson</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373049</th>
+      <td>sebastian-proedl</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373050</th>
+      <td>shaun-maloney</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373051</th>
+      <td>shaun-maloney</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373052</th>
+      <td>shaun-wright-phillips</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>1.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373053</th>
+      <td>shay-given</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373054</th>
+      <td>shay-given</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373055</th>
+      <td>shay-given</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373056</th>
+      <td>shola-ameobi</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>1.000</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373057</th>
+      <td>slobodan-rajkovic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373058</th>
+      <td>steven-taylor</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373059</th>
+      <td>timmy-simons</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373060</th>
+      <td>titus-bramble</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.875</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373061</th>
+      <td>tom-huddlestone</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.500</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373062</th>
+      <td>tomas-rosicky</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373063</th>
+      <td>winston-reid</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.375</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373064</th>
+      <td>xherdan-shaqiri</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.250</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373065</th>
+      <td>yassine-el-ghanassi</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.500</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>373066</th>
+      <td>zdenk-pospch</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>373067 rows × 11 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[74]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">colRate</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mean_rater&#39;</span><span class="p">]</span>
+<span class="n">Col_Rating</span> <span class="o">=</span> <span class="n">Data_Simple1</span><span class="p">[</span><span class="n">colRate</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">Ratings_Scale</span> <span class="o">=</span> <span class="p">[];</span> 
+<span class="n">Col_Rating</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[74]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[ 0.375],
+       [ 0.75 ],
+       [ 0.125],
+       ..., 
+       [ 0.25 ],
+       [ 0.5  ],
+       [ 0.125]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[75]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Must now convert this continuous scale into a categorical one, with 20 categories</span>
+<span class="n">A</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Col_Rating</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.05</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.05</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.1</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.1</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.15</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.15</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.2</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.2</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.25</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.25</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.3</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.3</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.35</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.35</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.4</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.4</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.45</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">9</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.45</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.5</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.5</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.55</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">11</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.55</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.6</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.6</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.65</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">13</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.65</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.7</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">14</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.7</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.75</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">15</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.75</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.8</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.8</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.85</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">17</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.85</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.9</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">18</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.9</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.95</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">19</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.95</span> <span class="ow">and</span> <span class="n">Col_Rating</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">Ratings_Scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">99</span><span class="p">);</span>
+        
+<span class="n">Data_Simple1</span><span class="p">[</span><span class="s1">&#39;raterScale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ratings_Scale</span>
+<span class="n">Data_Simple1</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+
+<span class="c1">## Some of the values in trainRes_1 are larger than one! We must delete them from the simple data set to avoid errors in the training process.</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/Users/catarinaneves/anaconda/lib/python3.5/site-packages/ipykernel/__main__.py:47: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
 </pre>
 </div>
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[75]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>playerShort</th>
+      <th>yellowCards</th>
+      <th>yellowReds</th>
+      <th>redCards</th>
+      <th>refNum</th>
+      <th>refCountry</th>
+      <th>mean_rater</th>
+      <th>games</th>
+      <th>fractionYellow</th>
+      <th>fractionYellowRed</th>
+      <th>fractionRed</th>
+      <th>raterScale</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>lucas-wilchez</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0.375</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>john-utaka</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0.750</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>aaron-hughes</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>aleksandar-kolarov</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>alexander-tettey</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>1.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>20</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[76]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># drop values on scale which are equal to 99</span>
+<span class="n">Data_Simple2</span> <span class="o">=</span> <span class="n">Data_Simple1</span><span class="p">[</span><span class="n">Data_Simple1</span><span class="o">.</span><span class="n">raterScale</span> <span class="o">!=</span> <span class="mi">99</span><span class="p">]</span>
+<span class="n">Data_Simple2</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">Data_Simple2</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[76]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>playerShort</th>
+      <th>yellowCards</th>
+      <th>yellowReds</th>
+      <th>redCards</th>
+      <th>refNum</th>
+      <th>refCountry</th>
+      <th>mean_rater</th>
+      <th>games</th>
+      <th>fractionYellow</th>
+      <th>fractionYellowRed</th>
+      <th>fractionRed</th>
+      <th>raterScale</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>lucas-wilchez</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0.375</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>john-utaka</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0.750</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>aaron-hughes</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>aleksandar-kolarov</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>alexander-tettey</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>1.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>anders-lindegaard</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.250</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>andreas-beck</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>antonio-rukavina</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>2</td>
+      <td>0.5</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>antonio-rukavina</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>ashkan-dejagah</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.500</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>benedikt-hoewedes</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>chris-baird</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>chris-brunt</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>daniel-schwaab</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>dennis-aogo</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.500</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>george-mccartney</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>gylfi-sigurdsson</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>ivan-obradovic</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>jan-moravek</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>jan-rosenthal</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>jonny-evans</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>kyriakos-papadopoulos</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>marko-marin</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>mats-hummels</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.250</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>mesut-oezil</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>milorad-pekovic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>nemanja-vidic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>nemanja-vidic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.000</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>neven-subotic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>neven-subotic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0.125</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>373037</th>
+      <td>nikos-karabelas</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>373038</th>
+      <td>obafemi-martins</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>1.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>373039</th>
+      <td>petr-cech</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.250</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>373040</th>
+      <td>radoslav-zabavnik</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>373041</th>
+      <td>rafael-van-der-vaart</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>373042</th>
+      <td>ricardo-vaz-te</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.625</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>373043</th>
+      <td>richard-dunne</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>373044</th>
+      <td>richard-dunne</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>373045</th>
+      <td>richard-dunne</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>373046</th>
+      <td>robin-van-persie</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.250</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>373047</th>
+      <td>romelu-lukaku</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.750</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>373048</th>
+      <td>sebastian-larsson</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>373049</th>
+      <td>sebastian-proedl</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>373050</th>
+      <td>shaun-maloney</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>373051</th>
+      <td>shaun-maloney</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>373052</th>
+      <td>shaun-wright-phillips</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>1.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>373053</th>
+      <td>shay-given</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>373054</th>
+      <td>shay-given</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>373055</th>
+      <td>shay-given</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>373056</th>
+      <td>shola-ameobi</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>1.000</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>373057</th>
+      <td>slobodan-rajkovic</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>373058</th>
+      <td>steven-taylor</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>373059</th>
+      <td>timmy-simons</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>373060</th>
+      <td>titus-bramble</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.875</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <th>373061</th>
+      <td>tom-huddlestone</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.500</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>373062</th>
+      <td>tomas-rosicky</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>373063</th>
+      <td>winston-reid</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.375</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>373064</th>
+      <td>xherdan-shaqiri</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.250</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>373065</th>
+      <td>yassine-el-ghanassi</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.500</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>373066</th>
+      <td>zdenk-pospch</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3147</td>
+      <td>21</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+<p>373067 rows × 12 columns</p>
+</div>
+</div>
+
 </div>
 
 </div>
@@ -14508,34 +16587,114 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="3)-Create-the-Training-and-Testing-Datframes-with-only-select-data">3) Create the Training and Testing Datframes with only select data<a class="anchor-link" href="#3)-Create-the-Training-and-Testing-Datframes-with-only-select-data">&#182;</a></h3>
+<h1 id="II.-Preparing-the-training-&amp;-test-data-:-Fraction-version">II. Preparing the training &amp; test data : Fraction version<a class="anchor-link" href="#II.-Preparing-the-training-&amp;-test-data-:-Fraction-version">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="1)-Create-the-Training-and-Testing-Datframes-with-only-select-data">1) Create the Training and Testing Datframes with only select data<a class="anchor-link" href="#1)-Create-the-Training-and-Testing-Datframes-with-only-select-data">&#182;</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[77]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Removing columns that we do not need</span>
-<span class="n">Data_Simple1</span> <span class="o">=</span> <span class="n">Data_hasImage</span><span class="p">[[</span><span class="s1">&#39;games&#39;</span><span class="p">,</span> <span class="s1">&#39;fractionYellow&#39;</span><span class="p">,</span> <span class="s1">&#39;fractionYellowRed&#39;</span><span class="p">,</span> <span class="s1">&#39;fractionRed&#39;</span><span class="p">,</span>
-                              <span class="s1">&#39;refNum&#39;</span><span class="p">,</span> <span class="s1">&#39;refCountry&#39;</span><span class="p">,</span> <span class="s1">&#39;raterAvg&#39;</span><span class="p">]]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#create test and training matrix</span>
 
-<span class="c1">#cols = [&#39;playerShort&#39;, &#39;games&#39;, &#39;fractionYellow&#39;, &#39;fractionYellowRed&#39;, &#39;fractionRed&#39;,</span>
 <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;games&#39;</span><span class="p">,</span> <span class="s1">&#39;fractionYellow&#39;</span><span class="p">,</span> <span class="s1">&#39;fractionYellowRed&#39;</span><span class="p">,</span> <span class="s1">&#39;fractionRed&#39;</span><span class="p">,</span> <span class="s1">&#39;refNum&#39;</span><span class="p">,</span> <span class="s1">&#39;refCountry&#39;</span><span class="p">]</span>
-<span class="n">colsRes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;raterAvg&#39;</span><span class="p">]</span>
+<span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;raterScale&#39;</span><span class="p">,</span><span class="s1">&#39;mean_rater&#39;</span><span class="p">,</span> <span class="s1">&#39;playerShort&#39;</span><span class="p">,</span> <span class="s1">&#39;yellowCards&#39;</span><span class="p">,</span><span class="s1">&#39;yellowReds&#39;</span><span class="p">,</span><span class="s1">&#39;redCards&#39;</span><span class="p">,</span> <span class="s1">&#39;games&#39;</span><span class="p">]</span>
+<span class="n">colsRes1</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;raterScale&#39;</span><span class="p">]</span>
+
 
 <span class="c1"># Take a random 80% sample of the Data for the Training Sample</span>
-<span class="n">Data_Training</span> <span class="o">=</span> <span class="n">Data_Simple1</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">Data_Training</span> <span class="o">=</span> <span class="n">Data_Simple2</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
 
 <span class="c1"># Need to split this into the data and the results columns</span>
 <span class="c1"># http://stackoverflow.com/questions/34246336/python-randomforest-unknown-label-error</span>
-<span class="n">Input_Data_Training</span> <span class="o">=</span> <span class="n">Data_Training</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">colsRes</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Input_Data_Training</span> <span class="o">=</span> <span class="n">Data_Training</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">exclude</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
 <span class="c1">#Results_Data_Training = list(Data_Training.raterAvg.values)</span>
-<span class="n">Results_Data_Training</span> <span class="o">=</span> <span class="n">Data_Training</span><span class="p">[</span><span class="n">colsRes</span><span class="p">]</span>
+<span class="n">Results_Data_Training</span> <span class="o">=</span> <span class="n">Data_Training</span><span class="p">[</span><span class="n">colsRes1</span><span class="p">]</span>
+<span class="n">Input_Data_Training</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[77]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>refNum</th>
+      <th>refCountry</th>
+      <th>fractionYellow</th>
+      <th>fractionYellowRed</th>
+      <th>fractionRed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>267796</th>
+      <td>2165</td>
+      <td>44</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>228922</th>
+      <td>1909</td>
+      <td>44</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>324658</th>
+      <td>2639</td>
+      <td>3</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>52219</th>
+      <td>409</td>
+      <td>7</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>259015</th>
+      <td>2080</td>
+      <td>44</td>
+      <td>0.058824</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -14561,15 +16720,15 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[78]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Need to make arrays</span>
 <span class="c1"># http://www.analyticbridge.com/profiles/blogs/random-forest-in-python</span>
-<span class="n">trainArr</span> <span class="o">=</span> <span class="n">Input_Data_Training</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span> <span class="c1">#training array</span>
+<span class="n">trainArr</span> <span class="o">=</span> <span class="n">Input_Data_Training</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span> <span class="c1">#training array</span>
 <span class="c1">#trainRes = Results_Data_Training.as_matrix(colsRes) #training results</span>
-<span class="n">trainRes_1</span> <span class="o">=</span> <span class="n">Data_Training</span><span class="p">[</span><span class="s1">&#39;raterAvg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-<span class="n">trainRes_1</span>
+<span class="n">trainRes_1</span> <span class="o">=</span> <span class="n">Data_Training</span><span class="p">[</span><span class="s1">&#39;raterScale&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">trainArr</span>
 </pre></div>
 
 </div>
@@ -14580,75 +16739,27 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[29]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[78]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([ 0.25 ,  0.   ,  0.125, ...,  0.25 ,  0.125,  1.   ])</pre>
+<pre>array([[  2.16500000e+03,   4.40000000e+01,   0.00000000e+00,
+          0.00000000e+00,   0.00000000e+00],
+       [  1.90900000e+03,   4.40000000e+01,   0.00000000e+00,
+          0.00000000e+00,   0.00000000e+00],
+       [  2.63900000e+03,   3.00000000e+00,   0.00000000e+00,
+          0.00000000e+00,   0.00000000e+00],
+       ..., 
+       [  7.70000000e+01,   4.40000000e+01,   0.00000000e+00,
+          0.00000000e+00,   0.00000000e+00],
+       [  3.04000000e+02,   3.00000000e+00,   7.14285714e-02,
+          0.00000000e+00,   0.00000000e+00],
+       [  1.64600000e+03,   8.00000000e+00,   0.00000000e+00,
+          0.00000000e+00,   0.00000000e+00]])</pre>
 </div>
 
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[47]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Must now convert this continuous scale into a categorical one, with 20 categories</span>
-<span class="n">A</span> <span class="o">=</span> <span class="n">trainRes_1</span><span class="o">.</span><span class="n">size</span>
-<span class="n">trainRes_2</span> <span class="o">=</span> <span class="p">[];</span> 
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.05</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.05</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.1</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.1</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.15</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.15</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.2</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.2</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.25</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.25</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.3</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.3</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.35</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.35</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.4</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.4</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.45</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">9</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.45</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.5</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.5</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.55</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">11</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.55</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.6</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.6</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.65</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">13</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.65</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.7</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">14</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.7</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.75</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">15</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.75</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.8</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.8</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.85</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">17</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.85</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.9</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">18</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.9</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.95</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">19</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.95</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">trainRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">99</span><span class="p">);</span>
-
-<span class="c1">## Some of the values in trainRes_1 are larger than one! We must delete them from the simple data set to avoid errors in the training process.</span>
-</pre></div>
-
-</div>
 </div>
 </div>
 
@@ -14664,19 +16775,19 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="prompt input_prompt">In&nbsp;[80]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Initialize</span>
 <span class="n">forest</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
 
 <span class="c1"># Fit the training data and create the decision trees</span>
-<span class="n">forest</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trainArr</span><span class="p">,</span><span class="n">trainRes_2</span><span class="p">)</span>
+<span class="n">forest</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trainArr</span><span class="p">,</span><span class="n">trainRes_1</span><span class="p">)</span>
 
 <span class="c1"># Take the same decision trees and run it on the test data</span>
-<span class="n">Data_Testing</span> <span class="o">=</span> <span class="n">Data_Simple1</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">Input_Data_Testing</span> <span class="o">=</span> <span class="n">Data_Testing</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">colsRes</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">testArr</span> <span class="o">=</span> <span class="n">Input_Data_Testing</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
+<span class="n">Data_Testing</span> <span class="o">=</span> <span class="n">Data_Simple2</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">Input_Data_Testing</span> <span class="o">=</span> <span class="n">Data_Testing</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">exclude</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">testArr</span> <span class="o">=</span> <span class="n">Input_Data_Testing</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">testArr</span><span class="p">)</span>
 
 <span class="n">Data_Testing</span><span class="p">[</span><span class="s1">&#39;predictions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span>
@@ -14691,7 +16802,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[53]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[80]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -14699,71 +16810,101 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>playerShort</th>
+      <th>yellowCards</th>
+      <th>yellowReds</th>
+      <th>redCards</th>
+      <th>refNum</th>
+      <th>refCountry</th>
+      <th>mean_rater</th>
       <th>games</th>
       <th>fractionYellow</th>
       <th>fractionYellowRed</th>
       <th>fractionRed</th>
-      <th>refNum</th>
-      <th>refCountry</th>
-      <th>raterAvg</th>
+      <th>raterScale</th>
       <th>predictions</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>69163</th>
+      <th>73468</th>
+      <td>thomas-kahlenberg</td>
       <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>494</td>
+      <td>8</td>
+      <td>0.000</td>
+      <td>3</td>
+      <td>0.333333</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>1477</td>
-      <td>73</td>
-      <td>0.750</td>
+      <td>1</td>
       <td>6</td>
     </tr>
     <tr>
-      <th>36624</th>
-      <td>1</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>644</td>
-      <td>103</td>
-      <td>0.875</td>
-      <td>11</td>
-    </tr>
-    <tr>
-      <th>109804</th>
+      <th>311018</th>
+      <td>wolfgang-hesl</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2494</td>
+      <td>8</td>
+      <td>0.125</td>
       <td>2</td>
+      <td>0.000000</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>2345</td>
-      <td>101</td>
-      <td>0.750</td>
+      <td>3</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>125526</th>
+      <th>233995</th>
+      <td>stephan-hain</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1937</td>
+      <td>8</td>
+      <td>0.125</td>
       <td>4</td>
+      <td>0.000000</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>2673</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>163358</th>
+      <td>jesus-gamez</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1349</td>
+      <td>3</td>
+      <td>0.375</td>
       <td>7</td>
-      <td>0.250</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8</td>
       <td>6</td>
     </tr>
     <tr>
-      <th>35587</th>
-      <td>2</td>
+      <th>36447</th>
+      <td>tom-trybull</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>298</td>
+      <td>8</td>
+      <td>0.125</td>
+      <td>1</td>
+      <td>0.000000</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>632</td>
-      <td>44</td>
-      <td>0.250</td>
-      <td>6</td>
+      <td>3</td>
+      <td>1</td>
     </tr>
   </tbody>
 </table>
@@ -14778,11 +16919,14 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[69]:</div>
+<div class="prompt input_prompt">In&nbsp;[84]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">trainRes_1</span> <span class="o">=</span> <span class="n">Data_Testing</span><span class="p">[</span><span class="s1">&#39;raterAvg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-<span class="n">trainRes_1</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#see percentage of right predictions</span>
+<span class="n">correct</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Data_Testing</span><span class="p">[</span><span class="n">Data_Testing</span><span class="p">[</span><span class="s1">&#39;raterScale&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">Data_Testing</span><span class="p">[</span><span class="s1">&#39;predictions&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">correct</span><span class="p">)</span>
+<span class="n">percCorrect</span> <span class="o">=</span> <span class="n">A</span><span class="o">/</span><span class="n">Data_Testing</span><span class="p">[</span><span class="s1">&#39;raterScale&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
+<span class="n">percCorrect</span>
 </pre></div>
 
 </div>
@@ -14793,161 +16937,83 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[69]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[84]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([ 0.75 ,  0.875,  0.75 , ...,  0.   ,  0.   ,  0.25 ])</pre>
+<pre>0.37304491174460214</pre>
 </div>
 
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The first attempt resulted in a 37% success of predicions with n_estimatos = 100.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#See features importance</span>
+<span class="n">importances</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">feature_importances_</span>
+<span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">([</span><span class="n">tree</span><span class="o">.</span><span class="n">feature_importances_</span> <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">forest</span><span class="o">.</span><span class="n">estimators_</span><span class="p">],</span>
+             <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">importances</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Print the feature ranking</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature ranking:&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">. feature </span><span class="si">%d</span><span class="s2"> (</span><span class="si">%f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">indices</span><span class="p">[</span><span class="n">f</span><span class="p">],</span> <span class="n">importances</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">f</span><span class="p">]]))</span>
+
+<span class="c1"># Plot the feature importances of the forest</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Feature importances&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">importances</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span>
+       <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">std</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">indices</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+</div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[73]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## convert the ratings into a scale for the test matrix as well</span>
-<span class="c1">## it would be more efficient to do this convertion at the simple data frame level</span>
-<span class="n">B</span> <span class="o">=</span> <span class="n">testRes_1</span><span class="o">.</span><span class="n">size</span><span class="p">;</span>
-<span class="n">testRes_2</span> <span class="o">=</span> <span class="p">[];</span> 
-<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">B</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.05</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.05</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.1</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.1</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.15</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.15</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.2</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.2</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.25</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.25</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.3</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.3</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.35</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.35</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.4</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.4</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.45</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">9</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.45</span> <span class="ow">and</span> <span class="n">trainRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.5</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.5</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.55</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">11</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.55</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.6</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.6</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.65</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">13</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.65</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.7</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">14</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.7</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.75</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">15</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.75</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.8</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.8</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.85</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">17</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.85</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.9</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">18</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.9</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mf">0.95</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">19</span><span class="p">);</span>
-    <span class="k">elif</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.95</span> <span class="ow">and</span> <span class="n">testRes_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">testRes_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">99</span><span class="p">);</span>
-        
-<span class="n">Data_Testing</span><span class="p">[</span><span class="s1">&#39;raterScale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">testRes_2</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Initialize</span>
+<span class="n">forest</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span> <span class="o">=</span> <span class="mi">500</span><span class="p">)</span>
+
+<span class="c1"># Fit the training data and create the decision trees</span>
+<span class="n">forest</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trainArr</span><span class="p">,</span><span class="n">trainRes_1</span><span class="p">)</span>
+
+<span class="c1"># Take the same decision trees and run it on the test data</span>
+<span class="n">Data_Testing</span> <span class="o">=</span> <span class="n">Data_Simple2</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">Input_Data_Testing</span> <span class="o">=</span> <span class="n">Data_Testing</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">exclude</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">testArr</span> <span class="o">=</span> <span class="n">Input_Data_Testing</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
+<span class="n">results2</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">testArr</span><span class="p">)</span>
+
+<span class="n">Data_Testing</span><span class="p">[</span><span class="s1">&#39;predictions2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results2</span>
 <span class="n">Data_Testing</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
-<span class="ansi-green-fg">/Users/catarinaneves/anaconda/lib/python3.5/site-packages/pandas/indexes/base.py</span> in <span class="ansi-cyan-fg">get_loc</span><span class="ansi-blue-fg">(self, key, method, tolerance)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1944</span>             <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">-&gt; 1945</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_engine<span class="ansi-blue-fg">.</span>get_loc<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1946</span>             <span class="ansi-green-fg">except</span> KeyError<span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">pandas/index.pyx</span> in <span class="ansi-cyan-fg">pandas.index.IndexEngine.get_loc (pandas/index.c:4154)</span><span class="ansi-blue-fg">()</span>
-
-<span class="ansi-green-fg">pandas/index.pyx</span> in <span class="ansi-cyan-fg">pandas.index.IndexEngine.get_loc (pandas/index.c:4018)</span><span class="ansi-blue-fg">()</span>
-
-<span class="ansi-green-fg">pandas/hashtable.pyx</span> in <span class="ansi-cyan-fg">pandas.hashtable.PyObjectHashTable.get_item (pandas/hashtable.c:12368)</span><span class="ansi-blue-fg">()</span>
-
-<span class="ansi-green-fg">pandas/hashtable.pyx</span> in <span class="ansi-cyan-fg">pandas.hashtable.PyObjectHashTable.get_item (pandas/hashtable.c:12322)</span><span class="ansi-blue-fg">()</span>
-
-<span class="ansi-red-fg">KeyError</span>: 0
-
-During handling of the above exception, another exception occurred:
-
-<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-73-2bed93325a8c&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span> testRes_2 <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">;</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-green-fg">for</span> j <span class="ansi-green-fg">in</span> range <span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span>B<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">----&gt; 6</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">if</span> testRes_1<span class="ansi-blue-fg">[</span>j<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">&gt;=</span> <span class="ansi-cyan-fg">0</span> <span class="ansi-green-fg">and</span> testRes_1<span class="ansi-blue-fg">[</span>j<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">&lt;</span><span class="ansi-cyan-fg">0.05</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">      7</span>         testRes_2<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">;</span>
-<span class="ansi-green-intense-fg ansi-bold">      8</span>     <span class="ansi-green-fg">elif</span> testRes_1<span class="ansi-blue-fg">[</span>j<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">&gt;=</span> <span class="ansi-cyan-fg">0.05</span> <span class="ansi-green-fg">and</span> testRes_1<span class="ansi-blue-fg">[</span>j<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">&lt;</span><span class="ansi-cyan-fg">0.1</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">/Users/catarinaneves/anaconda/lib/python3.5/site-packages/pandas/core/frame.py</span> in <span class="ansi-cyan-fg">__getitem__</span><span class="ansi-blue-fg">(self, key)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1995</span>             <span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_getitem_multilevel<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1996</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">-&gt; 1997</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_getitem_column<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1998</span> 
-<span class="ansi-green-intense-fg ansi-bold">   1999</span>     <span class="ansi-green-fg">def</span> _getitem_column<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> key<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">/Users/catarinaneves/anaconda/lib/python3.5/site-packages/pandas/core/frame.py</span> in <span class="ansi-cyan-fg">_getitem_column</span><span class="ansi-blue-fg">(self, key)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2002</span>         <span class="ansi-red-fg"># get column</span>
-<span class="ansi-green-intense-fg ansi-bold">   2003</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>columns<span class="ansi-blue-fg">.</span>is_unique<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">-&gt; 2004</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_get_item_cache<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2005</span> 
-<span class="ansi-green-intense-fg ansi-bold">   2006</span>         <span class="ansi-red-fg"># duplicate columns &amp; possible reduce dimensionality</span>
-
-<span class="ansi-green-fg">/Users/catarinaneves/anaconda/lib/python3.5/site-packages/pandas/core/generic.py</span> in <span class="ansi-cyan-fg">_get_item_cache</span><span class="ansi-blue-fg">(self, item)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1348</span>         res <span class="ansi-blue-fg">=</span> cache<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span>item<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1349</span>         <span class="ansi-green-fg">if</span> res <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">-&gt; 1350</span><span class="ansi-red-fg">             </span>values <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_data<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span>item<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1351</span>             res <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_box_item_values<span class="ansi-blue-fg">(</span>item<span class="ansi-blue-fg">,</span> values<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1352</span>             cache<span class="ansi-blue-fg">[</span>item<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> res
-
-<span class="ansi-green-fg">/Users/catarinaneves/anaconda/lib/python3.5/site-packages/pandas/core/internals.py</span> in <span class="ansi-cyan-fg">get</span><span class="ansi-blue-fg">(self, item, fastpath)</span>
-<span class="ansi-green-intense-fg ansi-bold">   3288</span> 
-<span class="ansi-green-intense-fg ansi-bold">   3289</span>             <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> isnull<span class="ansi-blue-fg">(</span>item<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">-&gt; 3290</span><span class="ansi-red-fg">                 </span>loc <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>items<span class="ansi-blue-fg">.</span>get_loc<span class="ansi-blue-fg">(</span>item<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   3291</span>             <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">   3292</span>                 indexer <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>arange<span class="ansi-blue-fg">(</span>len<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>items<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">[</span>isnull<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>items<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">]</span>
-
-<span class="ansi-green-fg">/Users/catarinaneves/anaconda/lib/python3.5/site-packages/pandas/indexes/base.py</span> in <span class="ansi-cyan-fg">get_loc</span><span class="ansi-blue-fg">(self, key, method, tolerance)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1945</span>                 <span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_engine<span class="ansi-blue-fg">.</span>get_loc<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1946</span>             <span class="ansi-green-fg">except</span> KeyError<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">-&gt; 1947</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_engine<span class="ansi-blue-fg">.</span>get_loc<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>_maybe_cast_indexer<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1948</span> 
-<span class="ansi-green-intense-fg ansi-bold">   1949</span>         indexer <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>get_indexer<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span>key<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> method<span class="ansi-blue-fg">=</span>method<span class="ansi-blue-fg">,</span> tolerance<span class="ansi-blue-fg">=</span>tolerance<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">pandas/index.pyx</span> in <span class="ansi-cyan-fg">pandas.index.IndexEngine.get_loc (pandas/index.c:4154)</span><span class="ansi-blue-fg">()</span>
-
-<span class="ansi-green-fg">pandas/index.pyx</span> in <span class="ansi-cyan-fg">pandas.index.IndexEngine.get_loc (pandas/index.c:4018)</span><span class="ansi-blue-fg">()</span>
-
-<span class="ansi-green-fg">pandas/hashtable.pyx</span> in <span class="ansi-cyan-fg">pandas.hashtable.PyObjectHashTable.get_item (pandas/hashtable.c:12368)</span><span class="ansi-blue-fg">()</span>
-
-<span class="ansi-green-fg">pandas/hashtable.pyx</span> in <span class="ansi-cyan-fg">pandas.hashtable.PyObjectHashTable.get_item (pandas/hashtable.c:12322)</span><span class="ansi-blue-fg">()</span>
-
-<span class="ansi-red-fg">KeyError</span>: 0</pre>
-</div>
-</div>
-
 </div>
 </div>
 

@@ -34,7 +34,7 @@ Data.ix[:10,:13]
 
 # ### 1) Keep only players that have a Rater Image
 
-# In[5]:
+# In[4]:
 
 # 1) Remove the players without rater 1 / 2 rating because we won't be 
 # able to train or test the values (this can be done as bonus later)
@@ -52,14 +52,14 @@ Data_hasImage = Data[pd.notnull(Data['photoID'])]
 # Indeed, what if for a player, rater1 = 0.0 and rater2 = 0.75 ?
 # It would not make a lot of sense, or at least we would know our model is not viable !
 
-# In[6]:
+# In[5]:
 
 Data_hasImage['mean_rater']=(Data_hasImage['rater1']+Data_hasImage['rater2'])/2
 
 
 # Let's now disaggregate the games:
 
-# In[7]:
+# In[6]:
 
 game_counter = 0
 game_total_number = sum(Data_hasImage['games'])
@@ -109,77 +109,126 @@ Data_OneGamePerRow
 
 # ### 3) Create the Training and Testing Datframes with only select data
 
-# In[8]:
+# In[70]:
 
 # Removing columns that we do not need
 Data_Simple1 = Data_OneGamePerRow[['playerShort', 'yellowCards', 'yellowReds', 'redCards',
-                              'refNum', 'refCountry', 'mean_rater']]
+                              'refNum', 'refCountry', 'mean_rater', 'games']]
 
 # Take a random 80% sample of the Data for the Training Sample
-Data_Training = Data_Simple1.sample(frac=0.8)
+#Data_Training = Data_Simple1.sample(frac=0.8)
 
 # Take a random 20% sample of the Data for the Testing Sample
-Data_Testing = Data_Simple1.loc[~Data_Simple1.index.isin(Data_Training.index)]
+#Data_Testing = Data_Simple1.loc[~Data_Simple1.index.isin(Data_Training.index)]
 
 
-# In[9]:
+# In[71]:
 
 Data_Simple1
 
 
+# In[73]:
+
+#find proportion of yellow & red cards to games
+Data_Simple1['fractionYellow'] = Data_Simple1['yellowCards']/Data_Simple1['games']
+Data_Simple1['fractionYellowRed'] = Data_Simple1['yellowReds']/Data_Simple1['games']
+Data_Simple1['fractionRed'] = Data_Simple1['redCards']/Data_Simple1['games']
+Data_Simple1
+
+
+# In[74]:
+
+colRate = ['mean_rater']
+Col_Rating = Data_Simple1[colRate].values
+Ratings_Scale = []; 
+Col_Rating
+
+
+# In[75]:
+
+# Must now convert this continuous scale into a categorical one, with 20 categories
+A = len(Col_Rating)
+for i in range (0,A):
+    if Col_Rating[i] >= 0 and Col_Rating[i] <0.05:
+        Ratings_Scale.append(1);
+    elif Col_Rating[i] >= 0.05 and Col_Rating[i] <0.1:
+        Ratings_Scale.append(2);
+    elif Col_Rating[i] >= 0.1 and Col_Rating[i] <0.15:
+        Ratings_Scale.append(3);
+    elif Col_Rating[i] >= 0.15 and Col_Rating[i] <0.2:
+        Ratings_Scale.append(4);
+    elif Col_Rating[i] >= 0.2 and Col_Rating[i] <0.25:
+        Ratings_Scale.append(5);
+    elif Col_Rating[i] >= 0.25 and Col_Rating[i] <0.3:
+        Ratings_Scale.append(6);
+    elif Col_Rating[i] >= 0.3 and Col_Rating[i] <0.35:
+        Ratings_Scale.append(7);
+    elif Col_Rating[i] >= 0.35 and Col_Rating[i] <0.4:
+        Ratings_Scale.append(8);
+    elif Col_Rating[i] >= 0.4 and Col_Rating[i] <0.45:
+        Ratings_Scale.append(9);
+    elif Col_Rating[i] >= 0.45 and Col_Rating[i] <0.5:
+        Ratings_Scale.append(10);
+    elif Col_Rating[i] >= 0.5 and Col_Rating[i] <0.55:
+        Ratings_Scale.append(11);
+    elif Col_Rating[i] >= 0.55 and Col_Rating[i] <0.6:
+        Ratings_Scale.append(12);
+    elif Col_Rating[i] >= 0.6 and Col_Rating[i] <0.65:
+        Ratings_Scale.append(13);
+    elif Col_Rating[i] >= 0.65 and Col_Rating[i] <0.7:
+        Ratings_Scale.append(14);
+    elif Col_Rating[i] >= 0.7 and Col_Rating[i] <0.75:
+        Ratings_Scale.append(15);
+    elif Col_Rating[i] >= 0.75 and Col_Rating[i] <0.8:
+        Ratings_Scale.append(16);
+    elif Col_Rating[i] >= 0.8 and Col_Rating[i] <0.85:
+        Ratings_Scale.append(17);
+    elif Col_Rating[i] >= 0.85 and Col_Rating[i] <0.9:
+        Ratings_Scale.append(18);
+    elif Col_Rating[i] >= 0.9 and Col_Rating[i] <0.95:
+        Ratings_Scale.append(19);
+    elif Col_Rating[i] >= 0.95 and Col_Rating[i] <=1:
+        Ratings_Scale.append(20);
+    else:
+        Ratings_Scale.append(99);
+        
+Data_Simple1['raterScale'] = Ratings_Scale
+Data_Simple1.head()
+
+## Some of the values in trainRes_1 are larger than one! We must delete them from the simple data set to avoid errors in the training process.
+
+
+# In[76]:
+
+# drop values on scale which are equal to 99
+Data_Simple2 = Data_Simple1[Data_Simple1.raterScale != 99]
+Data_Simple2.dropna(axis=0)
+Data_Simple2
+
+
 # # II. Preparing the training & test data : Fraction version
 
-# In[10]:
+# ### 1) Create the Training and Testing Datframes with only select data
 
-# 1) Remove the players without rater 1 / 2 rating because we won't be 
-# able to train or test the values (this can be done as bonus later)
+# In[77]:
 
-Data_hasImage = Data[pd.notnull(Data['photoID'])]
-#Data_hasImage.ix[:10,13:28]
+#create test and training matrix
 
-
-# ### 2) Disaggregate the data so each row is 1 game
-
-# In[11]:
-
-#for i in Data.iterrows():
-#    if Data.at[i, 'games'] > 1:
-#        df = Data[i]
-
-
-# In[12]:
-
-# Testing - divide # cards (all types) by # games column
-Data_hasImage['fractionYellow'] = Data_hasImage['yellowCards']/Data_hasImage['games']
-Data_hasImage['fractionYellowRed'] = Data_hasImage['yellowReds']/Data_hasImage['games']
-Data_hasImage['fractionRed'] = Data_hasImage['redCards']/Data_hasImage['games']
-
-# Get the average of the raters
-Data_hasImage['raterAvg'] = (Data_hasImage['rater1']+Data_hasImage['rater2'])/2
-
-#Data_hasImage.head()
-
-
-# ### 3) Create the Training and Testing Datframes with only select data
-
-# In[13]:
-
-# Removing columns that we do not need
-Data_Simple1 = Data_hasImage[['games', 'fractionYellow', 'fractionYellowRed', 'fractionRed',
-                              'refNum', 'refCountry', 'raterAvg']]
-
-#cols = ['playerShort', 'games', 'fractionYellow', 'fractionYellowRed', 'fractionRed',
 cols = ['games', 'fractionYellow', 'fractionYellowRed', 'fractionRed', 'refNum', 'refCountry']
-colsRes = ['raterAvg']
+exclude = ['raterScale','mean_rater', 'playerShort', 'yellowCards','yellowReds','redCards', 'games']
+colsRes1 = ['raterScale']
+
 
 # Take a random 80% sample of the Data for the Training Sample
-Data_Training = Data_Simple1.sample(frac=0.8)
+Data_Training = Data_Simple2.sample(frac=0.8)
 
 # Need to split this into the data and the results columns
 # http://stackoverflow.com/questions/34246336/python-randomforest-unknown-label-error
-Input_Data_Training = Data_Training.drop(colsRes, axis=1)
+Input_Data_Training = Data_Training.drop(exclude, axis=1)
+
 #Results_Data_Training = list(Data_Training.raterAvg.values)
-Results_Data_Training = Data_Training[colsRes]
+Results_Data_Training = Data_Training[colsRes1]
+Input_Data_Training.head()
 
 
 # In[14]:
@@ -193,145 +242,86 @@ Results_Data_Training = Data_Training[colsRes]
 #Results_Data_Testing = list(Data_Testing.raterAvg.values)
 
 
-# In[29]:
+# In[78]:
 
 # Need to make arrays
 # http://www.analyticbridge.com/profiles/blogs/random-forest-in-python
-trainArr = Input_Data_Training.as_matrix(cols) #training array
+trainArr = Input_Data_Training.as_matrix() #training array
 #trainRes = Results_Data_Training.as_matrix(colsRes) #training results
-trainRes_1 = Data_Training['raterAvg'].values
-trainRes_1
-
-
-# In[47]:
-
-# Must now convert this continuous scale into a categorical one, with 20 categories
-A = trainRes_1.size
-trainRes_2 = []; 
-for i in range (0,A):
-    if trainRes_1[i] >= 0 and trainRes_1[i] <0.05:
-        trainRes_2.append(1);
-    elif trainRes_1[i] >= 0.05 and trainRes_1[i] <0.1:
-        trainRes_2.append(2);
-    elif trainRes_1[i] >= 0.1 and trainRes_1[i] <0.15:
-        trainRes_2.append(3);
-    elif trainRes_1[i] >= 0.15 and trainRes_1[i] <0.2:
-        trainRes_2.append(4);
-    elif trainRes_1[i] >= 0.2 and trainRes_1[i] <0.25:
-        trainRes_2.append(5);
-    elif trainRes_1[i] >= 0.25 and trainRes_1[i] <0.3:
-        trainRes_2.append(6);
-    elif trainRes_1[i] >= 0.3 and trainRes_1[i] <0.35:
-        trainRes_2.append(7);
-    elif trainRes_1[i] >= 0.35 and trainRes_1[i] <0.4:
-        trainRes_2.append(8);
-    elif trainRes_1[i] >= 0.4 and trainRes_1[i] <0.45:
-        trainRes_2.append(9);
-    elif trainRes_1[i] >= 0.45 and trainRes_1[i] <0.5:
-        trainRes_2.append(10);
-    elif trainRes_1[i] >= 0.5 and trainRes_1[i] <0.55:
-        trainRes_2.append(11);
-    elif trainRes_1[i] >= 0.55 and trainRes_1[i] <0.6:
-        trainRes_2.append(12);
-    elif trainRes_1[i] >= 0.6 and trainRes_1[i] <0.65:
-        trainRes_2.append(13);
-    elif trainRes_1[i] >= 0.65 and trainRes_1[i] <0.7:
-        trainRes_2.append(14);
-    elif trainRes_1[i] >= 0.7 and trainRes_1[i] <0.75:
-        trainRes_2.append(15);
-    elif trainRes_1[i] >= 0.75 and trainRes_1[i] <0.8:
-        trainRes_2.append(16);
-    elif trainRes_1[i] >= 0.8 and trainRes_1[i] <0.85:
-        trainRes_2.append(17);
-    elif trainRes_1[i] >= 0.85 and trainRes_1[i] <0.9:
-        trainRes_2.append(18);
-    elif trainRes_1[i] >= 0.9 and trainRes_1[i] <0.95:
-        trainRes_2.append(19);
-    elif trainRes_1[i] >= 0.95 and trainRes_1[i] <1:
-        trainRes_2.append(20);
-    else:
-        trainRes_2.append(99);
-
-## Some of the values in trainRes_1 are larger than one! We must delete them from the simple data set to avoid errors in the training process.
+trainRes_1 = Data_Training['raterScale'].values
+trainArr
 
 
 # # III. Random Forest
 
-# In[53]:
+# In[80]:
 
 #Initialize
 forest = RandomForestClassifier(n_estimators = 100)
 
 # Fit the training data and create the decision trees
-forest = forest.fit(trainArr,trainRes_2)
+forest = forest.fit(trainArr,trainRes_1)
 
 # Take the same decision trees and run it on the test data
-Data_Testing = Data_Simple1.sample(frac=0.2)
-Input_Data_Testing = Data_Testing.drop(colsRes, axis=1)
-testArr = Input_Data_Testing.as_matrix(cols)
+Data_Testing = Data_Simple2.sample(frac=0.2)
+Input_Data_Testing = Data_Testing.drop(exclude, axis=1)
+testArr = Input_Data_Testing.as_matrix()
 results = forest.predict(testArr)
 
 Data_Testing['predictions'] = results
 Data_Testing.head()
 
 
-# In[69]:
+# In[84]:
 
-trainRes_1 = Data_Testing['raterAvg'].values
-trainRes_1
+#see percentage of right predictions
+correct = list(Data_Testing[Data_Testing['raterScale'] == Data_Testing['predictions']].index)
+A = len(correct)
+percCorrect = A/Data_Testing['raterScale'].size
+percCorrect
 
 
-# In[73]:
+# The first attempt resulted in a 37% success of predicions with n_estimatos = 100. 
 
-## convert the ratings into a scale for the test matrix as well
-## it would be more efficient to do this convertion at the simple data frame level
-B = testRes_1.size;
-testRes_2 = []; 
-for j in range (0,B):
-    if testRes_1[j] >= 0 and testRes_1[j] <0.05:
-        testRes_2.append(1);
-    elif testRes_1[j] >= 0.05 and testRes_1[j] <0.1:
-        testRes_2.append(2);
-    elif testRes_1[j] >= 0.1 and testRes_1[j] <0.15:
-        testRes_2.append(3);
-    elif testRes_1[j] >= 0.15 and testRes_1[j] <0.2:
-        testRes_2.append(4);
-    elif testRes_1[j] >= 0.2 and testRes_1[j] <0.25:
-        testRes_2.append(5);
-    elif testRes_1[j] >= 0.25 and testRes_1[j] <0.3:
-        testRes_2.append(6);
-    elif testRes_1[j] >= 0.3 and testRes_1[j] <0.35:
-        testRes_2.append(7);
-    elif testRes_1[j] >= 0.35 and testRes_1[j] <0.4:
-        testRes_2.append(1);
-    elif testRes_1[j] >= 0.4 and testRes_1[j] <0.45:
-        testRes_2.append(9);
-    elif testRes_1[j] >= 0.45 and trainRes_1[j] <0.5:
-        testRes_2.append(10);
-    elif testRes_1[j] >= 0.5 and testRes_1[j] <0.55:
-        testRes_2.append(11);
-    elif testRes_1[j] >= 0.55 and testRes_1[j] <0.6:
-        testRes_2.append(12);
-    elif testRes_1[j] >= 0.6 and testRes_1[j] <0.65:
-        testRes_2.append(13);
-    elif testRes_1[j] >= 0.65 and testRes_1[j] <0.7:
-        testRes_2.append(14);
-    elif testRes_1[j] >= 0.7 and testRes_1[j] <0.75:
-        testRes_2.append(15);
-    elif testRes_1[j] >= 0.75 and testRes_1[j] <0.8:
-        testRes_2.append(16);
-    elif testRes_1[j] >= 0.8 and testRes_1[j] <0.85:
-        testRes_2.append(17);
-    elif testRes_1[j] >= 0.85 and testRes_1[j] <0.9:
-        testRes_2.append(18);
-    elif testRes_1[j] >= 0.9 and testRes_1[j] <0.95:
-        testRes_2.append(19);
-    elif testRes_1[j] >= 0.95 and testRes_1[j] <1:
-        testRes_2.append(20);
-    else:
-        testRes_2.append(99);
-        
-Data_Testing['raterScale'] = testRes_2
+# In[ ]:
+
+#See features importance
+importances = forest.feature_importances_
+std = np.std([tree.feature_importances_ for tree in forest.estimators_],
+             axis=0)
+indices = np.argsort(importances)[::-1]
+
+# Print the feature ranking
+print("Feature ranking:")
+
+for f in range(X.shape[1]):
+    print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
+
+# Plot the feature importances of the forest
+plt.figure()
+plt.title("Feature importances")
+plt.bar(range(X.shape[1]), importances[indices],
+       color="r", yerr=std[indices], align="center")
+plt.xticks(range(X.shape[1]), indices)
+plt.xlim([-1, X.shape[1]])
+plt.show()
+
+
+# In[ ]:
+
+#Initialize
+forest = RandomForestClassifier(n_estimators = 500)
+
+# Fit the training data and create the decision trees
+forest = forest.fit(trainArr,trainRes_1)
+
+# Take the same decision trees and run it on the test data
+Data_Testing = Data_Simple2.sample(frac=0.2)
+Input_Data_Testing = Data_Testing.drop(exclude, axis=1)
+testArr = Input_Data_Testing.as_matrix()
+results2 = forest.predict(testArr)
+
+Data_Testing['predictions2'] = results2
 Data_Testing.head()
 
 
