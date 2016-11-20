@@ -3,10 +3,12 @@
 
 # # I. Setting up the Problem
 
-# In[1]:
+# In[ ]:
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 # Import the random forest package
 from sklearn.ensemble import RandomForestClassifier 
@@ -210,7 +212,7 @@ Data_Simple2
 
 # ### 1) Create the Training and Testing Datframes with only select data
 
-# In[77]:
+# In[101]:
 
 #create test and training matrix
 
@@ -242,7 +244,7 @@ Input_Data_Training.head()
 #Results_Data_Testing = list(Data_Testing.raterAvg.values)
 
 
-# In[78]:
+# In[102]:
 
 # Need to make arrays
 # http://www.analyticbridge.com/profiles/blogs/random-forest-in-python
@@ -254,7 +256,7 @@ trainArr
 
 # # III. Random Forest
 
-# In[80]:
+# In[103]:
 
 #Initialize
 forest = RandomForestClassifier(n_estimators = 100)
@@ -272,7 +274,7 @@ Data_Testing['predictions'] = results
 Data_Testing.head()
 
 
-# In[84]:
+# In[104]:
 
 #see percentage of right predictions
 correct = list(Data_Testing[Data_Testing['raterScale'] == Data_Testing['predictions']].index)
@@ -283,45 +285,84 @@ percCorrect
 
 # The first attempt resulted in a 37% success of predicions with n_estimatos = 100. 
 
-# In[ ]:
+# In[95]:
 
 #See features importance
 importances = forest.feature_importances_
-std = np.std([tree.feature_importances_ for tree in forest.estimators_],
-             axis=0)
 indices = np.argsort(importances)[::-1]
 
 # Print the feature ranking
 print("Feature ranking:")
 
-for f in range(X.shape[1]):
+for f in range(trainArr.shape[1]):
     print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
 
 # Plot the feature importances of the forest
 plt.figure()
 plt.title("Feature importances")
-plt.bar(range(X.shape[1]), importances[indices],
-       color="r", yerr=std[indices], align="center")
-plt.xticks(range(X.shape[1]), indices)
-plt.xlim([-1, X.shape[1]])
+plt.bar(range(trainArr.shape[1]), importances[indices],
+       color="b", align="center")
+plt.xticks(range(trainArr.shape[1]), indices)
+plt.xlim([-1, trainArr.shape[1]])
 plt.show()
 
 
+# Proportion of YellowReds and Reds seem to be irrelevant to the classifier. Instead, it is the referee number that is the most important feature, followed by his country and proportion of yellow cards. This is not what we want, as we want to be able to predict the ratings from number of red and yellow cards, so we will drop information regarding the referee for the next step.
+
 # In[ ]:
 
-#Initialize
+#make necessary changes to parameters
+exclude2 = ['refNum', 'refCountry','raterScale','mean_rater', 'playerShort', 'yellowCards','yellowReds','redCards', 'games']
+exclude3 = ['refNum', 'refCountry','raterScale','mean_rater', 'playerShort', 'yellowCards','yellowReds','redCards', 'games', 'predictions']
+Input_Data_Training2 = Data_Training.drop(exclude2, axis=1)
+trainArr2 = Input_Data_Training2.as_matrix() #training array
+trainRes_2 = Data_Training['raterScale'].values
+
+
+Input_Data_Testing2 = Data_Testing.drop(exclude3, axis=1)
+testArr2 = Input_Data_Testing2.as_matrix()
+
+testArr2
+
+
+# In[113]:
+
+#Re-Initialize Classifier
+forest = RandomForestClassifier(n_estimators = 100)
+
+# Fit the training data and create the decision trees
+forest = forest.fit(trainArr2,trainRes_2)
+
+# Take the same decision trees and run it on the test data
+results2 = forest.predict(testArr2)
+
+Data_Testing['predictions2'] = results2
+Data_Testing.head()
+
+
+# In[114]:
+
+#see percentage of right predictions
+correct = list(Data_Testing[Data_Testing['raterScale'] == Data_Testing['predictions']].index)
+A = len(correct)
+percCorrect = A/Data_Testing['raterScale'].size
+percCorrect
+
+
+# There is no change in accuracy from changing the input parameters, but maybe if we change the n_estimators...
+
+# In[ ]:
+
+#Re-Initialize Classifier
 forest = RandomForestClassifier(n_estimators = 500)
 
 # Fit the training data and create the decision trees
-forest = forest.fit(trainArr,trainRes_1)
+forest = forest.fit(trainArr2,trainRes_2)
 
 # Take the same decision trees and run it on the test data
-Data_Testing = Data_Simple2.sample(frac=0.2)
-Input_Data_Testing = Data_Testing.drop(exclude, axis=1)
-testArr = Input_Data_Testing.as_matrix()
-results2 = forest.predict(testArr)
+results3 = forest.predict(testArr2)
 
-Data_Testing['predictions2'] = results2
+Data_Testing['predictions3'] = results3
 Data_Testing.head()
 
 

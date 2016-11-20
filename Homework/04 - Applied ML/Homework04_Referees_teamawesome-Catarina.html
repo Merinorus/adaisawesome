@@ -11757,11 +11757,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
 
 <span class="c1"># Import the random forest package</span>
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span> 
@@ -16602,7 +16604,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[77]:</div>
+<div class="prompt input_prompt">In&nbsp;[101]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#create test and training matrix</span>
@@ -16632,7 +16634,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[77]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[101]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -16649,42 +16651,42 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
   </thead>
   <tbody>
     <tr>
-      <th>267796</th>
-      <td>2165</td>
+      <th>282726</th>
+      <td>2316</td>
+      <td>58</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>281131</th>
+      <td>2299</td>
       <td>44</td>
-      <td>0.000000</td>
+      <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
     </tr>
     <tr>
-      <th>228922</th>
-      <td>1909</td>
+      <th>223569</th>
+      <td>1903</td>
       <td>44</td>
-      <td>0.000000</td>
       <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>324658</th>
-      <td>2639</td>
-      <td>3</td>
-      <td>0.000000</td>
       <td>0.0</td>
       <td>0.0</td>
     </tr>
     <tr>
-      <th>52219</th>
-      <td>409</td>
-      <td>7</td>
-      <td>0.000000</td>
+      <th>218586</th>
+      <td>1824</td>
+      <td>8</td>
+      <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
     </tr>
     <tr>
-      <th>259015</th>
-      <td>2080</td>
+      <th>223992</th>
+      <td>1903</td>
       <td>44</td>
-      <td>0.058824</td>
+      <td>0.1</td>
       <td>0.0</td>
       <td>0.0</td>
     </tr>
@@ -16720,7 +16722,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[78]:</div>
+<div class="prompt input_prompt">In&nbsp;[102]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Need to make arrays</span>
@@ -16739,23 +16741,17 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[78]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[102]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[  2.16500000e+03,   4.40000000e+01,   0.00000000e+00,
-          0.00000000e+00,   0.00000000e+00],
-       [  1.90900000e+03,   4.40000000e+01,   0.00000000e+00,
-          0.00000000e+00,   0.00000000e+00],
-       [  2.63900000e+03,   3.00000000e+00,   0.00000000e+00,
-          0.00000000e+00,   0.00000000e+00],
+<pre>array([[ 2316.,    58.,     0.,     0.,     0.],
+       [ 2299.,    44.,     0.,     0.,     0.],
+       [ 1903.,    44.,     0.,     0.,     0.],
        ..., 
-       [  7.70000000e+01,   4.40000000e+01,   0.00000000e+00,
-          0.00000000e+00,   0.00000000e+00],
-       [  3.04000000e+02,   3.00000000e+00,   7.14285714e-02,
-          0.00000000e+00,   0.00000000e+00],
-       [  1.64600000e+03,   8.00000000e+00,   0.00000000e+00,
-          0.00000000e+00,   0.00000000e+00]])</pre>
+       [ 2239.,    44.,     0.,     0.,     0.],
+       [ 2729.,     5.,     0.,     0.,     0.],
+       [  641.,     3.,     0.,     0.,     0.]])</pre>
 </div>
 
 </div>
@@ -16775,7 +16771,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[80]:</div>
+<div class="prompt input_prompt">In&nbsp;[103]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Initialize</span>
@@ -16802,7 +16798,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[80]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[103]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -16827,84 +16823,84 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
   </thead>
   <tbody>
     <tr>
-      <th>73468</th>
-      <td>thomas-kahlenberg</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>494</td>
-      <td>8</td>
-      <td>0.000</td>
-      <td>3</td>
-      <td>0.333333</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <th>311018</th>
-      <td>wolfgang-hesl</td>
+      <th>209127</th>
+      <td>garry-bocaly</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>2494</td>
-      <td>8</td>
-      <td>0.125</td>
-      <td>2</td>
-      <td>0.000000</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>3</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>233995</th>
-      <td>stephan-hain</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1937</td>
-      <td>8</td>
-      <td>0.125</td>
-      <td>4</td>
-      <td>0.000000</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>3</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>163358</th>
-      <td>jesus-gamez</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1349</td>
-      <td>3</td>
-      <td>0.375</td>
+      <td>1756</td>
       <td>7</td>
-      <td>0.000000</td>
+      <td>0.500</td>
+      <td>2</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>8</td>
+      <td>0.0</td>
+      <td>11</td>
       <td>6</td>
     </tr>
     <tr>
-      <th>36447</th>
-      <td>tom-trybull</td>
+      <th>66918</th>
+      <td>pedro_7</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>298</td>
-      <td>8</td>
+      <td>468</td>
+      <td>3</td>
       <td>0.125</td>
-      <td>1</td>
-      <td>0.000000</td>
+      <td>6</td>
+      <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>3</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>44477</th>
+      <td>marc-planus</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>363</td>
+      <td>7</td>
+      <td>0.250</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>281442</th>
+      <td>lars-unnerstall</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2304</td>
+      <td>32</td>
+      <td>0.000</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
       <td>1</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>237746</th>
+      <td>ryan-nelsen</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1942</td>
+      <td>44</td>
+      <td>0.250</td>
+      <td>14</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6</td>
+      <td>6</td>
     </tr>
   </tbody>
 </table>
@@ -16919,7 +16915,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[84]:</div>
+<div class="prompt input_prompt">In&nbsp;[104]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#see percentage of right predictions</span>
@@ -16937,11 +16933,11 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[84]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[104]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>0.37304491174460214</pre>
+<pre>0.3731789366464289</pre>
 </div>
 
 </div>
@@ -16962,29 +16958,233 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[95]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#See features importance</span>
 <span class="n">importances</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">feature_importances_</span>
-<span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">([</span><span class="n">tree</span><span class="o">.</span><span class="n">feature_importances_</span> <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">forest</span><span class="o">.</span><span class="n">estimators_</span><span class="p">],</span>
-             <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">importances</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="c1"># Print the feature ranking</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature ranking:&quot;</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">trainArr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">. feature </span><span class="si">%d</span><span class="s2"> (</span><span class="si">%f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">indices</span><span class="p">[</span><span class="n">f</span><span class="p">],</span> <span class="n">importances</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">f</span><span class="p">]]))</span>
 
 <span class="c1"># Plot the feature importances of the forest</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Feature importances&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">importances</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span>
-       <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">std</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">indices</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">trainArr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">importances</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span>
+       <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">trainArr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">indices</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">trainArr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Feature ranking:
+1. feature 0 (0.531821)
+2. feature 1 (0.258258)
+3. feature 2 (0.167608)
+4. feature 4 (0.021516)
+5. feature 3 (0.020798)
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Proportion of YellowReds and Reds seem to be irrelevant to the classifier. Instead, it is the referee number that is the most important feature, followed by his country and proportion of yellow cards. This is not what we want, as we want to be able to predict the ratings from number of red and yellow cards, so we will drop information regarding the referee for the next step.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#make necessary changes to parameters</span>
+<span class="n">exclude2</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;refNum&#39;</span><span class="p">,</span> <span class="s1">&#39;refCountry&#39;</span><span class="p">,</span><span class="s1">&#39;raterScale&#39;</span><span class="p">,</span><span class="s1">&#39;mean_rater&#39;</span><span class="p">,</span> <span class="s1">&#39;playerShort&#39;</span><span class="p">,</span> <span class="s1">&#39;yellowCards&#39;</span><span class="p">,</span><span class="s1">&#39;yellowReds&#39;</span><span class="p">,</span><span class="s1">&#39;redCards&#39;</span><span class="p">,</span> <span class="s1">&#39;games&#39;</span><span class="p">]</span>
+<span class="n">exclude3</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;refNum&#39;</span><span class="p">,</span> <span class="s1">&#39;refCountry&#39;</span><span class="p">,</span><span class="s1">&#39;raterScale&#39;</span><span class="p">,</span><span class="s1">&#39;mean_rater&#39;</span><span class="p">,</span> <span class="s1">&#39;playerShort&#39;</span><span class="p">,</span> <span class="s1">&#39;yellowCards&#39;</span><span class="p">,</span><span class="s1">&#39;yellowReds&#39;</span><span class="p">,</span><span class="s1">&#39;redCards&#39;</span><span class="p">,</span> <span class="s1">&#39;games&#39;</span><span class="p">,</span> <span class="s1">&#39;predictions&#39;</span><span class="p">]</span>
+<span class="n">Input_Data_Training2</span> <span class="o">=</span> <span class="n">Data_Training</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">exclude2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">trainArr2</span> <span class="o">=</span> <span class="n">Input_Data_Training2</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span> <span class="c1">#training array</span>
+<span class="n">trainRes_2</span> <span class="o">=</span> <span class="n">Data_Training</span><span class="p">[</span><span class="s1">&#39;raterScale&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+
+<span class="n">Input_Data_Testing2</span> <span class="o">=</span> <span class="n">Data_Testing</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">exclude3</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">testArr2</span> <span class="o">=</span> <span class="n">Input_Data_Testing2</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
+
+<span class="n">testArr2</span>
 </pre></div>
 
 </div>
@@ -16994,22 +17194,209 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
+<div class="prompt input_prompt">In&nbsp;[113]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Re-Initialize Classifier</span>
+<span class="n">forest</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># Fit the training data and create the decision trees</span>
+<span class="n">forest</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trainArr2</span><span class="p">,</span><span class="n">trainRes_2</span><span class="p">)</span>
+
+<span class="c1"># Take the same decision trees and run it on the test data</span>
+<span class="n">results2</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">testArr2</span><span class="p">)</span>
+
+<span class="n">Data_Testing</span><span class="p">[</span><span class="s1">&#39;predictions2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results2</span>
+<span class="n">Data_Testing</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[113]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>playerShort</th>
+      <th>yellowCards</th>
+      <th>yellowReds</th>
+      <th>redCards</th>
+      <th>refNum</th>
+      <th>refCountry</th>
+      <th>mean_rater</th>
+      <th>games</th>
+      <th>fractionYellow</th>
+      <th>fractionYellowRed</th>
+      <th>fractionRed</th>
+      <th>raterScale</th>
+      <th>predictions</th>
+      <th>predictions2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>209127</th>
+      <td>garry-bocaly</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1756</td>
+      <td>7</td>
+      <td>0.500</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>11</td>
+      <td>6</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>66918</th>
+      <td>pedro_7</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>468</td>
+      <td>3</td>
+      <td>0.125</td>
+      <td>6</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3</td>
+      <td>6</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>44477</th>
+      <td>marc-planus</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>363</td>
+      <td>7</td>
+      <td>0.250</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6</td>
+      <td>6</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>281442</th>
+      <td>lars-unnerstall</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2304</td>
+      <td>32</td>
+      <td>0.000</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+      <td>6</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>237746</th>
+      <td>ryan-nelsen</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1942</td>
+      <td>44</td>
+      <td>0.250</td>
+      <td>14</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6</td>
+      <td>6</td>
+      <td>6</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[114]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#see percentage of right predictions</span>
+<span class="n">correct</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Data_Testing</span><span class="p">[</span><span class="n">Data_Testing</span><span class="p">[</span><span class="s1">&#39;raterScale&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">Data_Testing</span><span class="p">[</span><span class="s1">&#39;predictions&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">correct</span><span class="p">)</span>
+<span class="n">percCorrect</span> <span class="o">=</span> <span class="n">A</span><span class="o">/</span><span class="n">Data_Testing</span><span class="p">[</span><span class="s1">&#39;raterScale&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
+<span class="n">percCorrect</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[114]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0.3731789366464289</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>There is no change in accuracy from changing the input parameters, but maybe if we change the n_estimators...</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Initialize</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Re-Initialize Classifier</span>
 <span class="n">forest</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span> <span class="o">=</span> <span class="mi">500</span><span class="p">)</span>
 
 <span class="c1"># Fit the training data and create the decision trees</span>
-<span class="n">forest</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trainArr</span><span class="p">,</span><span class="n">trainRes_1</span><span class="p">)</span>
+<span class="n">forest</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trainArr2</span><span class="p">,</span><span class="n">trainRes_2</span><span class="p">)</span>
 
 <span class="c1"># Take the same decision trees and run it on the test data</span>
-<span class="n">Data_Testing</span> <span class="o">=</span> <span class="n">Data_Simple2</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">Input_Data_Testing</span> <span class="o">=</span> <span class="n">Data_Testing</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">exclude</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">testArr</span> <span class="o">=</span> <span class="n">Input_Data_Testing</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
-<span class="n">results2</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">testArr</span><span class="p">)</span>
+<span class="n">results3</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">testArr2</span><span class="p">)</span>
 
-<span class="n">Data_Testing</span><span class="p">[</span><span class="s1">&#39;predictions2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results2</span>
+<span class="n">Data_Testing</span><span class="p">[</span><span class="s1">&#39;predictions3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results3</span>
 <span class="n">Data_Testing</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
