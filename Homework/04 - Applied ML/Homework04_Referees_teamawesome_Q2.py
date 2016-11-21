@@ -3,7 +3,7 @@
 
 # # I. Setting up the Problem
 
-# In[2]:
+# In[93]:
 
 import pandas as pd
 import numpy as np
@@ -12,7 +12,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier 
 
 
-# In[3]:
+# In[94]:
 
 filename ="CrowdstormingDataJuly1st.csv"
 Data = pd.read_csv(filename)
@@ -20,12 +20,12 @@ Data = pd.read_csv(filename)
 
 # ### 1) Peeking into the Data
 
-# In[4]:
+# In[95]:
 
 Data.ix[:10,:13]
 
 
-# In[5]:
+# In[96]:
 
 #Data.ix[:10,13:28]
 
@@ -34,7 +34,7 @@ Data.ix[:10,:13]
 
 # ### 1) Keep only players that have a Rater Image
 
-# In[6]:
+# In[97]:
 
 # 1) Remove the players without rater 1 / 2 rating because we won't be 
 # able to train or test the values (this can be done as bonus later)
@@ -52,14 +52,14 @@ Data_hasImage = Data[pd.notnull(Data['photoID'])]
 # Indeed, what if for a player, rater1 = 0.0 and rater2 = 0.75 ?
 # It would not make a lot of sense, or at least we would know our model is not viable !
 
-# In[15]:
+# In[103]:
 
 Data_hasImage['mean_rater']=(Data_hasImage['rater1']+Data_hasImage['rater2'])/2
 
 
 # Let's now disaggregate the games:
 
-# In[13]:
+# In[99]:
 
 game_counter = 0
 game_total_number = sum(Data_hasImage['games'])
@@ -109,7 +109,7 @@ Data_OneGamePerRow
 
 # ### 3) Create the Training and Testing Datframes with only select data
 
-# In[52]:
+# In[100]:
 
 # Removing columns that we do not need
 Data_Simple1 = Data_hasImage[['playerShort', 'games', 'yellowCards', 'yellowReds', 'redCards',
@@ -122,14 +122,14 @@ Data_Simple1 = Data_hasImage[['playerShort', 'games', 'yellowCards', 'yellowReds
 #Data_Testing = Data_Simple1.loc[~Data_Simple1.index.isin(Data_Training.index)]
 
 
-# In[53]:
+# In[101]:
 
 Data_Simple1
 
 
 # We need to aggregate the information about referees and group the result by soccer player. It means that each line will correspond to a soccer player, with the sum of all the cards he got, and we won't know anymore who gaves the cards.
 
-# In[62]:
+# In[102]:
 
 # Group by player and do the sum of every column, except the numberof game and mean_rater that we need to move away during the calculation
 Data_aggregated = Data_hasImage.drop(['refNum', 'refCountry'], 1)
@@ -138,6 +138,22 @@ Data_aggregated = Data_aggregated.groupby('playerShort')['yellowCards', 'yellowR
 #Data_aggregated.set_index('playerShort')
 #Data_aggregated['skin_color'] = Data_hasImage['mean_rater']
 #Data_aggregated['games'] = Data_hasImage['games']
+Data_aggregated = Data_aggregated.reset_index()
+#Data_aggregated = Data_aggregated.set_index('playerShort')
+#Data_hasImage_indexedByPlayer = Data_hasImage.set_index('playerShort')
+#Data_aggregated['skinColor'] = Data_hasImage_indexedByPlayer['mean_rater']
+#Data_aggregated
+#Data_hasImage_indexedByPlayer
+#Data_aggregated
+Data_aggregated
+
+
+# In[104]:
+
+# Take information of number of games and skin color for each player
+Data_nbGames_skinColor = Data_hasImage.drop_duplicates(subset='playerShort')
+Data_aggregated['skinColor'] = Data_nbGames_skinColor['mean_rater']
+Data_aggregated['numberOfGames'] = Data_nbGames_skinColor['games']
 Data_aggregated
 
 
