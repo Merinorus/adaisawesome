@@ -3,7 +3,7 @@
 
 # # I. Setting up the Problem
 
-# In[ ]:
+# In[1]:
 
 import pandas as pd
 import numpy as np
@@ -27,16 +27,16 @@ Data = pd.read_csv(filename)
 Data.ix[:10,:13]
 
 
-# In[4]:
+# In[24]:
 
-#Data.ix[:10,13:28]
+Data.ix[:10,13:28]
 
 
 # # II. Preparing the training & test data : Unique Game Row version
 
 # ### 1) Keep only players that have a Rater Image
 
-# In[4]:
+# In[5]:
 
 # 1) Remove the players without rater 1 / 2 rating because we won't be 
 # able to train or test the values (this can be done as bonus later)
@@ -54,14 +54,14 @@ Data_hasImage = Data[pd.notnull(Data['photoID'])]
 # Indeed, what if for a player, rater1 = 0.0 and rater2 = 0.75 ?
 # It would not make a lot of sense, or at least we would know our model is not viable !
 
-# In[5]:
+# In[6]:
 
 Data_hasImage['mean_rater']=(Data_hasImage['rater1']+Data_hasImage['rater2'])/2
 
 
 # Let's now disaggregate the games:
 
-# In[6]:
+# In[7]:
 
 game_counter = 0
 game_total_number = sum(Data_hasImage['games'])
@@ -111,11 +111,11 @@ Data_OneGamePerRow
 
 # ### 3) Create the Training and Testing Datframes with only select data
 
-# In[70]:
+# In[34]:
 
 # Removing columns that we do not need
 Data_Simple1 = Data_OneGamePerRow[['playerShort', 'yellowCards', 'yellowReds', 'redCards',
-                              'refNum', 'refCountry', 'mean_rater', 'games']]
+                              'refNum', 'refCountry', 'games', 'position', 'mean_rater']]
 
 # Take a random 80% sample of the Data for the Training Sample
 #Data_Training = Data_Simple1.sample(frac=0.8)
@@ -124,29 +124,89 @@ Data_Simple1 = Data_OneGamePerRow[['playerShort', 'yellowCards', 'yellowReds', '
 #Data_Testing = Data_Simple1.loc[~Data_Simple1.index.isin(Data_Training.index)]
 
 
-# In[71]:
+# In[35]:
 
 Data_Simple1
 
 
-# In[73]:
+# In[36]:
 
 #find proportion of yellow & red cards to games
 Data_Simple1['fractionYellow'] = Data_Simple1['yellowCards']/Data_Simple1['games']
 Data_Simple1['fractionYellowRed'] = Data_Simple1['yellowReds']/Data_Simple1['games']
 Data_Simple1['fractionRed'] = Data_Simple1['redCards']/Data_Simple1['games']
-Data_Simple1
+Data_Simple2 = Data_Simple1[['playerShort', 'fractionYellow', 'fractionYellowRed', 'fractionRed',
+                              'refNum', 'refCountry', 'games', 'position', 'mean_rater']]
+Data_Simple2
 
 
-# In[74]:
+# In[81]:
+
+allpositions = (Data_Simple2['position'])
+unique_pos = set(allpositions)
+unique_pos_list = list(unique_pos)
+
+unique_pos_list
+
+
+# In[89]:
+
+# we must convert players positions into proxy numbers (floats) to run random forest
+position_proxy = []
+A = len(allpositions)
+for i in range (0,A):
+        if allpositions[i] == 'NaN':
+            position_proxy.append(0);
+        elif allpositions[i] == 'Center Midfielder':
+            position_proxy.append(1);
+        elif allpositions[i] == 'Attacking Midfielder':
+            position_proxy.append(2);
+        elif allpositions[i] == 'Goalkeeper':
+            position_proxy.append(3);
+        elif allpositions[i] == 'Right Winger':
+            position_proxy.append(4);
+        elif allpositions[i] == 'Left Winger':
+            position_proxy.append(5);
+        elif allpositions[i] == 'Center Forward':
+            position_proxy.append(6);
+        elif allpositions[i] == 'Right Fullback':
+            position_proxy.append(7);
+        elif allpositions[i] == 'Right Midfielder':
+            position_proxy.append(8);
+        elif allpositions[i] == 'Defensive Midfielder':
+            position_proxy.append(9);
+        elif allpositions[i] == 'Center Back':
+            position_proxy.append(10);
+        elif allpositions[i] == 'Left Fullback':
+            position_proxy.append(11);
+        elif allpositions[i] == 'Left Midfielder':
+            position_proxy.append(12);
+        else:
+            position_proxy.append(99);
+
+
+       
+
+
+
+
+# In[91]:
+
+Data_Simple2['position_proxy'] = position_proxy
+Data_Simple3 = Data_Simple2[['playerShort', 'fractionYellow', 'fractionYellowRed', 'fractionRed',
+                              'refNum', 'refCountry', 'games', 'position_proxy', 'mean_rater']]
+Data_Simple3.head()
+
+
+# In[92]:
 
 colRate = ['mean_rater']
-Col_Rating = Data_Simple1[colRate].values
+Col_Rating = Data_Simple3[colRate].values
 Ratings_Scale = []; 
 Col_Rating
 
 
-# In[75]:
+# In[93]:
 
 # Must now convert this continuous scale into a categorical one, with 20 categories
 A = len(Col_Rating)
@@ -194,35 +254,36 @@ for i in range (0,A):
     else:
         Ratings_Scale.append(99);
         
-Data_Simple1['raterScale'] = Ratings_Scale
-Data_Simple1.head()
+Data_Simple3['raterScale'] = Ratings_Scale
+Data_Simple3.head()
 
 ## Some of the values in trainRes_1 are larger than one! We must delete them from the simple data set to avoid errors in the training process.
 
 
-# In[76]:
+# In[94]:
 
 # drop values on scale which are equal to 99
-Data_Simple2 = Data_Simple1[Data_Simple1.raterScale != 99]
-Data_Simple2.dropna(axis=0)
-Data_Simple2
+Data_Simple4 = Data_Simple3[Data_Simple3.raterScale != 99]
+Data_Simple5 = Data_Simple4[Data_Simple4.position_proxy != 99]
+Data_Simple5.dropna(axis=0)
+Data_Simple5
 
 
 # # II. Preparing the training & test data : Fraction version
 
 # ### 1) Create the Training and Testing Datframes with only select data
 
-# In[101]:
+# In[95]:
 
 #create test and training matrix
 
-cols = ['games', 'fractionYellow', 'fractionYellowRed', 'fractionRed', 'refNum', 'refCountry']
-exclude = ['raterScale','mean_rater', 'playerShort', 'yellowCards','yellowReds','redCards', 'games']
+cols = ['games', 'fractionYellow', 'fractionYellowRed', 'fractionRed', 'refNum', 'refCountry', 'position_proxy']
+exclude = ['raterScale','mean_rater', 'playerShort']
 colsRes1 = ['raterScale']
 
 
 # Take a random 80% sample of the Data for the Training Sample
-Data_Training = Data_Simple2.sample(frac=0.8)
+Data_Training = Data_Simple5.sample(frac=0.8)
 
 # Need to split this into the data and the results columns
 # http://stackoverflow.com/questions/34246336/python-randomforest-unknown-label-error
@@ -233,7 +294,7 @@ Results_Data_Training = Data_Training[colsRes1]
 Input_Data_Training.head()
 
 
-# In[14]:
+# In[15]:
 
 # Take a random 20% sample of the Data for the Testing Sample
 #Data_Testing = Data_Simple1.loc[~Data_Simple1.index.isin(Data_Training.index)]
@@ -244,7 +305,7 @@ Input_Data_Training.head()
 #Results_Data_Testing = list(Data_Testing.raterAvg.values)
 
 
-# In[102]:
+# In[96]:
 
 # Need to make arrays
 # http://www.analyticbridge.com/profiles/blogs/random-forest-in-python
@@ -256,7 +317,7 @@ trainArr
 
 # # III. Random Forest
 
-# In[103]:
+# In[97]:
 
 #Initialize
 forest = RandomForestClassifier(n_estimators = 100)
@@ -265,7 +326,7 @@ forest = RandomForestClassifier(n_estimators = 100)
 forest = forest.fit(trainArr,trainRes_1)
 
 # Take the same decision trees and run it on the test data
-Data_Testing = Data_Simple2.sample(frac=0.2)
+Data_Testing = Data_Simple5.sample(frac=0.2)
 Input_Data_Testing = Data_Testing.drop(exclude, axis=1)
 testArr = Input_Data_Testing.as_matrix()
 results = forest.predict(testArr)
@@ -274,7 +335,7 @@ Data_Testing['predictions'] = results
 Data_Testing.head()
 
 
-# In[104]:
+# In[98]:
 
 #see percentage of right predictions
 correct = list(Data_Testing[Data_Testing['raterScale'] == Data_Testing['predictions']].index)
@@ -283,9 +344,9 @@ percCorrect = A/Data_Testing['raterScale'].size
 percCorrect
 
 
-# The first attempt resulted in a 37% success of predicions with n_estimatos = 100. 
+# The first attempt resulted in a 69,4% success of predicions with n_estimatos = 100. 
 
-# In[95]:
+# In[99]:
 
 #See features importance
 importances = forest.feature_importances_
@@ -307,13 +368,13 @@ plt.xlim([-1, trainArr.shape[1]])
 plt.show()
 
 
-# Proportion of YellowReds and Reds seem to be irrelevant to the classifier. Instead, it is the referee number that is the most important feature, followed by his country and proportion of yellow cards. This is not what we want, as we want to be able to predict the ratings from number of red and yellow cards, so we will drop information regarding the referee for the next step.
+# redCountry, Games, Position, and redNum are the most important features. We could therefore drop some features already, such as fraction yellow and fraction yellowRed & fraction Red. Let us delete all cards and see if we can better predict this. 
 
-# In[ ]:
+# In[110]:
 
 #make necessary changes to parameters
-exclude2 = ['refNum', 'refCountry','raterScale','mean_rater', 'playerShort', 'yellowCards','yellowReds','redCards', 'games']
-exclude3 = ['refNum', 'refCountry','raterScale','mean_rater', 'playerShort', 'yellowCards','yellowReds','redCards', 'games', 'predictions']
+exclude2 = ['raterScale','mean_rater', 'playerShort', 'fractionYellowRed', 'fractionRed', 'fractionYellow']
+exclude3 = ['raterScale','mean_rater', 'playerShort', 'fractionYellowRed', 'fractionRed', 'fractionYellow', 'predictions', 'predictions2']
 Input_Data_Training2 = Data_Training.drop(exclude2, axis=1)
 trainArr2 = Input_Data_Training2.as_matrix() #training array
 trainRes_2 = Data_Training['raterScale'].values
@@ -325,7 +386,7 @@ testArr2 = Input_Data_Testing2.as_matrix()
 testArr2
 
 
-# In[113]:
+# In[111]:
 
 #Re-Initialize Classifier
 forest = RandomForestClassifier(n_estimators = 100)
@@ -340,31 +401,130 @@ Data_Testing['predictions2'] = results2
 Data_Testing.head()
 
 
-# In[114]:
+# In[112]:
 
 #see percentage of right predictions
-correct = list(Data_Testing[Data_Testing['raterScale'] == Data_Testing['predictions']].index)
+correct = list(Data_Testing[Data_Testing['raterScale'] == Data_Testing['predictions2']].index)
 A = len(correct)
 percCorrect = A/Data_Testing['raterScale'].size
 percCorrect
 
 
-# There is no change in accuracy from changing the input parameters, but maybe if we change the n_estimators...
+# Accuracy goes down to 67.3% from changing the input parameters...
 
-# In[ ]:
+# In[113]:
+
+#See features importance
+importances = forest.feature_importances_
+indices = np.argsort(importances)[::-1]
+
+# Print the feature ranking
+print("Feature ranking:")
+
+for f in range(trainArr2.shape[1]):
+    print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
+
+# Plot the feature importances of the forest
+plt.figure()
+plt.title("Feature importances")
+plt.bar(range(trainArr2.shape[1]), importances[indices],
+       color="b", align="center")
+plt.xticks(range(trainArr2.shape[1]), indices)
+plt.xlim([-1, trainArr2.shape[1]])
+plt.show()
+
+
+# The most important feature in this case is refNum, games, refCountry, position_proxy
+
+# Alternatively we can see what happens when we only use the number of cards...
+
+# In[153]:
+
+exclude4 = ['raterScale','mean_rater', 'playerShort', 'refNum', 'refCountry', 'games', 'position_proxy']
+exclude5 = ['raterScale','mean_rater', 'playerShort', 'refNum', 'refCountry', 'games', 'position_proxy', 'predictions', 'predictions2']
+Input_Data_Training3 = Data_Training.drop(exclude4, axis=1)
+trainArr3 = Input_Data_Training3.as_matrix() #training array
+trainRes_3 = Data_Training['raterScale'].values
+
+
+Input_Data_Testing3 = Data_Testing.drop(exclude5, axis=1)
+testArr3 = Input_Data_Testing3.as_matrix()
+
+testArr3
+
+
+# In[154]:
 
 #Re-Initialize Classifier
-forest = RandomForestClassifier(n_estimators = 500)
+forest = RandomForestClassifier(n_estimators = 100)
 
 # Fit the training data and create the decision trees
-forest = forest.fit(trainArr2,trainRes_2)
+forest = forest.fit(trainArr3,trainRes_3)
 
 # Take the same decision trees and run it on the test data
-results3 = forest.predict(testArr2)
+results3 = forest.predict(testArr3)
 
 Data_Testing['predictions3'] = results3
 Data_Testing.head()
 
+
+# In[155]:
+
+#see percentage of right predictions
+correct = list(Data_Testing[Data_Testing['raterScale'] == Data_Testing['predictions3']].index)
+A = len(correct)
+percCorrect = A/Data_Testing['raterScale'].size
+percCorrect
+
+
+# The percentage of correct ratings drops to 32%...
+
+# BONUS Question: We can try to analyze accuracy across the scale for the three cases above and see if there is bias in any extreme
+
+# In[156]:
+
+# Curve for Test 1 - all variables
+Test1 = [];
+for i in range (0,20):
+    count = list(Data_Testing[Data_Testing['predictions']==i].index)
+    A = len(count)
+    Test1.append(A)
+# Curve for Test 2 - exclude card variables
+Test2 = [];
+for i in range (0,20):
+    count2 = list(Data_Testing[Data_Testing['predictions2']==i].index)
+    B = len(count2)
+    Test2.append(B)
+# Curve for Test 3 - only card variables
+Test3 = [];
+for i in range (0,20):
+    count3 = list(Data_Testing[Data_Testing['predictions3']==i].index)
+    C = len(count3)
+    Test3.append(C)
+# Real Curve
+Test4 = [];
+for i in range (0,20):
+    count4 = list(Data_Testing[Data_Testing['raterScale']==i].index)
+    D = len(count4)
+    Test4.append(D)
+
+
+# In[167]:
+
+import matplotlib.patches as mpatches
+
+X = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+T1 = plt.plot(X, Test1,'b')
+T2 = plt.plot(X, Test2, 'r')
+T3 = plt.plot(X, Test3, 'g')
+T4 = plt.plot(X, Test4, 'y')
+
+plt.ylabel('Count')
+plt.xlabel('Rater Scale')
+plt.show()
+
+
+# The first two models slightly overestimate number of players on the lower end of the scale, while slightly underestimating players on the middle and higher end. Conversely, when using only card numbers, there is a huge bias around the 6-7 values, with a significant overshoot, while completely underestimating other values. 
 
 # In[ ]:
 
