@@ -52,14 +52,14 @@ Data_hasImage = Data[pd.notnull(Data['photoID'])]
 # Indeed, what if for a player, rater1 = 0.0 and rater2 = 0.75 ?
 # It would not make a lot of sense, or at least we would know our model is not viable !
 
-# In[16]:
+# In[15]:
 
 Data_hasImage['mean_rater']=(Data_hasImage['rater1']+Data_hasImage['rater2'])/2
 
 
 # Let's now disaggregate the games:
 
-# In[37]:
+# In[13]:
 
 game_counter = 0
 game_total_number = sum(Data_hasImage['games'])
@@ -109,100 +109,36 @@ Data_OneGamePerRow
 
 # ### 3) Create the Training and Testing Datframes with only select data
 
-# In[44]:
+# In[52]:
 
 # Removing columns that we do not need
-Data_Simple1 = Data_OneGamePerRow[['playerShort', 'yellowCards', 'yellowReds', 'redCards',
+Data_Simple1 = Data_hasImage[['playerShort', 'games', 'yellowCards', 'yellowReds', 'redCards',
                               'refNum', 'refCountry', 'mean_rater']]
 
 # Take a random 80% sample of the Data for the Training Sample
-Data_Training = Data_Simple1.sample(frac=0.8)
-
-# Take a random 20% sample of the Data for the Testing Sample
-Data_Testing = Data_Simple1.loc[~Data_Simple1.index.isin(Data_Training.index)]
-
-
-# In[45]:
-
-Data_Simple1
-
-
-# # II. Preparing the training & test data : Fraction version
-
-# In[38]:
-
-# 1) Remove the players without rater 1 / 2 rating because we won't be 
-# able to train or test the values (this can be done as bonus later)
-
-Data_hasImage = Data[pd.notnull(Data['photoID'])]
-#Data_hasImage.ix[:10,13:28]
-
-
-# ### 2) Disaggregate the data so each row is 1 game
-
-# In[57]:
-
-#for i in Data.iterrows():
-#    if Data.at[i, 'games'] > 1:
-#        df = Data[i]
-
-
-# In[65]:
-
-# Testing - divide # cards (all types) by # games column
-Data_hasImage['fractionYellow'] = Data_hasImage['yellowCards']/Data_hasImage['games']
-Data_hasImage['fractionYellowRed'] = Data_hasImage['yellowReds']/Data_hasImage['games']
-Data_hasImage['fractionRed'] = Data_hasImage['redCards']/Data_hasImage['games']
-
-# Get the average of the raters
-Data_hasImage['raterAvg'] = (Data_hasImage['rater1']+Data_hasImage['rater2'])/2
-
-#Data_hasImage.head()
-
-
-# ### 3) Create the Training and Testing Datframes with only select data
-
-# In[104]:
-
-# Removing columns that we do not need
-Data_Simple1 = Data_hasImage[['games', 'fractionYellow', 'fractionYellowRed', 'fractionRed',
-                              'refNum', 'refCountry', 'raterAvg']]
-
-#cols = ['playerShort', 'games', 'fractionYellow', 'fractionYellowRed', 'fractionRed',
-cols = ['games', 'fractionYellow', 'fractionYellowRed', 'fractionRed', 'refNum', 'refCountry']
-colsRes = ['raterAvg']
-
-# Take a random 80% sample of the Data for the Training Sample
-Data_Training = Data_Simple1.sample(frac=0.8)
-
-# Need to split this into the data and the results columns
-# http://stackoverflow.com/questions/34246336/python-randomforest-unknown-label-error
-Input_Data_Training = Data_Training.drop(colsRes, axis=1)
-#Results_Data_Training = list(Data_Training.raterAvg.values)
-Results_Data_Training = Data_Training[colsRes]
-
-
-# In[90]:
+#Data_Training = Data_Simple1.sample(frac=0.8)
 
 # Take a random 20% sample of the Data for the Testing Sample
 #Data_Testing = Data_Simple1.loc[~Data_Simple1.index.isin(Data_Training.index)]
 
-# Need to split this into the data and the results columns
-# http://stackoverflow.com/questions/34246336/python-randomforest-unknown-label-error
-#Input_Data_Testing = Data_Testing.drop(colsRes, axis=1)
-#Results_Data_Testing = list(Data_Testing.raterAvg.values)
+
+# In[53]:
+
+Data_Simple1
 
 
-# In[112]:
+# We need to aggregate the information about referees and group the result by soccer player. It means that each line will correspond to a soccer player, with the sum of all the cards he got, and we won't know anymore who gaves the cards.
 
-# Need to make arrays
-# http://www.analyticbridge.com/profiles/blogs/random-forest-in-python
+# In[62]:
 
-trainArr = Input_Data_Training.as_matrix(cols) #training array
-trainRes = Results_Data_Training.as_matrix(colsRes) #training results
-#trainRes = np.asarray(Data_Training['raterAvg'], dtype="|S6")
-
-trainRes
+# Group by player and do the sum of every column, except the numberof game and mean_rater that we need to move away during the calculation
+Data_aggregated = Data_hasImage.drop(['refNum', 'refCountry'], 1)
+Data_aggregated = Data_aggregated.groupby('playerShort')['yellowCards', 'yellowReds', 'redCards'].sum()
+# Put again the information about skin color (mean_rater)
+#Data_aggregated.set_index('playerShort')
+#Data_aggregated['skin_color'] = Data_hasImage['mean_rater']
+#Data_aggregated['games'] = Data_hasImage['games']
+Data_aggregated
 
 
 # # III. Random Forest
