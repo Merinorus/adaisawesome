@@ -67,7 +67,11 @@ Data_aggregated
 
 # # III. Unsupervized machine learning
 
-# The first idea we got is to start an unsupervized learning kept as simple as possible. Let say we only look at the number of cards the players got, and their skin color. Then we would be able to display something that looks like this:
+# The first idea we got is to start an unsupervized learning kept as simple as possible.
+# 
+# We will have to take player position, the three types of cards and the skin color: that makes 5 dimensions to deal with !
+# 
+# Instead, let say we only look at the total number of cards the players got, and their skin color. Then we would be able to display something in 2 dimensions only:
 
 # <img src="resources/axis_assumption.jpg" alt="Drawing" style="width: 600px;"/>
 
@@ -75,9 +79,4 @@ Data_aggregated
 
 # <img src="resources/axis_assumption_clustered.jpg" alt="Drawing" style="width: 600px;"/>
 
-# Again, this is totally hypothetical. So let's give a shot.
-
-# In[ ]:
-
-
-
+# Again, this is totally hypothetical. So let's give it a try.
