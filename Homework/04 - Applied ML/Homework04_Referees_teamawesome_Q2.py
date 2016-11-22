@@ -129,7 +129,7 @@ Data_Simple1
 
 # We need to aggregate the information about referees and group the result by soccer player. It means that each line will correspond to a soccer player, with the sum of all the cards he got, and we won't know anymore who gaves the cards.
 
-# In[13]:
+# In[34]:
 
 # Group by player and do the sum of every column, except the numberof game and mean_rater that we need to move away during the calculation
 Data_aggregated = Data_hasImage.drop(['refNum', 'refCountry'], 1)
@@ -139,32 +139,26 @@ Data_aggregated = Data_aggregated.groupby('playerShort')['games','yellowCards', 
 #Data_aggregated['skin_color'] = Data_hasImage['mean_rater']
 #Data_aggregated['games'] = Data_hasImage['games']
 Data_aggregated = Data_aggregated.reset_index()
-#Data_aggregated = Data_aggregated.set_index('playerShort')
-#Data_hasImage_indexedByPlayer = Data_hasImage.set_index('playerShort')
-#Data_aggregated['skinColor'] = Data_hasImage_indexedByPlayer['mean_rater']
-#Data_aggregated
-#Data_hasImage_indexedByPlayer
-#Data_aggregated
-Data_aggregated
-
-
-# In[12]:
-
-Data_hasImage[Data_hasImage['playerShort'] == 'aaron-lennon']
-
-
-# In[21]:
-
-
-
-
-# In[14]:
 
 # Take information of number of games and skin color for each player
-Data_nbGames_skinColor = Data_hasImage.drop_duplicates(subset='playerShort')
-Data_aggregated['skinColor'] = Data_nbGames_skinColor['mean_rater']
-#Data_aggregated['numberOfGames'] = Data_nbGames_skinColor['games']
+Data_nbGames_skinColor = pd.DataFrame(Data_nbGames_skinColor[['playerShort','mean_rater']])
+Data_aggregated = pd.merge(left=Data_aggregated,right=Data_nbGames_skinColor, how='left', left_on='playerShort', right_on='playerShort')
 Data_aggregated
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+
 
 
 # In[16]:
