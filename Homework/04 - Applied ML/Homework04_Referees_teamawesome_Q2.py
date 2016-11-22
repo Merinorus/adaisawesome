@@ -3,16 +3,17 @@
 
 # # I. Setting up the Problem
 
-# In[55]:
+# In[62]:
 
 import pandas as pd
 import numpy as np
+from IPython.display import Image
 
 # Import the random forest package
 from sklearn.ensemble import RandomForestClassifier 
 
 
-# In[56]:
+# In[48]:
 
 filename ="CrowdstormingDataJuly1st.csv"
 Data = pd.read_csv(filename)
@@ -20,34 +21,33 @@ Data = pd.read_csv(filename)
 
 # ### 1) Peeking into the Data
 
-# In[57]:
+# In[49]:
 
 Data.ix[:10,:13]
 
 
-# In[58]:
+# In[61]:
 
-#Data.ix[:10,13:28]
+Data.ix[:10,13:28]
 
 
 # # II. Preparing data
 
 # ### 1) Keep only players that have a Rater Image
 
-# In[59]:
+# In[51]:
 
-# 1) Remove the players without rater 1 / 2 rating because we won't be 
+# Remove the players without rater 1 / 2 (ie: without photo) because we won't be 
 # able to train or test the values (this can be done as bonus later)
 
 Data_hasImage = Data[pd.notnull(Data['photoID'])]
-#Data_hasImage.ix[:10,13:28]
 
 
 # ### 2) Getting rif of referees and grouping data by soccer player
 
 # We need to aggregate the information about referees and group the result by soccer player. It means that each line will correspond to a soccer player, with the sum of all the cards he got, and we won't know anymore who gaves the cards.
 
-# In[60]:
+# In[54]:
 
 # Group by player and do the sum of every column, except for mean_rater (skin color) that we need to move away during the calculation (we don't want to sum skin color values !)
 Data_aggregated = Data_hasImage.drop(['refNum', 'refCountry'], 1)
@@ -65,20 +65,19 @@ Data_aggregated
 
 
 
-# # III. Random Forest
+# # III. Unsupervized machine learning
 
-# In[110]:
+# The first idea we got is to start an unsupervized learning kept as simple as possible. Let say we only look at the number of cards the players got, and their skin color. Then we would be able to display something that looks like this:
 
-#Initialize
-forest = RandomForestClassifier(n_estimators = 100)
+# <img src="resources/axis_assumption.jpg" alt="Drawing" style="width: 600px;"/>
 
-# Fit the training data and create the decision trees
-forest.fit(trainArr,trainRes)
+# Then, we would try to obtain two clusters that might lead to really simple conclusion such as "dark people slightly tend to get more cards":
 
-# Take the same decision trees and run it on the test data
-#testArr = test.as_matrix(cols)
-#results = rf.predict(testArr)
+# <img src="resources/axis_assumption_clustered.jpg" alt="Drawing" style="width: 600px;"/>
 
-#test['predictions'] = results
-#test.head()
+# Again, this is totally hypothetical. So let's give a shot.
+
+# In[ ]:
+
+
 
