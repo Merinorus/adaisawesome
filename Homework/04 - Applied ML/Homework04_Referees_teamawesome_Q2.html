@@ -13085,13 +13085,17 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[67]:</div>
+<div class="prompt input_prompt">In&nbsp;[77]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Input</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">Data_aggregated</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;playerShort&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">x</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+
+<span class="c1"># We have to convert every columns to floats, to be able to train our model</span>
+<span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Center Back&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Attacking Midfielder&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;Right Midfielder&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;Center Midfielder&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;Defensive Midfielder&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;Goalkeeper&#39;</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;Left Fullback&#39;</span><span class="p">:</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;Left Midfielder&#39;</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;Right Fullback&#39;</span><span class="p">:</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;Center Forward&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Left Winger&#39;</span><span class="p">:</span><span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;Right Winger&#39;</span><span class="p">:</span><span class="mi">12</span><span class="p">}</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s1">&#39;position&#39;</span><span class="p">:</span> <span class="n">mapping</span><span class="p">})</span>
+<span class="n">x</span>
 </pre></div>
 
 </div>
@@ -13102,7 +13106,7 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[67]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[77]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -13121,7 +13125,7 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
   <tbody>
     <tr>
       <th>0</th>
-      <td>Center Back</td>
+      <td>1</td>
       <td>654</td>
       <td>19</td>
       <td>0</td>
@@ -13130,7 +13134,7 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
     </tr>
     <tr>
       <th>1</th>
-      <td>Attacking Midfielder</td>
+      <td>2</td>
       <td>336</td>
       <td>42</td>
       <td>0</td>
@@ -13139,7 +13143,7 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
     </tr>
     <tr>
       <th>2</th>
-      <td>Right Midfielder</td>
+      <td>3</td>
       <td>412</td>
       <td>11</td>
       <td>0</td>
@@ -13148,7 +13152,7 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
     </tr>
     <tr>
       <th>3</th>
-      <td>Center Midfielder</td>
+      <td>4</td>
       <td>260</td>
       <td>31</td>
       <td>0</td>
@@ -13157,15 +13161,520 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
     </tr>
     <tr>
       <th>4</th>
-      <td>Center Back</td>
+      <td>1</td>
       <td>124</td>
       <td>8</td>
       <td>4</td>
       <td>2</td>
       <td>0.250</td>
     </tr>
+    <tr>
+      <th>5</th>
+      <td>3</td>
+      <td>97</td>
+      <td>11</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.750</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>6</td>
+      <td>24</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.875</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>6</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.875</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>5</td>
+      <td>121</td>
+      <td>21</td>
+      <td>0</td>
+      <td>2</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>7</td>
+      <td>50</td>
+      <td>3</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.875</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>4</td>
+      <td>36</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>5</td>
+      <td>246</td>
+      <td>70</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0.375</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>4</td>
+      <td>208</td>
+      <td>24</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0.750</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>5</td>
+      <td>211</td>
+      <td>66</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>6</td>
+      <td>206</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>8</td>
+      <td>131</td>
+      <td>21</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>8</td>
+      <td>339</td>
+      <td>21</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>1</td>
+      <td>82</td>
+      <td>14</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>9</td>
+      <td>131</td>
+      <td>29</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>10</td>
+      <td>182</td>
+      <td>18</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>6</td>
+      <td>44</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>8</td>
+      <td>209</td>
+      <td>23</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>1</td>
+      <td>286</td>
+      <td>59</td>
+      <td>2</td>
+      <td>3</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>10</td>
+      <td>178</td>
+      <td>22</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>11</td>
+      <td>453</td>
+      <td>90</td>
+      <td>2</td>
+      <td>3</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>10</td>
+      <td>294</td>
+      <td>16</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>6</td>
+      <td>29</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>8</td>
+      <td>373</td>
+      <td>58</td>
+      <td>1</td>
+      <td>3</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>5</td>
+      <td>66</td>
+      <td>11</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>10</td>
+      <td>322</td>
+      <td>68</td>
+      <td>3</td>
+      <td>4</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1403</th>
+      <td>8</td>
+      <td>224</td>
+      <td>23</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>1404</th>
+      <td>10</td>
+      <td>166</td>
+      <td>26</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>1405</th>
+      <td>2</td>
+      <td>149</td>
+      <td>20</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0.625</td>
+    </tr>
+    <tr>
+      <th>1406</th>
+      <td>5</td>
+      <td>203</td>
+      <td>29</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>1407</th>
+      <td>10</td>
+      <td>167</td>
+      <td>10</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.750</td>
+    </tr>
+    <tr>
+      <th>1408</th>
+      <td>1</td>
+      <td>49</td>
+      <td>8</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>1409</th>
+      <td>11</td>
+      <td>181</td>
+      <td>15</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>1410</th>
+      <td>7</td>
+      <td>54</td>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0.625</td>
+    </tr>
+    <tr>
+      <th>1411</th>
+      <td>5</td>
+      <td>448</td>
+      <td>82</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1.000</td>
+    </tr>
+    <tr>
+      <th>1412</th>
+      <td>12</td>
+      <td>269</td>
+      <td>18</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>1413</th>
+      <td>2</td>
+      <td>341</td>
+      <td>31</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>1414</th>
+      <td>5</td>
+      <td>372</td>
+      <td>86</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>1415</th>
+      <td>2</td>
+      <td>67</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>1416</th>
+      <td>2</td>
+      <td>456</td>
+      <td>31</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>1417</th>
+      <td>2</td>
+      <td>173</td>
+      <td>32</td>
+      <td>2</td>
+      <td>3</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>1418</th>
+      <td>1</td>
+      <td>252</td>
+      <td>25</td>
+      <td>4</td>
+      <td>2</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <th>1419</th>
+      <td>10</td>
+      <td>159</td>
+      <td>15</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.625</td>
+    </tr>
+    <tr>
+      <th>1420</th>
+      <td>2</td>
+      <td>131</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>1421</th>
+      <td>9</td>
+      <td>297</td>
+      <td>26</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>1422</th>
+      <td>5</td>
+      <td>339</td>
+      <td>42</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>1423</th>
+      <td>1</td>
+      <td>169</td>
+      <td>28</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>1424</th>
+      <td>9</td>
+      <td>127</td>
+      <td>8</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>1425</th>
+      <td>6</td>
+      <td>111</td>
+      <td>10</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>1426</th>
+      <td>10</td>
+      <td>607</td>
+      <td>94</td>
+      <td>4</td>
+      <td>6</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>1427</th>
+      <td>2</td>
+      <td>361</td>
+      <td>53</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <th>1428</th>
+      <td>11</td>
+      <td>392</td>
+      <td>44</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <th>1429</th>
+      <td>8</td>
+      <td>142</td>
+      <td>12</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>1430</th>
+      <td>1</td>
+      <td>395</td>
+      <td>46</td>
+      <td>2</td>
+      <td>6</td>
+      <td>0.875</td>
+    </tr>
+    <tr>
+      <th>1431</th>
+      <td>6</td>
+      <td>47</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>1432</th>
+      <td>5</td>
+      <td>160</td>
+      <td>22</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000</td>
+    </tr>
   </tbody>
 </table>
+<p>1433 rows × 6 columns</p>
 </div>
 </div>
 
@@ -13228,6 +13737,72 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
   </tbody>
 </table>
 </div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[78]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create a colormap for target clusters (only 2)</span>
+<span class="n">colormap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;lime&#39;</span><span class="p">])</span>
+
+<span class="c1"># K Means Cluster</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[78]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>KMeans(copy_x=True, init=&#39;k-means++&#39;, max_iter=300, n_clusters=2, n_init=10,
+    n_jobs=1, precompute_distances=&#39;auto&#39;, random_state=None, tol=0.0001,
+    verbose=0)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[79]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We got a model with two clusters</span>
+<span class="n">model</span><span class="o">.</span><span class="n">labels_</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[79]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([1, 1, 1, ..., 1, 0, 0])</pre>
 </div>
 
 </div>

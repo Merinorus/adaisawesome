@@ -88,12 +88,16 @@ Data_aggregated
 # We try to use a K means clustering methode to obtain 2 distinct clusters, with the help of this website:
 # http://stamfordresearch.com/k-means-clustering-in-python/
 
-# In[67]:
+# In[77]:
 
 # Input
 x = Data_aggregated
 x = x.drop(['playerShort'], 1)
-x.head()
+
+# We have to convert every columns to floats, to be able to train our model
+mapping = {'Center Back': 1, 'Attacking Midfielder': 2, 'Right Midfielder': 3, 'Center Midfielder': 4, 'Defensive Midfielder': 5, 'Goalkeeper':6, 'Left Fullback':7, 'Left Midfielder':8, 'Right Fullback':9, 'Center Forward':10, 'Left Winger':11, 'Right Winger':12}
+x = x.replace({'position': mapping})
+x
 
 
 # In[68]:
@@ -101,4 +105,20 @@ x.head()
 # Output with the same length as the input, that will contains the associated cluster
 y = pd.DataFrame(index=x.index, columns=['targetCluster'])
 y.head()
+
+
+# In[78]:
+
+# Create a colormap for target clusters (only 2)
+colormap = np.array(['red', 'lime'])
+
+# K Means Cluster
+model = KMeans(n_clusters=2)
+model.fit(x)
+
+
+# In[79]:
+
+# We got a model with two clusters
+model.labels_
 
