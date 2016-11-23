@@ -11757,7 +11757,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[62]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -11775,7 +11775,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[48]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">filename</span> <span class="o">=</span><span class="s2">&quot;CrowdstormingDataJuly1st.csv&quot;</span>
@@ -11798,7 +11798,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[49]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">ix</span><span class="p">[:</span><span class="mi">10</span><span class="p">,:</span><span class="mi">13</span><span class="p">]</span>
@@ -11812,7 +11812,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[49]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[32]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12025,7 +12025,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[61]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">ix</span><span class="p">[:</span><span class="mi">10</span><span class="p">,</span><span class="mi">13</span><span class="p">:</span><span class="mi">28</span><span class="p">]</span>
@@ -12039,7 +12039,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[61]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[33]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12294,7 +12294,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Remove the players without rater 1 / 2 (ie: without photo) because we won&#39;t be </span>
@@ -12329,7 +12329,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="prompt input_prompt">In&nbsp;[49]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Group by player and do the sum of every column, except for mean_rater (skin color) that we need to move away during the calculation (we don&#39;t want to sum skin color values !)</span>
@@ -12338,8 +12338,13 @@ div#notebook {
 <span class="n">Data_aggregated</span> <span class="o">=</span> <span class="n">Data_aggregated</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
 <span class="c1"># Take information of skin color for each player</span>
-<span class="n">Data_nbGames_skinColor</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Data_nbGames_skinColor</span><span class="p">[[</span><span class="s1">&#39;playerShort&#39;</span><span class="p">,</span><span class="s1">&#39;mean_rater&#39;</span><span class="p">]])</span>
+<span class="n">Data_nbGames_skinColor</span> <span class="o">=</span> <span class="n">Data_hasImage</span>
+<span class="n">Data_nbGames_skinColor</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s1">&#39;playerShort&#39;</span><span class="p">)</span>
+<span class="n">Data_nbGames_skinColor</span><span class="p">[</span><span class="s1">&#39;skinColor&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">Data_nbGames_skinColor</span><span class="p">[</span><span class="s1">&#39;rater1&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">Data_hasImage</span><span class="p">[</span><span class="s1">&#39;rater2&#39;</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">Data_nbGames_skinColor</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Data_nbGames_skinColor</span><span class="p">[[</span><span class="s1">&#39;playerShort&#39;</span><span class="p">,</span><span class="s1">&#39;skinColor&#39;</span><span class="p">]])</span>
 <span class="n">Data_aggregated</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="n">Data_aggregated</span><span class="p">,</span><span class="n">right</span><span class="o">=</span><span class="n">Data_nbGames_skinColor</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;playerShort&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;playerShort&#39;</span><span class="p">)</span>
+<span class="n">Data_aggregated</span> <span class="o">=</span> <span class="n">Data_aggregated</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s1">&#39;playerShort&#39;</span><span class="p">)</span>
+<span class="n">Data_aggregated</span> <span class="o">=</span> <span class="n">Data_aggregated</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">Data_aggregated</span>
 </pre></div>
 
@@ -12351,7 +12356,18 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[54]:</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>C:\Users\merin\Anaconda3\lib\site-packages\ipykernel\__main__.py:9: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[49]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12365,7 +12381,7 @@ div#notebook {
       <th>yellowCards</th>
       <th>yellowReds</th>
       <th>redCards</th>
-      <th>mean_rater</th>
+      <th>skinColor</th>
     </tr>
   </thead>
   <tbody>
@@ -13060,7 +13076,9 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Again, this is totally hypothetical. So let's give it a try.</p>
+<p>Again, this is totally hypothetical. So let's give it a try.
+We try to use a K means clustering methode to obtain 2 distinct clusters, with the help of this website:
+<a href="http://stamfordresearch.com/k-means-clustering-in-python/">http://stamfordresearch.com/k-means-clustering-in-python/</a></p>
 
 </div>
 </div>

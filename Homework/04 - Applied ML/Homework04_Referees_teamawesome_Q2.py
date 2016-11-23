@@ -3,7 +3,7 @@
 
 # # I. Setting up the Problem
 
-# In[62]:
+# In[30]:
 
 import pandas as pd
 import numpy as np
@@ -13,7 +13,7 @@ from IPython.display import Image
 from sklearn.ensemble import RandomForestClassifier 
 
 
-# In[48]:
+# In[31]:
 
 filename ="CrowdstormingDataJuly1st.csv"
 Data = pd.read_csv(filename)
@@ -21,12 +21,12 @@ Data = pd.read_csv(filename)
 
 # ### 1) Peeking into the Data
 
-# In[49]:
+# In[32]:
 
 Data.ix[:10,:13]
 
 
-# In[61]:
+# In[33]:
 
 Data.ix[:10,13:28]
 
@@ -35,7 +35,7 @@ Data.ix[:10,13:28]
 
 # ### 1) Keep only players that have a Rater Image
 
-# In[51]:
+# In[34]:
 
 # Remove the players without rater 1 / 2 (ie: without photo) because we won't be 
 # able to train or test the values (this can be done as bonus later)
@@ -47,7 +47,7 @@ Data_hasImage = Data[pd.notnull(Data['photoID'])]
 
 # We need to aggregate the information about referees and group the result by soccer player. It means that each line will correspond to a soccer player, with the sum of all the cards he got, and we won't know anymore who gaves the cards.
 
-# In[54]:
+# In[49]:
 
 # Group by player and do the sum of every column, except for mean_rater (skin color) that we need to move away during the calculation (we don't want to sum skin color values !)
 Data_aggregated = Data_hasImage.drop(['refNum', 'refCountry'], 1)
@@ -55,8 +55,13 @@ Data_aggregated = Data_aggregated.groupby(['playerShort', 'position'])['games','
 Data_aggregated = Data_aggregated.reset_index()
 
 # Take information of skin color for each player
-Data_nbGames_skinColor = pd.DataFrame(Data_nbGames_skinColor[['playerShort','mean_rater']])
+Data_nbGames_skinColor = Data_hasImage
+Data_nbGames_skinColor.drop_duplicates('playerShort')
+Data_nbGames_skinColor['skinColor']=(Data_nbGames_skinColor['rater1']+Data_hasImage['rater2'])/2
+Data_nbGames_skinColor = pd.DataFrame(Data_nbGames_skinColor[['playerShort','skinColor']])
 Data_aggregated = pd.merge(left=Data_aggregated,right=Data_nbGames_skinColor, how='left', left_on='playerShort', right_on='playerShort')
+Data_aggregated = Data_aggregated.drop_duplicates('playerShort')
+Data_aggregated = Data_aggregated.reset_index(drop=True)
 Data_aggregated
 
 
@@ -80,3 +85,5 @@ Data_aggregated
 # <img src="resources/axis_assumption_clustered.jpg" alt="Drawing" style="width: 600px;"/>
 
 # Again, this is totally hypothetical. So let's give it a try.
+# We try to use a K means clustering methode to obtain 2 distinct clusters, with the help of this website:
+# http://stamfordresearch.com/k-means-clustering-in-python/
