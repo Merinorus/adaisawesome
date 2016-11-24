@@ -3,7 +3,7 @@
 
 # # I. Setting up the Problem
 
-# In[83]:
+# In[111]:
 
 import pandas as pd
 import numpy as np
@@ -16,7 +16,7 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
 
-# In[84]:
+# In[112]:
 
 filename ="CrowdstormingDataJuly1st.csv"
 Data = pd.read_csv(filename)
@@ -24,12 +24,12 @@ Data = pd.read_csv(filename)
 
 # ### 1) Peeking into the Data
 
-# In[85]:
+# In[113]:
 
 Data.ix[:10,:13]
 
 
-# In[86]:
+# In[114]:
 
 Data.ix[:10,13:28]
 
@@ -38,7 +38,7 @@ Data.ix[:10,13:28]
 
 # ### 1) Keep only players that have a Rater Image
 
-# In[87]:
+# In[115]:
 
 # Remove the players without rater 1 / 2 (ie: without photo) because we won't be 
 # able to train or test the values (this can be done as bonus later)
@@ -50,7 +50,7 @@ Data_hasImage = Data[pd.notnull(Data['photoID'])]
 
 # We need to aggregate the information about referees and group the result by soccer player. It means that each line will correspond to a soccer player, with the sum of all the cards he got, and we won't know anymore who gaves the cards.
 
-# In[88]:
+# In[116]:
 
 # Group by player and do the sum of every column, except for mean_rater (skin color) that we need to move away during the calculation (we don't want to sum skin color values !)
 Data_aggregated = Data_hasImage.drop(['refNum', 'refCountry'], 1)
@@ -86,7 +86,7 @@ Data_aggregated
 # We try to use a K means clustering methode to obtain 2 distinct clusters, with the help of this website:
 # http://stamfordresearch.com/k-means-clustering-in-python/
 
-# In[89]:
+# In[117]:
 
 # Input
 x = Data_aggregated
@@ -98,17 +98,14 @@ x = x.replace({'position': mapping})
 x
 
 
-# In[90]:
+# In[118]:
 
 # Output with the same length as the input, that will contains the associated cluster
 y = pd.DataFrame(index=x.index, columns=['targetCluster'])
 y.head()
 
 
-# In[91]:
-
-# Create a colormap for target clusters (only 2)
-colormap = np.array(['red', 'lime'])
+# In[119]:
 
 # K Means Cluster
 model = KMeans(n_clusters=2)
@@ -116,20 +113,20 @@ model = model.fit(x)
 model
 
 
-# In[92]:
+# In[120]:
 
 # We got a model with two clusters
 model.labels_
 
 
-# In[93]:
+# In[121]:
 
 # View the results
 # Set the size of the plot
 plt.figure(figsize=(14,7))
  
 # Create a colormap for the two clusters
-colormap = np.array(['red', 'lime'])
+colormap = np.array(['blue', 'lime'])
  
 # Plot the Model Classification PARTIALLY
 plt.scatter((0.5*x.yellowCards + x.yellowReds + x.redCards)/x.games, x.skinColor, c=colormap[model.labels_], s=40)
@@ -144,7 +141,7 @@ plt.show()
 
 # Now, let's add the result to each player:
 
-# In[94]:
+# In[122]:
 
 cluster = pd.DataFrame(pd.Series(model.labels_, name='cluster'))
 Data_Clustered = Data_aggregated
@@ -155,11 +152,61 @@ Data_Clustered
 # So, do we have any new information ? What can we conclude of this ?
 # We can use the "silhouette score", which is a metric showing if the two clusters are well separated. It it's equals to 1, the clusters are perfectly separated, and if it's 0, the clustering doesn't make any sense.
 
-# In[96]:
+# In[131]:
 
-#score = silhouette_score(x.as_matrix, model.labels_, metric="euclidean")
 score = silhouette_score(x, model.labels_)
 score
 
 
 # We got a silhouette score of 58%, which is honestly not really meaningful. We cannot rely on this model.
+# Let's try to remove features iterately, starting with skin color.
+
+# In[130]:
+
+x_noSkinColor = x.drop(['skinColor'], 1)
+model = KMeans(n_clusters=2)
+model = model.fit(x_noSkinColor)
+score_noSkinColor = silhouette_score(x_noSkinColor, model.labels_)
+score_noSkinColor
+
+
+# In[134]:
+
+score_noSkinColor / score
+
+
+# Seems like removing skin color from the input didn't change anything for the clustering performance !
+# Let's do this with removing another parameter: position.
+
+# In[142]:
+
+x_noPosition = x.drop(['position'], 1)
+model = KMeans(n_clusters=2)
+model = model.fit(x_noPosition)
+score_noPosition= silhouette_score(x_noPosition, model.labels_)
+score_noPosition
+
+
+# In[143]:
+
+score_noPosition / score
+
+
+# Player position doesn't have much impact either. We can try to remove the number of games, but it won't make sense: some player will have an absolute higher number of cards, only because they played a lot more games. But we will lost this information.
+
+# In[144]:
+
+x_noGameNumber = x.drop(['games'], 1)
+model = KMeans(n_clusters=2)
+model = model.fit(x_noGameNumber)
+score_noGameNumber = silhouette_score(x_noGameNumber, model.labels_)
+score_noGameNumber
+
+
+# In[145]:
+
+score_noGameNumber / score
+
+
+# Well, that makes a 2% improvement, but the information is biased ! This model doesn't show anything helpful.
+# Whatever feature we remove, we don't get a good prediction with unsupervized learning. It doesn't mean that there is absolutely zero correlation between the skin color and the number of cards a players can get. But we're not able to predict correctly the skin color of a player, according to the different features we studied previously.
