@@ -123,7 +123,7 @@ model.fit(x)
 model.labels_
 
 
-# In[96]:
+# In[104]:
 
 # View the results
 # Set the size of the plot
@@ -132,11 +132,25 @@ plt.figure(figsize=(14,7))
 # Create a colormap for the two clusters
 colormap = np.array(['red', 'lime'])
  
-# Plot the Model Classification PARTIALLY (We show only number of games and number of cards because it's a 2D plot,
-# but we actually used 5 parameters: position, yellowCards, yellowReds, redCards and number of games)
-plt.scatter(x.yellowCards, x.games, c=colormap[model.labels_], s=40)
-plt.xlabel('Total number of yellow cards')
-plt.ylabel('Total number of games')
+# Plot the Model Classification PARTIALLY
+plt.scatter((0.5*x.yellowCards + x.yellowReds + x.redCards)/x.games, x.skinColor, c=colormap[model.labels_], s=40)
+plt.xlabel('Red cards per game (yellow = half a red card)')
+plt.ylabel('Skin color')
 plt.title('K Mean Classification')
 plt.show()
 
+
+# (We show only skin color and number of "red cards" because it's a 2D plot, but we actually used 5 parameters: position, yellowCards, yellowReds, redCards and number of games. So this graph doesn't really represent how our data has been clustered.
+# This is only to check if some clustering has ben done. Here we don't really see two distincts clusters. It looks like more random coloring ! :x
+
+# Now, let's add the result to each player:
+
+# In[113]:
+
+cluster = pd.DataFrame(pd.Series(model.labels_, name='cluster'))
+Data_Clustered = Data_aggregated
+Data_Clustered['cluster'] = cluster
+Data_Clustered
+
+
+# So, do we have any new information ? What can we conclude of this ?
