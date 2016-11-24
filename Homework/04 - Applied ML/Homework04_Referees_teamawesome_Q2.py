@@ -158,7 +158,7 @@ score = silhouette_score(x, model.labels_)
 score
 
 
-# We got a silhouette score of 58%, which is honestly not really meaningful. We cannot rely on this model.
+# We got a silhouette score of 58%, which is honestly not enough to predict precisely the skin color of new players. A value closer to +1 would have indicated with higher confidence a difference between the clusters. 60% is enough to distinguish the two clusters but, still, we cannot rely on this model.
 # Let's try to remove features iterately, starting with skin color.
 
 # In[130]:

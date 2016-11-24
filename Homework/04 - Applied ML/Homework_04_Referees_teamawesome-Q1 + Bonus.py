@@ -509,8 +509,3 @@ plt.show()
 
 
 # The first two models slightly overestimate number of players on the lower end of the scale, while slightly underestimating players on the middle and higher end. Conversely, when using only card numbers, there is a huge bias around the 6-7 values, with a significant overshoot, while completely underestimating other values. 
-
-# In[ ]:
-
-
-
