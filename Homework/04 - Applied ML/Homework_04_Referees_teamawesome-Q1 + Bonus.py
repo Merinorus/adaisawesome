@@ -378,7 +378,7 @@ testArr2 = Input_Data_Testing2.as_matrix()
 testArr2
 
 
-# In[28]:
+# In[37]:
 
 #Re-Initialize Classifier
 forest = RandomForestClassifier(n_estimators = 100)
@@ -393,7 +393,7 @@ Data_Testing['predictions2'] = results2
 Data_Testing.head()
 
 
-# In[29]:
+# In[38]:
 
 #see percentage of right predictions
 correct = list(Data_Testing[Data_Testing['raterScale'] == Data_Testing['predictions2']].index)
@@ -404,7 +404,7 @@ percCorrect
 
 # Accuracy goes down to 67.3% from changing the input parameters...
 
-# In[30]:
+# In[39]:
 
 #See features importance
 importances = forest.feature_importances_
@@ -416,14 +416,6 @@ print("Feature ranking:")
 for f in range(trainArr2.shape[1]):
     print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
 
-# Plot the feature importances of the forest
-plt.figure()
-plt.title("Feature importances")
-plt.bar(range(trainArr2.shape[1]), importances[indices],
-       color="b", align="center")
-plt.xticks(range(trainArr2.shape[1]), indices)
-plt.xlim([-1, trainArr2.shape[1]])
-plt.show()
 
 
 # The most important feature in this case is refNum, games, refCountry, position_proxy
