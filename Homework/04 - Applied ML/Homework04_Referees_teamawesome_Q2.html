@@ -11757,15 +11757,18 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[50]:</div>
+<div class="prompt input_prompt">In&nbsp;[83]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="c1"># Import the random forest package</span>
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span> 
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">KMeans</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">silhouette_score</span>
 </pre></div>
 
 </div>
@@ -11775,7 +11778,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="prompt input_prompt">In&nbsp;[84]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">filename</span> <span class="o">=</span><span class="s2">&quot;CrowdstormingDataJuly1st.csv&quot;</span>
@@ -11798,7 +11801,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="prompt input_prompt">In&nbsp;[85]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">ix</span><span class="p">[:</span><span class="mi">10</span><span class="p">,:</span><span class="mi">13</span><span class="p">]</span>
@@ -11812,7 +11815,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[52]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[85]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12025,7 +12028,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="prompt input_prompt">In&nbsp;[86]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">ix</span><span class="p">[:</span><span class="mi">10</span><span class="p">,</span><span class="mi">13</span><span class="p">:</span><span class="mi">28</span><span class="p">]</span>
@@ -12039,7 +12042,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[53]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[86]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12294,7 +12297,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="prompt input_prompt">In&nbsp;[87]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Remove the players without rater 1 / 2 (ie: without photo) because we won&#39;t be </span>
@@ -12329,7 +12332,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[55]:</div>
+<div class="prompt input_prompt">In&nbsp;[88]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Group by player and do the sum of every column, except for mean_rater (skin color) that we need to move away during the calculation (we don&#39;t want to sum skin color values !)</span>
@@ -12367,7 +12370,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 </div>
 
-<div class="output_area"><div class="prompt output_prompt">Out[55]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[88]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -13007,19 +13010,6 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -13085,7 +13075,7 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[77]:</div>
+<div class="prompt input_prompt">In&nbsp;[89]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Input</span>
@@ -13106,7 +13096,7 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[77]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[89]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -13686,7 +13676,7 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[68]:</div>
+<div class="prompt input_prompt">In&nbsp;[90]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Output with the same length as the input, that will contains the associated cluster</span>
@@ -13702,7 +13692,7 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[68]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[90]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -13747,7 +13737,7 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[78]:</div>
+<div class="prompt input_prompt">In&nbsp;[91]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create a colormap for target clusters (only 2)</span>
@@ -13755,7 +13745,8 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
 
 <span class="c1"># K Means Cluster</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">model</span>
 </pre></div>
 
 </div>
@@ -13766,7 +13757,7 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[78]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[91]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -13783,7 +13774,7 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[79]:</div>
+<div class="prompt input_prompt">In&nbsp;[92]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We got a model with two clusters</span>
@@ -13798,7 +13789,7 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[79]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[92]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -13813,7 +13804,7 @@ We try to use a K means clustering methode to obtain 2 distinct clusters, with t
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[104]:</div>
+<div class="prompt input_prompt">In&nbsp;[93]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># View the results</span>
@@ -15041,7 +15032,7 @@ This is only to check if some clustering has ben done. Here we don't really see 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[113]:</div>
+<div class="prompt input_prompt">In&nbsp;[94]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cluster</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">labels_</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;cluster&#39;</span><span class="p">))</span>
@@ -15058,7 +15049,7 @@ This is only to check if some clustering has ben done. Here we don't really see 
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[113]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[94]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -15765,7 +15756,49 @@ This is only to check if some clustering has ben done. Here we don't really see 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>So, do we have any new information ? What can we conclude of this ?</p>
+<p>So, do we have any new information ? What can we conclude of this ?
+We can use the "silhouette score", which is a metric showing if the two clusters are well separated. It it's equals to 1, the clusters are perfectly separated, and if it's 0, the clustering doesn't make any sense.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[96]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#score = silhouette_score(x.as_matrix, model.labels_, metric=&quot;euclidean&quot;)</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">silhouette_score</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">labels_</span><span class="p">)</span>
+<span class="n">score</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[96]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0.57982765748640508</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We got a silhouette score of 58%, which is honestly not really meaningful. We cannot rely on this model.</p>
 
 </div>
 </div>

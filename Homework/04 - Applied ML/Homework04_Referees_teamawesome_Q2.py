@@ -3,17 +3,20 @@
 
 # # I. Setting up the Problem
 
-# In[50]:
+# In[83]:
 
 import pandas as pd
 import numpy as np
 from IPython.display import Image
+import matplotlib.pyplot as plt
 
 # Import the random forest package
 from sklearn.ensemble import RandomForestClassifier 
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
 
 
-# In[51]:
+# In[84]:
 
 filename ="CrowdstormingDataJuly1st.csv"
 Data = pd.read_csv(filename)
@@ -21,12 +24,12 @@ Data = pd.read_csv(filename)
 
 # ### 1) Peeking into the Data
 
-# In[52]:
+# In[85]:
 
 Data.ix[:10,:13]
 
 
-# In[53]:
+# In[86]:
 
 Data.ix[:10,13:28]
 
@@ -35,7 +38,7 @@ Data.ix[:10,13:28]
 
 # ### 1) Keep only players that have a Rater Image
 
-# In[54]:
+# In[87]:
 
 # Remove the players without rater 1 / 2 (ie: without photo) because we won't be 
 # able to train or test the values (this can be done as bonus later)
@@ -47,7 +50,7 @@ Data_hasImage = Data[pd.notnull(Data['photoID'])]
 
 # We need to aggregate the information about referees and group the result by soccer player. It means that each line will correspond to a soccer player, with the sum of all the cards he got, and we won't know anymore who gaves the cards.
 
-# In[55]:
+# In[88]:
 
 # Group by player and do the sum of every column, except for mean_rater (skin color) that we need to move away during the calculation (we don't want to sum skin color values !)
 Data_aggregated = Data_hasImage.drop(['refNum', 'refCountry'], 1)
@@ -63,11 +66,6 @@ Data_aggregated = pd.merge(left=Data_aggregated,right=Data_nbGames_skinColor, ho
 Data_aggregated = Data_aggregated.drop_duplicates('playerShort')
 Data_aggregated = Data_aggregated.reset_index(drop=True)
 Data_aggregated
-
-
-# In[ ]:
-
-
 
 
 # # III. Unsupervized machine learning
@@ -88,7 +86,7 @@ Data_aggregated
 # We try to use a K means clustering methode to obtain 2 distinct clusters, with the help of this website:
 # http://stamfordresearch.com/k-means-clustering-in-python/
 
-# In[77]:
+# In[89]:
 
 # Input
 x = Data_aggregated
@@ -100,30 +98,31 @@ x = x.replace({'position': mapping})
 x
 
 
-# In[68]:
+# In[90]:
 
 # Output with the same length as the input, that will contains the associated cluster
 y = pd.DataFrame(index=x.index, columns=['targetCluster'])
 y.head()
 
 
-# In[78]:
+# In[91]:
 
 # Create a colormap for target clusters (only 2)
 colormap = np.array(['red', 'lime'])
 
 # K Means Cluster
 model = KMeans(n_clusters=2)
-model.fit(x)
+model = model.fit(x)
+model
 
 
-# In[79]:
+# In[92]:
 
 # We got a model with two clusters
 model.labels_
 
 
-# In[104]:
+# In[93]:
 
 # View the results
 # Set the size of the plot
@@ -145,7 +144,7 @@ plt.show()
 
 # Now, let's add the result to each player:
 
-# In[113]:
+# In[94]:
 
 cluster = pd.DataFrame(pd.Series(model.labels_, name='cluster'))
 Data_Clustered = Data_aggregated
@@ -154,3 +153,13 @@ Data_Clustered
 
 
 # So, do we have any new information ? What can we conclude of this ?
+# We can use the "silhouette score", which is a metric showing if the two clusters are well separated. It it's equals to 1, the clusters are perfectly separated, and if it's 0, the clustering doesn't make any sense.
+
+# In[96]:
+
+#score = silhouette_score(x.as_matrix, model.labels_, metric="euclidean")
+score = silhouette_score(x, model.labels_)
+score
+
+
+# We got a silhouette score of 58%, which is honestly not really meaningful. We cannot rely on this model.
