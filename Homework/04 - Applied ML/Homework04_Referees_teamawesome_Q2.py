@@ -122,3 +122,21 @@ model.fit(x)
 # We got a model with two clusters
 model.labels_
 
+
+# In[96]:
+
+# View the results
+# Set the size of the plot
+plt.figure(figsize=(14,7))
+ 
+# Create a colormap for the two clusters
+colormap = np.array(['red', 'lime'])
+ 
+# Plot the Model Classification PARTIALLY (We show only number of games and number of cards because it's a 2D plot,
+# but we actually used 5 parameters: position, yellowCards, yellowReds, redCards and number of games)
+plt.scatter(x.yellowCards, x.games, c=colormap[model.labels_], s=40)
+plt.xlabel('Total number of yellow cards')
+plt.ylabel('Total number of games')
+plt.title('K Mean Classification')
+plt.show()
+
