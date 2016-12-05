@@ -1,6 +1,7 @@
 # 04 - Applied ML
 
 ## Deadline
+
 Thursday November 24, 2016 at 11:59PM
 
 ## Important Notes
