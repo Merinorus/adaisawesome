@@ -10,7 +10,7 @@
 
 # Generate a word cloud based on the raw corpus
 
-# In[285]:
+# In[713]:
 
 import pandas as pd
 import numpy as np
@@ -20,30 +20,30 @@ data = pd.read_csv('hillary-clinton-emails/emails.csv')
 data.ix[:,:8].head()
 
 
-# In[125]:
+# In[714]:
 
 data.ix[:,8:].head()
 
 
 # Let's only keep the text which is relevant for the raw body corpus, which is: ExtractedSubject and ExtractedBodyText, which encompass most of what the message should be about.
 
-# In[286]:
+# In[715]:
 
 data_cut = data[['ExtractedSubject','ExtractedBodyText']].copy()
 data_cut
 
 
-# In[287]:
+# In[716]:
 
 data_csv = data_cut.to_csv()
 
 
-# In[167]:
+# In[739]:
 
 # Credit to - https://github.com/amueller/word_cloud/blob/master/examples/simple.py
 
 # Make the wordcloud
-wordcloud = WordCloud().generate(data_csv)
+wordcloud = WordCloud(background_color='white', width=1000, height=500).generate(data_csv)
 image = wordcloud.to_image()
 display(Image('image_raw.png'))
 #image.show()
@@ -55,7 +55,7 @@ display(Image('image_raw.png'))
 
 # a) implement a standard text pre-processing pipeline (e.g., tokenization, stopword removal, stemming, etc.)
 
-# In[168]:
+# In[718]:
 
 import re
 import nltk
@@ -67,25 +67,25 @@ import nltk
 
 # Let's first put all of the values into 1 column called "Text" and get rid of the NaNs. At this point, we do not care to distinguish between the content in the subject and the body.
 
-# In[288]:
+# In[719]:
 
 for i in data_cut['ExtractedBodyText']:
     data_cut.loc[len(data_cut)] = [i, 'nan']
 
 
-# In[308]:
+# In[720]:
 
 data_clean = data_cut.drop('ExtractedBodyText', axis =1)
 data_clean.columns = ['Text']
 data_clean = data_clean[pd.notnull(data_clean['Text'])]
-data_clean
+data_clean.head()
 
 
 # ### Side-note: Removing capitalization
 
 # Convert all of the strings to lowercase while they are whole, as we'll need it later on.
 
-# In[309]:
+# In[721]:
 
 for index, row in data_clean.iterrows():
     row['Text'] = row['Text'].lower()
@@ -96,16 +96,16 @@ data_clean.head()
 
 # ### Tokenization
 
-# In[306]:
+# In[722]:
 
 from nltk import word_tokenize
 from nltk.tokenize import RegexpTokenizer
 tokenizer = RegexpTokenizer(r'\w+')
 
 
-# In[310]:
+# In[723]:
 
-data_tokenized = data_clean
+data_tokenized = data_clean.copy()
 for index, row in data_tokenized.iterrows():
     row['Text'] = tokenizer.tokenize(row['Text'])
 data_tokenized.columns = ['TokenizedText']
@@ -119,63 +119,110 @@ data_tokenized.head()
 
 # Let's see what are the stopwords that are in the nltk database that we can remove. 
 
-# In[386]:
+# In[724]:
 
 from nltk.corpus import stopwords # Import the stop word list
 stop = stopwords.words('english')
 
 
-# We will also add "fw", "fwd", "fvv", "re", "pm", and "am" to the stopwords.txt list as they are not helpful and in this context are stopwords.
+# We will also add "fw", "fwd", "fvv", "re", "pm", and "am" to the stopwords.txt list as they are not helpful and in this context.
 
-# In[387]:
+# In[725]:
 
 print(stopwords.words("english") )
 
 
 # As a reference to check whether the stopwords have been removed is line 15, where there is "your".
 
-# In[388]:
+# In[726]:
 
 # Remove stop words from "words"
-data_no_stop = data_tokenized
+data_no_stop = data_tokenized.copy()
 data_no_stop['TokenizedText'] = data_no_stop['TokenizedText'].apply(lambda x: [item for item in x if item not in stop])
-data_no_stop
+data_no_stop.tail(17)
 
 
-# You can see that the stopword in line 15 is now gone, so we are set!
+# You can see that the stopwords in line 15 is now gone, so we are set!
 
-# ### c) stemming
+# ## c) Stemming
 
-# We need to change the words into more standard forms to reduce the inflectual forms.
+# We need to change the words into more standard forms to reduce the inflectual forms, such as "forwarded" in line 12998 and "integrating" in line 12991.
 
-# In[389]:
+# In[727]:
 
-data_stemming = data_no_stop
 from nltk.stem.snowball import SnowballStemmer
 stemmer = SnowballStemmer("english")
 
 
-# In[390]:
+# In[728]:
 
+data_stemming = data_no_stop.copy()
 for index, row in data_stemming.iterrows():
-    for i in row['TokenizedText']:
-        i = stemmer.stem(i)
+    for idx, list in enumerate(row):
+        for idx, item in enumerate(list):
+            list[idx] = stemmer.stem(item)
 
-data_stemming
 
+# In[730]:
+
+data_stemming.tail(17)
+
+
+# As you can see, "forwarded" in line 12998 is now "forward" and "integrating" in line 12991 is now "integ". However, this the resulting words are not pretty.
 
 # ### d) generate a new word cloud
 
-# In[393]:
+# In[734]:
 
 data_csv_new = data_stemming.to_csv()
 
-wordcloud_new = WordCloud().generate(data_csv_new)
+wordcloud_new = WordCloud(background_color='white', width=1000, height=500).generate(data_csv_new)
 image_new = wordcloud_new.to_image()
-#display(Image('image_new.png'))
-image_new.show()
+display(Image('image_new.png'))
+#image_new.show()
+
+
+# Commentary: the resulting words are quite strange - Bloomberg is not something that is expected to have come up. 
+
+# ## Extra - Cleaning - Removing Words / #s < 4 Letters
+
+# Remove anything that is shorter than 5 letters or numbers long (to remove single numbers or single letters or simple words).
+
+# In[732]:
+
+data_extra = data_stemming.copy()
+for index, row in data_extra.iterrows():
+    for index, item in row.iteritems():
+        for i in item:
+            if len(i) < 4:
+                item.remove(i)
+data_extra.head()
+
+
+# #### Tokenized, Stop-word-removed and Stemmed Corpus
+
+# In[735]:
+
+data_csv_new_lt = data_extra.to_csv()
+
+wordcloud_lt = WordCloud(background_color='white', width=1000, height=500).generate(data_csv_new_lt)
+image_new_lt = wordcloud_lt.to_image()
+display(Image('image_new_lt.png'))
+#image_new_lt.show()
+
+
+# I'm not sure why the words have a ' after them, but the resuts are as they should be.
+# Let's compare it with the original raw corpus:
+
+# #### Raw Corpus (Old)
+
+# In[740]:
+
+display(Image('image_raw.png'))
 
 
 # ## Discussion 
 
+# When you compare the raw corpus with the tokenized, stop-word-removed, and stemmed word graphs, you'll see that some new words have come up in the new corpus, such as: state, secretary, president, and others. In the old one, we had a lot of junk, like pm and re.
 # 
+# There are not many new insights to gain, as many of the words in the final Wordcloud are logically relevant to her campaign / work: secretary, Obama, call, state, time, etc. 
