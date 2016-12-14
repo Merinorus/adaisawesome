@@ -11765,39 +11765,17 @@ Can you find substantial differences?</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">pycountry</span>
 <span class="kn">from</span> <span class="nn">nltk.sentiment</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-ecb4f8883773&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">import</span> pandas <span class="ansi-green-fg">as</span> pd
-<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">import</span> pycountry
-<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-green-fg">from</span> nltk<span class="ansi-blue-fg">.</span>sentiment <span class="ansi-green-fg">import</span> <span class="ansi-blue-fg">*</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-green-fg">import</span> numpy <span class="ansi-green-fg">as</span> np
-<span class="ansi-green-intense-fg ansi-bold">      5</span> 
-
-<span class="ansi-red-fg">ImportError</span>: No module named &#39;pycountry&#39;</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -11814,7 +11792,7 @@ Can you find substantial differences?</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[74]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">emails</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;hillary-clinton-emails/Emails.csv&quot;</span><span class="p">)</span>
@@ -11827,14 +11805,2727 @@ Can you find substantial differences?</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[75]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Drop columns that won&#39;t be used</span>
 <span class="n">emails</span> <span class="o">=</span> <span class="n">emails</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;DocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;MetadataPdfLink&#39;</span><span class="p">,</span><span class="s1">&#39;DocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;ExtractedDocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;MetadataCaseNumber&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">emails</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[75]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Id</th>
+      <th>MetadataSubject</th>
+      <th>MetadataTo</th>
+      <th>MetadataFrom</th>
+      <th>SenderPersonId</th>
+      <th>MetadataDateSent</th>
+      <th>MetadataDateReleased</th>
+      <th>MetadataDocumentClass</th>
+      <th>ExtractedSubject</th>
+      <th>ExtractedTo</th>
+      <th>ExtractedFrom</th>
+      <th>ExtractedCc</th>
+      <th>ExtractedDateSent</th>
+      <th>ExtractedCaseNumber</th>
+      <th>ExtractedDateReleased</th>
+      <th>ExtractedReleaseInPartOrFull</th>
+      <th>ExtractedBodyText</th>
+      <th>RawText</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>WOW</td>
+      <td>H</td>
+      <td>Sullivan, Jacob J</td>
+      <td>87.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>FW: Wow</td>
+      <td>NaN</td>
+      <td>Sullivan, Jacob J &lt;Sullivan11@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Wednesday, September 12, 2012 10:16 AM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>NaN</td>
+      <td>UNCLASSIFIED\nU.S. Department of State\nCase N...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>H: LATEST: HOW SYRIA IS AIDING QADDAFI AND MOR...</td>
+      <td>H</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2011-03-03T05:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>B6\nThursday, March 3, 2011 9:45 PM\nH: Latest...</td>
+      <td>UNCLASSIFIED\nU.S. Department of State\nCase N...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>CHRIS STEVENS</td>
+      <td>;H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>Re: Chris Stevens</td>
+      <td>B6</td>
+      <td>Mills, Cheryl D &lt;MillsCD@state.gov&gt;</td>
+      <td>Abedin, Huma</td>
+      <td>Wednesday, September 12, 2012 11:52 AM</td>
+      <td>F-2015-04841</td>
+      <td>05/14/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Thx</td>
+      <td>UNCLASSIFIED\nU.S. Department of State\nCase N...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>CAIRO CONDEMNATION - FINAL</td>
+      <td>H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>FVV: Cairo Condemnation - Final</td>
+      <td>NaN</td>
+      <td>Mills, Cheryl D &lt;MillsCD@state.gov&gt;</td>
+      <td>Mitchell, Andrew B</td>
+      <td>Wednesday, September 12,2012 12:44 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>NaN</td>
+      <td>UNCLASSIFIED\nU.S. Department of State\nCase N...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>H: LATEST: HOW SYRIA IS AIDING QADDAFI AND MOR...</td>
+      <td>Abedin, Huma</td>
+      <td>H</td>
+      <td>80.0</td>
+      <td>2011-03-11T05:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>H &lt;hrod17@clintonemail.com&gt;\nFriday, March 11,...</td>
+      <td>B6\nUNCLASSIFIED\nU.S. Department of State\nCa...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[76]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emails_cut</span> <span class="o">=</span> <span class="n">emails</span><span class="p">[[</span><span class="s1">&#39;ExtractedBodyText&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">emails_cut</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[76]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ExtractedBodyText</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>B6\nThursday, March 3, 2011 9:45 PM\nH: Latest...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thx</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>H &lt;hrod17@clintonemail.com&gt;\nFriday, March 11,...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[77]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emails_cut</span> <span class="o">=</span> <span class="n">emails_cut</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">emails_cut</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[77]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ExtractedBodyText</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>B6\nThursday, March 3, 2011 9:45 PM\nH: Latest...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thx</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>H &lt;hrod17@clintonemail.com&gt;\nFriday, March 11,...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Pis print.\n-•-...-^\nH &lt; hrod17@clintonernail...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>H &lt;hrod17@clintonemail.corn&gt;\nFriday, March 11...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we must tokenize the data...</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[79]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">nltk</span> <span class="k">import</span> <span class="n">word_tokenize</span>
+<span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="k">import</span> <span class="n">RegexpTokenizer</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="k">import</span> <span class="n">stopwords</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">RegexpTokenizer</span><span class="p">(</span><span class="s1">r&#39;\w+&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[80]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emails_tokenized</span> <span class="o">=</span> <span class="n">emails_cut</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">emails_tokenized</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">row</span><span class="p">[</span><span class="s1">&#39;ExtractedBodyText&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;ExtractedBodyText&#39;</span><span class="p">])</span>
+<span class="n">emails_tokenized</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TokenizedText&#39;</span><span class="p">]</span>
+<span class="n">emails_tokenized</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">emails_tokenized</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[80]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TokenizedText</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>[B6, Thursday, March, 3, 2011, 9, 45, PM, H, L...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>[Thx]</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>[H, hrod17, clintonemail, com, Friday, March, ...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>[Pis, print, H, hrod17, clintonernailcom, Wedn...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>[H, hrod17, clintonemail, corn, Friday, March,...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Figure out what words to remove...</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[146]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">words_delete</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;IT&#39;</span><span class="p">,</span> <span class="s1">&#39;RE&#39;</span><span class="p">,</span><span class="s1">&#39;LA&#39;</span><span class="p">,</span><span class="s1">&#39;AND&#39;</span><span class="p">,</span> <span class="s1">&#39;AM&#39;</span><span class="p">,</span> <span class="s1">&#39;AT&#39;</span><span class="p">,</span> <span class="s1">&#39;IN&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;ME&#39;</span><span class="p">,</span> <span class="s1">&#39;DO&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;AN&#39;</span><span class="p">,</span><span class="s1">&#39;BUT&#39;</span><span class="p">,</span> <span class="s1">&#39;IF&#39;</span><span class="p">,</span> <span class="s1">&#39;OR&#39;</span><span class="p">,</span><span class="s1">&#39;AS&#39;</span><span class="p">,</span><span class="s1">&#39;OF&#39;</span><span class="p">,</span><span class="s1">&#39;BY&#39;</span><span class="p">,</span> <span class="s1">&#39;TO&#39;</span><span class="p">,</span> <span class="s1">&#39;UP&#39;</span><span class="p">,</span><span class="s1">&#39;ON&#39;</span><span class="p">,</span><span class="s1">&#39;ANY&#39;</span><span class="p">,</span> <span class="s1">&#39;NO&#39;</span><span class="p">,</span> <span class="s1">&#39;NOR&#39;</span><span class="p">,</span> <span class="s1">&#39;NOT&#39;</span><span class="p">,</span><span class="s1">&#39;SO&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span><span class="s1">&#39;DON&#39;</span><span class="p">,</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;LL&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">,</span><span class="s1">&#39;VE&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span><span class="s1">&#39;PM&#39;</span><span class="p">,</span> <span class="s1">&#39;TV&#39;</span><span class="p">,</span><span class="s1">&#39;CD&#39;</span><span class="p">,</span><span class="s1">&#39;PA&#39;</span><span class="p">,</span><span class="s1">&#39;ET&#39;</span><span class="p">,</span> <span class="s1">&#39;BY&#39;</span><span class="p">,</span> <span class="s1">&#39;IE&#39;</span><span class="p">,</span><span class="s1">&#39;MS&#39;</span><span class="p">,</span> <span class="s1">&#39;MP&#39;</span><span class="p">,</span> <span class="s1">&#39;CC&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;GA&#39;</span><span class="p">,</span><span class="s1">&#39;VA&#39;</span><span class="p">,</span> <span class="s1">&#39;BI&#39;</span><span class="p">,</span><span class="s1">&#39;CV&#39;</span><span class="p">,</span> <span class="s1">&#39;AL&#39;</span><span class="p">,</span><span class="s1">&#39;VAT&#39;</span><span class="p">,</span> <span class="s1">&#39;VA&#39;</span><span class="p">,</span><span class="s1">&#39;AI&#39;</span><span class="p">,</span> <span class="s1">&#39;MD&#39;</span><span class="p">,</span> <span class="s1">&#39;SM&#39;</span><span class="p">,</span> <span class="s1">&#39;FM&#39;</span><span class="p">,</span> <span class="s1">&#39;EST&#39;</span><span class="p">,</span> <span class="s1">&#39;BB&#39;</span><span class="p">,</span> <span class="s1">&#39;BRB&#39;</span><span class="p">,</span> <span class="s1">&#39;AQ&#39;</span><span class="p">,</span> <span class="s1">&#39;MA&#39;</span><span class="p">,</span> <span class="s1">&#39;MAR&#39;</span><span class="p">,</span> <span class="s1">&#39;JAM&#39;</span><span class="p">,</span> <span class="s1">&#39;BM&#39;</span><span class="p">]</span> 
+<span class="c1"># from part one we can see some words (from stopwords) that may end up as country abbreviations </span>
+<span class="c1">#as well as analysis of weird data we got down the line</span>
+
+<span class="n">emails_no_stop</span> <span class="o">=</span> <span class="n">emails_tokenized</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">emails_no_stop</span><span class="p">[</span><span class="s1">&#39;TokenizedText&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">emails_no_stop</span><span class="p">[</span><span class="s1">&#39;TokenizedText&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">words_delete</span><span class="p">])</span>
+<span class="n">emails_no_stop</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[146]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TokenizedText</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>6737</th>
+      <td>[Hi, Sorry, haven, t, had, a, chance, to, see,...</td>
+    </tr>
+    <tr>
+      <th>6738</th>
+      <td>[B6, assume, you, saw, this, by, now, if, not,...</td>
+    </tr>
+    <tr>
+      <th>6739</th>
+      <td>[Big, change, of, plans, in, the, Senate, Sena...</td>
+    </tr>
+    <tr>
+      <th>6740</th>
+      <td>[PVerveer, B6, Friday, December, 17, 2010, 12,...</td>
+    </tr>
+    <tr>
+      <th>6741</th>
+      <td>[See, below]</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create list of countries</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[147]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">countries_cited</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">emails</span> <span class="ow">in</span> <span class="n">emails_no_stop</span><span class="p">[</span><span class="s1">&#39;TokenizedText&#39;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">emails</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">country_name</span> <span class="o">=</span> <span class="n">pycountry</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">alpha_2</span><span class="o">=</span><span class="n">word</span><span class="p">)</span>
+            <span class="n">countries_cited</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">country_name</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">country_name</span> <span class="o">=</span> <span class="n">pycountry</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">alpha_3</span><span class="o">=</span><span class="n">word</span><span class="p">)</span>
+                <span class="n">countries_cited</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">country_name</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">country</span> <span class="o">=</span> <span class="n">pycountry</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">word</span><span class="p">)</span>
+                    <span class="n">countries_cited</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">country_name</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span> <span class="k">pass</span>
+<span class="n">countries_cited</span>           
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[147]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Peru&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Gibraltar&#39;,
+ &#39;Gibraltar&#39;,
+ &#39;Gibraltar&#39;,
+ &#39;Gibraltar&#39;,
+ &#39;Gibraltar&#39;,
+ &#39;Gibraltar&#39;,
+ &#39;Gibraltar&#39;,
+ &#39;Gibraltar&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Samoa&#39;,
+ &#39;Finland&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Australia&#39;,
+ &#39;Australia&#39;,
+ &#39;Australia&#39;,
+ &#39;Singapore&#39;,
+ &#39;Singapore&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;Monaco&#39;,
+ &#39;New Caledonia&#39;,
+ &#39;New Caledonia&#39;,
+ &#39;New Caledonia&#39;,
+ &#39;New Caledonia&#39;,
+ &#39;New Caledonia&#39;,
+ &#39;New Caledonia&#39;,
+ &#39;New Caledonia&#39;,
+ &#39;New Caledonia&#39;,
+ &#39;New Caledonia&#39;,
+ &#39;New Caledonia&#39;,
+ &#39;New Caledonia&#39;,
+ &#39;New Caledonia&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;Argentina&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;Cameroon&#39;,
+ &#39;Cameroon&#39;,
+ &#39;Cameroon&#39;,
+ &#39;Cameroon&#39;,
+ &#39;Afghanistan&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;Canada&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;Sweden&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;Germany&#39;,
+ &#39;Sweden&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;Japan&#39;,
+ &#39;Korea, Republic of&#39;,
+ &#39;China&#39;,
+ &#39;Russian Federation&#39;,
+ &#39;Russian Federation&#39;,
+ &#39;Croatia&#39;,
+ &#39;Croatia&#39;,
+ &#39;Croatia&#39;,
+ &#39;Croatia&#39;,
+ &#39;Croatia&#39;,
+ &#39;Croatia&#39;,
+ &#39;Croatia&#39;,
+ &#39;Croatia&#39;,
+ &#39;Croatia&#39;,
+ &#39;Croatia&#39;,
+ &#39;Croatia&#39;,
+ &#39;Croatia&#39;,
+ &#39;Croatia&#39;,
+ &#39;Croatia&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;Sweden&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;Georgia&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;Indonesia&#39;,
+ &#39;Indonesia&#39;,
+ &#39;Indonesia&#39;,
+ &#39;Turkmenistan&#39;,
+ &#39;Turkmenistan&#39;,
+ &#39;Turkmenistan&#39;,
+ &#39;Turkmenistan&#39;,
+ &#39;Turkmenistan&#39;,
+ &#39;United States&#39;,
+ &#39;Sweden&#39;,
+ &#39;Sweden&#39;,
+ &#39;Sweden&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Denmark&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Namibia&#39;,
+ &#39;Sweden&#39;,
+ &#39;Sweden&#39;,
+ &#39;Sweden&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Colombia&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;South Sudan&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;Colombia&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;New Zealand&#39;,
+ &#39;New Zealand&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;United States&#39;,
+ &#39;Portugal&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;Monaco&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ &#39;United States&#39;,
+ ...]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Organize List and Count Occurrence of Each Country</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[148]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#List with Unique Entries of Countries Cited</span>
+<span class="n">final_countries</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">countries_cited</span><span class="p">))</span>
+<span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">final_countries</span><span class="p">)</span>
+<span class="n">final_countries</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[148]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;Bahamas&#39;,
+ &#39;China&#39;,
+ &#39;Brazil&#39;,
+ &#39;Tunisia&#39;,
+ &#39;Myanmar&#39;,
+ &#39;Greece&#39;,
+ &#39;Korea, Republic of&#39;,
+ &#39;Switzerland&#39;,
+ &#39;Palestine, State of&#39;,
+ &#39;Lithuania&#39;,
+ &#39;Israel&#39;,
+ &#39;Cuba&#39;,
+ &#39;Tuvalu&#39;,
+ &#39;Hong Kong&#39;,
+ &#39;Jordan&#39;,
+ &#39;Peru&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;Monaco&#39;,
+ &#39;Nicaragua&#39;,
+ &#39;Liechtenstein&#39;,
+ &#39;Faroe Islands&#39;,
+ &#39;Somalia&#39;,
+ &#39;Sweden&#39;,
+ &#39;Indonesia&#39;,
+ &#39;Australia&#39;,
+ &#39;Seychelles&#39;,
+ &#39;Trinidad and Tobago&#39;,
+ &#39;Cayman Islands&#39;,
+ &#39;Sudan&#39;,
+ &#39;New Caledonia&#39;,
+ &#39;Canada&#39;,
+ &#39;Congo&#39;,
+ &#39;Mongolia&#39;,
+ &#39;Turkmenistan&#39;,
+ &#39;Afghanistan&#39;,
+ &#39;New Zealand&#39;,
+ &#39;Portugal&#39;,
+ &#39;Svalbard and Jan Mayen&#39;,
+ &#39;Croatia&#39;,
+ &#39;Mauritius&#39;,
+ &#39;Singapore&#39;,
+ &#39;Namibia&#39;,
+ &#39;Nauru&#39;,
+ &#39;Ecuador&#39;,
+ &#39;Saudi Arabia&#39;,
+ &#39;Malaysia&#39;,
+ &#39;Malta&#39;,
+ &#39;Slovenia&#39;,
+ &#39;Romania&#39;,
+ &#39;Poland&#39;,
+ &#39;Suriname&#39;,
+ &#39;Denmark&#39;,
+ &#39;Belgium&#39;,
+ &#39;Russian Federation&#39;,
+ &#39;Kenya&#39;,
+ &#39;Germany&#39;,
+ &#39;United Kingdom&#39;,
+ &#39;Marshall Islands&#39;,
+ &#39;Comoros&#39;,
+ &#39;Gibraltar&#39;,
+ &#39;Nigeria&#39;,
+ &#39;Bosnia and Herzegovina&#39;,
+ &#39;Kiribati&#39;,
+ &#39;United States&#39;,
+ &#39;Samoa&#39;,
+ &#39;Serbia&#39;,
+ &#39;Jamaica&#39;,
+ &#39;Iceland&#39;,
+ &#39;Costa Rica&#39;,
+ &#39;Timor-Leste&#39;,
+ &#39;Azerbaijan&#39;,
+ &#39;Argentina&#39;,
+ &#39;Japan&#39;,
+ &#39;Colombia&#39;,
+ &#39;British Indian Ocean Territory&#39;,
+ &#39;Thailand&#39;,
+ &#39;South Sudan&#39;,
+ &#39;Macao&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;Cameroon&#39;,
+ &#39;Czechia&#39;,
+ &#39;Gambia&#39;,
+ &#39;Iraq&#39;,
+ &#39;Madagascar&#39;,
+ &#39;Georgia&#39;,
+ &#39;Finland&#39;,
+ &#39;Philippines&#39;,
+ &#39;Hungary&#39;,
+ &#39;Brunei Darussalam&#39;,
+ &#39;Qatar&#39;,
+ &#39;Luxembourg&#39;,
+ &#39;Guinea-Bissau&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;Puerto Rico&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[149]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Create New DataFrame for the Counts</span>
+<span class="n">Country_Sent</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">size</span><span class="p">),</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;Count&#39;</span><span class="p">])</span>
+<span class="n">Country_Sent</span><span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">final_countries</span>
+<span class="n">Country_Sent</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[149]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Country</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Bahamas</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>China</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Brazil</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Tunisia</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Myanmar</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[150]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">count_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">country</span> <span class="ow">in</span> <span class="n">Country_Sent</span><span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">]:</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">countries_cited</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">country</span><span class="p">)</span>
+    <span class="n">count_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+    
+<span class="n">Country_Sent</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">count_list</span>
+<span class="n">Country_Sent</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[150]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Country</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Bahamas</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>China</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Brazil</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Tunisia</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Myanmar</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[151]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Take Out Countries with Less than 20 Citations</span>
+<span class="n">Country_Sent</span><span class="o">=</span> <span class="n">Country_Sent</span><span class="p">[</span><span class="n">Country_Sent</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">14</span><span class="p">]</span>
+<span class="n">Country_Sent</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[151]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Country</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10</th>
+      <td>Israel</td>
+      <td>68</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Jordan</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Peru</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Sierra Leone</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Monaco</td>
+      <td>193</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[152]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#plot to see frequencies</span>
+<span class="n">Country_Sent</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1">#We have repeatedly plotted this, identifying weird occurances (small countries with high counts), </span>
+<span class="c1">#and then elimitating them from the data set and repating the process</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAg4AAAHvCAYAAAA8S1eDAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+AAAPYQAAD2EBqD+naQAAIABJREFUeJzs3Xu8VVW5//HPg4qECnjFzFAQU/ppHtkeL1mSWVlaauox
+KdO8ZJqShzKrY6npyTJTzFteSy2lPJrpyQvmtbTCk1iaonkBSQWUREARUXx+fzxjseeee6615lx7
+bdji9/16rddee84x5hxrrXl55phjjGnujoiIiEgZ/ZZ3AUREROStQ4GDiIiIlKbAQUREREpT4CAi
+IiKlKXAQERGR0hQ4iIiISGkKHERERKQ0BQ4iIiJSmgIHERERKU2Bg4iIiJRWKXAwsyPM7G9mNi+9
+/mhmH8+lOdnMnjOzhWb2OzMbmZu/qpmdZ2ZzzGyBmV1jZuvl0qxpZlemdcw1s0vMbLXWP6aIiIi0
+Q9Uah38C3wBGAx3AHcD1ZjYKwMy+ARwNHA5sC7wCTDKz/pllnAXsDuwD7ARsAFybW89VwChgl5R2
+J+DCimUVERGRNrOePuTKzP4FHOvuPzOz54DT3X1CmjcImA0c5O5Xp/9fAPZ39+tSms2AqcD27n5f
+CkIeBjrc/YGUZlfgRmBDd5/VowKLiIhIy1pu42Bm/cxsf2Ag8EczGw6sD9xeS+Pu84HJwA5p0jbA
+yrk0jwEzMmm2B+bWgobkNsCB7Votr4iIiPTcylUzmNkWwJ+AAcAC4NPu/piZ7UCc3GfnsswmAgqA
+ocDiFFDUS7M+8Hx2prsvMbMXM2lERERkOagcOACPAlsBg4F9gSvMbKe2lqoFZrY2sCswHVi0fEsj
+IiLyljIA2BiY5O7/apSwcuDg7m8AT6V/HzCzbYFjgB8CRtQqZGsdhgK12w6zgP5mNihX6zA0zaul
+yfeyWAlYK5OmyK7AlVU/j4iIiCz1OaKDQl2t1Djk9QNWdfdpZjaL6AnxICxtHLkdcF5Kez/wRkqT
+bRw5jLj9Qfo7xMy2zrRz2IUISiY3KMd0gF/84heMGjWq28zx48czYcKE0h+qanrlUZ5W8/TVcinP
+ipenr5ZLeZZ/nqlTp3LAAQdAOpc2UilwMLNTgZuJxoxrEJHJGOBjKclZwLfN7Im08lOAZ4DrIRpL
+mtmlwJlmNpdoI3E2cK+735fSPGpmk4CLzexIoD9wDjCxSY+KRQCjRo1i9OjR3WYOHjy4cHo9VdMr
+j/K0mqevlkt5Vrw8fbVcytOn8jS91V+1xmE94HLgncA8ombhY+5+B4C7/9DMBhJjLgwB/gB8wt0X
+Z5YxHlgCXAOsCtwCHJVbz2eBc4neFG+mtMdULKuIiIi0WaXAwd0PK5HmJOCkBvNfA8alV700LwEH
+VCmbiIiI9D49q0JERERKW+mkk05a3mVoi+9+97vvBL70pS99iXe+852FabbccstKy6yaXnmUp9U8
+fbVcyrPi5emr5VKe5Ztn5syZXHTRRQAXnXTSSTMb5e3xkNN9hZmNBu6///77KzcUERGRambMmMGc
+OXOWdzGkgnXWWYdhw4YVzpsyZQodHR0Qj3uY0mg57eiOKSIibyMzZsxg1KhRLFy4cHkXRSoYOHAg
+U6dOrRs8lKXAQUREKpkzZw4LFy6sO26O9D21cRrmzJmjwEFERJaPeuPmyIpNvSpERESkNAUOIiIi
+UpoCBxERESlNgYOIiIiUpsBBRERESlOvChERaZu+MjBUo8GOynrqqac47bTTuO2223juuefo378/
+W265Jfvttx+HH344AwYMaFNpW/OTn/yEgQMHctBBBy3T9SpwEBGRtpgxYwabbTaKRYuW/8BQAwYM
+5LHHWh/s6MYbb2S//fZjwIABHHjggWyxxRYsXryYe+65h+OOO45HHnmECy64oM2lrub8889n3XXX
+VeAgIiJvTXPmzElBwy+A5Tkw1FQWLWp9sKPp06czduxYhg8fzh133MF66623dN6RRx7JKaecwo03
+3tjOAr+lqI2DiIi02Shg9HJ89SxoOe2003jllVe49NJLuwQNNSNGjGDcuHEALFmyhFNOOYWRI0cy
+YMAAhg8fzvHHH8/ixYu75OnXrx8nn3xyt2VtvPHGHHLIIUv/v/zyy+nXrx9//OMf+epXv8p6663H
+6quvzt57793lFtDw4cN5+OGHueuuu+jXrx/9+vXjwx/+cI8+d1mqcRAREcn47W9/y4gRI9huu+2a
+pj300EO54oor2G+//Tj22GOZPHky3//+93n00Ue59tprm+Y3s8Lp48aNY6211uKkk05i+vTpTJgw
+gXHjxjFx4kQAfvzjH3P00Uezxhpr8O1vfxt3Z+jQodU+aIsUOIiIiCQLFizg2WefZa+99mqa9sEH
+H+SKK67g8MMPX9re4YgjjmDdddfljDPO4O6772bMmDEtlWPdddfllltuWfr/kiVLOOecc1iwYAFr
+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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[158]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#create a list with all possible names of the countries above</span>
+<span class="n">countries_used</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">country</span> <span class="ow">in</span> <span class="n">Country_Sent</span><span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">]:</span>
+    <span class="n">country_names</span> <span class="o">=</span> <span class="n">pycountry</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">country</span><span class="p">)</span>
+    <span class="n">countries_used</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">country_names</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">countries_used</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">country_names</span><span class="o">.</span><span class="n">alpha_2</span><span class="p">)</span>
+    <span class="n">countries_used</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">country_names</span><span class="o">.</span><span class="n">alpha_3</span><span class="p">)</span>
+
+<span class="n">countries_used</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[158]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;Israel&#39;,
+ &#39;IL&#39;,
+ &#39;ISR&#39;,
+ &#39;Jordan&#39;,
+ &#39;JO&#39;,
+ &#39;JOR&#39;,
+ &#39;Peru&#39;,
+ &#39;PE&#39;,
+ &#39;PER&#39;,
+ &#39;Sierra Leone&#39;,
+ &#39;SL&#39;,
+ &#39;SLE&#39;,
+ &#39;Monaco&#39;,
+ &#39;MC&#39;,
+ &#39;MCO&#39;,
+ &#39;Nicaragua&#39;,
+ &#39;NI&#39;,
+ &#39;NIC&#39;,
+ &#39;Faroe Islands&#39;,
+ &#39;FO&#39;,
+ &#39;FRO&#39;,
+ &#39;Australia&#39;,
+ &#39;AU&#39;,
+ &#39;AUS&#39;,
+ &#39;New Caledonia&#39;,
+ &#39;NC&#39;,
+ &#39;NCL&#39;,
+ &#39;Canada&#39;,
+ &#39;CA&#39;,
+ &#39;CAN&#39;,
+ &#39;Afghanistan&#39;,
+ &#39;AF&#39;,
+ &#39;AFG&#39;,
+ &#39;Portugal&#39;,
+ &#39;PT&#39;,
+ &#39;PRT&#39;,
+ &#39;Croatia&#39;,
+ &#39;HR&#39;,
+ &#39;HRV&#39;,
+ &#39;Singapore&#39;,
+ &#39;SG&#39;,
+ &#39;SGP&#39;,
+ &#39;Namibia&#39;,
+ &#39;NA&#39;,
+ &#39;NAM&#39;,
+ &#39;Suriname&#39;,
+ &#39;SR&#39;,
+ &#39;SUR&#39;,
+ &#39;Denmark&#39;,
+ &#39;DK&#39;,
+ &#39;DNK&#39;,
+ &#39;Germany&#39;,
+ &#39;DE&#39;,
+ &#39;DEU&#39;,
+ &#39;United Kingdom&#39;,
+ &#39;GB&#39;,
+ &#39;GBR&#39;,
+ &#39;Marshall Islands&#39;,
+ &#39;MH&#39;,
+ &#39;MHL&#39;,
+ &#39;United States&#39;,
+ &#39;US&#39;,
+ &#39;USA&#39;,
+ &#39;Samoa&#39;,
+ &#39;WS&#39;,
+ &#39;WSM&#39;,
+ &#39;Serbia&#39;,
+ &#39;RS&#39;,
+ &#39;SRB&#39;,
+ &#39;Jamaica&#39;,
+ &#39;JM&#39;,
+ &#39;JAM&#39;,
+ &#39;Iceland&#39;,
+ &#39;IS&#39;,
+ &#39;ISL&#39;,
+ &#39;Azerbaijan&#39;,
+ &#39;AZ&#39;,
+ &#39;AZE&#39;,
+ &#39;South Sudan&#39;,
+ &#39;SS&#39;,
+ &#39;SSD&#39;,
+ &#39;Macao&#39;,
+ &#39;MO&#39;,
+ &#39;MAC&#39;,
+ &#39;Virgin Islands, U.S.&#39;,
+ &#39;VI&#39;,
+ &#39;VIR&#39;,
+ &#39;Gambia&#39;,
+ &#39;GM&#39;,
+ &#39;GMB&#39;,
+ &#39;Madagascar&#39;,
+ &#39;MG&#39;,
+ &#39;MDG&#39;,
+ &#39;Georgia&#39;,
+ &#39;GE&#39;,
+ &#39;GEO&#39;,
+ &#39;Hungary&#39;,
+ &#39;HU&#39;,
+ &#39;HUN&#39;,
+ &#39;Luxembourg&#39;,
+ &#39;LU&#39;,
+ &#39;LUX&#39;,
+ &#39;Papua New Guinea&#39;,
+ &#39;PG&#39;,
+ &#39;PNG&#39;,
+ &#39;Puerto Rico&#39;,
+ &#39;PR&#39;,
+ &#39;PRI&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we check sentiment on emails around these names</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[159]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">emails</span> <span class="ow">in</span> <span class="n">emails_no_stop</span><span class="p">[</span><span class="s1">&#39;TokenizedText&#39;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">emails</span><span class="p">:</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="n">countries_used</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">test</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span> <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">country</span> <span class="o">=</span> <span class="n">pycountry</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+            <span class="n">country_name</span> <span class="o">=</span> <span class="p">(</span><span class="n">country</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sentiment_analyzer</span> <span class="o">==</span><span class="s1">&#39;vader&#39;</span><span class="p">:</span>
+                <span class="n">sentiment</span> <span class="o">=</span> <span class="n">vader_analyzer</span><span class="o">.</span><span class="n">polarity_scores</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+                <span class="n">score</span> <span class="o">=</span> <span class="n">Country_Sent</span><span class="p">[</span><span class="s1">&#39;Sentiment&#39;</span><span class="p">]</span>
+              
+        
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-159-304f431f10dc&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">for</span> emails <span class="ansi-green-fg">in</span> emails_no_stop<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;TokenizedText&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span>     <span class="ansi-green-fg">for</span> word <span class="ansi-green-fg">in</span> emails<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg">         </span>test <span class="ansi-blue-fg">=</span> countries_used<span class="ansi-blue-fg">.</span>isin<span class="ansi-blue-fg">(</span>word<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span>         <span class="ansi-green-fg">if</span> test <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">False</span><span class="ansi-blue-fg">:</span> <span class="ansi-green-fg">continue</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">AttributeError</span>: &#39;list&#39; object has no attribute &#39;isin&#39;</pre>
+</div>
+</div>
+
 </div>
 </div>
 
