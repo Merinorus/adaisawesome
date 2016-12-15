@@ -26,25 +26,25 @@ import string
 
 # Pre Process the Data, Dropping Irrelevant Columns
 
-# In[118]:
+# In[204]:
 
 emails = pd.read_csv("hillary-clinton-emails/Emails.csv")
 
 
-# In[119]:
+# In[205]:
 
 # Drop columns that won't be used
 emails = emails.drop(['DocNumber', 'MetadataPdfLink','DocNumber', 'ExtractedDocNumber', 'MetadataCaseNumber'], axis=1)
 emails.head()
 
 
-# In[120]:
+# In[206]:
 
 emails_cut = emails[['ExtractedBodyText']].copy()
 emails_cut.head()
 
 
-# In[121]:
+# In[207]:
 
 emails_cut = emails_cut.dropna()
 emails_cut.head()
@@ -52,7 +52,7 @@ emails_cut.head()
 
 # Now we must tokenize the data...
 
-# In[122]:
+# In[208]:
 
 from nltk import word_tokenize
 from nltk.tokenize import RegexpTokenizer
@@ -60,7 +60,7 @@ from nltk.corpus import stopwords
 tokenizer = RegexpTokenizer(r'\w+')
 
 
-# In[123]:
+# In[209]:
 
 emails_tokenized = emails_cut.copy()
 for index, row in emails_tokenized.iterrows():
@@ -72,21 +72,7 @@ emails_tokenized.head()
 
 # Figure out what words to remove...
 
-# In[124]:
-
-#Make sure to Capitalize all words
-#for email in emails_no_stop['TokenizedText']:
- #   size = len(email)
-#  for i in range (0,size):
-   #     wn = email[i].title()
-    #    email[i] = wn
-    
-
-#emails_no_stop.head()
-
-
-
-# In[128]:
+# In[210]:
 
 words_delete = ['IT', 'RE','LA','AND', 'AM', 'AT', 'IN', 'I', 'ME', 'DO', 
                 'A', 'AN','BUT', 'IF', 'OR','AS','OF','BY', 'TO', 'UP','ON','ANY', 'NO', 'NOR', 'NOT','SO',
@@ -100,7 +86,7 @@ emails_final.head()
 
 # Create list of countries
 
-# In[129]:
+# In[211]:
 
 countries_cited = []
 for emails in emails_final['TokenizedText']:
@@ -121,7 +107,7 @@ for emails in emails_final['TokenizedText']:
 
 # Organize List and Count Occurrence of Each Country
 
-# In[130]:
+# In[212]:
 
 #List with Unique Entries of Countries Cited
 final_countries = list(set(countries_cited))
@@ -129,7 +115,7 @@ size = len(final_countries)
 final_countries
 
 
-# In[131]:
+# In[213]:
 
 #Create New DataFrame for the Counts
 Country_Sent = pd.DataFrame(index=range(0,size),columns=['Country', 'Count'])
@@ -137,7 +123,7 @@ Country_Sent['Country']=final_countries
 Country_Sent.head()
 
 
-# In[132]:
+# In[214]:
 
 count_list = []
 for country in Country_Sent['Country']:
@@ -149,7 +135,7 @@ Country_Sent.head()
 
 
 
-# In[163]:
+# In[215]:
 
 #Take Out Countries with Less than 20 Citations
 Country_Sent= Country_Sent[Country_Sent['Count'] > 14]
@@ -157,7 +143,7 @@ Country_Sent = Country_Sent.reset_index(drop=True)
 Country_Sent.head()
 
 
-# In[164]:
+# In[216]:
 
 #plot to see frequencies
 Country_Sent.plot.bar(x='Country', y='Count')
@@ -167,7 +153,7 @@ plt.show()
 #and then elimitating them from the data set and repating the process
 
 
-# In[165]:
+# In[217]:
 
 #create a list with all possible names of the countries above
 countries_used_name = []
@@ -186,28 +172,14 @@ Country_Sent['Alpha_3']=countries_used_alpha_3
 Country_Sent.head()
 
 
+# In[218]:
+
+len(Country_Sent)
+
+
 # Now we check sentiment on emails around these names
 
-# In[ ]:
-
-for country in countries_used:
-    country_names=[]
-    try:
-        country_name = pycountry.countries.get(alpha_2=country)
-        country_names.append(country_name.alpha_2)    
-    except KeyError:
-            try:
-                country_name = pycountry.countries.get(alpha_3=country)
-                country_names.append(country_name.alpha_3)
-            except KeyError:
-                try:
-                    country_name = pycountry.countries.get(name=country)
-                    country_names.append(country_name.name)
-                except KeyError:
-                    country_names.append('NaN')
-
-
-# In[ ]:
+# In[170]:
 
 sentiments = []
 vader_analyzer = SentimentIntensityAnalyzer()
@@ -233,60 +205,102 @@ for i in range(1,size):
         
 
 
-# In[ ]:
+# In[220]:
+
+#error in iteration, must drop NZ because it was not taken into account in the sentiments analysis
+Country_Sent = Country_Sent.drop(Country_Sent.index[[0]])
+
+len(Country_Sent)
+
+
+# In[222]:
 
 #add sentiment list to data frame
 Country_Sent['Sentiment'] = sentiments
+Country_Sent.head()
+
+
+# In[224]:
+
 #delete any row with sentiment value of 999
 Country_Sent = Country_Sent[Country_Sent['Sentiment'] != 999]
+Country_Sent.head()
+
+
+# In[226]:
+
 #reorder dataframe in ascending order of sentiment
-df.sort_values(['Sentiment'], ascending=True, inplace=True)
+Country_Sent.sort_values(['Sentiment'], ascending=True, inplace=True)
+Country_Sent.head()
+
+
+# In[254]:
+
 #reorder index
 Country_Sent = Country_Sent.reset_index(drop=True)
-
-
-# Now we make a color gradient for the histogram
-
-# In[ ]:
-
-#We must normalize the sentiment scores and create a gradient based on that (green, blue & red gradient)
-#first we sort the ones that are below zero, than the ones above zero
-Country_Sent['color_grad'] =[]
-size = len(Country_Sent['Sentiment'])
-
-for i in range(1,size):
-    if Country_Sent['Sentiment'][i] < 0:
-        high = 0
-        low = np.min(sentiments)
-        rg = high-low
-        new_entry = (low-entry)/rg
-        red = 1 - new_entry
-        Country_Sent['color_grad'][i]=(red,0,new_entry)
-    else:
-        high = np.max(sentiments)
-        low = 0
-        rg = high-low
-        new_entry = (entry-low)/rg
-        green = 1 - new_entry
-        Country_Sent['color_grad'][i]= (0,green,new_entry)
 
 Country_Sent.head()
 
 
-# In[ ]:
+# Now we make a color gradient for the histogram
+
+# In[267]:
+
+#We must normalize the sentiment scores and create a gradient based on that (green, blue & red gradient)
+#first we sort the ones that are below zero, than the ones above zero
+color_grad = []
+size = len(Country_Sent['Sentiment'])
+
+for i in range(0,size):
+    if Country_Sent['Sentiment'][i] < 0:
+        high = 0
+        low = np.min(sentiments)
+        rg = high-low
+        new_entry = -(low-Country_Sent['Sentiment'][i])/rg
+        red = 1 - new_entry
+        if new_entry != 0:
+            color_grad.append((red,0,new_entry))
+        else: 
+            color_grad.append((red,0,0))
+    else:
+        high = np.max(sentiments)
+        low = 0
+        rg2 = high-low
+        new_entry = -(Country_Sent['Sentiment'][i]-low)/rg2
+        green = 1 - new_entry
+        if new_entry != 0:
+            color_grad.append((0,green,new_entry))        
+        else: 
+            color_grad.append((0,green,0))
+        
+
+Country_Sent['color_grad'] = color_grad        
+Country_Sent.head()
+
+
+# In[268]:
 
 #Now we create the bar plot based on this palette
 import seaborn as sns
-plot = sns.barplot(x='Country', y='Sentiment', data=Country_Sent, orient='vertical', palette=Country_Sent['color_grad'])
+
+plot = sns.barplot(x='Country', y='Sentiment', data=Country_Sent, orient='vertical', palette=color_grad)
+plt.ylabel('Country Sentiment');
+plt.show()
+
+
+# In[252]:
+
+#Now we create a bar plot with an automatic gradient based on sentiment
+size = len(Country_Sent['Sentiment'])
+plt.figure(figsize=(30,20))
+grad = sns.diverging_palette(10, 225, n=32)
+plot = sns.barplot(x='Country', y='Sentiment', data=Country_Sent, orient='vertical', palette = grad )
+plt.xticks(rotation=60);
 plt.ylabel('Country Sentiment');
 plt.show()
 
 
 # In[ ]:
 
-#Now we create a bar plot with an automatic gradient based on sentiment
-size = len(Country_Sent['Sentiment'])
-grad = sns.palplot(sns.diverging_palette(10, 145, n=size))plot = sns.barplot(x='Country', y='Sentiment', data=Country_Sent, orient='vertical', palette=grad)
-plt.ylabel('Country Sentiment');
-plt.show()
+
 
