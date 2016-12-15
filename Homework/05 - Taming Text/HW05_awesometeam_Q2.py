@@ -10,11 +10,10 @@
 # that summarizes the perception of the different countries. Repeat the aggregation and plotting steps using different demo methods from the sentiment analysis module.
 # Can you find substantial differences?
 
-# In[105]:
+# In[51]:
 
 import pandas as pd
 import pycountry
-import nltk
 from nltk.sentiment import *
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,36 +21,30 @@ import codecs
 import math
 import re
 import string
-import nltk.data
 
-
-
-# In[107]:
-
-nltk.download()
 
 
 # Pre Process the Data, Dropping Irrelevant Columns
 
-# In[16]:
+# In[118]:
 
 emails = pd.read_csv("hillary-clinton-emails/Emails.csv")
 
 
-# In[17]:
+# In[119]:
 
 # Drop columns that won't be used
 emails = emails.drop(['DocNumber', 'MetadataPdfLink','DocNumber', 'ExtractedDocNumber', 'MetadataCaseNumber'], axis=1)
 emails.head()
 
 
-# In[18]:
+# In[120]:
 
 emails_cut = emails[['ExtractedBodyText']].copy()
 emails_cut.head()
 
 
-# In[19]:
+# In[121]:
 
 emails_cut = emails_cut.dropna()
 emails_cut.head()
@@ -59,7 +52,7 @@ emails_cut.head()
 
 # Now we must tokenize the data...
 
-# In[20]:
+# In[122]:
 
 from nltk import word_tokenize
 from nltk.tokenize import RegexpTokenizer
@@ -67,7 +60,7 @@ from nltk.corpus import stopwords
 tokenizer = RegexpTokenizer(r'\w+')
 
 
-# In[21]:
+# In[123]:
 
 emails_tokenized = emails_cut.copy()
 for index, row in emails_tokenized.iterrows():
@@ -79,38 +72,38 @@ emails_tokenized.head()
 
 # Figure out what words to remove...
 
-# In[81]:
+# In[124]:
+
+#Make sure to Capitalize all words
+#for email in emails_no_stop['TokenizedText']:
+ #   size = len(email)
+#  for i in range (0,size):
+   #     wn = email[i].title()
+    #    email[i] = wn
+    
+
+#emails_no_stop.head()
+
+
+
+# In[128]:
 
 words_delete = ['IT', 'RE','LA','AND', 'AM', 'AT', 'IN', 'I', 'ME', 'DO', 
                 'A', 'AN','BUT', 'IF', 'OR','AS','OF','BY', 'TO', 'UP','ON','ANY', 'NO', 'NOR', 'NOT','SO',
                 'S', 'T','DON','D', 'LL', 'M', 'O','VE', 'Y','PM', 'TV','CD','PA','ET', 'BY', 'IE','MS', 'MP', 'CC', 
                 'GA','VA', 'BI','CV', 'AL','VAT', 'VA','AI', 'MD', 'SM', 'FM', 'EST', 'BB', 'BRB', 'AQ', 'MA', 'MAR', 'JAM', 'BM', 
-                'Lybia', 'LY', 'LBY', 'MC', 'MCO', 'MO', 'MAC', 'NC', 'PG', 'PNG', 'SUR', 'VI'] 
-# from part one we can see some words (from stopwords) that may end up as country abbreviations 
-#as well as analysis of weird data we got down the line
-#also weird errors occuring with Lybia, so it was excluded (odd given a lot of the controversy was about Lybia...)
-
-emails_no_stop = emails_tokenized.copy()
-emails_no_stop['TokenizedText'] = emails_no_stop['TokenizedText'].apply(lambda x: [item for item in x if item not in words_delete])
-emails_no_stop.tail()
-
-
-# In[82]:
-
-#Make sure to Capitalize all words
-for email in emails_no_stop['TokenizedText']:
-    for word in email:
-        word.title()
-        
-emails_no_stop['TokenizedText'].head()
+                'Lybia', 'LY', 'LBY', 'MC', 'MCO', 'MO', 'MAC', 'NC', 'PG', 'PNG', 'SUR', 'VI', 'lybia', 'ARM'] 
+emails_final = emails_tokenized.copy()
+emails_final['TokenizedText'] = emails_final['TokenizedText'].apply(lambda x: [item for item in x if item not in words_delete])
+emails_final.head()
 
 
 # Create list of countries
 
-# In[83]:
+# In[129]:
 
 countries_cited = []
-for emails in emails_no_stop['TokenizedText']:
+for emails in emails_final['TokenizedText']:
     for word in emails:
         try:
             country_name = pycountry.countries.get(alpha_2=word)
@@ -128,7 +121,7 @@ for emails in emails_no_stop['TokenizedText']:
 
 # Organize List and Count Occurrence of Each Country
 
-# In[84]:
+# In[130]:
 
 #List with Unique Entries of Countries Cited
 final_countries = list(set(countries_cited))
@@ -136,7 +129,7 @@ size = len(final_countries)
 final_countries
 
 
-# In[85]:
+# In[131]:
 
 #Create New DataFrame for the Counts
 Country_Sent = pd.DataFrame(index=range(0,size),columns=['Country', 'Count'])
@@ -144,7 +137,7 @@ Country_Sent['Country']=final_countries
 Country_Sent.head()
 
 
-# In[86]:
+# In[132]:
 
 count_list = []
 for country in Country_Sent['Country']:
@@ -156,14 +149,15 @@ Country_Sent.head()
 
 
 
-# In[87]:
+# In[163]:
 
 #Take Out Countries with Less than 20 Citations
 Country_Sent= Country_Sent[Country_Sent['Count'] > 14]
+Country_Sent = Country_Sent.reset_index(drop=True)
 Country_Sent.head()
 
 
-# In[88]:
+# In[164]:
 
 #plot to see frequencies
 Country_Sent.plot.bar(x='Country', y='Count')
@@ -173,25 +167,28 @@ plt.show()
 #and then elimitating them from the data set and repating the process
 
 
-# In[89]:
+# In[165]:
 
 #create a list with all possible names of the countries above
-countries_used = []
+countries_used_name = []
+countries_used_alpha_2 =[]
+countries_used_alpha_3 =[]
+
 for country in Country_Sent['Country']:
     country_names = pycountry.countries.get(name=country)
-    countries_used.append(country_names.name)
-    countries_used.append(country_names.alpha_2)
-    countries_used.append(country_names.alpha_3)
+    countries_used_name.append(country_names.name)
+    countries_used_alpha_2.append(country_names.alpha_2)
+    countries_used_alpha_3.append(country_names.alpha_3)
 
-countries_used
+Country_Sent['Alpha_2']=countries_used_alpha_2
+Country_Sent['Alpha_3']=countries_used_alpha_3
+
+Country_Sent.head()
 
 
 # Now we check sentiment on emails around these names
 
-# In[119]:
-
-sentiments = []
-vader_analyzer = SentimentIntensityAnalyzer()
+# In[ ]:
 
 for country in countries_used:
     country_names=[]
@@ -208,32 +205,88 @@ for country in countries_used:
                     country_names.append(country_name.name)
                 except KeyError:
                     country_names.append('NaN')
-    country_score =[]
-    for name in country_names:
-        for email in emails_no_stop['TokenizedText']:
-            if name in email:
-                sentiment = vader_analyzer.polarity_scores(str_email)
-                print(sentiment)
-                score = sentiment['compound']
-                country_score.append(score)
-            else: pass
-        if len(country_score) !=0: 
-            sentiment_score = sum(country_score) / float(len(country_score))
-            sentiments.append(sentiment_score)
-        else:
-            sentiment_score = 9999
-            sentiments.append(sentiment_score)
-        
-        
 
-            
-sentiments
-            
+
+# In[ ]:
+
+sentiments = []
+vader_analyzer = SentimentIntensityAnalyzer()
+
+size = len(Country_Sent['Alpha_2'])
+for i in range(1,size):
+    country_score =[]
+    for email in emails_no_stop['TokenizedText']:
+        if Country_Sent['Alpha_2'][i] in email or Country_Sent['Alpha_3'][i] in email or Country_Sent['Country'][i] in email:
+            str_email = ' '.join(email)
+            sentiment = vader_analyzer.polarity_scores(str_email)
+            score = sentiment['compound']
+            country_score.append(score)
+        else: pass
+    if len(country_score)!=0:
+        sentiment_score = sum(country_score) / float(len(country_score))
+        sentiments.append(sentiment_score)
+    else:
+        sentiments.append(999)
+
+                   
               
         
 
 
 # In[ ]:
 
-text = ['I hate going to th pa]
+#add sentiment list to data frame
+Country_Sent['Sentiment'] = sentiments
+#delete any row with sentiment value of 999
+Country_Sent = Country_Sent[Country_Sent['Sentiment'] != 999]
+#reorder dataframe in ascending order of sentiment
+df.sort_values(['Sentiment'], ascending=True, inplace=True)
+#reorder index
+Country_Sent = Country_Sent.reset_index(drop=True)
+
+
+# Now we make a color gradient for the histogram
+
+# In[ ]:
+
+#We must normalize the sentiment scores and create a gradient based on that (green, blue & red gradient)
+#first we sort the ones that are below zero, than the ones above zero
+Country_Sent['color_grad'] =[]
+size = len(Country_Sent['Sentiment'])
+
+for i in range(1,size):
+    if Country_Sent['Sentiment'][i] < 0:
+        high = 0
+        low = np.min(sentiments)
+        rg = high-low
+        new_entry = (low-entry)/rg
+        red = 1 - new_entry
+        Country_Sent['color_grad'][i]=(red,0,new_entry)
+    else:
+        high = np.max(sentiments)
+        low = 0
+        rg = high-low
+        new_entry = (entry-low)/rg
+        green = 1 - new_entry
+        Country_Sent['color_grad'][i]= (0,green,new_entry)
+
+Country_Sent.head()
+
+
+# In[ ]:
+
+#Now we create the bar plot based on this palette
+import seaborn as sns
+plot = sns.barplot(x='Country', y='Sentiment', data=Country_Sent, orient='vertical', palette=Country_Sent['color_grad'])
+plt.ylabel('Country Sentiment');
+plt.show()
+
+
+# In[ ]:
+
+#Now we create a bar plot with an automatic gradient based on sentiment
+size = len(Country_Sent['Sentiment'])
+grad = sns.palplot(sns.diverging_palette(10, 145, n=size))plot = sns.barplot(x='Country', y='Sentiment', data=Country_Sent, orient='vertical', palette=grad)
+plt.ylabel('Country Sentiment');
+plt.show()
 
