@@ -167,15 +167,18 @@ countries_used
 
 # Now we check sentiment on emails around these names
 
-# In[159]:
+# In[162]:
 
 for emails in emails_no_stop['TokenizedText']:
     for word in emails:
-        test = countries_used.isin(word)
-        if test is False: continue
+        if countries_used.count(word) == 1: continue
         else:
-            country = pycountry.countries.get(word)
-            country_name = (country.name)
+            country1 = pycountry.countries.get(name=word)
+            country2 = pycountry.countries.get(alpha_2=word)
+            country3 = pycountry.countries.get(alpha_3=word)
+            country_name = (country1.name)
+            country_name = (country2.name)
+            country_name = (country3.name)
             if sentiment_analyzer =='vader':
                 sentiment = vader_analyzer.polarity_scores(word)
                 score = Country_Sent['Sentiment']

@@ -14485,16 +14485,19 @@ RERERERElEY0HCIiIiIiIiJK4/8Dtp2fbLLhPwMAAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[159]:</div>
+<div class="prompt input_prompt">In&nbsp;[162]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">emails</span> <span class="ow">in</span> <span class="n">emails_no_stop</span><span class="p">[</span><span class="s1">&#39;TokenizedText&#39;</span><span class="p">]:</span>
     <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">emails</span><span class="p">:</span>
-        <span class="n">test</span> <span class="o">=</span> <span class="n">countries_used</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">test</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span> <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">countries_used</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="k">continue</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">country</span> <span class="o">=</span> <span class="n">pycountry</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
-            <span class="n">country_name</span> <span class="o">=</span> <span class="p">(</span><span class="n">country</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">country1</span> <span class="o">=</span> <span class="n">pycountry</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">word</span><span class="p">)</span>
+            <span class="n">country2</span> <span class="o">=</span> <span class="n">pycountry</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">alpha_2</span><span class="o">=</span><span class="n">word</span><span class="p">)</span>
+            <span class="n">country3</span> <span class="o">=</span> <span class="n">pycountry</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">alpha_3</span><span class="o">=</span><span class="n">word</span><span class="p">)</span>
+            <span class="n">country_name</span> <span class="o">=</span> <span class="p">(</span><span class="n">country1</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">country_name</span> <span class="o">=</span> <span class="p">(</span><span class="n">country2</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">country_name</span> <span class="o">=</span> <span class="p">(</span><span class="n">country3</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">sentiment_analyzer</span> <span class="o">==</span><span class="s1">&#39;vader&#39;</span><span class="p">:</span>
                 <span class="n">sentiment</span> <span class="o">=</span> <span class="n">vader_analyzer</span><span class="o">.</span><span class="n">polarity_scores</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
                 <span class="n">score</span> <span class="o">=</span> <span class="n">Country_Sent</span><span class="p">[</span><span class="s1">&#39;Sentiment&#39;</span><span class="p">]</span>
@@ -14514,15 +14517,29 @@ RERERERElEY0HCIiIiIiIiJK4/8Dtp2fbLLhPwMAAAAASUVORK5CYII=
 <div class="output_subarea output_text output_error">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-159-304f431f10dc&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">for</span> emails <span class="ansi-green-fg">in</span> emails_no_stop<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;TokenizedText&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span>     <span class="ansi-green-fg">for</span> word <span class="ansi-green-fg">in</span> emails<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg">         </span>test <span class="ansi-blue-fg">=</span> countries_used<span class="ansi-blue-fg">.</span>isin<span class="ansi-blue-fg">(</span>word<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span>         <span class="ansi-green-fg">if</span> test <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">False</span><span class="ansi-blue-fg">:</span> <span class="ansi-green-fg">continue</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-162-eb18296946a9&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span>         <span class="ansi-green-fg">if</span> countries_used<span class="ansi-blue-fg">.</span>count<span class="ansi-blue-fg">(</span>word<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">==</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">:</span> <span class="ansi-green-fg">continue</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg">             </span>country1 <span class="ansi-blue-fg">=</span> pycountry<span class="ansi-blue-fg">.</span>countries<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span>name<span class="ansi-blue-fg">=</span>word<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span>             country2 <span class="ansi-blue-fg">=</span> pycountry<span class="ansi-blue-fg">.</span>countries<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span>alpha_2<span class="ansi-blue-fg">=</span>word<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      7</span>             country3 <span class="ansi-blue-fg">=</span> pycountry<span class="ansi-blue-fg">.</span>countries<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span>alpha_3<span class="ansi-blue-fg">=</span>word<span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">AttributeError</span>: &#39;list&#39; object has no attribute &#39;isin&#39;</pre>
+<span class="ansi-green-fg">/Users/catarinaneves/anaconda/lib/python3.5/site-packages/pycountry/db.py</span> in <span class="ansi-cyan-fg">load_if_needed</span><span class="ansi-blue-fg">(self, *args, **kw)</span>
+<span class="ansi-green-intense-fg ansi-bold">     41</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_is_loaded<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     42</span>             self<span class="ansi-blue-fg">.</span>_load<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 43</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> f<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kw<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     44</span>     <span class="ansi-green-fg">return</span> load_if_needed
+<span class="ansi-green-intense-fg ansi-bold">     45</span> 
+
+<span class="ansi-green-fg">/Users/catarinaneves/anaconda/lib/python3.5/site-packages/pycountry/db.py</span> in <span class="ansi-cyan-fg">get</span><span class="ansi-blue-fg">(self, **kw)</span>
+<span class="ansi-green-intense-fg ansi-bold">     99</span>             <span class="ansi-green-fg">raise</span> TypeError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;Only one criteria may be given&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    100</span>         field<span class="ansi-blue-fg">,</span> value <span class="ansi-blue-fg">=</span> kw<span class="ansi-blue-fg">.</span>popitem<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 101</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>indices<span class="ansi-blue-fg">[</span>field<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">[</span>value<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">    102</span> 
+<span class="ansi-green-intense-fg ansi-bold">    103</span>     <span class="ansi-blue-fg">@</span>lazy_load
+
+<span class="ansi-red-fg">KeyError</span>: &#39;B6&#39;</pre>
 </div>
 </div>
 
