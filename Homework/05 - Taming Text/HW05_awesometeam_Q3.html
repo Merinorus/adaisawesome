@@ -11746,12 +11746,9748 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The goal is to do topic modeling over all the mails. In other words, we have to find recurrent topic or themes that may appear in the conversations.
+They are several way to analyse the mails content, starting by these two "naive" ways:</p>
+<ul>
+<li>put all the extrated mails in only one document</li>
+<li>put each extracted mail in a separate document</li>
+</ul>
+<p>But both of these ways have major drawbacks:</p>
+<ul>
+<li>doing topic modelling on a single document would show the most frequent words, so the result should be the same as if we wanted to make a word cloud</li>
+<li>a lot of mail are very small, a few words sometimes, so doing topic analysis here would be meaningless</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So we have to find a compromise: make multiple documents, each of them long enough to be analysed.
+One option would be create the entire conversations with the mail history, so we can extract main topic from each conversation. While it makes sense, it's actually pretty time-consuming to obtain the conversations.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>What we will do is to create a document that contains the "sent mails box" for each person. It doesn't follow a conversation, so our results won't be the most coherent we could get. But the purpose here is to show the basics of topic modelling.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">gensim</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emails</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;hillary-clinton-emails/Emails.csv&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Drop columns that won&#39;t be used</span>
+<span class="n">emails</span> <span class="o">=</span> <span class="n">emails</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;DocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;MetadataPdfLink&#39;</span><span class="p">,</span><span class="s1">&#39;DocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;ExtractedDocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;MetadataCaseNumber&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emails</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Id</th>
+      <th>MetadataSubject</th>
+      <th>MetadataTo</th>
+      <th>MetadataFrom</th>
+      <th>SenderPersonId</th>
+      <th>MetadataDateSent</th>
+      <th>MetadataDateReleased</th>
+      <th>MetadataDocumentClass</th>
+      <th>ExtractedSubject</th>
+      <th>ExtractedTo</th>
+      <th>ExtractedFrom</th>
+      <th>ExtractedCc</th>
+      <th>ExtractedDateSent</th>
+      <th>ExtractedCaseNumber</th>
+      <th>ExtractedDateReleased</th>
+      <th>ExtractedReleaseInPartOrFull</th>
+      <th>ExtractedBodyText</th>
+      <th>RawText</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>WOW</td>
+      <td>H</td>
+      <td>Sullivan, Jacob J</td>
+      <td>87.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>FW: Wow</td>
+      <td>NaN</td>
+      <td>Sullivan, Jacob J &lt;Sullivan11@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Wednesday, September 12, 2012 10:16 AM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>NaN</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>H: LATEST: HOW SYRIA IS AIDING QADDAFI AND MOR...</td>
+      <td>H</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2011-03-03T05:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>B6\r\nThursday, March 3, 2011 9:45 PM\r\nH: La...</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>CHRIS STEVENS</td>
+      <td>;H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>Re: Chris Stevens</td>
+      <td>B6</td>
+      <td>Mills, Cheryl D &lt;MillsCD@state.gov&gt;</td>
+      <td>Abedin, Huma</td>
+      <td>Wednesday, September 12, 2012 11:52 AM</td>
+      <td>F-2015-04841</td>
+      <td>05/14/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Thx</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>CAIRO CONDEMNATION - FINAL</td>
+      <td>H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>FVV: Cairo Condemnation - Final</td>
+      <td>NaN</td>
+      <td>Mills, Cheryl D &lt;MillsCD@state.gov&gt;</td>
+      <td>Mitchell, Andrew B</td>
+      <td>Wednesday, September 12,2012 12:44 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>NaN</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>H: LATEST: HOW SYRIA IS AIDING QADDAFI AND MOR...</td>
+      <td>Abedin, Huma</td>
+      <td>H</td>
+      <td>80.0</td>
+      <td>2011-03-11T05:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>H &lt;hrod17@clintonemail.com&gt;\r\nFriday, March 1...</td>
+      <td>B6\r\nUNCLASSIFIED\r\nU.S. Department of State...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>MEET THE RIGHT-WING EXTREMIST BEHIND ANTI-MUSL...</td>
+      <td>Russorv@state.gov</td>
+      <td>H</td>
+      <td>80.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>Meet The Right Wing Extremist Behind Anti-Musl...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Wednesday, September 12, 2012 01:00 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Pis print.\r\n-•-...-^\r\nH &lt; hrod17@clintoner...</td>
+      <td>B6\r\nUNCLASSIFIED\r\nU.S. Department of State...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>ANTI-MUSLIM FILM DIRECTOR IN HIDING, FOLLOWING...</td>
+      <td>H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>FW: Anti-Muslim film director in hiding, follo...</td>
+      <td>NaN</td>
+      <td>Mills, Cheryl D &lt;MillsCD@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Wednesday, September 12, 2012 4:00 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>NaN</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>H: LATEST: HOW SYRIA IS AIDING QADDAFI AND MOR...</td>
+      <td>Abedin, Huma</td>
+      <td>H</td>
+      <td>80.0</td>
+      <td>2011-03-11T05:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>H &lt;hrod17@clintonemail.corn&gt;\r\nFriday, March ...</td>
+      <td>B6\r\nUNCLASSIFIED\r\nU.S. Department of State...</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>SECRETARY'S REMARKS</td>
+      <td>H</td>
+      <td>Sullivan, Jacob J</td>
+      <td>87.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>FVV: Secretary's remarks</td>
+      <td>NaN</td>
+      <td>Sullivan, Jacob J &lt;Sullivanli@stategov&gt;</td>
+      <td>NaN</td>
+      <td>Wednesday, September 12, 2012 6:08 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>FYI</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>MORE ON LIBYA</td>
+      <td>H</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>more on Libya</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>B6\r\nWednesday, September 12, 2012 6:16 PM\r\...</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>11</td>
+      <td>ABZ AN HBJ ON LIBYA AND WEST BANK/GAZA</td>
+      <td>H</td>
+      <td>Sullivan, Jacob J</td>
+      <td>87.0</td>
+      <td>2011-03-13T05:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>AbZ and Hb3 on Libya and West Bank/Gaza</td>
+      <td>NaN</td>
+      <td>Sullivan, Jacob 1 &lt;Sullivan)) state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Sunday, March 13, 2011 10:55 AM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Fyi\r\nB6\r\n— —</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12</td>
+      <td>MORE ON LIBYA</td>
+      <td>H</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>B6\r\nWednesday, September 12, 2012 6:16 PM\r\...</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>13</td>
+      <td>HEY</td>
+      <td>H</td>
+      <td>Sullivan, Jacob J</td>
+      <td>87.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>hey</td>
+      <td>NaN</td>
+      <td>Sullivan, Jacob J &lt;SullivanJJ@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Wednesday, September 12 2012 700 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Fyi</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>14</td>
+      <td>PIECE ON LIBYA NFZ THAT WILL APPEAR ON NYT OP-...</td>
+      <td>H</td>
+      <td>Slaughter, Anne-Marie</td>
+      <td>10.0</td>
+      <td>2011-03-13T05:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Anne-Marie Slaughter\r\nSunday, March 13, 2011...</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>15</td>
+      <td>NOT A DRY EYE IN NEA</td>
+      <td>H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>RE: Not a dry eye in NEA</td>
+      <td>NaN</td>
+      <td>Mills, Cheryl 0 &lt;MillsCD@state.gov›</td>
+      <td>S_SpecialAssistants</td>
+      <td>Wednesday, September 12, 2012 04:33 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>_ .....\r\nFrom Randolph, Lawrence M\r\nSent: ...</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>16</td>
+      <td>THANK YOU</td>
+      <td>H</td>
+      <td>Koh, Harold Hongju</td>
+      <td>77.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Koh, Harold Hongju &lt;KohliFf@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>I asked to attend your svtc today with Embassy...</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>17</td>
+      <td>THE YOUTH OF LIBYA</td>
+      <td>H</td>
+      <td>Sherman, Wendy R</td>
+      <td>213.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>Fw: The Youth of Libya</td>
+      <td>H; Mills, Cheryl D; Sullivan, Jacob J; Nuiand,...</td>
+      <td>Sherman, Wendy R &lt;ShermanWR@state.gov&gt;</td>
+      <td>Escrogirna, Ana A; Grantham, Chris W</td>
+      <td>Wednesday, September 12, 2012 9:57 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>Hope. See picture below Kamala sent.</td>
+      <td>-ottgat,t\r\n4 44 4, 0\r\n.\r\n1.3.141.4443\r\...</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>18</td>
+      <td>ONE MORE PHOTO</td>
+      <td>H</td>
+      <td>Sherman, Wendy R</td>
+      <td>213.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>Fw: One More Photo</td>
+      <td>H; Mills, Cheryl D; Sullivan, Jacob J, Nuland,...</td>
+      <td>Sherman, Wendy R &lt;ShermanWR@state.gov&gt;</td>
+      <td>Escrogima, Ana A</td>
+      <td>Wednesday, September 12, 2012 10:03 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>Another photo.</td>
+      <td>c. 371.14\r\nUNCLASSIFIED\r\nU.S. Department o...</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>19</td>
+      <td>S TODAY</td>
+      <td>H</td>
+      <td>Sullivan, Jacob J</td>
+      <td>87.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>Fw: S today</td>
+      <td>NaN</td>
+      <td>Sullivan, Jacobi &lt;Sullivanii@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Wednesday, September 12 2012 1026 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>This is nice.</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>20</td>
+      <td>THE YOUTH OF LIBYA</td>
+      <td>Sherman, Wendy R</td>
+      <td>Sullivan, Jacob J</td>
+      <td>87.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Escrogima, Ana A; Grantham, Chris W</td>
+      <td>NaN</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>Amazing.\r\nSullivan, Jacob J &lt;Sullivanii@stat...</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>21</td>
+      <td>MORE ON LIBYA</td>
+      <td>sullivanjj@state.gov</td>
+      <td>H</td>
+      <td>80.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>Fwd: more on libya</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>H &lt;hrod17@clintonernaii.com›\r\nWednesday, Sep...</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>22</td>
+      <td>MORE ON LIBYA</td>
+      <td>Russorv@state.gov</td>
+      <td>H</td>
+      <td>80.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>Fwd: more on libya</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Pis print.\r\nH &lt; hrod17@clintoriernail.corn&gt;\...</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>23</td>
+      <td>H: MAGARIAF ON ATTACK ON US IN LIBYA. SID</td>
+      <td>Russorv@state.gov</td>
+      <td>H</td>
+      <td>80.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>Fw: H: Magariaf on attack on US in Libya. Sid</td>
+      <td>'Russorv@stategov'</td>
+      <td>H &lt;hrod17©clintonemaiLcom&gt;</td>
+      <td>NaN</td>
+      <td>Wednesday, September 12, 2012 11:30 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Pis print.</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>24</td>
+      <td>H: MAGARIAF ON ATTACK ON US IN LIBYA. SID</td>
+      <td>sullivanjj@state.gov</td>
+      <td>H</td>
+      <td>80.0</td>
+      <td>2012-09-12T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>Fw: H: Magariaf on attack on US in Libya. Sid</td>
+      <td>'sullivanjj@state.gov'</td>
+      <td>H &lt;hrod17@clintonemail.com&gt;</td>
+      <td>NaN</td>
+      <td>Wednesday, September 12, 2012 11:30 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Follow Up Flag: Follow up\r\nFlag Status: Flag...</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>25</td>
+      <td>PROPOSED QUAD DEAL</td>
+      <td>H</td>
+      <td>Sullivan, Jacob J</td>
+      <td>87.0</td>
+      <td>2011-03-23T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>Re: Proposed Quad Deal</td>
+      <td>NaN</td>
+      <td>Sullivan, Jacob .1 ‹Sullivann@state.gov&gt;</td>
+      <td>McEldowney, Nancy E; Heffern, John A; Spence, ...</td>
+      <td>Wednesday, March 23, 2011 09:10 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>B5</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>26</td>
+      <td>H: MORE MAGARIAF PRIVAT REAX (SENT NOW AS MEMO...</td>
+      <td>H</td>
+      <td>Blumenthal, Sidney</td>
+      <td>194.0</td>
+      <td>2012-09-13T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Sidney Blumenthal\r\nThursday, September 13, 2...</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>27</td>
+      <td>MORE ON LIBYA</td>
+      <td>H</td>
+      <td>Sullivan, Jacob J</td>
+      <td>87.0</td>
+      <td>2012-09-13T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>Re: Fwd: more on libya</td>
+      <td>NaN</td>
+      <td>Sullivan, Jacob I &lt;Sullivanit@state,gov›</td>
+      <td>NaN</td>
+      <td>Thursday, September 13, 2012 2:31 AM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Will do.</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>28</td>
+      <td>AMB STEVENS</td>
+      <td>H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2012-09-13T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>Fw: Amb Stevens</td>
+      <td>NaN</td>
+      <td>Mills, Cheryl 0 &lt;MillsCD@stategov&gt;</td>
+      <td>Macmanus, Joseph E (S[)ialAssistants; Abbaszad...</td>
+      <td>Wednesday, September 12, 2012 8:52 AM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Remind me to discuss</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>29</td>
+      <td>CNN BELIEF BLOG. PROTHERO</td>
+      <td>H</td>
+      <td>Strider, Burns</td>
+      <td>21.0</td>
+      <td>2012-09-13T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>CNN Belief Biog. Prothero</td>
+      <td>NaN</td>
+      <td>Burns Strider</td>
+      <td>NaN</td>
+      <td>Thursday, September 13, 2012 12:41 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>http://religion.b1ogs.cnn.com/20 1 2/09/13/my-...</td>
+      <td>UNCLASSIFIED\r\nU.S. Department of State\r\nCa...</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>30</td>
+      <td>CHRIS STEVENS MISSION</td>
+      <td>H</td>
+      <td>Abedin, Huma</td>
+      <td>81.0</td>
+      <td>2011-03-27T04:00:00+00:00</td>
+      <td>2015-05-22T04:00:00+00:00</td>
+      <td>HRC_Email_296</td>
+      <td>Fw: chris Stevens mission</td>
+      <td>NaN</td>
+      <td>Abedin, Huma &lt;AbedinH@state.goy&gt;</td>
+      <td>Sullivan, Jacob .1</td>
+      <td>Sunday, March 27, 2011 12:32 PM</td>
+      <td>F-2015-04841</td>
+      <td>05/13/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>See note below</td>
+      <td>B5\r\nUNCLASSIFIED\r\nU.S. Department of State...</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>7915</th>
+      <td>7916</td>
+      <td>CAN'T SAY HOW SAD I AM ABOUT HOLBROOKE, FITFUL...</td>
+      <td>H</td>
+      <td>sbwhoeop</td>
+      <td>194.0</td>
+      <td>2010-12-14T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>sbwhoeop\r\nTuesday, December 14, 2010 9:35 AM...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7916</th>
+      <td>7917</td>
+      <td>REMARKS OF THE SPOKESMAN OF THE ISLAMIC EMIRAT...</td>
+      <td>H</td>
+      <td>Sullivan, Jacob J</td>
+      <td>87.0</td>
+      <td>2010-12-14T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>FW: Remarks of the Spokesman of the Islamic Em...</td>
+      <td>NaN</td>
+      <td>Sullivan, Jacob J &lt;Sullivann@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Tuesday, December 14, 2010 12:26 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Death of Holbrookell.y,J3_4.:5 _043.) ,:u1.01 ...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7917</th>
+      <td>7918</td>
+      <td>NIDES</td>
+      <td>H</td>
+      <td>Rodriguez, Miguel E</td>
+      <td>148.0</td>
+      <td>2010-12-14T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>Nides</td>
+      <td>NaN</td>
+      <td>Rodriguez, Miguel E &lt;RodriguezME@state.gov&gt;</td>
+      <td>Verma, Richard R</td>
+      <td>Tuesday, December 14, 2010 2:49 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>NaN</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7918</th>
+      <td>7919</td>
+      <td>FW:</td>
+      <td>H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2010-12-14T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>Fw:</td>
+      <td>NaN</td>
+      <td>Mills, Cheryl D &lt;MillsCD@state.gov&gt;</td>
+      <td>"Marshall, Capricia P" &lt;MarshalICP@state.gov&gt;</td>
+      <td>Tuesday, December 14, 2010 4:10 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>NaN</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7919</th>
+      <td>7920</td>
+      <td>NORWEGIAN AGENCY FOR DEVELOPMENT COOPERATION (...</td>
+      <td>H</td>
+      <td>Verveer, Melanne S</td>
+      <td>143.0</td>
+      <td>2010-12-14T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>Fw: Norwegian Agency for Development Cooperati...</td>
+      <td>NaN</td>
+      <td>Verveer, Melanne S &lt;VerveerMS@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Tuesday, December 14, 2010 9:29 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>on: 12/13/2025\r\nFrom\r\nTo: Verveer, Melanne...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7920</th>
+      <td>7921</td>
+      <td>FRIDAY</td>
+      <td>H</td>
+      <td>Abedin, Huma</td>
+      <td>81.0</td>
+      <td>2010-12-14T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>Re: Friday</td>
+      <td>H; 'ValmoroU@state.gov'</td>
+      <td>Huma Abedin &lt;Huma@clintonemail.com&gt;</td>
+      <td>NaN</td>
+      <td>Tuesday, December 14, 2010 10:04 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>That was what lona had when she went in to tal...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7921</th>
+      <td>7922</td>
+      <td>#1 SOCIAL MEDIA CAMPAIGN OF 2010</td>
+      <td>H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2010-12-15T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>Fw: #1 Social Media campaign of 2010</td>
+      <td>NaN</td>
+      <td>Mills, Cheryl D &lt;MillsCD@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Wednesday, December 15, 2010 12:06 AM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Fyi</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7922</th>
+      <td>7923</td>
+      <td>A NEW DRAFT OF THE TOWN HALL SPEECH</td>
+      <td>H</td>
+      <td>Schwerin, Daniel B</td>
+      <td>48.0</td>
+      <td>2010-12-15T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>A new draft of the town hall speech</td>
+      <td>NaN</td>
+      <td>Schwerin, Daniel B &lt;SchwerinDB@state.gov&gt;</td>
+      <td>Abedin, Huma; Sullivan, Jacob J; Daniel, Joshua J</td>
+      <td>Wednesday, December 15, 2010 7:42 AM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>Madame Secretary, I wanted to flag for you tha...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7923</th>
+      <td>7924</td>
+      <td>A NEW DRAFT OF THE TOWN HALL SPEECH</td>
+      <td>H</td>
+      <td>Daniel, Joshua J</td>
+      <td>103.0</td>
+      <td>2010-12-15T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>RE: A new draft of the town hall speech</td>
+      <td>H; Schwerin, Daniel B</td>
+      <td>Daniel, Joshua J &lt;DanieW@state.gov&gt;</td>
+      <td>Abedin, Huma; Sullivan, Jacob J</td>
+      <td>Wednesday, December 15, 2010 8:18 AM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>It's at the bottom of page 1:\r\n...Ambassador...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7924</th>
+      <td>7925</td>
+      <td>SPEECH THIS MORNING</td>
+      <td>H</td>
+      <td>Slaughter, Anne-Marie</td>
+      <td>10.0</td>
+      <td>2010-12-15T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>Speech this morning</td>
+      <td>NaN</td>
+      <td>Slaughter, Anne-Marie &lt;SlaughterA@state.gov&gt;</td>
+      <td>Mills, Cheryl D; Sullivan, Jacob J; Abedin, Huma</td>
+      <td>Wednesday, December 15, 2010 7:43 AM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>I will be at a USGLC breakfast doing qddr so w...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7925</th>
+      <td>7926</td>
+      <td>TAX BILL</td>
+      <td>H</td>
+      <td>Verma, Richard R</td>
+      <td>180.0</td>
+      <td>2010-12-15T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>tax bill</td>
+      <td>H</td>
+      <td>Verma, Richard R &lt;VermaRR@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Wednesday, December 15, 2010 1:22 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>Passed the Senate 81 to 19. START vote on moti...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7926</th>
+      <td>7927</td>
+      <td>MATT LEE'S PIECE WITH WRITE-THROUGH</td>
+      <td>H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2010-12-15T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>FW: Matt Lee's piece with write-through</td>
+      <td>NaN</td>
+      <td>Mills, Cheryl D &lt;MillsCD@state.goy&gt;</td>
+      <td>NaN</td>
+      <td>Wednesday, December 15, 2010 1:47 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>-^</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7927</th>
+      <td>7928</td>
+      <td>SHE IS SIMPLY A ROCK STAR</td>
+      <td>H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2010-12-15T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>FW: she is simply a rock star</td>
+      <td>NaN</td>
+      <td>Mills, Cheryl D &lt;MillsCD©state.gov&gt;</td>
+      <td>Mills, Cheryl D</td>
+      <td>Wednesday, December 15, 2010 1:48 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Traffic below from bottom up</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7928</th>
+      <td>7929</td>
+      <td>BB</td>
+      <td>H</td>
+      <td>Sullivan, Jake</td>
+      <td>87.0</td>
+      <td>2010-12-15T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>Fwd: Re BB</td>
+      <td>H; Sullivan, Jacob J</td>
+      <td>Jake Sullivan •</td>
+      <td>NaN</td>
+      <td>Wednesday, December 15, 2010 4:25 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>fyi\r\nForwarded message</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7929</th>
+      <td>7930</td>
+      <td>BILL BURKE WHITE</td>
+      <td>H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2010-12-15T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>FW: Bill Burke White</td>
+      <td>NaN</td>
+      <td>Mills, Cheryl D &lt;MillsCD©state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Wednesday, December 15, 2010 8:19 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>Agree — he did all the writing and integrating...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7930</th>
+      <td>7931</td>
+      <td>THANKS AGAIN</td>
+      <td>H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2010-12-15T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>FW: thanks again</td>
+      <td>NaN</td>
+      <td>Mills, Cheryl D &lt;MillsCD@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Wednesday, December 15, 2010 8:36 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Nice\r\nForgot to tell you about our harrowing...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7931</th>
+      <td>7932</td>
+      <td>EU STOPPED EURO 47 MILLION</td>
+      <td>H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2010-12-15T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>FW: EU Stopped EURO 47 Million</td>
+      <td>NaN</td>
+      <td>Mills, Cheryl D &lt;MillsCD@state.gov&gt;</td>
+      <td>Lindwall, David E</td>
+      <td>Wednesday, December 15, 2010 8:49 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>NaN</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7932</th>
+      <td>7933</td>
+      <td>MORE WIKITHINK</td>
+      <td>H</td>
+      <td>Sullivan, Jacob J</td>
+      <td>87.0</td>
+      <td>2010-12-15T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>Fw: more wikithink</td>
+      <td>NaN</td>
+      <td>Sullivan, Jacob J &lt;SullivanJJ@state.gov&gt;</td>
+      <td>Mills, Cheryl D</td>
+      <td>Wednesday, December 15, 2010 10:49 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>Worth a read.</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7933</th>
+      <td>7934</td>
+      <td>H: JAMIE RUBIN FINALLY LANDS. SID</td>
+      <td>H</td>
+      <td>sbwhoeop</td>
+      <td>194.0</td>
+      <td>2010-12-15T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>H: Jamie Rubin finally lands. Sid</td>
+      <td>NaN</td>
+      <td>sbwhoeop</td>
+      <td>NaN</td>
+      <td>Wednesday, December 15, 201011:01 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>The unsigned editorials will appear in all of ...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7934</th>
+      <td>7935</td>
+      <td>(AP) GERMANY: PULLOUT FROM AFGHANISTAN TO STAR...</td>
+      <td>H</td>
+      <td>Abedin, Huma</td>
+      <td>81.0</td>
+      <td>2010-12-16T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>Fw: (AP) Germany: pullout from Afghanistan to ...</td>
+      <td>NaN</td>
+      <td>Abedin, Huma &lt;AbedinH@state.gov&gt;</td>
+      <td>SES-0_0S; SES-O_Shift-I</td>
+      <td>Thursday, December 16, 2010 7:08 AM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>NaN</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7935</th>
+      <td>7936</td>
+      <td>(AP) PALESTINIANS SEEK STATE RECOGNITION IN EU...</td>
+      <td>H</td>
+      <td>Abedin, Huma</td>
+      <td>81.0</td>
+      <td>2010-12-16T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>Fw: (AP) Palestinians seek state recognition i...</td>
+      <td>NaN</td>
+      <td>Abedin, Huma &lt;AbedinH@state.gov&gt;</td>
+      <td>SES-0_0S; SES-O_Shift-I</td>
+      <td>Thursday, December 16, 2010 7:08 AM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>NaN</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7936</th>
+      <td>7937</td>
+      <td>FROM PAKISTAN</td>
+      <td>H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2010-12-16T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>Mills, Cheryl D &lt;MillsCD@state.gov&gt;\r\nThursda...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7937</th>
+      <td>7938</td>
+      <td>THE ENVOY</td>
+      <td>H</td>
+      <td>Mills, Cheryl D</td>
+      <td>32.0</td>
+      <td>2010-12-16T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>FW: The Envoy</td>
+      <td>NaN</td>
+      <td>Mills, Cheryl D &lt;MillsCD@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Thursday, December 16, 2010 9:30 AM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>THE NBC/YORKER\r\nDecember 14, 2010\r\nThe Env...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7938</th>
+      <td>7939</td>
+      <td>UPDATE</td>
+      <td>H</td>
+      <td>Stern, Todd D</td>
+      <td>204.0</td>
+      <td>2010-12-16T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>update</td>
+      <td>NaN</td>
+      <td>Stern, Todd D (S/SECC) &lt;SternTD@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Thursday, December 16, 2010 10:08 AM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>Hi. Sorry I haven't had a chance to see you, b...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7939</th>
+      <td>7940</td>
+      <td>RICHARD (TNR)</td>
+      <td>H</td>
+      <td>Sullivan, Jake</td>
+      <td>87.0</td>
+      <td>2010-12-16T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>Fwd: FW: Richard (TNR)</td>
+      <td>H</td>
+      <td>Jake Sullivan _</td>
+      <td>NaN</td>
+      <td>Thursday, December 16, 20107:06 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>B6\r\nI assume you saw this by now -- if not, ...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7940</th>
+      <td>7941</td>
+      <td>WYDEN</td>
+      <td>H</td>
+      <td>Verma, Richard R</td>
+      <td>180.0</td>
+      <td>2010-12-16T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>Fw: Wyden</td>
+      <td>NaN</td>
+      <td>Verma, Richard R &lt;VermaRR@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Thursday, December 16, 2010 7:41 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>NaN</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7941</th>
+      <td>7942</td>
+      <td>SENATE</td>
+      <td>H</td>
+      <td>Verma, Richard R</td>
+      <td>180.0</td>
+      <td>2010-12-16T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>Senate</td>
+      <td>NaN</td>
+      <td>Verma, Richard R &lt;VermaRR@state.gov&gt;</td>
+      <td>Sullivan, Jacob J; Mills, Cheryl D; Abedin, Huma</td>
+      <td>Thursday, December 16, 2010 8:09 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>Big change of plans in the Senate. Senator Rei...</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7942</th>
+      <td>7943</td>
+      <td>RICHARD (TNR)</td>
+      <td>H</td>
+      <td>Jiloty, Lauren C</td>
+      <td>116.0</td>
+      <td>2010-12-16T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>Re: Fwd: FW: Richard (TNR)</td>
+      <td>NaN</td>
+      <td>Jiloty, Lauren C &lt;JilotyLC@state.gov&gt;</td>
+      <td>NaN</td>
+      <td>Thursday, December 16, 2010 10:52 PM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>NaN</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+    <tr>
+      <th>7943</th>
+      <td>7944</td>
+      <td>FROM</td>
+      <td>H</td>
+      <td>PVerveer</td>
+      <td>143.0</td>
+      <td>2012-12-17T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>NaN</td>
+      <td>PVervee,</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>12/14/201</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN PART</td>
+      <td>PVerveer B6\r\nFriday, December 17, 2010 12:12...</td>
+      <td>Hi dear Melanne and Alyse,\r\nHope this email ...</td>
+    </tr>
+    <tr>
+      <th>7944</th>
+      <td>7945</td>
+      <td>NOTE FOR SECRETARY CLINTON</td>
+      <td>H</td>
+      <td>Sullivan, Jacob J</td>
+      <td>87.0</td>
+      <td>2010-12-17T05:00:00+00:00</td>
+      <td>2015-08-31T04:00:00+00:00</td>
+      <td>Clinton_Email_August_Release</td>
+      <td>FW: Note for Secretary Clinton</td>
+      <td>NaN</td>
+      <td>Sullivan, Jacob J &lt;SullivanJJ@state.gov&gt;</td>
+      <td>Abedin, Huma</td>
+      <td>Friday, December 17, 2010 10:42 AM</td>
+      <td>F-2014-20439</td>
+      <td>08/31/2015</td>
+      <td>RELEASE IN FULL</td>
+      <td>See below.</td>
+      <td>UNCLASSIFIED U.S. Department of State Case No....</td>
+    </tr>
+  </tbody>
+</table>
+<p>7945 rows × 18 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[72]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emailsBySend</span> <span class="o">=</span> <span class="n">emails</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;SenderPersonId&#39;</span><span class="p">])[</span><span class="s1">&#39;ExtractedBodyText&#39;</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">emailsBySend</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[50]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">senderIDs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">senderID</span> <span class="ow">in</span> <span class="n">emails</span><span class="p">[</span><span class="s1">&#39;SenderPersonId&#39;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">senderID</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>87.0
+nan
+32.0
+32.0
+80.0
+80.0
+32.0
+80.0
+87.0
+nan
+87.0
+nan
+87.0
+10.0
+32.0
+77.0
+213.0
+213.0
+87.0
+87.0
+80.0
+80.0
+80.0
+80.0
+87.0
+194.0
+87.0
+32.0
+21.0
+81.0
+87.0
+32.0
+nan
+80.0
+87.0
+32.0
+185.0
+32.0
+81.0
+32.0
+87.0
+22.0
+80.0
+80.0
+32.0
+87.0
+194.0
+80.0
+80.0
+22.0
+87.0
+10.0
+194.0
+194.0
+216.0
+80.0
+32.0
+87.0
+87.0
+32.0
+10.0
+80.0
+32.0
+87.0
+32.0
+80.0
+87.0
+80.0
+87.0
+194.0
+80.0
+150.0
+32.0
+80.0
+32.0
+87.0
+194.0
+87.0
+80.0
+32.0
+nan
+nan
+80.0
+32.0
+32.0
+80.0
+48.0
+150.0
+87.0
+80.0
+150.0
+81.0
+80.0
+87.0
+81.0
+81.0
+150.0
+170.0
+150.0
+81.0
+87.0
+80.0
+48.0
+80.0
+81.0
+80.0
+87.0
+32.0
+48.0
+150.0
+32.0
+80.0
+80.0
+nan
+150.0
+80.0
+nan
+80.0
+80.0
+87.0
+150.0
+80.0
+213.0
+80.0
+87.0
+32.0
+87.0
+nan
+32.0
+80.0
+nan
+80.0
+32.0
+80.0
+87.0
+87.0
+80.0
+32.0
+87.0
+80.0
+87.0
+nan
+87.0
+80.0
+32.0
+32.0
+81.0
+80.0
+194.0
+32.0
+81.0
+87.0
+143.0
+80.0
+80.0
+32.0
+80.0
+80.0
+80.0
+87.0
+80.0
+32.0
+38.0
+80.0
+80.0
+32.0
+32.0
+32.0
+87.0
+87.0
+32.0
+80.0
+32.0
+32.0
+170.0
+87.0
+194.0
+80.0
+80.0
+87.0
+32.0
+80.0
+81.0
+80.0
+32.0
+32.0
+80.0
+87.0
+32.0
+80.0
+32.0
+32.0
+80.0
+nan
+80.0
+80.0
+170.0
+80.0
+80.0
+32.0
+80.0
+80.0
+80.0
+32.0
+nan
+150.0
+10.0
+87.0
+32.0
+80.0
+87.0
+87.0
+87.0
+32.0
+87.0
+80.0
+32.0
+87.0
+32.0
+80.0
+87.0
+32.0
+32.0
+87.0
+80.0
+80.0
+124.0
+32.0
+32.0
+32.0
+124.0
+32.0
+32.0
+80.0
+80.0
+38.0
+32.0
+32.0
+32.0
+32.0
+194.0
+32.0
+32.0
+194.0
+80.0
+32.0
+216.0
+201.0
+80.0
+32.0
+80.0
+87.0
+80.0
+87.0
+80.0
+80.0
+87.0
+80.0
+80.0
+87.0
+170.0
+87.0
+80.0
+80.0
+87.0
+87.0
+87.0
+87.0
+87.0
+87.0
+87.0
+80.0
+80.0
+87.0
+87.0
+80.0
+194.0
+80.0
+87.0
+194.0
+80.0
+80.0
+80.0
+150.0
+80.0
+32.0
+80.0
+209.0
+32.0
+194.0
+32.0
+135.0
+170.0
+38.0
+10.0
+105.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+5.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+nan
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+61.0
+28.0
+28.0
+nan
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+194.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+194.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+155.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+81.0
+32.0
+nan
+nan
+38.0
+170.0
+87.0
+124.0
+116.0
+87.0
+87.0
+124.0
+32.0
+nan
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+116.0
+32.0
+87.0
+32.0
+32.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+116.0
+32.0
+32.0
+124.0
+32.0
+153.0
+90.0
+32.0
+32.0
+80.0
+30.0
+80.0
+87.0
+80.0
+32.0
+30.0
+80.0
+32.0
+32.0
+80.0
+30.0
+80.0
+nan
+32.0
+32.0
+80.0
+32.0
+87.0
+80.0
+32.0
+32.0
+32.0
+80.0
+80.0
+80.0
+202.0
+80.0
+32.0
+32.0
+32.0
+32.0
+116.0
+90.0
+87.0
+32.0
+116.0
+80.0
+80.0
+80.0
+80.0
+80.0
+85.0
+32.0
+80.0
+80.0
+80.0
+80.0
+32.0
+80.0
+32.0
+32.0
+32.0
+nan
+116.0
+85.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+116.0
+80.0
+81.0
+80.0
+32.0
+32.0
+81.0
+87.0
+32.0
+32.0
+87.0
+87.0
+32.0
+32.0
+32.0
+15.0
+32.0
+32.0
+32.0
+32.0
+163.0
+32.0
+nan
+15.0
+32.0
+216.0
+87.0
+32.0
+183.0
+32.0
+32.0
+81.0
+32.0
+122.0
+32.0
+32.0
+32.0
+116.0
+32.0
+81.0
+32.0
+32.0
+151.0
+32.0
+85.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+nan
+80.0
+80.0
+81.0
+32.0
+81.0
+80.0
+80.0
+32.0
+81.0
+81.0
+81.0
+80.0
+80.0
+80.0
+81.0
+81.0
+80.0
+81.0
+80.0
+32.0
+81.0
+80.0
+81.0
+81.0
+81.0
+80.0
+81.0
+32.0
+nan
+nan
+81.0
+124.0
+81.0
+116.0
+124.0
+124.0
+87.0
+81.0
+81.0
+81.0
+32.0
+81.0
+87.0
+87.0
+32.0
+80.0
+32.0
+32.0
+116.0
+81.0
+116.0
+80.0
+32.0
+80.0
+32.0
+32.0
+32.0
+80.0
+80.0
+80.0
+80.0
+80.0
+32.0
+80.0
+32.0
+80.0
+80.0
+80.0
+80.0
+32.0
+80.0
+80.0
+80.0
+122.0
+80.0
+80.0
+32.0
+80.0
+124.0
+32.0
+80.0
+32.0
+81.0
+32.0
+81.0
+80.0
+80.0
+80.0
+116.0
+32.0
+32.0
+116.0
+nan
+81.0
+32.0
+81.0
+32.0
+124.0
+32.0
+32.0
+80.0
+87.0
+87.0
+32.0
+85.0
+80.0
+87.0
+116.0
+81.0
+81.0
+81.0
+81.0
+81.0
+87.0
+80.0
+32.0
+87.0
+87.0
+87.0
+87.0
+87.0
+80.0
+32.0
+116.0
+32.0
+80.0
+116.0
+32.0
+80.0
+32.0
+80.0
+32.0
+86.0
+80.0
+81.0
+32.0
+32.0
+32.0
+32.0
+81.0
+81.0
+32.0
+80.0
+32.0
+32.0
+81.0
+81.0
+81.0
+32.0
+81.0
+81.0
+32.0
+32.0
+nan
+80.0
+32.0
+80.0
+87.0
+81.0
+81.0
+32.0
+170.0
+116.0
+80.0
+32.0
+116.0
+32.0
+81.0
+32.0
+32.0
+80.0
+153.0
+80.0
+85.0
+194.0
+85.0
+80.0
+32.0
+143.0
+32.0
+32.0
+32.0
+80.0
+32.0
+80.0
+nan
+81.0
+80.0
+32.0
+80.0
+32.0
+143.0
+87.0
+80.0
+87.0
+81.0
+194.0
+80.0
+32.0
+32.0
+124.0
+32.0
+116.0
+32.0
+32.0
+32.0
+80.0
+32.0
+32.0
+32.0
+32.0
+80.0
+32.0
+32.0
+80.0
+32.0
+32.0
+81.0
+81.0
+32.0
+80.0
+85.0
+80.0
+116.0
+32.0
+125.0
+116.0
+80.0
+80.0
+32.0
+nan
+80.0
+32.0
+32.0
+194.0
+32.0
+32.0
+81.0
+32.0
+81.0
+32.0
+80.0
+32.0
+81.0
+32.0
+81.0
+81.0
+81.0
+81.0
+32.0
+81.0
+32.0
+194.0
+32.0
+81.0
+194.0
+81.0
+71.0
+71.0
+32.0
+32.0
+32.0
+32.0
+32.0
+30.0
+81.0
+81.0
+170.0
+170.0
+170.0
+81.0
+81.0
+81.0
+32.0
+81.0
+81.0
+124.0
+196.0
+80.0
+153.0
+81.0
+81.0
+81.0
+170.0
+nan
+nan
+81.0
+32.0
+116.0
+81.0
+32.0
+116.0
+30.0
+81.0
+53.0
+87.0
+53.0
+81.0
+81.0
+81.0
+170.0
+81.0
+81.0
+81.0
+81.0
+32.0
+114.0
+81.0
+81.0
+32.0
+116.0
+118.0
+81.0
+118.0
+32.0
+32.0
+81.0
+32.0
+81.0
+81.0
+32.0
+81.0
+81.0
+32.0
+116.0
+87.0
+116.0
+194.0
+81.0
+81.0
+116.0
+116.0
+124.0
+194.0
+194.0
+32.0
+153.0
+nan
+32.0
+32.0
+32.0
+30.0
+116.0
+124.0
+32.0
+194.0
+119.0
+81.0
+81.0
+32.0
+32.0
+30.0
+196.0
+81.0
+191.0
+81.0
+81.0
+32.0
+116.0
+32.0
+81.0
+81.0
+81.0
+32.0
+81.0
+32.0
+67.0
+nan
+81.0
+30.0
+nan
+81.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+nan
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+32.0
+32.0
+32.0
+32.0
+116.0
+81.0
+81.0
+81.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+194.0
+32.0
+32.0
+32.0
+32.0
+32.0
+10.0
+116.0
+124.0
+116.0
+124.0
+81.0
+81.0
+81.0
+32.0
+124.0
+215.0
+81.0
+81.0
+81.0
+32.0
+32.0
+116.0
+87.0
+194.0
+87.0
+81.0
+32.0
+32.0
+32.0
+32.0
+81.0
+81.0
+32.0
+116.0
+nan
+196.0
+87.0
+81.0
+93.0
+143.0
+32.0
+32.0
+81.0
+81.0
+32.0
+116.0
+81.0
+81.0
+116.0
+194.0
+194.0
+194.0
+81.0
+122.0
+81.0
+196.0
+87.0
+81.0
+81.0
+81.0
+81.0
+81.0
+32.0
+32.0
+32.0
+81.0
+87.0
+32.0
+116.0
+170.0
+81.0
+116.0
+112.0
+112.0
+87.0
+90.0
+180.0
+116.0
+116.0
+32.0
+81.0
+32.0
+32.0
+81.0
+81.0
+116.0
+225.0
+124.0
+32.0
+32.0
+32.0
+194.0
+194.0
+32.0
+15.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+112.0
+39.0
+81.0
+81.0
+81.0
+32.0
+81.0
+93.0
+194.0
+32.0
+194.0
+32.0
+32.0
+81.0
+32.0
+32.0
+32.0
+32.0
+80.0
+124.0
+32.0
+nan
+32.0
+81.0
+nan
+nan
+180.0
+194.0
+81.0
+32.0
+32.0
+32.0
+116.0
+185.0
+81.0
+81.0
+185.0
+81.0
+32.0
+32.0
+81.0
+81.0
+81.0
+81.0
+81.0
+nan
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+32.0
+32.0
+32.0
+32.0
+32.0
+81.0
+81.0
+81.0
+81.0
+81.0
+116.0
+32.0
+32.0
+32.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+32.0
+81.0
+81.0
+116.0
+185.0
+32.0
+81.0
+87.0
+124.0
+32.0
+32.0
+81.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+124.0
+32.0
+32.0
+32.0
+81.0
+81.0
+124.0
+87.0
+32.0
+196.0
+196.0
+81.0
+81.0
+185.0
+81.0
+124.0
+124.0
+194.0
+116.0
+87.0
+32.0
+80.0
+32.0
+80.0
+80.0
+32.0
+80.0
+80.0
+80.0
+81.0
+80.0
+80.0
+nan
+80.0
+32.0
+nan
+80.0
+32.0
+116.0
+80.0
+32.0
+80.0
+194.0
+80.0
+194.0
+80.0
+194.0
+194.0
+194.0
+81.0
+80.0
+194.0
+80.0
+81.0
+80.0
+80.0
+80.0
+194.0
+32.0
+80.0
+32.0
+80.0
+nan
+32.0
+80.0
+81.0
+116.0
+80.0
+nan
+80.0
+85.0
+93.0
+81.0
+81.0
+80.0
+80.0
+32.0
+32.0
+80.0
+159.0
+80.0
+87.0
+81.0
+nan
+32.0
+116.0
+32.0
+32.0
+32.0
+32.0
+116.0
+196.0
+124.0
+196.0
+81.0
+81.0
+116.0
+32.0
+116.0
+32.0
+113.0
+32.0
+15.0
+32.0
+81.0
+81.0
+32.0
+nan
+81.0
+nan
+32.0
+32.0
+81.0
+nan
+81.0
+32.0
+87.0
+81.0
+116.0
+32.0
+50.0
+32.0
+170.0
+85.0
+80.0
+80.0
+87.0
+32.0
+81.0
+32.0
+32.0
+32.0
+81.0
+87.0
+170.0
+80.0
+32.0
+100.0
+32.0
+32.0
+87.0
+81.0
+80.0
+52.0
+81.0
+81.0
+81.0
+80.0
+81.0
+87.0
+87.0
+32.0
+80.0
+15.0
+194.0
+32.0
+87.0
+32.0
+81.0
+80.0
+87.0
+80.0
+32.0
+32.0
+87.0
+24.0
+80.0
+24.0
+116.0
+80.0
+87.0
+87.0
+81.0
+80.0
+80.0
+81.0
+80.0
+80.0
+32.0
+80.0
+87.0
+170.0
+80.0
+80.0
+32.0
+124.0
+80.0
+87.0
+80.0
+81.0
+80.0
+116.0
+81.0
+80.0
+80.0
+30.0
+80.0
+80.0
+80.0
+81.0
+81.0
+116.0
+116.0
+32.0
+32.0
+81.0
+15.0
+81.0
+81.0
+122.0
+80.0
+122.0
+116.0
+80.0
+80.0
+80.0
+122.0
+80.0
+87.0
+80.0
+80.0
+80.0
+80.0
+81.0
+80.0
+80.0
+80.0
+80.0
+80.0
+194.0
+80.0
+81.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+32.0
+81.0
+32.0
+87.0
+32.0
+32.0
+32.0
+32.0
+32.0
+81.0
+170.0
+32.0
+81.0
+81.0
+81.0
+32.0
+90.0
+80.0
+170.0
+124.0
+87.0
+122.0
+122.0
+87.0
+122.0
+122.0
+116.0
+32.0
+81.0
+81.0
+81.0
+32.0
+32.0
+81.0
+81.0
+116.0
+124.0
+81.0
+32.0
+81.0
+81.0
+124.0
+32.0
+32.0
+80.0
+81.0
+nan
+124.0
+32.0
+124.0
+124.0
+80.0
+81.0
+122.0
+124.0
+80.0
+122.0
+32.0
+80.0
+122.0
+80.0
+nan
+81.0
+80.0
+81.0
+87.0
+32.0
+122.0
+122.0
+81.0
+122.0
+122.0
+80.0
+80.0
+32.0
+80.0
+80.0
+122.0
+116.0
+87.0
+194.0
+nan
+32.0
+124.0
+87.0
+32.0
+32.0
+32.0
+81.0
+32.0
+32.0
+1.0
+80.0
+80.0
+80.0
+32.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+81.0
+32.0
+32.0
+32.0
+32.0
+32.0
+213.0
+81.0
+81.0
+32.0
+32.0
+81.0
+32.0
+32.0
+32.0
+32.0
+32.0
+196.0
+32.0
+32.0
+32.0
+32.0
+170.0
+170.0
+170.0
+87.0
+170.0
+87.0
+87.0
+170.0
+87.0
+81.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+124.0
+122.0
+32.0
+87.0
+87.0
+116.0
+81.0
+81.0
+32.0
+81.0
+32.0
+32.0
+nan
+81.0
+81.0
+81.0
+32.0
+32.0
+170.0
+32.0
+nan
+32.0
+32.0
+170.0
+9.0
+32.0
+170.0
+81.0
+81.0
+87.0
+170.0
+87.0
+87.0
+87.0
+87.0
+87.0
+81.0
+81.0
+87.0
+81.0
+15.0
+32.0
+32.0
+87.0
+87.0
+213.0
+87.0
+87.0
+87.0
+81.0
+81.0
+81.0
+124.0
+nan
+9.0
+32.0
+87.0
+87.0
+116.0
+122.0
+116.0
+143.0
+87.0
+116.0
+56.0
+191.0
+32.0
+81.0
+32.0
+32.0
+87.0
+32.0
+81.0
+32.0
+93.0
+32.0
+32.0
+32.0
+32.0
+32.0
+81.0
+87.0
+196.0
+81.0
+81.0
+81.0
+81.0
+32.0
+81.0
+32.0
+81.0
+81.0
+81.0
+81.0
+87.0
+81.0
+32.0
+32.0
+81.0
+81.0
+32.0
+81.0
+81.0
+81.0
+122.0
+170.0
+170.0
+32.0
+81.0
+81.0
+116.0
+81.0
+170.0
+81.0
+81.0
+170.0
+170.0
+170.0
+50.0
+81.0
+213.0
+216.0
+200.0
+32.0
+86.0
+196.0
+81.0
+170.0
+32.0
+32.0
+87.0
+32.0
+nan
+32.0
+nan
+70.0
+81.0
+81.0
+32.0
+81.0
+81.0
+32.0
+81.0
+32.0
+81.0
+81.0
+124.0
+9.0
+9.0
+81.0
+81.0
+87.0
+117.0
+116.0
+213.0
+81.0
+81.0
+81.0
+81.0
+143.0
+81.0
+32.0
+81.0
+49.0
+81.0
+196.0
+214.0
+81.0
+194.0
+81.0
+81.0
+124.0
+81.0
+32.0
+87.0
+nan
+116.0
+122.0
+81.0
+81.0
+nan
+122.0
+81.0
+nan
+122.0
+170.0
+143.0
+170.0
+81.0
+116.0
+81.0
+81.0
+32.0
+116.0
+81.0
+171.0
+81.0
+81.0
+170.0
+32.0
+94.0
+81.0
+nan
+32.0
+162.0
+81.0
+32.0
+81.0
+168.0
+30.0
+81.0
+81.0
+124.0
+124.0
+171.0
+94.0
+81.0
+143.0
+81.0
+nan
+81.0
+81.0
+94.0
+81.0
+72.0
+87.0
+81.0
+81.0
+194.0
+81.0
+122.0
+81.0
+2.0
+32.0
+32.0
+81.0
+81.0
+81.0
+124.0
+143.0
+143.0
+81.0
+116.0
+87.0
+49.0
+124.0
+81.0
+nan
+124.0
+87.0
+81.0
+196.0
+81.0
+81.0
+170.0
+81.0
+81.0
+81.0
+124.0
+81.0
+191.0
+81.0
+81.0
+81.0
+32.0
+32.0
+81.0
+81.0
+170.0
+170.0
+170.0
+170.0
+32.0
+168.0
+113.0
+81.0
+81.0
+32.0
+32.0
+81.0
+81.0
+81.0
+81.0
+170.0
+196.0
+170.0
+81.0
+81.0
+81.0
+32.0
+81.0
+81.0
+81.0
+124.0
+143.0
+196.0
+124.0
+81.0
+81.0
+32.0
+32.0
+32.0
+32.0
+32.0
+194.0
+81.0
+32.0
+32.0
+83.0
+196.0
+32.0
+32.0
+81.0
+124.0
+32.0
+124.0
+81.0
+194.0
+81.0
+81.0
+32.0
+81.0
+81.0
+32.0
+116.0
+87.0
+124.0
+196.0
+124.0
+124.0
+81.0
+124.0
+194.0
+22.0
+81.0
+22.0
+32.0
+144.0
+32.0
+32.0
+nan
+32.0
+81.0
+81.0
+81.0
+81.0
+150.0
+81.0
+81.0
+32.0
+32.0
+81.0
+116.0
+124.0
+143.0
+124.0
+143.0
+32.0
+32.0
+32.0
+32.0
+32.0
+22.0
+22.0
+170.0
+170.0
+170.0
+81.0
+143.0
+81.0
+81.0
+81.0
+81.0
+32.0
+32.0
+32.0
+32.0
+81.0
+32.0
+32.0
+81.0
+81.0
+81.0
+32.0
+194.0
+194.0
+81.0
+81.0
+81.0
+81.0
+116.0
+32.0
+32.0
+32.0
+nan
+32.0
+32.0
+80.0
+87.0
+32.0
+32.0
+173.0
+116.0
+170.0
+81.0
+81.0
+32.0
+194.0
+81.0
+32.0
+82.0
+87.0
+81.0
+81.0
+81.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+190.0
+32.0
+170.0
+170.0
+81.0
+32.0
+81.0
+81.0
+81.0
+81.0
+81.0
+32.0
+81.0
+81.0
+81.0
+81.0
+81.0
+170.0
+81.0
+81.0
+81.0
+81.0
+32.0
+32.0
+32.0
+143.0
+81.0
+87.0
+190.0
+81.0
+116.0
+81.0
+81.0
+143.0
+30.0
+32.0
+81.0
+81.0
+81.0
+32.0
+81.0
+32.0
+116.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+116.0
+81.0
+nan
+32.0
+81.0
+81.0
+143.0
+32.0
+116.0
+116.0
+116.0
+87.0
+143.0
+81.0
+170.0
+124.0
+124.0
+81.0
+196.0
+81.0
+81.0
+81.0
+81.0
+81.0
+116.0
+81.0
+32.0
+81.0
+81.0
+81.0
+81.0
+124.0
+124.0
+143.0
+122.0
+nan
+30.0
+32.0
+32.0
+122.0
+30.0
+116.0
+30.0
+81.0
+116.0
+116.0
+116.0
+116.0
+116.0
+116.0
+100.0
+93.0
+81.0
+32.0
+81.0
+81.0
+32.0
+81.0
+81.0
+143.0
+32.0
+32.0
+81.0
+116.0
+32.0
+143.0
+86.0
+194.0
+116.0
+32.0
+87.0
+32.0
+9.0
+81.0
+32.0
+32.0
+113.0
+32.0
+32.0
+32.0
+81.0
+81.0
+32.0
+64.0
+81.0
+196.0
+87.0
+81.0
+143.0
+81.0
+32.0
+81.0
+81.0
+32.0
+32.0
+191.0
+32.0
+32.0
+191.0
+32.0
+143.0
+194.0
+81.0
+32.0
+32.0
+81.0
+81.0
+32.0
+32.0
+32.0
+32.0
+32.0
+81.0
+81.0
+32.0
+32.0
+116.0
+32.0
+116.0
+81.0
+81.0
+143.0
+32.0
+32.0
+81.0
+32.0
+87.0
+81.0
+81.0
+77.0
+81.0
+32.0
+32.0
+nan
+77.0
+116.0
+nan
+nan
+32.0
+32.0
+87.0
+32.0
+81.0
+116.0
+32.0
+81.0
+124.0
+81.0
+124.0
+191.0
+32.0
+32.0
+81.0
+32.0
+81.0
+194.0
+32.0
+194.0
+124.0
+32.0
+81.0
+143.0
+81.0
+81.0
+81.0
+32.0
+32.0
+81.0
+81.0
+81.0
+81.0
+81.0
+116.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+32.0
+nan
+81.0
+32.0
+170.0
+170.0
+81.0
+170.0
+81.0
+81.0
+81.0
+81.0
+81.0
+143.0
+143.0
+32.0
+81.0
+81.0
+32.0
+81.0
+81.0
+87.0
+32.0
+81.0
+81.0
+81.0
+81.0
+170.0
+32.0
+197.0
+nan
+124.0
+32.0
+196.0
+32.0
+81.0
+32.0
+196.0
+81.0
+116.0
+32.0
+81.0
+81.0
+81.0
+168.0
+81.0
+116.0
+32.0
+81.0
+81.0
+81.0
+81.0
+32.0
+93.0
+81.0
+81.0
+143.0
+180.0
+180.0
+143.0
+180.0
+81.0
+81.0
+81.0
+81.0
+81.0
+194.0
+124.0
+86.0
+32.0
+10.0
+32.0
+32.0
+81.0
+87.0
+143.0
+28.0
+87.0
+32.0
+202.0
+165.0
+87.0
+116.0
+116.0
+116.0
+169.0
+87.0
+194.0
+194.0
+81.0
+194.0
+32.0
+81.0
+81.0
+32.0
+32.0
+32.0
+194.0
+194.0
+194.0
+170.0
+80.0
+32.0
+150.0
+170.0
+170.0
+194.0
+194.0
+116.0
+180.0
+116.0
+194.0
+194.0
+194.0
+194.0
+87.0
+194.0
+87.0
+81.0
+194.0
+32.0
+32.0
+81.0
+194.0
+32.0
+32.0
+194.0
+81.0
+124.0
+32.0
+170.0
+185.0
+143.0
+81.0
+87.0
+32.0
+168.0
+170.0
+81.0
+81.0
+180.0
+143.0
+148.0
+194.0
+196.0
+32.0
+37.0
+62.0
+81.0
+81.0
+170.0
+81.0
+32.0
+32.0
+81.0
+81.0
+81.0
+32.0
+81.0
+81.0
+87.0
+81.0
+194.0
+81.0
+81.0
+170.0
+32.0
+81.0
+32.0
+116.0
+116.0
+116.0
+32.0
+207.0
+81.0
+81.0
+116.0
+81.0
+116.0
+81.0
+131.0
+116.0
+81.0
+81.0
+32.0
+81.0
+32.0
+32.0
+148.0
+141.0
+148.0
+81.0
+81.0
+32.0
+81.0
+32.0
+32.0
+81.0
+194.0
+120.0
+32.0
+194.0
+32.0
+32.0
+32.0
+81.0
+81.0
+81.0
+116.0
+194.0
+81.0
+124.0
+116.0
+32.0
+81.0
+81.0
+81.0
+81.0
+81.0
+194.0
+32.0
+81.0
+63.0
+81.0
+116.0
+116.0
+194.0
+63.0
+81.0
+170.0
+81.0
+170.0
+194.0
+32.0
+32.0
+143.0
+32.0
+113.0
+81.0
+194.0
+194.0
+87.0
+81.0
+32.0
+32.0
+124.0
+32.0
+194.0
+81.0
+81.0
+116.0
+32.0
+32.0
+32.0
+87.0
+81.0
+144.0
+87.0
+87.0
+124.0
+73.0
+81.0
+210.0
+81.0
+32.0
+32.0
+32.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+87.0
+87.0
+87.0
+32.0
+81.0
+81.0
+81.0
+81.0
+32.0
+81.0
+124.0
+32.0
+81.0
+87.0
+32.0
+87.0
+87.0
+81.0
+81.0
+87.0
+87.0
+87.0
+81.0
+32.0
+81.0
+81.0
+32.0
+81.0
+87.0
+81.0
+81.0
+81.0
+86.0
+32.0
+32.0
+163.0
+87.0
+124.0
+32.0
+32.0
+81.0
+81.0
+194.0
+32.0
+87.0
+32.0
+116.0
+30.0
+87.0
+12.0
+87.0
+124.0
+116.0
+87.0
+81.0
+157.0
+87.0
+170.0
+170.0
+194.0
+81.0
+32.0
+116.0
+81.0
+81.0
+32.0
+194.0
+194.0
+87.0
+32.0
+194.0
+150.0
+81.0
+10.0
+150.0
+87.0
+116.0
+32.0
+87.0
+143.0
+169.0
+81.0
+124.0
+81.0
+81.0
+94.0
+116.0
+87.0
+77.0
+94.0
+194.0
+77.0
+143.0
+194.0
+87.0
+87.0
+87.0
+32.0
+nan
+32.0
+87.0
+87.0
+87.0
+116.0
+124.0
+81.0
+116.0
+81.0
+81.0
+32.0
+81.0
+116.0
+170.0
+87.0
+81.0
+170.0
+170.0
+81.0
+81.0
+87.0
+81.0
+81.0
+32.0
+32.0
+81.0
+81.0
+46.0
+nan
+94.0
+189.0
+77.0
+87.0
+87.0
+94.0
+94.0
+77.0
+178.0
+87.0
+87.0
+87.0
+81.0
+87.0
+94.0
+87.0
+101.0
+87.0
+87.0
+87.0
+87.0
+87.0
+87.0
+32.0
+81.0
+81.0
+46.0
+87.0
+87.0
+81.0
+46.0
+124.0
+81.0
+32.0
+81.0
+81.0
+87.0
+81.0
+87.0
+46.0
+nan
+87.0
+81.0
+81.0
+81.0
+194.0
+122.0
+122.0
+194.0
+116.0
+81.0
+143.0
+46.0
+81.0
+81.0
+nan
+32.0
+81.0
+81.0
+32.0
+87.0
+32.0
+32.0
+32.0
+180.0
+116.0
+nan
+32.0
+32.0
+32.0
+81.0
+22.0
+22.0
+22.0
+32.0
+124.0
+81.0
+30.0
+22.0
+81.0
+81.0
+81.0
+156.0
+194.0
+81.0
+81.0
+81.0
+81.0
+180.0
+81.0
+180.0
+180.0
+32.0
+180.0
+170.0
+32.0
+87.0
+170.0
+32.0
+194.0
+81.0
+81.0
+87.0
+87.0
+87.0
+87.0
+81.0
+87.0
+32.0
+81.0
+81.0
+81.0
+93.0
+81.0
+116.0
+81.0
+30.0
+32.0
+81.0
+32.0
+32.0
+nan
+124.0
+116.0
+81.0
+124.0
+185.0
+85.0
+116.0
+124.0
+81.0
+87.0
+87.0
+81.0
+81.0
+107.0
+32.0
+225.0
+32.0
+87.0
+87.0
+81.0
+87.0
+87.0
+143.0
+nan
+87.0
+194.0
+124.0
+32.0
+81.0
+81.0
+194.0
+194.0
+32.0
+81.0
+81.0
+81.0
+81.0
+32.0
+180.0
+180.0
+32.0
+32.0
+81.0
+32.0
+170.0
+32.0
+87.0
+116.0
+116.0
+87.0
+87.0
+87.0
+185.0
+32.0
+32.0
+32.0
+116.0
+32.0
+32.0
+32.0
+194.0
+194.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+81.0
+87.0
+32.0
+87.0
+170.0
+32.0
+32.0
+32.0
+nan
+81.0
+81.0
+81.0
+216.0
+105.0
+81.0
+10.0
+156.0
+180.0
+81.0
+156.0
+32.0
+81.0
+81.0
+204.0
+81.0
+143.0
+32.0
+81.0
+81.0
+81.0
+81.0
+204.0
+81.0
+32.0
+180.0
+105.0
+112.0
+87.0
+81.0
+87.0
+10.0
+81.0
+170.0
+180.0
+32.0
+194.0
+32.0
+105.0
+87.0
+87.0
+180.0
+32.0
+124.0
+32.0
+32.0
+180.0
+32.0
+81.0
+81.0
+168.0
+116.0
+116.0
+204.0
+32.0
+87.0
+87.0
+81.0
+81.0
+32.0
+32.0
+87.0
+112.0
+32.0
+185.0
+32.0
+87.0
+87.0
+174.0
+32.0
+32.0
+87.0
+32.0
+194.0
+nan
+194.0
+81.0
+nan
+32.0
+32.0
+81.0
+87.0
+81.0
+81.0
+81.0
+135.0
+nan
+81.0
+32.0
+81.0
+81.0
+32.0
+81.0
+81.0
+194.0
+168.0
+194.0
+116.0
+87.0
+87.0
+87.0
+87.0
+87.0
+32.0
+81.0
+116.0
+81.0
+105.0
+nan
+105.0
+81.0
+nan
+86.0
+87.0
+63.0
+87.0
+32.0
+81.0
+32.0
+nan
+87.0
+81.0
+87.0
+36.0
+122.0
+87.0
+32.0
+32.0
+116.0
+116.0
+63.0
+122.0
+32.0
+122.0
+32.0
+116.0
+122.0
+116.0
+81.0
+169.0
+32.0
+32.0
+81.0
+81.0
+32.0
+81.0
+81.0
+180.0
+32.0
+32.0
+180.0
+180.0
+180.0
+32.0
+180.0
+180.0
+180.0
+180.0
+81.0
+32.0
+32.0
+32.0
+32.0
+87.0
+32.0
+32.0
+nan
+184.0
+81.0
+81.0
+81.0
+81.0
+185.0
+81.0
+87.0
+81.0
+27.0
+81.0
+81.0
+nan
+32.0
+191.0
+81.0
+81.0
+nan
+32.0
+194.0
+196.0
+32.0
+194.0
+124.0
+32.0
+32.0
+32.0
+81.0
+81.0
+32.0
+81.0
+81.0
+32.0
+194.0
+116.0
+32.0
+180.0
+87.0
+165.0
+81.0
+122.0
+81.0
+145.0
+32.0
+87.0
+87.0
+32.0
+26.0
+32.0
+168.0
+32.0
+8.0
+81.0
+81.0
+32.0
+32.0
+32.0
+212.0
+32.0
+124.0
+81.0
+96.0
+116.0
+144.0
+81.0
+194.0
+32.0
+87.0
+124.0
+124.0
+122.0
+48.0
+48.0
+32.0
+32.0
+116.0
+32.0
+32.0
+32.0
+nan
+205.0
+32.0
+32.0
+32.0
+32.0
+10.0
+32.0
+32.0
+32.0
+32.0
+225.0
+81.0
+32.0
+81.0
+81.0
+87.0
+10.0
+10.0
+86.0
+124.0
+32.0
+75.0
+81.0
+81.0
+75.0
+10.0
+32.0
+32.0
+nan
+75.0
+87.0
+81.0
+81.0
+32.0
+81.0
+81.0
+87.0
+32.0
+87.0
+87.0
+32.0
+194.0
+194.0
+81.0
+80.0
+32.0
+10.0
+116.0
+87.0
+105.0
+nan
+105.0
+105.0
+15.0
+94.0
+194.0
+194.0
+30.0
+194.0
+30.0
+30.0
+194.0
+194.0
+194.0
+94.0
+87.0
+87.0
+10.0
+87.0
+194.0
+81.0
+105.0
+nan
+87.0
+194.0
+81.0
+80.0
+124.0
+194.0
+87.0
+194.0
+194.0
+194.0
+194.0
+87.0
+81.0
+10.0
+81.0
+194.0
+180.0
+116.0
+116.0
+116.0
+150.0
+81.0
+81.0
+81.0
+168.0
+135.0
+81.0
+32.0
+168.0
+144.0
+116.0
+32.0
+87.0
+32.0
+124.0
+32.0
+81.0
+87.0
+32.0
+124.0
+87.0
+185.0
+185.0
+10.0
+180.0
+87.0
+105.0
+124.0
+135.0
+148.0
+32.0
+10.0
+32.0
+170.0
+81.0
+32.0
+32.0
+32.0
+105.0
+105.0
+105.0
+87.0
+87.0
+10.0
+81.0
+81.0
+32.0
+32.0
+81.0
+32.0
+32.0
+124.0
+87.0
+87.0
+32.0
+194.0
+10.0
+87.0
+194.0
+194.0
+nan
+194.0
+194.0
+194.0
+87.0
+32.0
+194.0
+81.0
+87.0
+194.0
+194.0
+87.0
+116.0
+81.0
+116.0
+194.0
+194.0
+81.0
+194.0
+194.0
+87.0
+32.0
+116.0
+112.0
+87.0
+194.0
+194.0
+105.0
+32.0
+170.0
+124.0
+124.0
+87.0
+94.0
+87.0
+194.0
+87.0
+87.0
+87.0
+32.0
+32.0
+87.0
+81.0
+180.0
+81.0
+87.0
+116.0
+32.0
+32.0
+32.0
+135.0
+81.0
+180.0
+87.0
+116.0
+194.0
+32.0
+170.0
+32.0
+194.0
+194.0
+87.0
+32.0
+32.0
+105.0
+81.0
+194.0
+194.0
+32.0
+32.0
+194.0
+87.0
+180.0
+16.0
+87.0
+32.0
+32.0
+81.0
+32.0
+81.0
+81.0
+194.0
+81.0
+81.0
+194.0
+194.0
+194.0
+32.0
+75.0
+81.0
+166.0
+81.0
+81.0
+32.0
+32.0
+81.0
+81.0
+81.0
+81.0
+81.0
+87.0
+32.0
+75.0
+32.0
+81.0
+81.0
+81.0
+122.0
+194.0
+194.0
+116.0
+32.0
+194.0
+87.0
+73.0
+87.0
+122.0
+32.0
+nan
+87.0
+32.0
+32.0
+194.0
+32.0
+122.0
+81.0
+81.0
+122.0
+87.0
+185.0
+180.0
+32.0
+32.0
+112.0
+32.0
+32.0
+32.0
+32.0
+87.0
+32.0
+196.0
+196.0
+216.0
+196.0
+194.0
+122.0
+105.0
+116.0
+116.0
+22.0
+81.0
+124.0
+194.0
+185.0
+194.0
+194.0
+194.0
+81.0
+32.0
+81.0
+32.0
+81.0
+81.0
+81.0
+170.0
+42.0
+32.0
+93.0
+86.0
+87.0
+81.0
+32.0
+194.0
+194.0
+124.0
+32.0
+196.0
+175.0
+81.0
+81.0
+32.0
+135.0
+42.0
+124.0
+135.0
+81.0
+87.0
+42.0
+32.0
+32.0
+88.0
+32.0
+32.0
+32.0
+170.0
+180.0
+34.0
+196.0
+194.0
+194.0
+122.0
+32.0
+81.0
+81.0
+87.0
+32.0
+81.0
+81.0
+81.0
+87.0
+81.0
+196.0
+116.0
+81.0
+25.0
+194.0
+81.0
+144.0
+124.0
+149.0
+81.0
+116.0
+124.0
+32.0
+124.0
+112.0
+112.0
+116.0
+105.0
+105.0
+32.0
+112.0
+32.0
+194.0
+32.0
+81.0
+32.0
+194.0
+112.0
+32.0
+112.0
+nan
+81.0
+81.0
+87.0
+81.0
+32.0
+81.0
+87.0
+32.0
+32.0
+87.0
+87.0
+32.0
+32.0
+32.0
+32.0
+32.0
+32.0
+81.0
+81.0
+196.0
+81.0
+170.0
+81.0
+81.0
+81.0
+32.0
+105.0
+143.0
+32.0
+81.0
+32.0
+32.0
+nan
+32.0
+81.0
+87.0
+87.0
+87.0
+87.0
+32.0
+32.0
+87.0
+81.0
+81.0
+32.0
+81.0
+81.0
+81.0
+81.0
+87.0
+32.0
+81.0
+81.0
+81.0
+81.0
+116.0
+87.0
+216.0
+63.0
+180.0
+66.0
+116.0
+116.0
+nan
+69.0
+nan
+32.0
+32.0
+32.0
+180.0
+32.0
+81.0
+87.0
+81.0
+116.0
+116.0
+122.0
+32.0
+81.0
+81.0
+32.0
+112.0
+32.0
+32.0
+32.0
+112.0
+32.0
+81.0
+63.0
+81.0
+32.0
+32.0
+190.0
+81.0
+194.0
+81.0
+81.0
+81.0
+81.0
+32.0
+81.0
+32.0
+86.0
+32.0
+87.0
+87.0
+32.0
+81.0
+nan
+194.0
+10.0
+32.0
+32.0
+142.0
+170.0
+32.0
+87.0
+87.0
+32.0
+210.0
+nan
+16.0
+nan
+16.0
+nan
+180.0
+170.0
+32.0
+194.0
+32.0
+81.0
+81.0
+32.0
+170.0
+32.0
+81.0
+81.0
+87.0
+87.0
+87.0
+32.0
+81.0
+122.0
+87.0
+87.0
+87.0
+87.0
+87.0
+87.0
+87.0
+nan
+87.0
+87.0
+87.0
+87.0
+87.0
+194.0
+105.0
+nan
+180.0
+180.0
+87.0
+41.0
+116.0
+81.0
+116.0
+116.0
+81.0
+81.0
+185.0
+41.0
+10.0
+170.0
+32.0
+32.0
+81.0
+32.0
+87.0
+194.0
+105.0
+124.0
+124.0
+105.0
+116.0
+112.0
+87.0
+81.0
+81.0
+10.0
+81.0
+32.0
+32.0
+170.0
+87.0
+170.0
+87.0
+105.0
+81.0
+194.0
+105.0
+32.0
+116.0
+81.0
+32.0
+32.0
+143.0
+32.0
+32.0
+87.0
+87.0
+81.0
+81.0
+87.0
+116.0
+81.0
+87.0
+87.0
+87.0
+32.0
+32.0
+81.0
+81.0
+81.0
+81.0
+10.0
+32.0
+81.0
+116.0
+87.0
+81.0
+194.0
+194.0
+194.0
+194.0
+32.0
+144.0
+116.0
+87.0
+32.0
+32.0
+32.0
+112.0
+32.0
+116.0
+194.0
+32.0
+116.0
+170.0
+32.0
+87.0
+81.0
+32.0
+81.0
+81.0
+81.0
+194.0
+87.0
+32.0
+nan
+87.0
+87.0
+194.0
+87.0
+87.0
+87.0
+124.0
+87.0
+87.0
+194.0
+81.0
+87.0
+80.0
+87.0
+87.0
+194.0
+194.0
+194.0
+205.0
+194.0
+205.0
+194.0
+81.0
+32.0
+87.0
+143.0
+194.0
+81.0
+194.0
+81.0
+32.0
+105.0
+87.0
+81.0
+87.0
+87.0
+81.0
+81.0
+81.0
+32.0
+180.0
+112.0
+32.0
+32.0
+10.0
+32.0
+116.0
+81.0
+81.0
+nan
+81.0
+148.0
+87.0
+81.0
+81.0
+81.0
+170.0
+15.0
+180.0
+148.0
+116.0
+143.0
+10.0
+142.0
+81.0
+105.0
+105.0
+32.0
+105.0
+194.0
+32.0
+88.0
+10.0
+nan
+87.0
+180.0
+81.0
+180.0
+32.0
+122.0
+122.0
+32.0
+10.0
+122.0
+122.0
+32.0
+32.0
+32.0
+87.0
+81.0
+194.0
+194.0
+194.0
+87.0
+81.0
+32.0
+87.0
+143.0
+87.0
+194.0
+32.0
+194.0
+32.0
+87.0
+32.0
+87.0
+87.0
+87.0
+81.0
+180.0
+87.0
+81.0
+32.0
+81.0
+180.0
+87.0
+81.0
+182.0
+124.0
+194.0
+87.0
+10.0
+32.0
+nan
+32.0
+116.0
+nan
+nan
+87.0
+87.0
+180.0
+nan
+32.0
+116.0
+180.0
+32.0
+170.0
+32.0
+87.0
+124.0
+170.0
+170.0
+10.0
+87.0
+87.0
+87.0
+15.0
+112.0
+87.0
+124.0
+116.0
+112.0
+112.0
+32.0
+142.0
+143.0
+180.0
+143.0
+113.0
+87.0
+81.0
+10.0
+116.0
+116.0
+81.0
+122.0
+32.0
+105.0
+87.0
+87.0
+32.0
+170.0
+180.0
+81.0
+194.0
+87.0
+87.0
+32.0
+122.0
+87.0
+194.0
+32.0
+87.0
+81.0
+32.0
+32.0
+81.0
+32.0
+81.0
+87.0
+80.0
+194.0
+116.0
+116.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+116.0
+87.0
+87.0
+81.0
+81.0
+116.0
+116.0
+116.0
+124.0
+194.0
+87.0
+116.0
+81.0
+81.0
+32.0
+32.0
+81.0
+205.0
+87.0
+32.0
+124.0
+87.0
+170.0
+87.0
+194.0
+124.0
+81.0
+124.0
+116.0
+81.0
+105.0
+205.0
+116.0
+32.0
+12.0
+10.0
+87.0
+87.0
+87.0
+87.0
+87.0
+124.0
+32.0
+87.0
+87.0
+87.0
+87.0
+32.0
+81.0
+194.0
+87.0
+32.0
+32.0
+63.0
+122.0
+32.0
+124.0
+87.0
+32.0
+87.0
+32.0
+32.0
+32.0
+81.0
+10.0
+81.0
+87.0
+81.0
+81.0
+87.0
+116.0
+116.0
+116.0
+105.0
+143.0
+116.0
+87.0
+142.0
+81.0
+194.0
+105.0
+63.0
+32.0
+nan
+87.0
+32.0
+nan
+32.0
+32.0
+32.0
+32.0
+32.0
+170.0
+32.0
+81.0
+32.0
+32.0
+32.0
+32.0
+168.0
+93.0
+32.0
+194.0
+168.0
+81.0
+81.0
+87.0
+87.0
+87.0
+87.0
+87.0
+87.0
+87.0
+194.0
+81.0
+124.0
+87.0
+87.0
+32.0
+32.0
+87.0
+81.0
+32.0
+168.0
+10.0
+143.0
+216.0
+87.0
+105.0
+87.0
+nan
+87.0
+116.0
+81.0
+32.0
+10.0
+32.0
+87.0
+32.0
+87.0
+170.0
+87.0
+32.0
+87.0
+81.0
+10.0
+87.0
+81.0
+87.0
+87.0
+87.0
+32.0
+225.0
+87.0
+87.0
+87.0
+81.0
+81.0
+205.0
+87.0
+194.0
+77.0
+10.0
+81.0
+81.0
+81.0
+81.0
+87.0
+87.0
+81.0
+81.0
+32.0
+81.0
+87.0
+194.0
+81.0
+81.0
+87.0
+32.0
+81.0
+81.0
+81.0
+81.0
+32.0
+124.0
+32.0
+87.0
+81.0
+87.0
+143.0
+124.0
+32.0
+32.0
+105.0
+32.0
+32.0
+32.0
+105.0
+140.0
+87.0
+87.0
+87.0
+87.0
+87.0
+124.0
+124.0
+87.0
+81.0
+124.0
+32.0
+194.0
+32.0
+81.0
+81.0
+124.0
+116.0
+87.0
+10.0
+122.0
+122.0
+32.0
+194.0
+32.0
+122.0
+122.0
+205.0
+156.0
+32.0
+32.0
+87.0
+87.0
+32.0
+128.0
+32.0
+32.0
+32.0
+nan
+32.0
+190.0
+81.0
+194.0
+194.0
+87.0
+87.0
+81.0
+10.0
+32.0
+nan
+194.0
+194.0
+194.0
+194.0
+194.0
+194.0
+32.0
+32.0
+32.0
+32.0
+32.0
+nan
+164.0
+32.0
+124.0
+87.0
+32.0
+32.0
+32.0
+81.0
+32.0
+81.0
+32.0
+6.0
+32.0
+170.0
+170.0
+32.0
+32.0
+81.0
+32.0
+124.0
+30.0
+144.0
+87.0
+143.0
+194.0
+32.0
+81.0
+nan
+194.0
+32.0
+225.0
+32.0
+116.0
+87.0
+116.0
+81.0
+124.0
+144.0
+116.0
+124.0
+116.0
+81.0
+124.0
+194.0
+156.0
+81.0
+32.0
+32.0
+32.0
+116.0
+32.0
+32.0
+10.0
+32.0
+32.0
+87.0
+116.0
+197.0
+22.0
+87.0
+87.0
+80.0
+81.0
+180.0
+10.0
+87.0
+87.0
+194.0
+116.0
+87.0
+116.0
+32.0
+87.0
+32.0
+32.0
+32.0
+81.0
+194.0
+81.0
+81.0
+10.0
+10.0
+16.0
+194.0
+87.0
+16.0
+32.0
+194.0
+144.0
+32.0
+185.0
+116.0
+194.0
+194.0
+87.0
+196.0
+87.0
+32.0
+116.0
+87.0
+87.0
+32.0
+16.0
+32.0
+87.0
+81.0
+81.0
+81.0
+81.0
+87.0
+194.0
+81.0
+81.0
+87.0
+32.0
+87.0
+10.0
+87.0
+10.0
+124.0
+124.0
+87.0
+116.0
+81.0
+10.0
+10.0
+81.0
+87.0
+87.0
+87.0
+87.0
+81.0
+87.0
+87.0
+81.0
+81.0
+81.0
+194.0
+194.0
+87.0
+116.0
+212.0
+105.0
+190.0
+87.0
+10.0
+87.0
+32.0
+180.0
+32.0
+180.0
+32.0
+81.0
+180.0
+32.0
+170.0
+87.0
+81.0
+16.0
+87.0
+87.0
+87.0
+32.0
+87.0
+30.0
+77.0
+77.0
+87.0
+180.0
+32.0
+32.0
+77.0
+87.0
+81.0
+81.0
+32.0
+81.0
+81.0
+81.0
+81.0
+16.0
+87.0
+87.0
+87.0
+87.0
+87.0
+170.0
+87.0
+87.0
+81.0
+87.0
+87.0
+32.0
+81.0
+81.0
+32.0
+170.0
+81.0
+170.0
+81.0
+32.0
+81.0
+87.0
+87.0
+81.0
+180.0
+180.0
+116.0
+32.0
+81.0
+81.0
+180.0
+81.0
+10.0
+10.0
+176.0
+87.0
+81.0
+87.0
+77.0
+87.0
+87.0
+81.0
+87.0
+81.0
+81.0
+194.0
+87.0
+87.0
+87.0
+170.0
+87.0
+81.0
+87.0
+87.0
+32.0
+32.0
+32.0
+194.0
+194.0
+87.0
+170.0
+87.0
+87.0
+3.0
+170.0
+87.0
+32.0
+150.0
+81.0
+116.0
+116.0
+116.0
+32.0
+81.0
+81.0
+194.0
+32.0
+32.0
+10.0
+87.0
+87.0
+32.0
+180.0
+10.0
+32.0
+196.0
+194.0
+30.0
+124.0
+32.0
+150.0
+124.0
+81.0
+16.0
+105.0
+206.0
+81.0
+30.0
+32.0
+81.0
+124.0
+143.0
+87.0
+32.0
+170.0
+87.0
+87.0
+87.0
+170.0
+10.0
+81.0
+170.0
+32.0
+32.0
+124.0
+170.0
+170.0
+150.0
+150.0
+32.0
+194.0
+86.0
+86.0
+180.0
+87.0
+150.0
+150.0
+87.0
+105.0
+32.0
+81.0
+194.0
+194.0
+210.0
+87.0
+180.0
+194.0
+10.0
+116.0
+194.0
+81.0
+32.0
+143.0
+180.0
+116.0
+32.0
+32.0
+32.0
+32.0
+32.0
+180.0
+32.0
+87.0
+87.0
+10.0
+87.0
+87.0
+81.0
+81.0
+81.0
+81.0
+32.0
+124.0
+194.0
+170.0
+185.0
+116.0
+81.0
+194.0
+30.0
+81.0
+32.0
+180.0
+124.0
+81.0
+32.0
+32.0
+87.0
+10.0
+194.0
+81.0
+10.0
+194.0
+194.0
+150.0
+81.0
+81.0
+81.0
+81.0
+87.0
+87.0
+194.0
+194.0
+87.0
+32.0
+154.0
+32.0
+87.0
+194.0
+194.0
+194.0
+194.0
+194.0
+32.0
+87.0
+87.0
+116.0
+87.0
+32.0
+144.0
+185.0
+nan
+170.0
+194.0
+80.0
+194.0
+194.0
+194.0
+194.0
+194.0
+194.0
+124.0
+122.0
+32.0
+32.0
+124.0
+124.0
+32.0
+124.0
+81.0
+124.0
+194.0
+194.0
+81.0
+194.0
+116.0
+81.0
+170.0
+87.0
+87.0
+105.0
+nan
+32.0
+32.0
+170.0
+170.0
+32.0
+116.0
+87.0
+105.0
+nan
+10.0
+87.0
+87.0
+87.0
+87.0
+124.0
+15.0
+87.0
+194.0
+194.0
+87.0
+105.0
+105.0
+87.0
+143.0
+105.0
+81.0
+124.0
+122.0
+87.0
+194.0
+87.0
+87.0
+180.0
+87.0
+10.0
+87.0
+32.0
+81.0
+116.0
+194.0
+32.0
+194.0
+32.0
+32.0
+105.0
+87.0
+136.0
+nan
+185.0
+144.0
+81.0
+144.0
+87.0
+87.0
+116.0
+142.0
+194.0
+194.0
+194.0
+194.0
+226.0
+194.0
+194.0
+194.0
+194.0
+194.0
+87.0
+87.0
+116.0
+41.0
+87.0
+87.0
+87.0
+87.0
+81.0
+81.0
+81.0
+87.0
+32.0
+87.0
+105.0
+32.0
+170.0
+87.0
+105.0
+170.0
+170.0
+81.0
+170.0
+170.0
+81.0
+87.0
+81.0
+81.0
+143.0
+32.0
+81.0
+116.0
+32.0
+116.0
+16.0
+194.0
+87.0
+32.0
+124.0
+116.0
+81.0
+87.0
+16.0
+87.0
+185.0
+87.0
+87.0
+32.0
+87.0
+116.0
+116.0
+32.0
+87.0
+32.0
+32.0
+81.0
+87.0
+87.0
+81.0
+116.0
+16.0
+81.0
+180.0
+180.0
+124.0
+194.0
+81.0
+116.0
+196.0
+216.0
+81.0
+80.0
+170.0
+116.0
+180.0
+194.0
+180.0
+32.0
+87.0
+87.0
+87.0
+116.0
+122.0
+180.0
+32.0
+32.0
+180.0
+180.0
+32.0
+32.0
+32.0
+143.0
+nan
+143.0
+194.0
+143.0
+87.0
+87.0
+32.0
+87.0
+87.0
+87.0
+87.0
+87.0
+81.0
+81.0
+81.0
+87.0
+81.0
+143.0
+10.0
+180.0
+142.0
+142.0
+87.0
+87.0
+87.0
+32.0
+143.0
+81.0
+87.0
+87.0
+170.0
+87.0
+170.0
+87.0
+87.0
+81.0
+81.0
+81.0
+170.0
+87.0
+194.0
+194.0
+81.0
+32.0
+87.0
+87.0
+32.0
+116.0
+81.0
+81.0
+116.0
+32.0
+81.0
+218.0
+81.0
+10.0
+81.0
+87.0
+32.0
+140.0
+80.0
+80.0
+180.0
+81.0
+32.0
+87.0
+170.0
+81.0
+81.0
+32.0
+87.0
+80.0
+80.0
+87.0
+170.0
+170.0
+116.0
+87.0
+87.0
+81.0
+81.0
+87.0
+87.0
+32.0
+170.0
+72.0
+10.0
+10.0
+72.0
+105.0
+32.0
+87.0
+87.0
+72.0
+87.0
+87.0
+87.0
+72.0
+10.0
+180.0
+194.0
+87.0
+81.0
+87.0
+87.0
+81.0
+81.0
+116.0
+32.0
+87.0
+32.0
+170.0
+32.0
+16.0
+87.0
+87.0
+32.0
+180.0
+87.0
+180.0
+180.0
+180.0
+81.0
+81.0
+16.0
+150.0
+32.0
+87.0
+81.0
+180.0
+87.0
+170.0
+87.0
+150.0
+124.0
+81.0
+124.0
+87.0
+22.0
+87.0
+32.0
+87.0
+22.0
+81.0
+81.0
+32.0
+32.0
+192.0
+81.0
+170.0
+12.0
+185.0
+143.0
+105.0
+81.0
+81.0
+81.0
+194.0
+194.0
+87.0
+81.0
+124.0
+81.0
+87.0
+87.0
+124.0
+124.0
+124.0
+10.0
+197.0
+87.0
+81.0
+32.0
+81.0
+81.0
+16.0
+16.0
+87.0
+87.0
+81.0
+32.0
+81.0
+180.0
+81.0
+32.0
+87.0
+194.0
+194.0
+122.0
+81.0
+194.0
+32.0
+122.0
+81.0
+194.0
+116.0
+116.0
+81.0
+81.0
+81.0
+116.0
+194.0
+81.0
+81.0
+194.0
+32.0
+105.0
+81.0
+105.0
+81.0
+87.0
+105.0
+87.0
+32.0
+87.0
+87.0
+87.0
+116.0
+116.0
+116.0
+86.0
+87.0
+180.0
+142.0
+87.0
+81.0
+10.0
+105.0
+32.0
+10.0
+10.0
+10.0
+105.0
+116.0
+81.0
+81.0
+81.0
+87.0
+124.0
+81.0
+116.0
+191.0
+168.0
+81.0
+87.0
+87.0
+87.0
+170.0
+116.0
+105.0
+16.0
+116.0
+81.0
+116.0
+122.0
+32.0
+81.0
+87.0
+87.0
+81.0
+116.0
+81.0
+122.0
+116.0
+116.0
+10.0
+116.0
+116.0
+32.0
+32.0
+32.0
+116.0
+81.0
+87.0
+10.0
+116.0
+81.0
+122.0
+122.0
+194.0
+68.0
+16.0
+nan
+nan
+nan
+10.0
+nan
+nan
+81.0
+nan
+nan
+10.0
+81.0
+116.0
+81.0
+194.0
+81.0
+105.0
+81.0
+81.0
+143.0
+87.0
+nan
+nan
+32.0
+81.0
+32.0
+81.0
+10.0
+87.0
+87.0
+nan
+81.0
+150.0
+87.0
+87.0
+81.0
+32.0
+116.0
+32.0
+116.0
+116.0
+116.0
+194.0
+81.0
+153.0
+105.0
+81.0
+194.0
+194.0
+81.0
+122.0
+194.0
+81.0
+87.0
+81.0
+87.0
+32.0
+81.0
+81.0
+194.0
+116.0
+87.0
+194.0
+16.0
+32.0
+81.0
+32.0
+170.0
+170.0
+170.0
+170.0
+170.0
+87.0
+170.0
+87.0
+170.0
+143.0
+170.0
+116.0
+87.0
+116.0
+81.0
+116.0
+124.0
+nan
+81.0
+124.0
+124.0
+32.0
+32.0
+102.0
+105.0
+81.0
+194.0
+10.0
+87.0
+32.0
+93.0
+nan
+32.0
+81.0
+32.0
+87.0
+10.0
+122.0
+32.0
+32.0
+87.0
+32.0
+194.0
+10.0
+87.0
+194.0
+81.0
+32.0
+32.0
+10.0
+180.0
+22.0
+81.0
+123.0
+87.0
+180.0
+87.0
+143.0
+105.0
+10.0
+144.0
+10.0
+32.0
+10.0
+nan
+87.0
+180.0
+32.0
+10.0
+32.0
+123.0
+81.0
+32.0
+116.0
+170.0
+32.0
+81.0
+122.0
+194.0
+81.0
+32.0
+10.0
+10.0
+194.0
+122.0
+143.0
+143.0
+113.0
+81.0
+10.0
+81.0
+81.0
+194.0
+194.0
+10.0
+81.0
+116.0
+194.0
+81.0
+81.0
+81.0
+81.0
+81.0
+116.0
+143.0
+116.0
+116.0
+81.0
+194.0
+81.0
+116.0
+116.0
+32.0
+81.0
+169.0
+81.0
+32.0
+16.0
+86.0
+32.0
+116.0
+87.0
+81.0
+194.0
+86.0
+81.0
+81.0
+16.0
+81.0
+194.0
+32.0
+81.0
+116.0
+81.0
+32.0
+81.0
+87.0
+87.0
+116.0
+81.0
+87.0
+81.0
+81.0
+12.0
+81.0
+87.0
+87.0
+80.0
+81.0
+81.0
+81.0
+10.0
+81.0
+116.0
+116.0
+81.0
+116.0
+116.0
+116.0
+116.0
+116.0
+116.0
+194.0
+105.0
+116.0
+116.0
+116.0
+212.0
+116.0
+87.0
+81.0
+116.0
+116.0
+194.0
+12.0
+81.0
+87.0
+81.0
+123.0
+81.0
+32.0
+170.0
+32.0
+170.0
+87.0
+87.0
+32.0
+81.0
+116.0
+81.0
+81.0
+87.0
+81.0
+32.0
+81.0
+81.0
+81.0
+194.0
+81.0
+90.0
+192.0
+87.0
+124.0
+81.0
+116.0
+32.0
+116.0
+nan
+87.0
+32.0
+122.0
+10.0
+32.0
+81.0
+122.0
+32.0
+81.0
+81.0
+81.0
+81.0
+10.0
+81.0
+10.0
+10.0
+10.0
+nan
+126.0
+87.0
+87.0
+10.0
+87.0
+10.0
+154.0
+87.0
+nan
+10.0
+81.0
+81.0
+81.0
+81.0
+113.0
+81.0
+216.0
+81.0
+194.0
+81.0
+122.0
+194.0
+192.0
+81.0
+116.0
+116.0
+116.0
+194.0
+87.0
+87.0
+122.0
+10.0
+81.0
+81.0
+194.0
+87.0
+10.0
+33.0
+87.0
+87.0
+32.0
+81.0
+87.0
+32.0
+87.0
+87.0
+81.0
+81.0
+124.0
+10.0
+87.0
+170.0
+87.0
+81.0
+nan
+170.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+81.0
+32.0
+81.0
+77.0
+81.0
+81.0
+87.0
+22.0
+87.0
+81.0
+81.0
+122.0
+81.0
+122.0
+116.0
+98.0
+98.0
+98.0
+98.0
+81.0
+194.0
+77.0
+87.0
+81.0
+81.0
+32.0
+32.0
+81.0
+81.0
+12.0
+81.0
+87.0
+105.0
+122.0
+81.0
+nan
+nan
+77.0
+122.0
+81.0
+142.0
+170.0
+105.0
+nan
+87.0
+105.0
+87.0
+65.0
+87.0
+122.0
+87.0
+81.0
+87.0
+87.0
+87.0
+87.0
+122.0
+32.0
+194.0
+12.0
+116.0
+81.0
+81.0
+87.0
+10.0
+81.0
+87.0
+81.0
+87.0
+32.0
+32.0
+81.0
+87.0
+32.0
+81.0
+192.0
+87.0
+81.0
+87.0
+87.0
+81.0
+122.0
+122.0
+32.0
+32.0
+87.0
+nan
+nan
+87.0
+116.0
+87.0
+32.0
+116.0
+81.0
+32.0
+113.0
+116.0
+87.0
+122.0
+116.0
+204.0
+81.0
+81.0
+116.0
+194.0
+116.0
+32.0
+81.0
+194.0
+81.0
+81.0
+81.0
+nan
+87.0
+81.0
+10.0
+87.0
+81.0
+124.0
+143.0
+nan
+81.0
+116.0
+87.0
+124.0
+32.0
+10.0
+nan
+81.0
+32.0
+194.0
+10.0
+143.0
+32.0
+10.0
+81.0
+10.0
+87.0
+87.0
+113.0
+32.0
+116.0
+81.0
+10.0
+81.0
+194.0
+16.0
+194.0
+180.0
+81.0
+16.0
+32.0
+116.0
+81.0
+32.0
+180.0
+122.0
+81.0
+225.0
+32.0
+16.0
+81.0
+32.0
+81.0
+180.0
+170.0
+32.0
+180.0
+32.0
+113.0
+87.0
+32.0
+87.0
+143.0
+105.0
+143.0
+87.0
+122.0
+180.0
+116.0
+194.0
+32.0
+nan
+194.0
+194.0
+10.0
+153.0
+194.0
+32.0
+81.0
+170.0
+87.0
+116.0
+194.0
+81.0
+81.0
+87.0
+32.0
+81.0
+170.0
+81.0
+16.0
+87.0
+105.0
+81.0
+105.0
+81.0
+81.0
+105.0
+170.0
+32.0
+135.0
+81.0
+10.0
+32.0
+168.0
+87.0
+94.0
+87.0
+81.0
+81.0
+81.0
+87.0
+81.0
+81.0
+81.0
+81.0
+81.0
+87.0
+112.0
+81.0
+81.0
+81.0
+10.0
+32.0
+nan
+87.0
+87.0
+81.0
+47.0
+80.0
+170.0
+170.0
+87.0
+81.0
+9.0
+81.0
+32.0
+122.0
+116.0
+194.0
+194.0
+81.0
+81.0
+143.0
+143.0
+32.0
+194.0
+81.0
+190.0
+87.0
+87.0
+194.0
+32.0
+170.0
+10.0
+105.0
+116.0
+81.0
+87.0
+194.0
+10.0
+81.0
+87.0
+87.0
+126.0
+81.0
+112.0
+94.0
+81.0
+81.0
+81.0
+81.0
+32.0
+32.0
+81.0
+38.0
+81.0
+81.0
+81.0
+10.0
+103.0
+87.0
+81.0
+87.0
+10.0
+10.0
+87.0
+81.0
+104.0
+81.0
+81.0
+81.0
+81.0
+80.0
+124.0
+180.0
+80.0
+87.0
+87.0
+32.0
+81.0
+32.0
+32.0
+48.0
+80.0
+80.0
+81.0
+81.0
+80.0
+80.0
+80.0
+116.0
+80.0
+87.0
+80.0
+80.0
+116.0
+81.0
+80.0
+10.0
+80.0
+194.0
+80.0
+116.0
+80.0
+194.0
+80.0
+80.0
+80.0
+80.0
+87.0
+80.0
+116.0
+116.0
+116.0
+116.0
+80.0
+116.0
+81.0
+81.0
+80.0
+48.0
+80.0
+80.0
+80.0
+7.0
+80.0
+80.0
+80.0
+81.0
+81.0
+84.0
+81.0
+84.0
+80.0
+149.0
+194.0
+103.0
+81.0
+225.0
+87.0
+116.0
+80.0
+105.0
+81.0
+105.0
+105.0
+80.0
+81.0
+113.0
+80.0
+32.0
+87.0
+80.0
+32.0
+142.0
+80.0
+87.0
+194.0
+80.0
+80.0
+15.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+32.0
+80.0
+87.0
+80.0
+81.0
+194.0
+194.0
+194.0
+81.0
+194.0
+81.0
+194.0
+80.0
+80.0
+80.0
+194.0
+194.0
+80.0
+80.0
+81.0
+81.0
+32.0
+32.0
+10.0
+81.0
+81.0
+81.0
+81.0
+32.0
+87.0
+105.0
+87.0
+81.0
+81.0
+81.0
+87.0
+81.0
+87.0
+32.0
+81.0
+87.0
+116.0
+116.0
+32.0
+10.0
+32.0
+32.0
+143.0
+116.0
+116.0
+32.0
+87.0
+116.0
+87.0
+87.0
+219.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+116.0
+80.0
+80.0
+80.0
+80.0
+87.0
+116.0
+81.0
+116.0
+81.0
+87.0
+180.0
+87.0
+81.0
+87.0
+87.0
+80.0
+80.0
+80.0
+80.0
+80.0
+87.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+171.0
+80.0
+124.0
+80.0
+105.0
+80.0
+188.0
+143.0
+112.0
+87.0
+80.0
+80.0
+194.0
+80.0
+194.0
+81.0
+32.0
+180.0
+87.0
+80.0
+80.0
+80.0
+80.0
+80.0
+81.0
+80.0
+81.0
+80.0
+80.0
+80.0
+80.0
+81.0
+80.0
+48.0
+80.0
+80.0
+87.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+134.0
+80.0
+11.0
+80.0
+81.0
+81.0
+80.0
+116.0
+80.0
+87.0
+80.0
+94.0
+81.0
+80.0
+80.0
+81.0
+80.0
+81.0
+80.0
+81.0
+32.0
+80.0
+87.0
+80.0
+80.0
+80.0
+80.0
+80.0
+116.0
+80.0
+80.0
+80.0
+nan
+116.0
+80.0
+81.0
+80.0
+143.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+143.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+32.0
+180.0
+80.0
+80.0
+32.0
+80.0
+80.0
+80.0
+80.0
+32.0
+80.0
+80.0
+80.0
+80.0
+32.0
+80.0
+80.0
+81.0
+80.0
+143.0
+80.0
+80.0
+80.0
+132.0
+80.0
+80.0
+32.0
+80.0
+80.0
+80.0
+80.0
+10.0
+80.0
+80.0
+32.0
+87.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+194.0
+80.0
+80.0
+80.0
+80.0
+80.0
+194.0
+80.0
+196.0
+80.0
+80.0
+80.0
+32.0
+80.0
+81.0
+80.0
+80.0
+80.0
+180.0
+116.0
+180.0
+81.0
+180.0
+185.0
+185.0
+150.0
+180.0
+80.0
+194.0
+80.0
+10.0
+80.0
+80.0
+80.0
+80.0
+81.0
+80.0
+80.0
+180.0
+80.0
+81.0
+80.0
+80.0
+80.0
+80.0
+80.0
+81.0
+80.0
+80.0
+32.0
+80.0
+80.0
+80.0
+32.0
+180.0
+80.0
+80.0
+32.0
+80.0
+180.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+10.0
+180.0
+48.0
+81.0
+81.0
+180.0
+80.0
+81.0
+81.0
+81.0
+81.0
+81.0
+32.0
+80.0
+87.0
+105.0
+80.0
+32.0
+32.0
+32.0
+10.0
+80.0
+143.0
+32.0
+80.0
+78.0
+80.0
+87.0
+80.0
+80.0
+80.0
+80.0
+80.0
+116.0
+80.0
+168.0
+32.0
+80.0
+80.0
+16.0
+80.0
+89.0
+80.0
+172.0
+80.0
+44.0
+32.0
+32.0
+32.0
+80.0
+32.0
+32.0
+87.0
+87.0
+87.0
+32.0
+143.0
+81.0
+81.0
+32.0
+87.0
+32.0
+32.0
+32.0
+81.0
+80.0
+80.0
+32.0
+80.0
+81.0
+194.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+81.0
+80.0
+80.0
+80.0
+116.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+32.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+87.0
+80.0
+87.0
+87.0
+87.0
+32.0
+87.0
+81.0
+87.0
+16.0
+194.0
+87.0
+220.0
+81.0
+80.0
+150.0
+80.0
+87.0
+87.0
+80.0
+80.0
+87.0
+80.0
+81.0
+143.0
+220.0
+87.0
+80.0
+81.0
+87.0
+116.0
+80.0
+87.0
+87.0
+80.0
+80.0
+87.0
+80.0
+87.0
+87.0
+80.0
+80.0
+80.0
+196.0
+194.0
+87.0
+80.0
+80.0
+81.0
+80.0
+87.0
+80.0
+80.0
+80.0
+32.0
+81.0
+80.0
+81.0
+180.0
+32.0
+143.0
+81.0
+81.0
+81.0
+170.0
+81.0
+81.0
+81.0
+87.0
+81.0
+87.0
+148.0
+32.0
+81.0
+143.0
+81.0
+148.0
+81.0
+10.0
+87.0
+81.0
+87.0
+80.0
+81.0
+81.0
+116.0
+80.0
+80.0
+32.0
+87.0
+194.0
+194.0
+80.0
+81.0
+194.0
+194.0
+80.0
+80.0
+81.0
+143.0
+80.0
+148.0
+80.0
+87.0
+80.0
+32.0
+80.0
+80.0
+80.0
+80.0
+81.0
+80.0
+80.0
+105.0
+80.0
+81.0
+80.0
+80.0
+143.0
+80.0
+29.0
+80.0
+80.0
+80.0
+80.0
+29.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+81.0
+80.0
+80.0
+180.0
+150.0
+80.0
+80.0
+80.0
+32.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+81.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+81.0
+80.0
+80.0
+80.0
+80.0
+80.0
+32.0
+80.0
+80.0
+81.0
+87.0
+80.0
+80.0
+80.0
+9.0
+80.0
+80.0
+81.0
+80.0
+194.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+170.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+10.0
+80.0
+80.0
+80.0
+80.0
+80.0
+87.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+113.0
+180.0
+80.0
+87.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+87.0
+80.0
+80.0
+80.0
+16.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+81.0
+80.0
+80.0
+194.0
+80.0
+80.0
+80.0
+21.0
+87.0
+80.0
+220.0
+80.0
+80.0
+80.0
+87.0
+80.0
+87.0
+219.0
+80.0
+87.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+194.0
+80.0
+80.0
+87.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+87.0
+81.0
+80.0
+87.0
+80.0
+80.0
+87.0
+220.0
+80.0
+87.0
+80.0
+87.0
+87.0
+87.0
+212.0
+87.0
+81.0
+81.0
+80.0
+81.0
+81.0
+81.0
+81.0
+80.0
+80.0
+87.0
+80.0
+80.0
+87.0
+80.0
+87.0
+87.0
+80.0
+222.0
+80.0
+80.0
+80.0
+80.0
+80.0
+81.0
+80.0
+80.0
+81.0
+81.0
+150.0
+87.0
+81.0
+10.0
+80.0
+81.0
+87.0
+81.0
+81.0
+81.0
+32.0
+220.0
+nan
+38.0
+nan
+10.0
+81.0
+81.0
+nan
+80.0
+80.0
+32.0
+116.0
+54.0
+80.0
+180.0
+80.0
+32.0
+80.0
+87.0
+87.0
+80.0
+116.0
+80.0
+80.0
+87.0
+116.0
+87.0
+81.0
+32.0
+87.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+81.0
+32.0
+80.0
+113.0
+87.0
+32.0
+80.0
+10.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+87.0
+194.0
+51.0
+51.0
+87.0
+87.0
+10.0
+196.0
+nan
+nan
+116.0
+32.0
+122.0
+32.0
+32.0
+10.0
+43.0
+210.0
+81.0
+87.0
+81.0
+16.0
+87.0
+32.0
+124.0
+116.0
+170.0
+144.0
+196.0
+135.0
+90.0
+153.0
+116.0
+22.0
+87.0
+81.0
+81.0
+81.0
+32.0
+10.0
+81.0
+32.0
+143.0
+32.0
+87.0
+32.0
+194.0
+32.0
+32.0
+143.0
+81.0
+16.0
+194.0
+81.0
+32.0
+81.0
+81.0
+81.0
+81.0
+81.0
+32.0
+32.0
+113.0
+81.0
+87.0
+87.0
+194.0
+194.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+32.0
+122.0
+80.0
+80.0
+81.0
+80.0
+80.0
+80.0
+87.0
+81.0
+81.0
+32.0
+81.0
+185.0
+87.0
+81.0
+81.0
+81.0
+81.0
+87.0
+87.0
+87.0
+72.0
+80.0
+16.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+81.0
+81.0
+80.0
+81.0
+81.0
+194.0
+80.0
+81.0
+80.0
+80.0
+80.0
+80.0
+87.0
+81.0
+180.0
+80.0
+87.0
+194.0
+81.0
+81.0
+81.0
+81.0
+87.0
+81.0
+80.0
+32.0
+80.0
+81.0
+32.0
+81.0
+32.0
+80.0
+32.0
+81.0
+87.0
+32.0
+80.0
+194.0
+80.0
+80.0
+32.0
+80.0
+80.0
+194.0
+158.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+116.0
+81.0
+81.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+80.0
+194.0
+94.0
+87.0
+194.0
+81.0
+87.0
+116.0
+87.0
+143.0
+143.0
+116.0
+143.0
+144.0
+194.0
+63.0
+87.0
+87.0
+143.0
+143.0
+81.0
+180.0
+10.0
+32.0
+170.0
+170.0
+143.0
+87.0
+32.0
+32.0
+180.0
+171.0
+180.0
+105.0
+32.0
+168.0
+87.0
+87.0
+81.0
+87.0
+32.0
+81.0
+32.0
+32.0
+32.0
+116.0
+143.0
+194.0
+105.0
+116.0
+81.0
+105.0
+32.0
+81.0
+180.0
+32.0
+32.0
+32.0
+81.0
+81.0
+81.0
+32.0
+32.0
+180.0
+180.0
+87.0
+103.0
+80.0
+81.0
+81.0
+143.0
+170.0
+32.0
+87.0
+nan
+87.0
+nan
+81.0
+32.0
+143.0
+32.0
+81.0
+32.0
+180.0
+32.0
+81.0
+103.0
+194.0
+87.0
+148.0
+32.0
+143.0
+81.0
+32.0
+48.0
+103.0
+10.0
+180.0
+32.0
+32.0
+87.0
+32.0
+32.0
+32.0
+87.0
+194.0
+81.0
+81.0
+32.0
+32.0
+204.0
+87.0
+180.0
+180.0
+116.0
+143.0
+87.0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emailsBySend</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[32]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;pandas.core.groupby.SeriesGroupBy object at 0x000001E54299A710&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bodyContent</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">emails</span><span class="o">.</span><span class="n">ExtractedBodyText</span><span class="o">.</span><span class="n">dropna</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bodyContent</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[21]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ExtractedBodyText</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>B6\r\nThursday, March 3, 2011 9:45 PM\r\nH: La...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thx</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>H &lt;hrod17@clintonemail.com&gt;\r\nFriday, March 1...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Pis print.\r\n-•-...-^\r\nH &lt; hrod17@clintoner...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>H &lt;hrod17@clintonemail.corn&gt;\r\nFriday, March ...</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>FYI</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>B6\r\nWednesday, September 12, 2012 6:16 PM\r\...</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Fyi\r\nB6\r\n— —</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>B6\r\nWednesday, September 12, 2012 6:16 PM\r\...</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Fyi</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Anne-Marie Slaughter\r\nSunday, March 13, 2011...</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>_ .....\r\nFrom Randolph, Lawrence M\r\nSent: ...</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>I asked to attend your svtc today with Embassy...</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Hope. See picture below Kamala sent.</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Another photo.</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>This is nice.</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Amazing.\r\nSullivan, Jacob J &lt;Sullivanii@stat...</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>H &lt;hrod17@clintonernaii.com›\r\nWednesday, Sep...</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Pis print.\r\nH &lt; hrod17@clintoriernail.corn&gt;\...</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Pis print.</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Follow Up Flag: Follow up\r\nFlag Status: Flag...</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>B5</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Sidney Blumenthal\r\nThursday, September 13, 2...</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Will do.</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Remind me to discuss</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>http://religion.b1ogs.cnn.com/20 1 2/09/13/my-...</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>See note below</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>FYI</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>embassy in Yemen</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>B6\r\nSunday, March 27, 201i 9:05 PM\r\nH: Lot...</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>7907</th>
+      <td>He was larger than life in everything he did -...</td>
+    </tr>
+    <tr>
+      <th>7908</th>
+      <td>OMG — I just opened this!</td>
+    </tr>
+    <tr>
+      <th>7909</th>
+      <td>Huma Abedin &lt;Huma@clintonemail.com&gt;\r\nMonday,...</td>
+    </tr>
+    <tr>
+      <th>7910</th>
+      <td>Are still here and so appreciative for all you...</td>
+    </tr>
+    <tr>
+      <th>7911</th>
+      <td>According to the Reid staff, they will tentati...</td>
+    </tr>
+    <tr>
+      <th>7912</th>
+      <td>My flight takes off at 8 so call before if you...</td>
+    </tr>
+    <tr>
+      <th>7914</th>
+      <td>That's right; we mean 09. We'll fix it. Thanks...</td>
+    </tr>
+    <tr>
+      <th>7915</th>
+      <td>sbwhoeop\r\nTuesday, December 14, 2010 9:35 AM...</td>
+    </tr>
+    <tr>
+      <th>7916</th>
+      <td>Death of Holbrookell.y,J3_4.:5 _043.) ,:u1.01 ...</td>
+    </tr>
+    <tr>
+      <th>7919</th>
+      <td>on: 12/13/2025\r\nFrom\r\nTo: Verveer, Melanne...</td>
+    </tr>
+    <tr>
+      <th>7920</th>
+      <td>That was what lona had when she went in to tal...</td>
+    </tr>
+    <tr>
+      <th>7921</th>
+      <td>Fyi</td>
+    </tr>
+    <tr>
+      <th>7922</th>
+      <td>Madame Secretary, I wanted to flag for you tha...</td>
+    </tr>
+    <tr>
+      <th>7923</th>
+      <td>It's at the bottom of page 1:\r\n...Ambassador...</td>
+    </tr>
+    <tr>
+      <th>7924</th>
+      <td>I will be at a USGLC breakfast doing qddr so w...</td>
+    </tr>
+    <tr>
+      <th>7925</th>
+      <td>Passed the Senate 81 to 19. START vote on moti...</td>
+    </tr>
+    <tr>
+      <th>7926</th>
+      <td>-^</td>
+    </tr>
+    <tr>
+      <th>7927</th>
+      <td>Traffic below from bottom up</td>
+    </tr>
+    <tr>
+      <th>7928</th>
+      <td>fyi\r\nForwarded message</td>
+    </tr>
+    <tr>
+      <th>7929</th>
+      <td>Agree — he did all the writing and integrating...</td>
+    </tr>
+    <tr>
+      <th>7930</th>
+      <td>Nice\r\nForgot to tell you about our harrowing...</td>
+    </tr>
+    <tr>
+      <th>7932</th>
+      <td>Worth a read.</td>
+    </tr>
+    <tr>
+      <th>7933</th>
+      <td>The unsigned editorials will appear in all of ...</td>
+    </tr>
+    <tr>
+      <th>7936</th>
+      <td>Mills, Cheryl D &lt;MillsCD@state.gov&gt;\r\nThursda...</td>
+    </tr>
+    <tr>
+      <th>7937</th>
+      <td>THE NBC/YORKER\r\nDecember 14, 2010\r\nThe Env...</td>
+    </tr>
+    <tr>
+      <th>7938</th>
+      <td>Hi. Sorry I haven't had a chance to see you, b...</td>
+    </tr>
+    <tr>
+      <th>7939</th>
+      <td>B6\r\nI assume you saw this by now -- if not, ...</td>
+    </tr>
+    <tr>
+      <th>7941</th>
+      <td>Big change of plans in the Senate. Senator Rei...</td>
+    </tr>
+    <tr>
+      <th>7943</th>
+      <td>PVerveer B6\r\nFriday, December 17, 2010 12:12...</td>
+    </tr>
+    <tr>
+      <th>7944</th>
+      <td>See below.</td>
+    </tr>
+  </tbody>
+</table>
+<p>6742 rows × 1 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">clean_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">cleanedText</span> <span class="o">=</span> <span class="n">cleanedText</span>
+    <span class="k">return</span> <span class="n">cleanedText</span>
 </pre></div>
 
 </div>
