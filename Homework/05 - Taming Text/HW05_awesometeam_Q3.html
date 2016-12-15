@@ -11789,7 +11789,7 @@ One option would be create the entire conversations with the mail history, so we
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[70]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -11797,150 +11797,7 @@ One option would be create the entire conversations with the mail history, so we
 <span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="k">import</span> <span class="n">RegexpTokenizer</span>
 <span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="k">import</span> <span class="n">stopwords</span>
 <span class="kn">import</span> <span class="nn">re</span> <span class="c1"># regular expressions</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emails</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;hillary-clinton-emails/Emails.csv&quot;</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Drop columns that won&#39;t be used</span>
-<span class="n">emails</span> <span class="o">=</span> <span class="n">emails</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;DocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;MetadataPdfLink&#39;</span><span class="p">,</span><span class="s1">&#39;DocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;ExtractedDocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;MetadataCaseNumber&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[55]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sampleEmail</span> <span class="o">=</span> <span class="n">emails</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">ExtractedBodyText</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[66]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emails</span><span class="o">.</span><span class="n">ExtractedBodyText</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[66]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>0                                                     NaN
-1       B6\r\nThursday, March 3, 2011 9:45 PM\r\nH: La...
-2                                                     Thx
-3                                                     NaN
-4       H &lt;hrod17@clintonemail.com&gt;\r\nFriday, March 1...
-5       Pis print.\r\n-•-...-^\r\nH &lt; hrod17@clintoner...
-6                                                     NaN
-7       H &lt;hrod17@clintonemail.corn&gt;\r\nFriday, March ...
-8                                                     FYI
-9       B6\r\nWednesday, September 12, 2012 6:16 PM\r\...
-10                                       Fyi\r\nB6\r\n— —
-11      B6\r\nWednesday, September 12, 2012 6:16 PM\r\...
-12                                                    Fyi
-13      Anne-Marie Slaughter\r\nSunday, March 13, 2011...
-14      _ .....\r\nFrom Randolph, Lawrence M\r\nSent: ...
-15      I asked to attend your svtc today with Embassy...
-16                   Hope. See picture below Kamala sent.
-17                                         Another photo.
-18                                          This is nice.
-19      Amazing.\r\nSullivan, Jacob J &lt;Sullivanii@stat...
-20      H &lt;hrod17@clintonernaii.com›\r\nWednesday, Sep...
-21      Pis print.\r\nH &lt; hrod17@clintoriernail.corn&gt;\...
-22                                             Pis print.
-23      Follow Up Flag: Follow up\r\nFlag Status: Flag...
-24                                                     B5
-25      Sidney Blumenthal\r\nThursday, September 13, 2...
-26                                               Will do.
-27                                   Remind me to discuss
-28      http://religion.b1ogs.cnn.com/20 1 2/09/13/my-...
-29                                         See note below
-                              ...                        
-7915    sbwhoeop\r\nTuesday, December 14, 2010 9:35 AM...
-7916    Death of Holbrookell.y,J3_4.:5 _043.) ,:u1.01 ...
-7917                                                  NaN
-7918                                                  NaN
-7919    on: 12/13/2025\r\nFrom\r\nTo: Verveer, Melanne...
-7920    That was what lona had when she went in to tal...
-7921                                                  Fyi
-7922    Madame Secretary, I wanted to flag for you tha...
-7923    It&#39;s at the bottom of page 1:\r\n...Ambassador...
-7924    I will be at a USGLC breakfast doing qddr so w...
-7925    Passed the Senate 81 to 19. START vote on moti...
-7926                                                   -^
-7927                         Traffic below from bottom up
-7928                             fyi\r\nForwarded message
-7929    Agree — he did all the writing and integrating...
-7930    Nice\r\nForgot to tell you about our harrowing...
-7931                                                  NaN
-7932                                        Worth a read.
-7933    The unsigned editorials will appear in all of ...
-7934                                                  NaN
-7935                                                  NaN
-7936    Mills, Cheryl D &lt;MillsCD@state.gov&gt;\r\nThursda...
-7937    THE NBC/YORKER\r\nDecember 14, 2010\r\nThe Env...
-7938    Hi. Sorry I haven&#39;t had a chance to see you, b...
-7939    B6\r\nI assume you saw this by now -- if not, ...
-7940                                                  NaN
-7941    Big change of plans in the Senate. Senator Rei...
-7942                                                  NaN
-7943    PVerveer B6\r\nFriday, December 17, 2010 12:12...
-7944                                           See below.
-Name: ExtractedBodyText, dtype: object</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[65]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">emails</span><span class="o">.</span><span class="n">ExtractedBodyText</span><span class="p">:</span>
-    <span class="n">tokens_list</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">classifier</span> <span class="k">import</span> <span class="n">Classifier</span>
 </pre></div>
 
 </div>
@@ -11955,19 +11812,13 @@ Name: ExtractedBodyText, dtype: object</pre>
 <div class="output_subarea output_text output_error">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-65-e04111f81e58&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-intense-fg ansi-bold">for</span> text <span class="ansi-green-intense-fg ansi-bold">in</span> emails<span class="ansi-yellow-intense-fg ansi-bold">.</span>ExtractedBodyText<span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg">     </span>tokens_list <span class="ansi-yellow-intense-fg ansi-bold">=</span> tokenizer<span class="ansi-yellow-intense-fg ansi-bold">(</span>text<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-70-36e3175288e5&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-green-intense-fg ansi-bold">from</span> nltk<span class="ansi-yellow-intense-fg ansi-bold">.</span>corpus <span class="ansi-green-intense-fg ansi-bold">import</span> stopwords
+<span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-green-intense-fg ansi-bold">import</span> re <span class="ansi-red-intense-fg ansi-bold"># regular expressions</span>
+<span class="ansi-green-fg">----&gt; 6</span><span class="ansi-red-fg"> </span><span class="ansi-green-intense-fg ansi-bold">from</span> classifier <span class="ansi-green-intense-fg ansi-bold">import</span> Classifier
 
-<span class="ansi-green-fg">&lt;ipython-input-60-d0c82283f6ce&gt;</span> in <span class="ansi-cyan-fg">tokenizer</span><span class="ansi-blue-fg">(text)</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-intense-fg ansi-bold">def</span> tokenizer<span class="ansi-yellow-intense-fg ansi-bold">(</span>text<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg">     </span>cleanedText <span class="ansi-yellow-intense-fg ansi-bold">=</span> text<span class="ansi-yellow-intense-fg ansi-bold">.</span>replace<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;\n&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-blue-intense-fg ansi-bold">&#39; &#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span>     cleanedText <span class="ansi-yellow-intense-fg ansi-bold">=</span> cleanedText<span class="ansi-yellow-intense-fg ansi-bold">.</span>replace<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;\r&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-blue-intense-fg ansi-bold">&#39;&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span>     <span class="ansi-red-intense-fg ansi-bold"># Separate each word</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span>     tokens <span class="ansi-yellow-intense-fg ansi-bold">=</span> RegexpTokenizer<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">r&#39;\w+&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>tokenize<span class="ansi-yellow-intense-fg ansi-bold">(</span>cleanedText<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-
-<span class="ansi-red-fg">AttributeError</span>: &#39;float&#39; object has no attribute &#39;replace&#39;</pre>
+<span class="ansi-red-fg">ImportError</span>: cannot import name &#39;Classifier&#39;</pre>
 </div>
 </div>
 
@@ -11977,7 +11828,116 @@ Name: ExtractedBodyText, dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># initiate gensim classifier </span>
+<span class="c1"># all code are accessible in classifier.py</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">Classifier</span><span class="p">()</span>
+<span class="n">classifier</span><span class="o">.</span><span class="n">define_dictionary</span><span class="p">(</span><span class="n">clean_text_series</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emails</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;hillary-clinton-emails/Emails.csv&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Drop columns that won&#39;t be used</span>
+<span class="n">emails</span> <span class="o">=</span> <span class="n">emails</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;DocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;MetadataPdfLink&#39;</span><span class="p">,</span><span class="s1">&#39;DocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;ExtractedDocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;MetadataCaseNumber&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sampleEmail</span> <span class="o">=</span> <span class="n">emails</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">ExtractedBodyText</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emails</span><span class="o">.</span><span class="n">ExtractedBodyText</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">emails</span><span class="o">.</span><span class="n">ExtractedBodyText</span><span class="p">:</span>
+    <span class="n">tokens_list</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Testing the cleaning function</span>
@@ -11989,62 +11949,10 @@ Name: ExtractedBodyText, dtype: object</pre>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[42]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[&#39;B6&#39;,
- &#39;Thursday&#39;,
- &#39;March&#39;,
- &#39;3&#39;,
- &#39;2011&#39;,
- &#39;9&#39;,
- &#39;45&#39;,
- &#39;PM&#39;,
- &#39;H&#39;,
- &#39;Latest&#39;,
- &#39;How&#39;,
- &#39;Syria&#39;,
- &#39;is&#39;,
- &#39;aiding&#39;,
- &#39;Qaddafi&#39;,
- &#39;and&#39;,
- &#39;more&#39;,
- &#39;Sid&#39;,
- &#39;hrc&#39;,
- &#39;memo&#39;,
- &#39;syria&#39;,
- &#39;aiding&#39;,
- &#39;libya&#39;,
- &#39;030311&#39;,
- &#39;docx&#39;,
- &#39;hrc&#39;,
- &#39;memo&#39;,
- &#39;syria&#39;,
- &#39;aiding&#39;,
- &#39;libya&#39;,
- &#39;030311&#39;,
- &#39;docx&#39;,
- &#39;March&#39;,
- &#39;3&#39;,
- &#39;2011&#39;,
- &#39;For&#39;,
- &#39;Hillary&#39;]</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[72]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">emailsBySend</span> <span class="o">=</span> <span class="n">emails</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;SenderPersonId&#39;</span><span class="p">])[</span><span class="s1">&#39;ExtractedBodyText&#39;</span><span class="p">]</span>
@@ -12059,7 +11967,7 @@ Name: ExtractedBodyText, dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">senderIDs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -12071,28 +11979,10 @@ Name: ExtractedBodyText, dtype: object</pre>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-39-6c06c0c33ed8&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">3</span>
-<span class="ansi-red-fg">    #    print(senderID)</span>
-                        ^
-<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> unexpected EOF while parsing
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">emailsBySend</span>
@@ -12102,26 +11992,10 @@ Name: ExtractedBodyText, dtype: object</pre>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[32]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&lt;pandas.core.groupby.SeriesGroupBy object at 0x000001E54299A710&gt;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">bodyContent</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">emails</span><span class="o">.</span><span class="n">ExtractedBodyText</span><span class="o">.</span><span class="n">dropna</span><span class="p">())</span>
@@ -12134,7 +12008,7 @@ Name: ExtractedBodyText, dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">bodyContent</span>
@@ -12144,274 +12018,68 @@ Name: ExtractedBodyText, dtype: object</pre>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
 
-
-<div class="output_area"><div class="prompt output_prompt">Out[21]:</div>
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>ExtractedBodyText</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1</th>
-      <td>B6\r\nThursday, March 3, 2011 9:45 PM\r\nH: La...</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Thx</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>H &lt;hrod17@clintonemail.com&gt;\r\nFriday, March 1...</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>Pis print.\r\n-•-...-^\r\nH &lt; hrod17@clintoner...</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>H &lt;hrod17@clintonemail.corn&gt;\r\nFriday, March ...</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>FYI</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>B6\r\nWednesday, September 12, 2012 6:16 PM\r\...</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>Fyi\r\nB6\r\n— —</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>B6\r\nWednesday, September 12, 2012 6:16 PM\r\...</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>Fyi</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>Anne-Marie Slaughter\r\nSunday, March 13, 2011...</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>_ .....\r\nFrom Randolph, Lawrence M\r\nSent: ...</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>I asked to attend your svtc today with Embassy...</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>Hope. See picture below Kamala sent.</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>Another photo.</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>This is nice.</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>Amazing.\r\nSullivan, Jacob J &lt;Sullivanii@stat...</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>H &lt;hrod17@clintonernaii.com›\r\nWednesday, Sep...</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>Pis print.\r\nH &lt; hrod17@clintoriernail.corn&gt;\...</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>Pis print.</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>Follow Up Flag: Follow up\r\nFlag Status: Flag...</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>B5</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>Sidney Blumenthal\r\nThursday, September 13, 2...</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>Will do.</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>Remind me to discuss</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>http://religion.b1ogs.cnn.com/20 1 2/09/13/my-...</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>See note below</td>
-    </tr>
-    <tr>
-      <th>30</th>
-      <td>FYI</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>embassy in Yemen</td>
-    </tr>
-    <tr>
-      <th>32</th>
-      <td>B6\r\nSunday, March 27, 201i 9:05 PM\r\nH: Lot...</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>7907</th>
-      <td>He was larger than life in everything he did -...</td>
-    </tr>
-    <tr>
-      <th>7908</th>
-      <td>OMG — I just opened this!</td>
-    </tr>
-    <tr>
-      <th>7909</th>
-      <td>Huma Abedin &lt;Huma@clintonemail.com&gt;\r\nMonday,...</td>
-    </tr>
-    <tr>
-      <th>7910</th>
-      <td>Are still here and so appreciative for all you...</td>
-    </tr>
-    <tr>
-      <th>7911</th>
-      <td>According to the Reid staff, they will tentati...</td>
-    </tr>
-    <tr>
-      <th>7912</th>
-      <td>My flight takes off at 8 so call before if you...</td>
-    </tr>
-    <tr>
-      <th>7914</th>
-      <td>That's right; we mean 09. We'll fix it. Thanks...</td>
-    </tr>
-    <tr>
-      <th>7915</th>
-      <td>sbwhoeop\r\nTuesday, December 14, 2010 9:35 AM...</td>
-    </tr>
-    <tr>
-      <th>7916</th>
-      <td>Death of Holbrookell.y,J3_4.:5 _043.) ,:u1.01 ...</td>
-    </tr>
-    <tr>
-      <th>7919</th>
-      <td>on: 12/13/2025\r\nFrom\r\nTo: Verveer, Melanne...</td>
-    </tr>
-    <tr>
-      <th>7920</th>
-      <td>That was what lona had when she went in to tal...</td>
-    </tr>
-    <tr>
-      <th>7921</th>
-      <td>Fyi</td>
-    </tr>
-    <tr>
-      <th>7922</th>
-      <td>Madame Secretary, I wanted to flag for you tha...</td>
-    </tr>
-    <tr>
-      <th>7923</th>
-      <td>It's at the bottom of page 1:\r\n...Ambassador...</td>
-    </tr>
-    <tr>
-      <th>7924</th>
-      <td>I will be at a USGLC breakfast doing qddr so w...</td>
-    </tr>
-    <tr>
-      <th>7925</th>
-      <td>Passed the Senate 81 to 19. START vote on moti...</td>
-    </tr>
-    <tr>
-      <th>7926</th>
-      <td>-^</td>
-    </tr>
-    <tr>
-      <th>7927</th>
-      <td>Traffic below from bottom up</td>
-    </tr>
-    <tr>
-      <th>7928</th>
-      <td>fyi\r\nForwarded message</td>
-    </tr>
-    <tr>
-      <th>7929</th>
-      <td>Agree — he did all the writing and integrating...</td>
-    </tr>
-    <tr>
-      <th>7930</th>
-      <td>Nice\r\nForgot to tell you about our harrowing...</td>
-    </tr>
-    <tr>
-      <th>7932</th>
-      <td>Worth a read.</td>
-    </tr>
-    <tr>
-      <th>7933</th>
-      <td>The unsigned editorials will appear in all of ...</td>
-    </tr>
-    <tr>
-      <th>7936</th>
-      <td>Mills, Cheryl D &lt;MillsCD@state.gov&gt;\r\nThursda...</td>
-    </tr>
-    <tr>
-      <th>7937</th>
-      <td>THE NBC/YORKER\r\nDecember 14, 2010\r\nThe Env...</td>
-    </tr>
-    <tr>
-      <th>7938</th>
-      <td>Hi. Sorry I haven't had a chance to see you, b...</td>
-    </tr>
-    <tr>
-      <th>7939</th>
-      <td>B6\r\nI assume you saw this by now -- if not, ...</td>
-    </tr>
-    <tr>
-      <th>7941</th>
-      <td>Big change of plans in the Senate. Senator Rei...</td>
-    </tr>
-    <tr>
-      <th>7943</th>
-      <td>PVerveer B6\r\nFriday, December 17, 2010 12:12...</td>
-    </tr>
-    <tr>
-      <th>7944</th>
-      <td>See below.</td>
-    </tr>
-  </tbody>
-</table>
-<p>6742 rows × 1 columns</p>
+</div>
 </div>
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_csv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
 
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+</div>
 </div>
 </div>
 
@@ -12428,7 +12096,7 @@ Name: ExtractedBodyText, dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Words to be removed because they &quot;falsify&quot; the results</span>
@@ -12442,7 +12110,7 @@ Name: ExtractedBodyText, dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[60]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
@@ -12461,7 +12129,7 @@ Name: ExtractedBodyText, dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span> 

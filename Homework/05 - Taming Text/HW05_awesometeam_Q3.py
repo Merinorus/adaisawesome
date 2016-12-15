@@ -15,87 +15,132 @@
 
 # What we will do is to create a document that contains the "sent mails box" for each person. It doesn't follow a conversation, so our results won't be the most coherent we could get. But the purpose here is to show the basics of topic modelling.
 
-# In[36]:
+# In[70]:
 
 import pandas as pd
 import gensim
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 import re # regular expressions
+from classifier import Classifier
 
 
-# In[18]:
+# In[ ]:
+
+
+# initiate gensim classifier 
+# all code are accessible in classifier.py
+classifier = Classifier()
+classifier.define_dictionary(clean_text_series)
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
 
 emails = pd.read_csv("hillary-clinton-emails/Emails.csv")
 
 
-# In[19]:
+# In[ ]:
 
 # Drop columns that won't be used
 emails = emails.drop(['DocNumber', 'MetadataPdfLink','DocNumber', 'ExtractedDocNumber', 'MetadataCaseNumber'], axis=1)
 
 
-# In[55]:
+# In[ ]:
 
 sampleEmail = emails.loc[1].ExtractedBodyText
 
 
-# In[66]:
+# In[ ]:
 
 emails.ExtractedBodyText
 
 
-# In[65]:
+# In[ ]:
 
 for text in emails.ExtractedBodyText:
     tokens_list = tokenizer(text)
 
 
-# In[42]:
+# In[ ]:
 
 # Testing the cleaning function
 sample_tokens = tokenizer(sampleEmail)
 sample_tokens
 
 
-# In[72]:
+# In[ ]:
 
 emailsBySend = emails.groupby(['SenderPersonId'])['ExtractedBodyText']
 df = list(emailsBySend)
 df = pd.DataFrame(df)
 
 
-# In[39]:
+# In[ ]:
 
 senderIDs = []
 for senderID in emails['SenderPersonId']:
 #    print(senderID)
 
 
-# In[32]:
+# In[ ]:
 
 emailsBySend
 
 
-# In[20]:
+# In[ ]:
 
 bodyContent = pd.DataFrame(emails.ExtractedBodyText.dropna())
 
 
-# In[21]:
+# In[ ]:
 
 bodyContent
 
 
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+data_csv = pd.read_csv("")
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+
+
+
 # This part contains used the source code that was used above during the homework, just for your curiosity.
 
-# In[28]:
+# In[ ]:
 
 # Words to be removed because they "falsify" the results
 ignored_words = ['re', 'fw', 'pm']
 
 
-# In[60]:
+# In[ ]:
 
 def tokenizer(text):
     cleanedText = text.replace('\n', ' ')
@@ -106,7 +151,7 @@ def tokenizer(text):
     return tokens
 
 
-# In[58]:
+# In[ ]:
 
 
 
