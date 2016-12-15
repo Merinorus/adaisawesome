@@ -15,34 +15,47 @@
 
 # What we will do is to create a document that contains the "sent mails box" for each person. It doesn't follow a conversation, so our results won't be the most coherent we could get. But the purpose here is to show the basics of topic modelling.
 
-# In[88]:
+# In[36]:
 
 import pandas as pd
 import gensim
-import ntlk
+from nltk.tokenize import RegexpTokenizer
+from nltk.corpus import stopwords
+import re # regular expressions
 
 
-# In[9]:
+# In[18]:
 
 emails = pd.read_csv("hillary-clinton-emails/Emails.csv")
 
 
-# In[10]:
+# In[19]:
 
 # Drop columns that won't be used
 emails = emails.drop(['DocNumber', 'MetadataPdfLink','DocNumber', 'ExtractedDocNumber', 'MetadataCaseNumber'], axis=1)
 
 
-# In[81]:
+# In[55]:
 
 sampleEmail = emails.loc[1].ExtractedBodyText
 
 
-# In[87]:
+# In[66]:
+
+emails.ExtractedBodyText
+
+
+# In[65]:
+
+for text in emails.ExtractedBodyText:
+    tokens_list = tokenizer(text)
+
+
+# In[42]:
 
 # Testing the cleaning function
-cleanedSample = clean_text(sampleEmail)
-cleanedSample
+sample_tokens = tokenizer(sampleEmail)
+sample_tokens
 
 
 # In[72]:
@@ -52,11 +65,11 @@ df = list(emailsBySend)
 df = pd.DataFrame(df)
 
 
-# In[50]:
+# In[39]:
 
 senderIDs = []
 for senderID in emails['SenderPersonId']:
-    print(senderID)
+#    print(senderID)
 
 
 # In[32]:
@@ -74,10 +87,26 @@ bodyContent = pd.DataFrame(emails.ExtractedBodyText.dropna())
 bodyContent
 
 
-# In[86]:
+# This part contains used the source code that was used above during the homework, just for your curiosity.
 
-def clean_text(text):
+# In[28]:
+
+# Words to be removed because they "falsify" the results
+ignored_words = ['re', 'fw', 'pm']
+
+
+# In[60]:
+
+def tokenizer(text):
     cleanedText = text.replace('\n', ' ')
     cleanedText = cleanedText.replace('\r', '')
-    return cleanedText
+    # Separate each word
+    tokens = RegexpTokenizer(r'\w+').tokenize(cleanedText)
+    
+    return tokens
+
+
+# In[58]:
+
+
 
