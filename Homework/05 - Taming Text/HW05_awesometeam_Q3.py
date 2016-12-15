@@ -15,14 +15,14 @@
 
 # What we will do is to create a document that contains the "sent mails box" for each person. It doesn't follow a conversation, so our results won't be the most coherent we could get. But the purpose here is to show the basics of topic modelling.
 
-# In[70]:
+# In[9]:
 
 import pandas as pd
-import gensim
+from gensim import corpora, models
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 import re # regular expressions
-from classifier import Classifier
+import classifier
 
 
 # In[ ]:
@@ -32,6 +32,31 @@ from classifier import Classifier
 # all code are accessible in classifier.py
 classifier = Classifier()
 classifier.define_dictionary(clean_text_series)
+
+
+# In[3]:
+
+emails_cleaned = pd.read_pickle("ilovepickefiles_stemming.pickle")
+
+
+# In[10]:
+
+emails_cleaned.head()
+
+
+# In[8]:
+
+topic_number = 10
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+
 
 
 # In[ ]:
@@ -114,7 +139,7 @@ bodyContent
 
 # In[ ]:
 
-data_csv = pd.read_csv("")
+
 
 
 # In[ ]:
