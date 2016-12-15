@@ -15,10 +15,11 @@
 
 # What we will do is to create a document that contains the "sent mails box" for each person. It doesn't follow a conversation, so our results won't be the most coherent we could get. But the purpose here is to show the basics of topic modelling.
 
-# In[4]:
+# In[88]:
 
 import pandas as pd
 import gensim
+import ntlk
 
 
 # In[9]:
@@ -32,9 +33,16 @@ emails = pd.read_csv("hillary-clinton-emails/Emails.csv")
 emails = emails.drop(['DocNumber', 'MetadataPdfLink','DocNumber', 'ExtractedDocNumber', 'MetadataCaseNumber'], axis=1)
 
 
-# In[11]:
+# In[81]:
 
-emails
+sampleEmail = emails.loc[1].ExtractedBodyText
+
+
+# In[87]:
+
+# Testing the cleaning function
+cleanedSample = clean_text(sampleEmail)
+cleanedSample
 
 
 # In[72]:
@@ -66,9 +74,10 @@ bodyContent = pd.DataFrame(emails.ExtractedBodyText.dropna())
 bodyContent
 
 
-# In[73]:
+# In[86]:
 
 def clean_text(text):
-    cleanedText = cleanedText
+    cleanedText = text.replace('\n', ' ')
+    cleanedText = cleanedText.replace('\r', '')
     return cleanedText
 
