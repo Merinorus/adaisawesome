@@ -1,20 +1,6 @@
 
-# coding: utf-8
-
-# Question 2) Find all the mentions of world countries in the whole corpus, 
-# using the pycountry utility (HINT: remember that there will be different surface forms 
-# for the same country in the text, e.g., Switzerland, switzerland, CH, etc.) 
-# Perform sentiment analysis on every email message using the demo methods 
-# in the nltk.sentiment.util module. Aggregate the polarity information of all 
-# the emails by country, and plot a histogram (ordered and colored by polarity level) 
-# that summarizes the perception of the different countries. Repeat the aggregation and plotting steps using different demo methods from the sentiment analysis module.
-# Can you find substantial differences?
-
-# In[105]:
-
 import pandas as pd
 import pycountry
-import nltk
 from nltk.sentiment import *
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,52 +8,30 @@ import codecs
 import math
 import re
 import string
-import nltk.data
 
 
-
-# In[107]:
 
 nltk.download()
 
 
-# Pre Process the Data, Dropping Irrelevant Columns
-
-# In[16]:
-
 emails = pd.read_csv("hillary-clinton-emails/Emails.csv")
 
-
-# In[17]:
 
 # Drop columns that won't be used
 emails = emails.drop(['DocNumber', 'MetadataPdfLink','DocNumber', 'ExtractedDocNumber', 'MetadataCaseNumber'], axis=1)
 emails.head()
 
-
-# In[18]:
-
 emails_cut = emails[['ExtractedBodyText']].copy()
 emails_cut.head()
-
-
-# In[19]:
 
 emails_cut = emails_cut.dropna()
 emails_cut.head()
 
 
-# Now we must tokenize the data...
-
-# In[20]:
-
 from nltk import word_tokenize
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 tokenizer = RegexpTokenizer(r'\w+')
-
-
-# In[21]:
 
 emails_tokenized = emails_cut.copy()
 for index, row in emails_tokenized.iterrows():
@@ -75,11 +39,6 @@ for index, row in emails_tokenized.iterrows():
 emails_tokenized.columns = ['TokenizedText']
 emails_tokenized.reset_index(drop=True, inplace=True)
 emails_tokenized.head()
-
-
-# Figure out what words to remove...
-
-# In[81]:
 
 words_delete = ['IT', 'RE','LA','AND', 'AM', 'AT', 'IN', 'I', 'ME', 'DO', 
                 'A', 'AN','BUT', 'IF', 'OR','AS','OF','BY', 'TO', 'UP','ON','ANY', 'NO', 'NOR', 'NOT','SO',
@@ -94,20 +53,12 @@ emails_no_stop = emails_tokenized.copy()
 emails_no_stop['TokenizedText'] = emails_no_stop['TokenizedText'].apply(lambda x: [item for item in x if item not in words_delete])
 emails_no_stop.tail()
 
-
-# In[82]:
-
 #Make sure to Capitalize all words
 for email in emails_no_stop['TokenizedText']:
     for word in email:
         word.title()
         
 emails_no_stop['TokenizedText'].head()
-
-
-# Create list of countries
-
-# In[83]:
 
 countries_cited = []
 for emails in emails_no_stop['TokenizedText']:
@@ -126,25 +77,15 @@ for emails in emails_no_stop['TokenizedText']:
                 except KeyError: pass
 
 
-# Organize List and Count Occurrence of Each Country
-
-# In[84]:
-
 #List with Unique Entries of Countries Cited
 final_countries = list(set(countries_cited))
 size = len(final_countries)
 final_countries
 
-
-# In[85]:
-
 #Create New DataFrame for the Counts
 Country_Sent = pd.DataFrame(index=range(0,size),columns=['Country', 'Count'])
 Country_Sent['Country']=final_countries
 Country_Sent.head()
-
-
-# In[86]:
 
 count_list = []
 for country in Country_Sent['Country']:
@@ -156,14 +97,10 @@ Country_Sent.head()
 
 
 
-# In[87]:
-
 #Take Out Countries with Less than 20 Citations
 Country_Sent= Country_Sent[Country_Sent['Count'] > 14]
 Country_Sent.head()
 
-
-# In[88]:
 
 #plot to see frequencies
 Country_Sent.plot.bar(x='Country', y='Count')
@@ -171,9 +108,6 @@ plt.show()
 
 #We have repeatedly plotted this, identifying weird occurances (small countries with high counts), 
 #and then elimitating them from the data set and repating the process
-
-
-# In[89]:
 
 #create a list with all possible names of the countries above
 countries_used = []
@@ -184,11 +118,6 @@ for country in Country_Sent['Country']:
     countries_used.append(country_names.alpha_3)
 
 countries_used
-
-
-# Now we check sentiment on emails around these names
-
-# In[119]:
 
 sentiments = []
 vader_analyzer = SentimentIntensityAnalyzer()
@@ -232,8 +161,9 @@ sentiments
               
         
 
+SentimentIntensityAnalyzer()
+text = ['I hate going to th parties']
+sentiment = SentimentIntensityAnalyzer().polarity_scores(text)
+print(sentiment)
 
-# In[ ]:
-
-text = ['I hate going to th pa]
 
