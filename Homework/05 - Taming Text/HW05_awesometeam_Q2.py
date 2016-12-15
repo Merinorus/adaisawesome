@@ -205,6 +205,11 @@ for i in range(1,size):
         
 
 
+# In[291]:
+
+sentiments
+
+
 # In[220]:
 
 #error in iteration, must drop NZ because it was not taken into account in the sentiments analysis
@@ -244,7 +249,7 @@ Country_Sent.head()
 
 # Now we make a color gradient for the histogram
 
-# In[267]:
+# In[288]:
 
 #We must normalize the sentiment scores and create a gradient based on that (green, blue & red gradient)
 #first we sort the ones that are below zero, than the ones above zero
@@ -255,34 +260,30 @@ for i in range(0,size):
     if Country_Sent['Sentiment'][i] < 0:
         high = 0
         low = np.min(sentiments)
-        rg = high-low
-        new_entry = -(low-Country_Sent['Sentiment'][i])/rg
+        rg = low-high
+        new_entry = (low-Country_Sent['Sentiment'][i])/rg
         red = 1 - new_entry
-        if new_entry != 0:
-            color_grad.append((red,0,new_entry))
-        else: 
-            color_grad.append((red,0,0))
+        color_grad.append((red,0,0))
     else:
         high = np.max(sentiments)
         low = 0
         rg2 = high-low
-        new_entry = -(Country_Sent['Sentiment'][i]-low)/rg2
+        new_entry = (Country_Sent['Sentiment'][i]-low)/rg2
         green = 1 - new_entry
-        if new_entry != 0:
-            color_grad.append((0,green,new_entry))        
-        else: 
-            color_grad.append((0,green,0))
+        color_grad.append((0,green,0))    
+                          
+        
         
 
 Country_Sent['color_grad'] = color_grad        
 Country_Sent.head()
 
 
-# In[268]:
+# In[289]:
 
 #Now we create the bar plot based on this palette
 import seaborn as sns
-
+plt.figure(figsize=(30,20))
 plot = sns.barplot(x='Country', y='Sentiment', data=Country_Sent, orient='vertical', palette=color_grad)
 plt.ylabel('Country Sentiment');
 plt.show()
@@ -299,6 +300,12 @@ plt.xticks(rotation=60);
 plt.ylabel('Country Sentiment');
 plt.show()
 
+
+# Comment on Sentiment Data:
+#     Some Countries Were lost in this analysis, it is not clear why yet.
+# Comments on Data Viz:
+#     Creating my own pallette somehow erased the nuances between countries even when the difference in 
+#     scores was significant. The automaticallly generated palette performed much better at conveying the info.
 
 # In[ ]:
 
