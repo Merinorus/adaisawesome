@@ -11751,6 +11751,34 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Assignment:">Assignment:<a class="anchor-link" href="#Assignment:">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Using the models.ldamodel module from the gensim library, run topic modeling over the corpus. Explore different numbers of topics (varying from 5 to 50), and settle for the parameter which returns topics that you consider to be meaningful at first sight.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Finding-a-compromise">Finding a compromise<a class="anchor-link" href="#Finding-a-compromise">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>The goal is to do topic modeling over all the mails. In other words, we have to find recurrent topic or themes that may appear in the conversations.
 They are several way to analyse the mails content, starting by these two "naive" ways:</p>
 <ul>
@@ -11760,7 +11788,7 @@ They are several way to analyse the mails content, starting by these two "naive"
 <p>But both of these ways have major drawbacks:</p>
 <ul>
 <li>doing topic modelling on a single document would show the most frequent words, so the result should be the same as if we wanted to make a word cloud</li>
-<li>a lot of mail are very small, a few words sometimes, so doing topic analysis here would be meaningless</li>
+<li>a lot of mail are very small, a few words sometimes, so doing topic analysis here would not be extremely meaningful</li>
 </ul>
 
 </div>
@@ -11772,7 +11800,7 @@ They are several way to analyse the mails content, starting by these two "naive"
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So we have to find a compromise: make multiple documents, each of them long enough to be analysed.
-One option would be create the entire conversations with the mail history, so we can extract main topic from each conversation. While it makes sense, it's actually pretty time-consuming to obtain the conversations.</p>
+One of the best options would be create the entire conversations with the mail history, so we can extract main topic from each conversation. While it makes sense, it's actually pretty time-consuming to obtain the conversations.</p>
 
 </div>
 </div>
@@ -11782,14 +11810,23 @@ One option would be create the entire conversations with the mail history, so we
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>What we will do is to create a document that contains the "sent mails box" for each person. It doesn't follow a conversation, so our results won't be the most coherent we could get. But the purpose here is to show the basics of topic modelling.</p>
+<p>What we will do here is simply put each mail in a separate document, excluding mails that are too small to be analysed.</p>
 
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Extracting-keywords">Extracting keywords<a class="anchor-link" href="#Extracting-keywords">&#182;</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[204]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -11797,7 +11834,8 @@ One option would be create the entire conversations with the mail history, so we
 <span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="k">import</span> <span class="n">RegexpTokenizer</span>
 <span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="k">import</span> <span class="n">stopwords</span>
 <span class="kn">import</span> <span class="nn">re</span> <span class="c1"># regular expressions</span>
-<span class="kn">import</span> <span class="nn">classifier</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 
 </div>
@@ -11807,13 +11845,11 @@ One option would be create the entire conversations with the mail history, so we
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[205]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># initiate gensim classifier </span>
-<span class="c1"># all code are accessible in classifier.py</span>
-<span class="n">classifier</span> <span class="o">=</span> <span class="n">Classifier</span><span class="p">()</span>
-<span class="n">classifier</span><span class="o">.</span><span class="n">define_dictionary</span><span class="p">(</span><span class="n">clean_text_series</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We reuse data from question 1 that already did a lot of cleaning operations !</span>
+<span class="n">emails_cleaned</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s2">&quot;ilovepickefiles_stemming.pickle&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -11823,20 +11859,7 @@ One option would be create the entire conversations with the mail history, so we
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emails_cleaned</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s2">&quot;ilovepickefiles_stemming.pickle&quot;</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[206]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">emails_cleaned</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -11850,7 +11873,7 @@ One option would be create the entire conversations with the mail history, so we
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[206]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -11893,12 +11916,22 @@ One option would be create the entire conversations with the mail history, so we
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>During the topic modeling, we still see some words that don't really fit in any topic (eg: would) so we remove some of them intentionally.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[207]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">topic_number</span> <span class="o">=</span> <span class="mi">10</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ignore_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;00&#39;</span><span class="p">,</span> <span class="s1">&#39;10&#39;</span><span class="p">,</span> <span class="s1">&#39;15&#39;</span><span class="p">,</span> <span class="s1">&#39;30&#39;</span><span class="p">,</span> <span class="s1">&#39;also&#39;</span><span class="p">,</span> <span class="s1">&#39;would&#39;</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -11908,265 +11941,10 @@ One option would be create the entire conversations with the mail history, so we
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[208]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emails</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;hillary-clinton-emails/Emails.csv&quot;</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Drop columns that won&#39;t be used</span>
-<span class="n">emails</span> <span class="o">=</span> <span class="n">emails</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;DocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;MetadataPdfLink&#39;</span><span class="p">,</span><span class="s1">&#39;DocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;ExtractedDocNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;MetadataCaseNumber&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sampleEmail</span> <span class="o">=</span> <span class="n">emails</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">ExtractedBodyText</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emails</span><span class="o">.</span><span class="n">ExtractedBodyText</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">emails</span><span class="o">.</span><span class="n">ExtractedBodyText</span><span class="p">:</span>
-    <span class="n">tokens_list</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Testing the cleaning function</span>
-<span class="n">sample_tokens</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">sampleEmail</span><span class="p">)</span>
-<span class="n">sample_tokens</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emailsBySend</span> <span class="o">=</span> <span class="n">emails</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;SenderPersonId&#39;</span><span class="p">])[</span><span class="s1">&#39;ExtractedBodyText&#39;</span><span class="p">]</span>
-<span class="n">df</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">emailsBySend</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">senderIDs</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">senderID</span> <span class="ow">in</span> <span class="n">emails</span><span class="p">[</span><span class="s1">&#39;SenderPersonId&#39;</span><span class="p">]:</span>
-<span class="c1">#    print(senderID)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emailsBySend</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bodyContent</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">emails</span><span class="o">.</span><span class="n">ExtractedBodyText</span><span class="o">.</span><span class="n">dropna</span><span class="p">())</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bodyContent</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#for mail in emails_cleaned.TokenizedText</span>
 </pre></div>
 
 </div>
@@ -12179,18 +11957,71 @@ One option would be create the entire conversations with the mail history, so we
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This part contains used the source code that was used above during the homework, just for your curiosity.</p>
+<p>We put all the mails in a text table in order to prepare the corpus to be analysed. We exclude mails that are too small.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[209]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Words to be removed because they &quot;falsify&quot; the results</span>
-<span class="n">ignored_words</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;re&#39;</span><span class="p">,</span> <span class="s1">&#39;fw&#39;</span><span class="p">,</span> <span class="s1">&#39;pm&#39;</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">min_mail_size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">];</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total number of mail: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">emails_cleaned</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">min_mail_size</span><span class="p">:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">mail</span> <span class="ow">in</span> <span class="n">emails_cleaned</span><span class="o">.</span><span class="n">TokenizedText</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mail</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">i</span><span class="p">):</span>
+            <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mail</span><span class="p">)</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">/</span> <span class="n">emails_cleaned</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mails with at least &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; tokens represent &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ratio</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; </span><span class="si">% o</span><span class="s2">f the total.&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Total number of mail: 13002
+Mails with at least 2 tokens represent 71.9350869097 % of the total.
+Mails with at least 3 tokens represent 56.8527918782 % of the total.
+Mails with at least 4 tokens represent 47.0389170897 % of the total.
+Mails with at least 5 tokens represent 40.1169050915 % of the total.
+Mails with at least 6 tokens represent 35.0176895862 % of the total.
+Mails with at least 10 tokens represent 21.8120289186 % of the total.
+Mails with at least 15 tokens represent 15.3976311337 % of the total.
+Mails with at least 20 tokens represent 11.8289493924 % of the total.
+Mails with at least 50 tokens represent 5.4606983541 % of the total.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We choose keep mails with at least 5 tokens: we can have sentences that might make sense, while keeping 40 % of the mails. This is about 5000 mails, so we should be able to extract some topics from them.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[210]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">MIN_MAIL_SIZE</span> <span class="o">=</span> <span class="mi">5</span>
 </pre></div>
 
 </div>
@@ -12200,16 +12031,74 @@ One option would be create the entire conversations with the mail history, so we
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[211]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-    <span class="n">cleanedText</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
-    <span class="n">cleanedText</span> <span class="o">=</span> <span class="n">cleanedText</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="c1"># Separate each word</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="n">RegexpTokenizer</span><span class="p">(</span><span class="s1">r&#39;\w+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">cleanedText</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">tokens</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">mail</span> <span class="ow">in</span> <span class="n">emails_cleaned</span><span class="o">.</span><span class="n">TokenizedText</span><span class="p">:</span>
+    <span class="c1"># Take only mails that are long enough</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mail</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">MIN_MAIL_SIZE</span><span class="p">):</span>
+        <span class="c1"># Remove unwanted words</span>
+        <span class="n">mail_filtered</span> <span class="o">=</span> <span class="n">mail</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">mail_filtered</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">ignore_list</span><span class="p">:</span>
+                <span class="n">mail_filtered</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mail_filtered</span><span class="p">)</span>
+<span class="n">ratio</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">/</span> <span class="n">emails_cleaned</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="mi">100</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, we convert all the mails' words in numbers, each number corresponding to a word. In other words, we convert our table of mail in a corpus, so we will be able to do topic modeling on it.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[212]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">text_dictionary</span> <span class="o">=</span> <span class="n">corpora</span><span class="o">.</span><span class="n">Dictionary</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span><span class="n">text_dictionary</span><span class="o">.</span><span class="n">doc2bow</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">text</span><span class="p">]</span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, time to do the modeling. We will play with the topic number in order to have a consistent result.
+Let's try with different numbers. First 5, then 10, 25 and finally 50 topics:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[213]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">show_topics</span><span class="p">(</span><span class="n">lda_model</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lda_model</span><span class="o">.</span><span class="n">num_topics</span><span class="p">):</span>
+        <span class="n">topic_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">lda_model</span><span class="o">.</span><span class="n">show_topic</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">topn</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Topic &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">topic_words</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12219,16 +12108,231 @@ One option would be create the entire conversations with the mail history, so we
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[214]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lda_model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">LdaMulticore</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">id2word</span> <span class="o">=</span> <span class="n">text_dictionary</span><span class="p">,</span> <span class="n">num_topics</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">show_topics</span><span class="p">(</span><span class="n">lda_model</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Topic 1:  state call said offic time secretari presid want work 2009 clinton depart hous meet like 
+Topic 2:  state work depart said obama govern presid peopl right offic like american secur foreign secretari 
+Topic 3:  state secretari offic time meet depart work 2010 presid govern year hous need obama nation 
+Topic 4:  state obama call presid secretari year hous meet work time american peopl think said want 
+Topic 5:  state right 2010 parti obama year time like american presid call foreign meet issu work 
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[215]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lda_model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">LdaMulticore</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">id2word</span> <span class="o">=</span> <span class="n">text_dictionary</span><span class="p">,</span> <span class="n">num_topics</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">show_topics</span><span class="p">(</span><span class="n">lda_model</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Topic 1:  state obama presid time secretari call offic american meet said first talk secur hous depart 
+Topic 2:  state said obama work presid american like depart secretari govern nation 2010 time polici 2009 
+Topic 3:  state work want time nation israel call need 2010 meet secretari like obama year report 
+Topic 4:  state hous call american time said depart offic secretari presid peopl work govern meet obama 
+Topic 5:  state obama presid work like offic said senat 2009 hous right govern time year need 
+Topic 6:  state american like govern year time 2009 last work want presid think 2010 women know 
+Topic 7:  call state right said obama secretari work presid 2010 time want need today know like 
+Topic 8:  state depart secretari offic said time 2009 nation meet polit rout privat peopl hous presid 
+Topic 9:  state secretari depart work offic clinton hous meet time like presid said 2009 2010 obama 
+Topic 10:  state offic secretari depart time meet senat room said issu work obama presid 2010 year 
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[216]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lda_model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">LdaMulticore</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">id2word</span> <span class="o">=</span> <span class="n">text_dictionary</span><span class="p">,</span> <span class="n">num_topics</span> <span class="o">=</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">show_topics</span><span class="p">(</span><span class="n">lda_model</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Topic 1:  state need secretari peopl meet presid american govern said time last obama offic 2015 depart 
+Topic 2:  state call work time obama secur year like depart talk want meet israel think 2009 
+Topic 3:  state israel call secur work talk 2009 obama polici said time nation right american peac 
+Topic 4:  state presid obama 2010 secretari offic meet american polit hous time said call percent nation 
+Topic 5:  state call obama make meet time cheryl 2009 depart israel american mill presid 2015 secretari 
+Topic 6:  call said state work time want need talk peopl think polit presid today hous govern 
+Topic 7:  offic depart state meet secretari call room work time nation said arriv offici confer presid 
+Topic 8:  offic state call secretari meet 2010 time said american depart presid democrat like republican parti 
+Topic 9:  secretari offic depart state time call arriv meet rout hous room washington privat white nation 
+Topic 10:  obama senat democrat state presid right polit republican like think nation parti even vote year 
+Topic 11:  state clinton hous time 2009 presid said depart work report 2010 want meet obama 2015 
+Topic 12:  secretari offic depart state room meet call time 45 arriv hous resid privat rout confer 
+Topic 13:  state call time presid offic american obama said secretari like issu work depart govern meet 
+Topic 14:  call talk time state meet obama want district said today like right hous foreign work 
+Topic 15:  state time call obama like secretari presid year 2009 american 2010 percent said want republican 
+Topic 16:  state 2010 time like work call back american year hous think obama want peopl depart 
+Topic 17:  state secretari 2010 time 2009 peopl call work huma unit clinton like presid assist lona 
+Topic 18:  state want back secretari call meet presid hous depart women govern said think year peopl 
+Topic 19:  state obama like time american call meet know presid said could govern year need 2009 
+Topic 20:  state 2009 2010 obama time year govern thank work presid right know first huma group 
+Topic 21:  state work time said 2009 presid women obama first call govern know 2010 polit today 
+Topic 22:  state said year obama hous presid clinton work govern first call like democrat secur support 
+Topic 23:  state clinton work right govern senat vote depart said obama 2009 make want secretari presid 
+Topic 24:  state women work call 2009 like obama said govern peopl think support make meet discuss 
+Topic 25:  state hous american 2015 work year depart secretari offic 2010 obama presid report time said 
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[217]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lda_model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">LdaMulticore</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">id2word</span> <span class="o">=</span> <span class="n">text_dictionary</span><span class="p">,</span> <span class="n">num_topics</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">show_topics</span><span class="p">(</span><span class="n">lda_model</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Topic 1:  obama american clinton presid back democrat think last right like peopl time offici state polit 
+Topic 2:  secretari state offic depart time meet obama presid call hous clinton talk govern white secur 
+Topic 3:  state obama hous today said senat israel vote presid work 2010 offic meet polit iran 
+Topic 4:  state secretari said like 2010 offic presid time call work room depart good hous year 
+Topic 5:  call state like american meet work time right email 2009 think korea north year want 
+Topic 6:  state said presid secretari clinton peopl time american work obama first year like call want 
+Topic 7:  state work percent presid call obama republican right said american secretari democrat time like come 
+Topic 8:  state said call hous presid time foreign today govern work know want leader unit first 
+Topic 9:  time israel work polici said take talk state need american right make parti call want 
+Topic 10:  state secretari offic depart meet 2010 room work hous presid time like obama secur call 
+Topic 11:  state call 2015 speech hous 2010 last think offic thank said know work case draft 
+Topic 12:  state obama time secretari polici right presid women 2010 said like clinton year meet parti 
+Topic 13:  call presid polit obama state secretari govern 2010 like could work year peac know american 
+Topic 14:  state work presid obama women peopl polici nation american clinton want world polit govern countri 
+Topic 15:  state depart offic secretari arriv room rout meet time 2015 45 airport nation hous privat 
+Topic 16:  state work time said want call year obama know peopl 2009 presid talk like parti 
+Topic 17:  said state presid parti 2009 support like need govern year hous back republican democrat obama 
+Topic 18:  state american call said work support time clinton peopl want govern secur year nation world 
+Topic 19:  2010 state obama american time think right mill cheryl afghanistan polici like work march presid 
+Topic 20:  state call obama work palestinian year said presid israel parti 2009 2010 make peopl hous 
+Topic 21:  state obama year said american like presid time nation 2010 secretari group countri hous issu 
+Topic 22:  state work meet said depart could want american obama govern call know like come presid 
+Topic 23:  state said time need want work 2010 call secur presid obama talk peopl like 2009 
+Topic 24:  state call like 2010 govern obama said today parti polit want time know help democrat 
+Topic 25:  state peopl want obama presid said nation 2010 time date 2015 take hous secur need 
+Topic 26:  state call 2009 mill cheryl time work year millscd govern isra want 2010 obama need 
+Topic 27:  state parti time call labour right said need govern elect 2009 want thursday know work 
+Topic 28:  call state want 2009 cheryl mill obama thank presid like right millscd american govern friday 
+Topic 29:  state time meet said secretari 2009 presid obama call polit like work offic could hous 
+Topic 30:  work state time like israel washington peopl presid obama american want today right call think 
+Topic 31:  state secretari offic call depart time meet minist room hous democrat foreign obama privat 45 
+Topic 32:  state time work 2009 senat call presid govern secretari peopl said clinton 2010 talk start 
+Topic 33:  call work tomorrow state 2009 offic make like last time want meet back right year 
+Topic 34:  state secretari said obama 2009 offic presid 2010 meet govern clinton time depart percent know 
+Topic 35:  state depart hous 2015 offic secretari call 2010 case date inform produc benghazi 13 2009 
+Topic 36:  call china state want work report hous offic obama world could nation year offici said 
+Topic 37:  state women obama nation polici year presid issu work need american unit right govern clinton 
+Topic 38:  state work need time presid american year meet call right obama make secur tomorrow peopl 
+Topic 39:  state 2009 work said time polit obama presid vote secretari year secur meet govern call 
+Topic 40:  obama state call senat presid time israel govern hous like need nation peopl last made 
+Topic 41:  state 2010 group need want 2009 discuss thursday call said right senat elect today email 
+Topic 42:  state obama presid call depart 2010 govern said american need percent meet right work vote 
+Topic 43:  secretari offic meet room call depart privat minist rout arriv resid 45 talk support state 
+Topic 44:  state call secretari time today meet obama said like presid know peopl mcchrystal 2010 afghanistan 
+Topic 45:  call presid time state report american obama year 2010 offic offici israel talk polit 2009 
+Topic 46:  said work obama presid state afghanistan secur like american countri time afghan peopl support back 
+Topic 47:  year like work call said state could know 2010 make want peopl obama 2009 american 
+Topic 48:  offic secretari state depart meet call arriv senat presid know talk nation time rout want 
+Topic 49:  state meet time presid clinton secretari work hous obama senat think talk 2010 said white 
+Topic 50:  call state presid time issu support polici year clinton obama said work like american want 
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Observations">Observations<a class="anchor-link" href="#Observations">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First to note, there is some unwanted word cropping ("secretariat" becomes "secretari"), but it is still readable and shouldn't give totally different results.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The goal was to group words such as they relate to the same topic. The results are not concluding: regardless of the number of topic, the same words always reappear: "obama", "state", "secretariat", "call"... It's difficult to put a different name on a lot of topic, because they all look alike a lot.
+For sure, we can tell an "administrative" topic is recurrent: state, secretariat, call, obama, office... The result isn't so exciting !</p>
+
+</div>
+</div>
 </div>
     </div>
   </div>

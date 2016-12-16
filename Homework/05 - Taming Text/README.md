@@ -1,3 +1,10 @@
+# Hey ! Are you a reviewer ?
+If yes, these files will interest you:
+- Question 1 : HW05_awesometeam_Q1.ipynb
+- Question 2 : HW05_awesometeam_Q2.ipynb
+- Question 3 : HW05_awesometeam_Q3.ipynb
+- Question 4 : HW05_awesometeam_Q4.ipynb
+
 # 05 - Taming Text
 
 ## Deadline
